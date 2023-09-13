@@ -24,7 +24,7 @@ function FleetSlide() {
           canSwipe={true}
           indicators
         >
-          <div className="flex items-center justify-center text-center text-left flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex items-center justify-center text-center lg:text-left flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Economy
@@ -60,7 +60,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex items-center text-center text-left justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex items-center text-center lg:text-left justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Business
@@ -93,7 +93,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex text-center text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Executive
@@ -126,7 +126,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex text-center text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Luxury
@@ -160,7 +160,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex text-center text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Shuttle
@@ -195,7 +195,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex text-center text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Shuttle Extra

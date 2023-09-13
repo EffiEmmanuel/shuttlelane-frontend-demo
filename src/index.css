@@ -62,6 +62,13 @@
   background-position: 0 0;
 }
 
+.arrowAssetBg {
+  background-color: #262471;
+  background-image: url("./assets/images/arrow-asset.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .formWidthFull {
   width: 100%;
   transition: width 1s;
