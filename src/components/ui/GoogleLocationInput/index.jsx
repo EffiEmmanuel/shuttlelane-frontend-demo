@@ -14,7 +14,7 @@ function GoogleLocationInput({ placeholder }) {
   }
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyBPFsC1VWxb-utvgfTUO0d3XIDyjkHTYc4"
+      googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
       libraries={["places"]}
     >
       <StandaloneSearchBox
