@@ -32,7 +32,7 @@ import trustpilot from "../../assets/logos/trustpilot.svg";
 import paypal from "../../assets/logos/paypal.svg";
 import stripe from "../../assets/logos/stripe.svg";
 import flutterwave from "../../assets/logos/flutterwave.png";
-import appstore from "../../assets/logos/appstore.svg";
+// import appstore from "../../assets/logos/appstore.svg";
 import googlePlay from "../../assets/logos/googlePlay.svg";
 import Footer from "../../components/ui/Footer";
 
@@ -325,7 +325,7 @@ function AboutPage() {
 
             <Fade duration={800}>
               <div className="flex flex-row justify-start mt-4 items-center gap-x-6">
-                <img src={appstore} alt="" className="lg:w-[50px] w-[50px]" />
+                {/* <img src={appstore} alt="" className="lg:w-[50px] w-[50px]" /> */}
                 <img src={googlePlay} alt="" className="lg:w-[45px] w-[45px]" />
               </div>
             </Fade>
