@@ -33,6 +33,10 @@
   font-weight: 800;
 }
 
+html {
+  background-color: #262471;
+}
+
 * {
   font-family: "Poppins";
   font-size: 0.95rem;
