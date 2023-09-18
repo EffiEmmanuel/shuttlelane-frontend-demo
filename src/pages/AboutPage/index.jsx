@@ -32,11 +32,11 @@ import trustpilot from "../../assets/logos/trustpilot.svg";
 import paypal from "../../assets/logos/paypal.svg";
 import stripe from "../../assets/logos/stripe.svg";
 import flutterwave from "../../assets/logos/flutterwave.png";
-// import appstore from "../../assets/logos/appstore.svg";
+import appstore from "../../assets/logos/appstore.svg";
 import googlePlay from "../../assets/logos/googlePlay.svg";
 import Footer from "../../components/ui/Footer";
 
-function HomePage() {
+function AboutPage() {
   // SERVICE STATES
   const [isAirportTransfer, setIsAirportTransfer] = useState(true); // It is Airport Transfer by default
   const [isCarRental, setIsCarRental] = useState(false);
@@ -90,26 +90,14 @@ function HomePage() {
       </div>
 
       {/* Hero Section */}
-      <div className="min-h-[85vh] heroBg flex items-end text-white">
-        <div className="flex flex-col top-36 lg:top-24 px-8 gap-y-12 relative lg:top-14 lg:px-24 w-full">
+      <div className="min-h-[55vh] flex pt-44 text-white">
+        <div className="flex flex-col px-8 gap-y-12 relative lg:px-24 w-full">
           <div className="">
             <Fade direction="up" duration={700}>
-              <h1 className="text-4xl font-bold flex md:flex-row flex-col items-baseline gap-x-2 gap-y-2">
-                <span className="text-4xl">Searching for</span>
-                <Typewriter
-                  options={{
-                    strings: [
-                      "Airport Transfers?",
-                      "Car Rentals?",
-                      "Priority Pass?",
-                      "Visa On Arrival?",
-                    ],
-                    autoStart: true,
-                    loop: true,
-                    wrapperClassName: "text-4xl mt-3",
-                    cursorClassName: "text-4xl mt-3",
-                  }}
-                />
+              <h1 className="text-4xl text-center font-bold flex md:flex-row flex-col items-baseline gap-x-2 gap-y-2">
+                <span className="text-[13rem] text-center text-shuttlelanePurple opacity-70 uppercase">
+                  About Us
+                </span>
               </h1>
             </Fade>
 
@@ -119,58 +107,6 @@ function HomePage() {
               </h1>
             </Fade>
           </div>
-
-          {/* SERVICE OPTIONS */}
-          <div className="lg:h-14 h-auto gap-y-3 lg:w-[620px] flex-wrap bg-opacity-[95%] backdrop-blur-sm shadow-lg py-2 flex items-center gap-x-4 px-4 relative rounded-2xl">
-            <button
-              onClick={() => toggleService("airport")}
-              className={`flex  items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
-                isAirportTransfer
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
-              } transition-all border-dashed border-[.5px]`}
-            >
-              <BsAirplane size={16} />
-              <p className="text-sm">Airport</p>
-            </button>
-            <button
-              onClick={() => toggleService("carRental")}
-              className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
-                isCarRental
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
-              } transition-all border-dashed border-[.5px]`}
-            >
-              <IoCarSportOutline size={18} />
-              <p className="text-sm">Car Rental</p>
-            </button>
-            <button
-              onClick={() => toggleService("priorityPass")}
-              className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
-                isPriorityPass
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
-              } transition-all border-dashed border-[.5px]`}
-            >
-              <MdOutlineLuggage size={18} />
-              <p className="text-sm">Priority Pass</p>
-            </button>
-            <button
-              onClick={() => toggleService("visaOnArrival")}
-              className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
-                isVisaOnArrival
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
-              } transition-all border-dashed border-[.5px]`}
-            >
-              <BsAirplane size={16} />
-              <p className="text-sm">Visa On Arrival</p>
-            </button>
-          </div>
-
-          {isAirportTransfer && <AirportTransferForm />}
-          {isCarRental && <CarRentalForm />}
-          {isPriorityPass && <PriorityPassForm />}
         </div>
       </div>
 
@@ -389,7 +325,7 @@ function HomePage() {
 
             <Fade duration={800}>
               <div className="flex flex-row justify-start mt-4 items-center gap-x-6">
-                {/* <img src={appstore} alt="" className="lg:w-[50px] w-[50px]" /> */}
+                <img src={appstore} alt="" className="lg:w-[50px] w-[50px]" />
                 <img src={googlePlay} alt="" className="lg:w-[45px] w-[45px]" />
               </div>
             </Fade>
@@ -435,4 +371,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default AboutPage;

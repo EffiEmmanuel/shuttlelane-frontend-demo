@@ -14,7 +14,7 @@ import downloadFromAppstore from "../../../assets/logos/downloadAppstore.svg";
 function Footer() {
   return (
     <footer className="text-white py-20 px-10 relative arrowAssetBg">
-      <div className="my-auto lg:flex lg:justify-between w-full relative z-30">
+      <div className="my-auto lg:flex lg:justify-between w-full relative">
         <div className="w-full lg:w-1/4 ml-5 lg:ml-0">
           <div className="w-36">
             <img
@@ -62,7 +62,7 @@ function Footer() {
 
           <FooterLinks
             linkHeading="Company"
-            links={["FAQs", "Blog", "Partnership", "Contact Us"]}
+            links={["About Us", "FAQs", "Blog", "Partnership", "Contact Us"]}
             isInnerLink={true}
           />
 
