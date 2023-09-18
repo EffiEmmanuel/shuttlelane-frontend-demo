@@ -20,7 +20,7 @@ function NavBar() {
           </Link>
           <ul className="hidden lg:flex items-center md:gap-x-12">
             <li>
-              <Link to="/company/about-us" className="text-sm">
+              <Link to="" className="text-sm">
                 About Us
               </Link>
             </li>
@@ -65,7 +65,7 @@ function NavBar() {
             <ul className="flex flex-col w-full gap-y-7">
               <li className="w-full">
                 <Link
-                  to="/company/about-us"
+                  to=""
                   className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
                 >
                   About Us

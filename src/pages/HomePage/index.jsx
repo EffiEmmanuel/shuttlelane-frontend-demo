@@ -35,6 +35,7 @@ import flutterwave from "../../assets/logos/flutterwave.png";
 // import appstore from "../../assets/logos/appstore.svg";
 import googlePlay from "../../assets/logos/googlePlay.svg";
 import Footer from "../../components/ui/Footer";
+import { toast } from "react-toastify";
 
 function HomePage() {
   // SERVICE STATES
@@ -156,7 +157,10 @@ function HomePage() {
               <p className="text-sm">Priority Pass</p>
             </button>
             <button
-              onClick={() => toggleService("visaOnArrival")}
+              //   onClick={() => toggleService("visaOnArrival")}
+              onClick={() => {
+                toast.info("This service is under construction");
+              }}
               className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
                 isVisaOnArrival
                   ? "text-white bg-shuttlelanePurple border-white"

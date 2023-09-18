@@ -79,7 +79,7 @@ function AirportTransferForm() {
                         />
                       </div>
 
-                      <div className="w-[95%]">
+                      <div className="w-[98%]">
                         <GoogleLocationInput placeholder="Pickup Location" />
                       </div>
                       {/* <input
@@ -97,10 +97,10 @@ function AirportTransferForm() {
                           />
                         </div>
 
-                        <div className="w-[95%]">
+                        <div className="w-[98%]">
                           <input
                             type="date"
-                            className="text-sm px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
+                            className="text-sm px-3 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
                           />
                         </div>
                         {/* <input
@@ -115,10 +115,10 @@ function AirportTransferForm() {
                           />
                         </div>
 
-                        <div className="w-[95%]">
+                        <div className="w-[98%]">
                           <input
                             type="time"
-                            className="text-sm px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
+                            className="text-sm px-3 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
                           />
                         </div>
                       </div>
@@ -133,7 +133,7 @@ function AirportTransferForm() {
                   />
                 </div>
 
-                <div className="py-3 px-4 w-full lg:w-[50%] relative lg:-left-6 border-shuttlelaneBlack bg-transparent border-dashed border-[.2px] rounded-lg">
+                <div className="py-3 px-4 w-full lg:w-[50%] relative lg:-left-6 border-shuttlelaneBlack bg-transparent border-dashed border-[1px] lg:border-[.2px] rounded-lg">
                   <div className="flex flex-col gap-y-2">
                     <small className="text-[.7rem] text-shuttlelaneBlack">
                       TO
@@ -177,10 +177,10 @@ function AirportTransferForm() {
                               />
                             </div>
 
-                            <div className="w-[95%]">
+                            <div className="w-[98%]">
                               <input
                                 type="date"
-                                className="text-sm px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
+                                className="text-sm px-3 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
                               />
                             </div>
                           </div>
@@ -192,10 +192,10 @@ function AirportTransferForm() {
                               />
                             </div>
 
-                            <div className="w-[95%]">
+                            <div className="w-[98%]">
                               <input
                                 type="time"
-                                className="text-sm px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
+                                className="text-sm px-3 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
                               />
                             </div>
                           </div>
