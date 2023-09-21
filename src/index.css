@@ -65,7 +65,7 @@ html {
   background-color: #262471;
   background-image: url("./assets/images/arrow-asset.svg");
   background-repeat: no-repeat;
-  background-size: auto;
+  background-size: cover;
 }
 
 .formWidthFull {

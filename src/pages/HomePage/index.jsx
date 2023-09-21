@@ -34,6 +34,8 @@ import trustpilot from "../../assets/logos/trustpilot.svg";
 import paypal from "../../assets/logos/paypal.svg";
 import stripe from "../../assets/logos/stripe.svg";
 import flutterwave from "../../assets/logos/flutterwave.png";
+import appstoreDownload from "../../assets/logos/downloadAppstore.svg";
+import playstoreDownload from "../../assets/logos/downloadPlaystore.svg";
 // import appstore from "../../assets/logos/appstore.svg";
 import googlePlay from "../../assets/logos/googlePlay.svg";
 import Footer from "../../components/ui/Footer";
@@ -93,7 +95,7 @@ function HomePage() {
         <NavBar />
       </div>
       {/* Hero Section */}
-      <div className="min-h-screen max-h-[100vh] heroBg relative text-white pt-36 pb-10 lg:px-24 px-7">
+      <div className="min-h-screen heroBg relative text-white pt-36 pb-52 lg:pb-10 lg:px-24 px-7">
         <div className="h-full w-full">
           {/* HEADLINE */}
           <div className="">
@@ -107,7 +109,7 @@ function HomePage() {
           </div>
 
           {/* SERVICE OPTIONS */}
-          <div className="lg:h-14 mt-10 h-auto gap-y-3 w-full lg:flex lg:items-center lg:justify-center py-2 gap-x-4 px-4 relative rounded-2xl">
+          <div className="lg:h-14 mt-10 h-auto gap-y-3 w-full flex flex-wrap justify-center items-center lg:items-center lg:justify-center py-2 gap-x-4 px-4 relative rounded-2xl">
             <button
               onClick={() => toggleService("airport")}
               className={`flex  items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
@@ -158,7 +160,7 @@ function HomePage() {
           </div>
 
           {/* FORMS */}
-          <div className="bg-white bg-opacity-60 w-full mt-10 h-auto transition-all p-7 rounded-xl">
+          <div className="bg-white bg-opacity-60 w-full mt-14 h-auto transition-all p-7 rounded-xl">
             {isAirportTransfer && <AirportTransferForm />}
             {isCarRental && <CarRentalForm />}
             {isPriorityPass && <PriorityPassForm />}
@@ -179,75 +181,67 @@ function HomePage() {
       {/* Main Section */}
       <div className="">
         {/* How it works */}
-        <div className="px-8 lg:px-24 py-20 pb-0">
-          <Fade direction="up" duration={800}>
-            <div className="w-full flex flex-col items-center justify-center text-center">
-              <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
-                How it works
-              </h2>
-              <h4 className="text-sm">
-                Booking with Shuttlelane is very simple
-              </h4>
-            </div>
-          </Fade>
+        <div className="px-8 lg:px-24 lg:py-20 pb-0">
+          {/* <Fade direction="up" duration={500}> */}
+          <div className="w-full flex flex-col items-center justify-center text-center">
+            <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
+              How it works
+            </h2>
+            <h4 className="text-sm">Booking with Shuttlelane is very easy</h4>
+          </div>
+          {/* </Fade> */}
 
-          <div className="mt-16">
+          <div className="mt-20">
             <div className="flex justify-between gap-x-10 items-center flex-wrap gap-y-10">
-              <Fade duration={800} delay={50}>
-                <div className="lg:max-w-[300px] h-[200px] flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
-                    <BsFillBookmarksFill size={22} className="text-white" />
-                  </div>
-                  <h4 className="font-semibold text-shuttlelanePurple text-lg">
-                    Make Booking
-                  </h4>
-
-                  <p className="text-sm">
-                    Select from our available services and make a booking by
-                    specifying your travel date, pickup location, destination,
-                    and other required information
-                  </p>
+              <div className="lg:max-w-[300px] h-[200px] flex flex-col items-center text-center gap-y-3">
+                <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <BsFillBookmarksFill size={22} className="text-white" />
                 </div>
-              </Fade>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                  Make Booking
+                </h4>
 
-              <Fade duration={800} delay={100}>
-                {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
-                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3 items-center text-center ">
-                  <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
-                    <BsCreditCardFill size={22} className="text-white" />
-                  </div>
-                  <h4 className="font-semibold text-shuttlelanePurple text-lg">
-                    Pay
-                  </h4>
+                <p className="text-sm">
+                  Select from our available services and make a booking by
+                  specifying your travel date, pickup location, destination, and
+                  other required information
+                </p>
+              </div>
 
-                  <p className="text-sm">
-                    Confirm your booking by securely making instant online
-                    payment, either using a credit or debit card.
-                  </p>
+              {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
+              <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3 items-center text-center ">
+                <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <BsCreditCardFill size={22} className="text-white" />
                 </div>
-              </Fade>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                  Pay
+                </h4>
 
-              <Fade duration={800} delay={150}>
-                {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
-                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3 items-center text-center ">
-                  <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
-                    <MdOutlineModeOfTravel size={22} className="text-white" />
-                  </div>
-                  <h4 className="font-semibold text-shuttlelanePurple text-lg">
-                    Travel
-                  </h4>
+                <p className="text-sm">
+                  Confirm your booking by securely making instant online
+                  payment, either using a credit or debit card.
+                </p>
+              </div>
 
-                  <p className="text-sm">
-                    Our driver will arrive on schedule for pickup at pickup
-                    location and proceed to your destination
-                  </p>
+              {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
+              <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3 items-center text-center ">
+                <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <MdOutlineModeOfTravel size={22} className="text-white" />
                 </div>
-              </Fade>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                  Travel
+                </h4>
+
+                <p className="text-sm">
+                  Our driver will arrive on schedule for pickup at pickup
+                  location and proceed to your destination
+                </p>
+              </div>
             </div>
           </div>
         </div>
         {/* Why choose us? */}
-        <div className="px-8 lg:px-24 mt-32 overflow-hidden text-white bg-shuttlelanePurple min-h-[70vh] py-20 relative">
+        <div className="px-8 lg:px-24 overflow-hidden text-white bg-shuttlelanePurple min-h-[70vh] py-20 relative">
           <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
             <img src={arrowAsset} className="object-cover w-full h-full" />
           </div>
@@ -319,36 +313,38 @@ function HomePage() {
           </div>
         </div>
         {/* Our fleet */}
-        <div className="px-8 lg:px-24 mt-32">
+        <div className="px-8 lg:px-24 py-32">
           <Fade direction="up" duration={800}>
-            <h4 className="text-xs text-gray-500 font-semibold uppercase">
-              Our Fleet
-            </h4>
+            <div className="w-full flex flex-col items-center justify-center text-shuttlelaneBlack text-center">
+              <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
+                Our Fleet
+              </h2>
+              <h4 className="text-sm">
+                Shuttlelane offers a variety of service class you can choose
+                from, depending on your needs.
+              </h4>
+            </div>
           </Fade>
 
-          <Fade direction="up" duration={800} delay={50}>
-            <h2 className="text-4xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[37px]">
-              Shuttlelane offers a variety of service class you can choose from,
-              depending on your needs.
-            </h2>
-          </Fade>
-          <FleetSlide />
+          <div className="mt-28">
+            <FleetSlide />
+          </div>
         </div>
         {/* Testimonials */}
-        <div className="px-8 lg:px-24 mt-32 overflow-hidden text-white bg-shuttlelanePurple min-h-[90vh] pt-20 relative">
+        <div className="px-8 lg:px-24 overflow-hidden text-white bg-shuttlelanePurple min-h-[90vh] pt-20 relative">
           <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
             <img src={circleAsset} className="object-cover w-full h-full" />
           </div>
-          <Fade direction="up" duration={800}>
-            <h4 className="text-sm text-white font-semibold uppercase">
-              What our Clients are saying
-            </h4>
-          </Fade>
 
-          <Fade direction="up" duration={800} delay={50}>
-            <h2 className="text-4xl text-white font-semibold mt-3 max-w-xl leading-[42px]">
-              Our clients are saying great things about us. Here are a few
-            </h2>
+          <Fade direction="up" duration={800}>
+            <div className="w-full flex flex-col items-center justify-center text-white text-center">
+              <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
+                What our Clients are saying
+              </h2>
+              <h4 className="text-sm">
+                Our clients are saying great things about us. Here are a few
+              </h4>
+            </div>
           </Fade>
 
           <div className="mt-10">
@@ -374,59 +370,66 @@ function HomePage() {
         </div>
 
         {/* Download */}
-        <div className="px-8 pt-10 lg:px-24">
+        <div className="px-8 py-10 lg:px-24 ">
           <div className="overflow-hidden text-shuttlelaneBlack py-10 relative">
             <Fade direction="up" duration={800}>
-              <h4 className="text-sm font-semibold uppercase text-gray-500">
-                GET THE APP
-              </h4>
-            </Fade>
-
-            <Fade direction="up" duration={800} delay={50}>
-              <h2 className="text-4xl font-semibold mt-3 max-w-xl leading-[42px]">
-                Download the Shuttlelane Mobile App
-              </h2>
-            </Fade>
-
-            <Fade duration={800}>
-              <div className="flex flex-row justify-start mt-4 items-center gap-x-6">
-                {/* <img src={appstore} alt="" className="lg:w-[50px] w-[50px]" /> */}
-                <img src={googlePlay} alt="" className="lg:w-[45px] w-[45px]" />
+              <div className="w-full flex flex-col items-center justify-center text-shuttlelaneBlack text-center">
+                <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
+                  Download the Shuttlelane Mobile App
+                </h2>
+                <h4 className="text-sm">
+                  Available on both Google PlayStore and Apple AppStore
+                </h4>
               </div>
             </Fade>
 
-            <div className="mt-4 flex lg:flex-row flex-col lg:items-center gap-x-2">
-              <Fade duration={800}>
-                <div className="flex items-center gap-x-2 mt-10 lg:mt-0">
-                  <h4 className="text-sm font-semibold uppercase text-gray-500">
-                    OUR PAYMENT PARTNERS
-                  </h4>
-
-                  <MdArrowRightAlt size={16} className="text-gray-500" />
-                </div>
-              </Fade>
-
-              <Fade duration={800}>
-                <div className="flex flex-row items-center gap-y-0 gap-x-10 -mt-5 lg:mt-0 flex-wrap">
-                  <img
-                    src={flutterwave}
-                    alt=""
-                    className="object-contain lg:w-[150px] w-[150px]"
-                  />
-                  <img
-                    src={paypal}
-                    alt=""
-                    className="object-contain lg:w-[100px] w-[100px]"
-                  />
-                  <img
-                    src={stripe}
-                    alt=""
-                    className="object-contain lg:w-[90px] w-[90px]"
-                  />
-                </div>
-              </Fade>
-            </div>
+            <Fade duration={800}>
+              <div className="flex flex-row justify-center mt-10 items-center gap-x-6">
+                <img
+                  src={appstoreDownload}
+                  alt="Download the Shuttlelane mobile app on AppStore"
+                  className="lg:w-[140px] w-[140px]"
+                />
+                <img
+                  src={playstoreDownload}
+                  alt="Download the Shuttlelane mobile app on PlayStore"
+                  className="lg:w-[140px] w-[140px]"
+                />
+              </div>
+            </Fade>
           </div>
+        </div>
+
+        <div className="mt-4 lg:px-24 px-7 bg-[#F7F6FF] flex lg:flex-row flex-col lg:items-center lg:justify-center gap-x-2">
+          <Fade duration={800}>
+            <div className="flex items-center justify-center lg:justify-normal gap-x-2 mt-10 lg:mt-0">
+              <h4 className="text-sm font-semibold uppercase text-gray-500">
+                OUR PAYMENT PARTNERS
+              </h4>
+
+              <MdArrowRightAlt size={16} className="text-gray-500" />
+            </div>
+          </Fade>
+
+          <Fade duration={800}>
+            <div className="flex flex-row items-center gap-y-0 gap-x-10 -mt-5 lg:mt-0 flex-wrap">
+              <img
+                src={flutterwave}
+                alt=""
+                className="object-contain lg:w-[140px] w-[140px]"
+              />
+              <img
+                src={paypal}
+                alt=""
+                className="object-contain lg:w-[90px] w-[90px]"
+              />
+              <img
+                src={stripe}
+                alt=""
+                className="object-contain lg:w-[80px] w-[80px]"
+              />
+            </div>
+          </Fade>
         </div>
       </div>
 

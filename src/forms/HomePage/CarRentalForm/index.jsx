@@ -30,7 +30,7 @@ function CarRentalForm() {
     <>
       <ToastContainer toastClassName="text-sm" />
       <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
-        <div className="bg-white lg:h-[250px] h-[475px] w-auto backdrop-blur-sm bg-opacity-[95%] shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl">
+        <div className="bg-white lg:h-[250px] h-[475px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl">
           <Fade duration={1500}>
             <div className="flex items-center gap-x-5">
               <div className="flex items-center gap-x-2">
@@ -71,7 +71,7 @@ function CarRentalForm() {
                       PICKUP FROM
                     </small>
 
-                    <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg">
+                    <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                       <div className="w-[5%]">
                         <IoLocationOutline
                           size={16}
@@ -89,15 +89,8 @@ function CarRentalForm() {
                     </div>
 
                     <div className="flex items-center justify-between gap-x-3">
-                      <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg">
-                        <div className="w-[5%]">
-                          <CiCalendar
-                            size={16}
-                            className="text-shuttlelaneBlack"
-                          />
-                        </div>
-
-                        <div className="w-[98%]">
+                      <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                        <div className="w-[100%]">
                           <input
                             type="date"
                             className="px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
@@ -124,7 +117,7 @@ function CarRentalForm() {
                       CAR DETAILS
                     </small>
 
-                    <div className="flex items-center bg-white h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                    <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
                       <div className="w-[5%]">
                         <IoCarSportOutline
                           size={16}
@@ -145,6 +138,7 @@ function CarRentalForm() {
                                 ? "transparent"
                                 : "transparent",
                               borderWidth: state.isFocused ? "0" : "0",
+                              backgroundColor: "transparent",
                             }),
 
                             placeholder: (baseStyles, state) => ({
@@ -173,15 +167,8 @@ function CarRentalForm() {
                     </div>
 
                     <div className="flex items-center justify-between gap-x-3">
-                      <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg">
-                        <div className="w-[5%]">
-                          <CiClock1
-                            size={16}
-                            className="text-shuttlelaneBlack"
-                          />
-                        </div>
-
-                        <div className="w-[98%]">
+                      <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                        <div className="w-[100%]">
                           <input
                             type="time"
                             className="px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"

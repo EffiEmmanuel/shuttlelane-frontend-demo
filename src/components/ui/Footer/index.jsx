@@ -4,7 +4,7 @@ import shuttlelaneLogo from "../../../assets/logos/shuttlelane-white.png";
 import arrowAsset from "../../../assets/images/arrow-asset.svg";
 import { IoLogoWhatsapp } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
-import { BiLogoGmail } from "react-icons/bi";
+import { BiLogoGmail, BiSolidPhone } from "react-icons/bi";
 import downloadFromPlaystore from "../../../assets/logos/downloadPlaystore.svg";
 import downloadFromAppstore from "../../../assets/logos/downloadAppstore.svg";
 // import facebookLogo from "../../../public/images/social-icons/facebook.webp";
@@ -24,7 +24,7 @@ function Footer() {
             />
           </div>
 
-          <div className="flex gap-x-3 items-center lg:items-start lg:flex-col gap-y-3 mt-10 mb-5">
+          <div className="flex gap-x-3 items-center lg:items-start lg:flex-row gap-y-3 mt-10 mb-5">
             <img
               src={downloadFromPlaystore}
               alt="Download the Shuttlelane app from the Google Play Store"
@@ -37,16 +37,38 @@ function Footer() {
             />
           </div>
 
-          <a href="mailto:@blupayfinance@gmail.com" className="font-light">
-            info@shuttlelane.com
-          </a>
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center gap-x-2">
+              <BiLogoGmail size={14} className="text-white" />
+              <a
+                href="mailto:@blupayfinance@gmail.com"
+                className="font-light text-sm"
+              >
+                info@shuttlelane.com
+              </a>
+            </div>
 
-          <p className="font-light w-full mt-10">
+            <div className="flex items-center gap-x-2">
+              <BiSolidPhone size={14} className="text-white" />
+              <a href="tel:+2349030009452" className="font-light text-sm">
+                +234 903 000 9452
+              </a>
+            </div>
+
+            <div className="flex items-center gap-x-2">
+              <IoLogoWhatsapp size={14} className="text-white" />
+              <a href="tel:+2349030009108" className="font-light text-sm">
+                +234 903 000 9108
+              </a>
+            </div>
+          </div>
+
+          <p className="font-light w-full mt-10 text-sm">
             All rights Reserved. © 2023 Shuttlelane Limited.
           </p>
         </div>
 
-        <div className="my-auto px-5 flex flex-col lg:flex-row lg:px-0 align-start justify-between w-full mt-10 flex-wrap">
+        <div className="my-auto px-5 flex flex-col lg:flex-row lg:px-0 align-start justify-between w-full mt-10 lg:ml-10 flex-wrap">
           <FooterLinks
             linkHeading="Services"
             links={[

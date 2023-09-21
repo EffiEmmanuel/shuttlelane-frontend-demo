@@ -14,7 +14,7 @@ import { LuLuggage } from "react-icons/lu";
 
 function FleetSlide() {
   return (
-    <div className="my-16 pb-20 overflow-x-hidden">
+    <div className="overflow-x-hidden">
       <div className="">
         <Slide
           transitionDuration={500}
@@ -22,9 +22,9 @@ function FleetSlide() {
           pauseOnHover={false}
           duration={4000}
           canSwipe={true}
-          indicators
+          indicators={true}
         >
-          <div className="flex items-center justify-center text-center lg:text-left flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex items-center justify-center text-center flex-col-reverse gap-y-7">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Economy
@@ -38,7 +38,7 @@ function FleetSlide() {
                 location, destination, and other required information.
               </p>
 
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
@@ -60,7 +60,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex items-center text-center lg:text-left justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex items-center text-center justify-center flex-col-reverse gap-y-7">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Business
@@ -71,7 +71,7 @@ function FleetSlide() {
                 for luggages. It also promises a smooth and convenient ride.
               </p>
 
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
@@ -93,7 +93,7 @@ function FleetSlide() {
             </div>
           </div>
 
-          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center items-center justify-center flex-col-reverse gap-y-7">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Executive
@@ -104,7 +104,7 @@ function FleetSlide() {
                 Can accommodate up to 4 passengers and 2 luggages.
               </p>
 
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
@@ -122,11 +122,11 @@ function FleetSlide() {
             </div>
 
             <div className="max-w-2xl">
-              <img src={business} alt="" className="object-contain w-full" />
+              <img src={executive} alt="" className="object-contain w-full" />
             </div>
           </div>
 
-          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center items-center justify-center flex-col-reverse gap-y-7">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Luxury
@@ -138,7 +138,7 @@ function FleetSlide() {
                 style.
               </p>
 
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
@@ -156,11 +156,11 @@ function FleetSlide() {
             </div>
 
             <div className="max-w-2xl">
-              <img src={business} alt="" className="object-contain w-full" />
+              <img src={luxury} alt="" className="object-contain w-full" />
             </div>
           </div>
 
-          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center items-center justify-center flex-col-reverse gap-y-7">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Shuttle
@@ -173,7 +173,7 @@ function FleetSlide() {
                 convenient ride.
               </p>
 
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
@@ -191,11 +191,11 @@ function FleetSlide() {
             </div>
 
             <div className="max-w-2xl">
-              <img src={business} alt="" className="object-contain w-full" />
+              <img src={shuttle} alt="" className="object-contain w-full" />
             </div>
           </div>
 
-          <div className="flex text-center lg:text-left items-center justify-center flex-col-reverse gap-y-7 lg:flex-row lg:justify-between">
+          <div className="flex text-center items-center justify-center flex-col-reverse gap-y-7">
             <div className="lg:max-w-[40%] flex flex-col gap-y-3">
               <h4 className="font-bold text-shuttlelanePurple text-2xl">
                 Shuttle Extra
@@ -208,7 +208,7 @@ function FleetSlide() {
                 convenient ride.
               </p>
 
-              <div className="flex justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
@@ -226,7 +226,11 @@ function FleetSlide() {
             </div>
 
             <div className="max-w-2xl">
-              <img src={business} alt="" className="object-contain w-full" />
+              <img
+                src={shuttleExtra}
+                alt=""
+                className="object-contain w-full"
+              />
             </div>
           </div>
         </Slide>
