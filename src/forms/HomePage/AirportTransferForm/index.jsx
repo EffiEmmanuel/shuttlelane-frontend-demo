@@ -62,16 +62,35 @@ function AirportTransferForm() {
                 <p className="text-sm text-shuttlelaneBlack">Passengers</p>
               </div>
             </div>
+            {/* 
+        <div className="flex lg:items-center lg:justify-between py-5">
+          <div className="lg:w-[30%]">
+            <small className="text-[.8rem] text-shuttlelaneBlack">From</small>
+            <div className="flex h-[47px] items-center py-2 gap-x-2 w-full ">
+              <div className="w-[5%]">
+                <IoLocationOutline
+                  size={16}
+                  className="text-shuttlelaneBlack"
+                />
+              </div>
+
+              <div className="w-[98%]">
+                <GoogleLocationInput placeholder="Pickup Location" />
+              </div>
+            </div>
+          </div>
+          <div className="h-[100px] w-[4px] bg-gray-200"></div>
+        </div> */}
 
             <div className="w-full flex items-center mt-5">
               <div className="flex w-full items-center lg:flex-row flex-col">
                 <div className="py-3 w-full lg:w-[50%] px-4 border-shuttlelaneBlack bg-transparent border-dashed border-[.2px] rounded-lg">
                   <div className="flex flex-col gap-y-2">
-                    <small className="text-[.7rem] text-shuttlelaneBlack">
-                      FROM
-                    </small>
+                    {/* <small className="text-[.7rem] text-shuttlelaneBlack">
+                  FROM
+                </small> */}
 
-                    <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg">
+                    <div className="flex h-[47px] items-center bg-gray-50 py-2 px-2 gap-x-2 w-full rounded-lg">
                       <div className="w-[5%]">
                         <IoLocationOutline
                           size={16}
@@ -89,25 +108,15 @@ function AirportTransferForm() {
                     </div>
 
                     <div className="flex items-center justify-between gap-x-3">
-                      <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
-                        <div className="w-[5%]">
-                          <CiCalendar
-                            size={16}
-                            className="text-shuttlelaneBlack"
-                          />
-                        </div>
-
-                        <div className="w-[98%]">
+                      <div className="flex h-[47px] items-center bg-gray-50 py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
+                        <div className="w-[100%]">
                           <input
                             type="date"
                             className="text-sm px-3 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
                           />
                         </div>
-                        {/* <input
-                          type="text"
-                        /> */}
                       </div>
-                      <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
+                      <div className="flex h-[47px] items-center bg-gray-50 py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
                         <div className="w-[5%]">
                           <CiClock1
                             size={16}
@@ -135,11 +144,9 @@ function AirportTransferForm() {
 
                 <div className="py-3 px-4 w-full lg:w-[50%] relative lg:-left-6 border-shuttlelaneBlack bg-transparent border-dashed border-[1px] lg:border-[.2px] rounded-lg">
                   <div className="flex flex-col gap-y-2">
-                    <small className="text-[.7rem] text-shuttlelaneBlack">
-                      TO
-                    </small>
+                    {/* <small className="text-[.7rem] text-shuttlelaneBlack">TO</small> */}
 
-                    <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg">
+                    <div className="flex h-[47px] items-center bg-gray-50 py-2 px-2 gap-x-2 w-full rounded-lg">
                       <div className="w-[5%]">
                         <IoLocationOutline
                           size={16}
@@ -160,7 +167,7 @@ function AirportTransferForm() {
                       {bookingType !== "round-trip" && (
                         <button
                           onClick={() => setBookingType("round-trip")}
-                          className="flex text-shuttlelaneBlack items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg"
+                          className="flex h-[47px] text-shuttlelaneBlack items-center bg-white py-2 px-2 gap-x-2 w-full rounded-lg"
                         >
                           <BsPlusCircleDotted size={16} />
                           <p className="text-sm">Add Return</p>
@@ -169,7 +176,7 @@ function AirportTransferForm() {
 
                       {bookingType === "round-trip" && (
                         <>
-                          <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
+                          <div className="flex h-[47px] items-center bg-gray-50 py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
                             <div className="w-[5%]">
                               <CiCalendar
                                 size={16}
@@ -184,7 +191,7 @@ function AirportTransferForm() {
                               />
                             </div>
                           </div>
-                          <div className="flex h-[47px] items-center bg-white py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
+                          <div className="flex h-[47px] items-center bg-gray-50 py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
                             <div className="w-[5%]">
                               <CiClock1
                                 size={16}

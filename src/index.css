@@ -55,22 +55,17 @@ html {
 }
 
 .heroBg {
-  background: linear-gradient(
-      0deg,
-      rgba(38, 36, 113, 0.57),
-      rgba(0, 0, 0, 0.65)
-    ),
-    url(./assets/images/hero.webp);
+  background-image: url(./assets/images/heroBg.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 0 0;
+  background-position: 0 -150px;
 }
 
 .arrowAssetBg {
   background-color: #262471;
   background-image: url("./assets/images/arrow-asset.svg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: auto;
 }
 
 .formWidthFull {

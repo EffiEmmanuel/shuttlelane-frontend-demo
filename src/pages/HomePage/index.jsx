@@ -15,6 +15,8 @@ import {
   BsStarFill,
 } from "react-icons/bs";
 import { IoCarSportOutline } from "react-icons/io5";
+import { FiChevronDown } from "react-icons/fi";
+import { AiOutlineArrowDown } from "react-icons/ai";
 import { useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import AirportTransferForm from "../../forms/HomePage/AirportTransferForm";
@@ -36,6 +38,7 @@ import flutterwave from "../../assets/logos/flutterwave.png";
 import googlePlay from "../../assets/logos/googlePlay.svg";
 import Footer from "../../components/ui/Footer";
 import { toast } from "react-toastify";
+import doodleBg from "../../assets/images/doodle.svg";
 
 function HomePage() {
   // SERVICE STATES
@@ -89,46 +92,28 @@ function HomePage() {
       <div className="fixed w-full z-20">
         <NavBar />
       </div>
-
       {/* Hero Section */}
-      <div className="min-h-[85vh] heroBg flex items-end text-white">
-        <div className="flex flex-col top-36 lg:top-24 px-8 gap-y-12 relative lg:top-14 lg:px-24 w-full">
+      <div className="min-h-screen max-h-[100vh] heroBg relative text-white pt-36 pb-10 lg:px-24 px-7">
+        <div className="h-full w-full">
+          {/* HEADLINE */}
           <div className="">
-            <Fade direction="up" duration={700}>
-              <h1 className="text-4xl font-bold flex md:flex-row flex-col items-baseline gap-x-2 gap-y-2">
-                <span className="text-4xl">Searching for</span>
-                <Typewriter
-                  options={{
-                    strings: [
-                      "Airport Transfers?",
-                      "Car Rentals?",
-                      "Priority Pass?",
-                      "Visa On Arrival?",
-                    ],
-                    autoStart: true,
-                    loop: true,
-                    wrapperClassName: "text-4xl mt-3",
-                    cursorClassName: "text-4xl mt-3",
-                  }}
-                />
-              </h1>
-            </Fade>
+            <h1 className="text-[2rem] font-bold text-center gap-x-2 gap-y-2">
+              Are you looking for Airport Transfers?
+            </h1>
 
-            <Fade direction="up" duration={700}>
-              <h1 className="text-[1rem] lg:text-lg mt-1">
-                Schedule your next booking with us!
-              </h1>
-            </Fade>
+            <p className="text-center text-[1.3rem]">
+              Schedule your next booking with us
+            </p>
           </div>
 
           {/* SERVICE OPTIONS */}
-          <div className="lg:h-14 h-auto gap-y-3 lg:w-[620px] flex-wrap bg-opacity-[95%] backdrop-blur-sm shadow-lg py-2 flex items-center gap-x-4 px-4 relative rounded-2xl">
+          <div className="lg:h-14 mt-10 h-auto gap-y-3 w-full lg:flex lg:items-center lg:justify-center py-2 gap-x-4 px-4 relative rounded-2xl">
             <button
               onClick={() => toggleService("airport")}
               className={`flex  items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
                 isAirportTransfer
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
+                  ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
+                  : "text-white bg-transparent border-white"
               } transition-all border-dashed border-[.5px]`}
             >
               <BsAirplane size={16} />
@@ -138,8 +123,8 @@ function HomePage() {
               onClick={() => toggleService("carRental")}
               className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
                 isCarRental
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
+                  ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
+                  : "text-white bg-transparent border-white"
               } transition-all border-dashed border-[.5px]`}
             >
               <IoCarSportOutline size={18} />
@@ -149,8 +134,8 @@ function HomePage() {
               onClick={() => toggleService("priorityPass")}
               className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
                 isPriorityPass
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
+                  ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
+                  : "text-white bg-transparent border-white"
               } transition-all border-dashed border-[.5px]`}
             >
               <MdOutlineLuggage size={18} />
@@ -172,32 +157,44 @@ function HomePage() {
             </button>
           </div>
 
-          {isAirportTransfer && <AirportTransferForm />}
-          {isCarRental && <CarRentalForm />}
-          {isPriorityPass && <PriorityPassForm />}
+          {/* FORMS */}
+          <div className="bg-white bg-opacity-60 w-full mt-10 h-auto transition-all p-7 rounded-xl">
+            {isAirportTransfer && <AirportTransferForm />}
+            {isCarRental && <CarRentalForm />}
+            {isPriorityPass && <PriorityPassForm />}
+          </div>
+
+          {/* GO DOWN BUTTON */}
+          <div className="flex justify-center">
+            <div
+              onClick={() => {}}
+              className="animate-bounce cursor-pointer w-8 h-8 flex justify-center items-center rounded-full border-white border-[1px] mt-10"
+            >
+              <AiOutlineArrowDown size={16} className="text-white" />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main Section */}
-      <div className="lg:mt-52 mt-72">
+      <div className="">
         {/* How it works */}
-        <div className="px-8 lg:px-24 my-16 lg:pb-20 pb-0">
+        <div className="px-8 lg:px-24 py-20 pb-0">
           <Fade direction="up" duration={800}>
-            <h4 className="text-xs text-gray-500 font-semibold uppercase">
-              How It Works
-            </h4>
+            <div className="w-full flex flex-col items-center justify-center text-center">
+              <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
+                How it works
+              </h2>
+              <h4 className="text-sm">
+                Booking with Shuttlelane is very simple
+              </h4>
+            </div>
           </Fade>
 
-          <Fade direction="up" duration={800} delay={50}>
-            <h2 className="text-4xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
-              Booking with Shuttlelane is very simple
-            </h2>
-          </Fade>
-
-          <div className="mt-10">
+          <div className="mt-16">
             <div className="flex justify-between gap-x-10 items-center flex-wrap gap-y-10">
               <Fade duration={800} delay={50}>
-                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3">
+                <div className="lg:max-w-[300px] h-[200px] flex flex-col items-center text-center gap-y-3">
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsFillBookmarksFill size={22} className="text-white" />
                   </div>
@@ -215,7 +212,7 @@ function HomePage() {
 
               <Fade duration={800} delay={100}>
                 {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
-                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3">
+                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3 items-center text-center ">
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsCreditCardFill size={22} className="text-white" />
                   </div>
@@ -232,7 +229,7 @@ function HomePage() {
 
               <Fade duration={800} delay={150}>
                 {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
-                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3">
+                <div className="lg:max-w-[300px] h-[200px] flex flex-col gap-y-3 items-center text-center ">
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <MdOutlineModeOfTravel size={22} className="text-white" />
                   </div>
@@ -250,28 +247,28 @@ function HomePage() {
           </div>
         </div>
         {/* Why choose us? */}
-        <div className="px-8 lg:px-24 mt-32 overflow-hidden text-white bg-shuttlelanePurple min-h-[90vh] py-20 relative">
+        <div className="px-8 lg:px-24 mt-32 overflow-hidden text-white bg-shuttlelanePurple min-h-[70vh] py-20 relative">
           <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
             <img src={arrowAsset} className="object-cover w-full h-full" />
           </div>
-          <Fade direction="up" duration={800}>
-            <h4 className="text-sm text-white font-semibold uppercase">
-              Why choose us
-            </h4>
-          </Fade>
 
-          <Fade direction="up" duration={800} delay={50}>
-            <h2 className="text-4xl text-white font-semibold mt-3 max-w-xl leading-[42px]">
-              We strive to provide quality service and great customer
-              satisfaction
-            </h2>
+          <Fade direction="up" duration={800}>
+            <div className="w-full flex flex-col items-center justify-center text-white text-center">
+              <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
+                Why choose us?
+              </h2>
+              <h4 className="text-sm">
+                We strive to provide quality service and great customer
+                satisfaction
+              </h4>
+            </div>
           </Fade>
 
           <div className="mt-10">
-            <div className="flex justify-between gap-x-10 items-center flex-wrap gap-y-10 bg-white px-10 py-16 lg:py-10 rounded-lg">
+            <div className="flex justify-between gap-x-10 items-center bg-white flex-wrap gap-y-10 px-10 py-16 rounded-lg">
               <Fade duration={800} delay={50}>
-                <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col gap-y-3">
-                  <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
+                  <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsHourglassSplit size={22} className="text-white" />
                   </div>
                   <h4 className="font-semibold text-shuttlelanePurple text-lg">
@@ -287,7 +284,7 @@ function HomePage() {
 
               <Fade duration={800} delay={100}>
                 {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
-                <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col gap-y-3">
+                <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsStarFill size={22} className="text-white" />
                   </div>
@@ -304,7 +301,7 @@ function HomePage() {
 
               <Fade duration={800} delay={150}>
                 {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
-                <div className="lg:max-w-[300px] lg:h-[200px] text-shuttlelaneBlack flex flex-col gap-y-3">
+                <div className="lg:max-w-[300px] lg:h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsShieldFillCheck size={22} className="text-white" />
                   </div>

@@ -5,7 +5,7 @@ import { VscClose } from "react-icons/vsc";
 import { useState } from "react";
 
 // Logos
-import ShuttlelaneLogo from "../../../assets/logos/logo.png";
+import ShuttlelaneLogo from "../../../assets/logos/shuttlelane-white.png";
 import { Fade } from "react-awesome-reveal";
 
 function NavBar() {
@@ -14,7 +14,7 @@ function NavBar() {
     <div className="relative z-30">
       {/* NavBar */}
       <Fade duration={700} delay={300}>
-        <nav className="flex justify-between items-center bg-opacity-[96%] bg-white py-4 px-8 lg:px-24 drop-shadow-sm">
+        <nav className="flex justify-between items-center text-white py-4 mt-3 px-8 lg:px-24 drop-shadow-sm">
           <Link to="/" className="">
             <img src={ShuttlelaneLogo} className="object-contain w-36" />
           </Link>
