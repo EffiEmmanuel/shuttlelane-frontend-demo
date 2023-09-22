@@ -94,8 +94,9 @@ html {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 0%;
-  transition: width 0.5s ease-in-out;
+  width: 100%;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-in-out;
   overflow: hidden;
 }
 
@@ -124,36 +125,36 @@ html {
 
 @keyframes slideOut {
   from {
-    width: 0%;
+    transform: translateX(-100%);
   }
   to {
-    width: 100%;
+    transform: translateX(100%);
   }
 }
 
 @keyframes slideOut2 {
   from {
-    width: 0%;
+    transform: translateX(-100%);
   }
   to {
-    width: 95%;
+    transform: translateX(95%);
   }
 }
 
 @keyframes slideOutReverse {
   from {
-    width: 100%;
+    transform: translateX(100%);
   }
   to {
-    width: 0%;
+    transform: translateX(-100%);
   }
 }
 
 @keyframes slideOut2Reverse {
   from {
-    width: 95%;
+    transform: translateX(95%);
   }
   to {
-    width: 0%;
+    transform: translateX(-100%);
   }
 }
