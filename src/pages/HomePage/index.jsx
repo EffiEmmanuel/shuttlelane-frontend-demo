@@ -160,7 +160,7 @@ function HomePage() {
           </div>
 
           {/* FORMS */}
-          <div className="bg-white bg-opacity-60 w-full mt-14 h-auto transition-all p-7 rounded-xl">
+          <div className="bg-white bg-opacity-60 w-full mt-14 h-auto transition-all p-3 rounded-xl">
             {isAirportTransfer && <AirportTransferForm />}
             {isCarRental && <CarRentalForm />}
             {isPriorityPass && <PriorityPassForm />}
