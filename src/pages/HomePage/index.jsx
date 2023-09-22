@@ -1,4 +1,5 @@
-import React from "react";
+// @ts-nocheck
+import React, { useRef } from "react";
 import NavBar from "../../components/ui/NavBar";
 import Typewriter from "typewriter-effect";
 import {
@@ -49,6 +50,8 @@ function HomePage() {
   const [isPriorityPass, setIsPriorityPass] = useState(false);
   const [isVisaOnArrival, setIsVisaOnArrival] = useState(false);
 
+  const howItWorksRef = useRef(null); // useRef for scrolling to the "How it works" section
+
   // TOGGLE SERVICE STATE
   function toggleService(service) {
     switch (service) {
@@ -90,7 +93,7 @@ function HomePage() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative bg-white">
       <div className="fixed w-full z-20">
         <NavBar />
       </div>
@@ -169,7 +172,12 @@ function HomePage() {
           {/* GO DOWN BUTTON */}
           <div className="flex justify-center">
             <div
-              onClick={() => {}}
+              onClick={() => {
+                howItWorksRef.current.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
               className="animate-bounce cursor-pointer w-8 h-8 flex justify-center items-center rounded-full border-white border-[1px] mt-10"
             >
               <AiOutlineArrowDown size={16} className="text-white" />
@@ -181,7 +189,7 @@ function HomePage() {
       {/* Main Section */}
       <div className="">
         {/* How it works */}
-        <div className="px-8 lg:px-24 lg:py-20 pb-0">
+        <div className="px-8 lg:px-24 py-10 lg:py-44 pb-0" ref={howItWorksRef}>
           {/* <Fade direction="up" duration={500}> */}
           <div className="w-full flex flex-col items-center justify-center text-center">
             <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
