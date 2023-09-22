@@ -30,7 +30,7 @@ function CarRentalForm() {
     <>
       <ToastContainer toastClassName="text-sm" />
       <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
-        <div className="bg-white lg:h-[250px] h-[475px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl">
+        <div className="bg-white lg:h-[250px] h-[520px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl">
           <Fade duration={1500}>
             <div className="flex items-center gap-x-5">
               <div className="flex items-center gap-x-2">

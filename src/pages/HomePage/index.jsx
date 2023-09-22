@@ -116,7 +116,7 @@ function HomePage() {
                 isAirportTransfer
                   ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
                   : "text-white bg-transparent border-white"
-              } transition-all border-dashed border-[.5px]`}
+              } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
             >
               <BsAirplane size={16} />
               <p className="text-sm">Airport</p>
@@ -127,7 +127,7 @@ function HomePage() {
                 isCarRental
                   ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
                   : "text-white bg-transparent border-white"
-              } transition-all border-dashed border-[1.5px] lg:border-[.5px]`}
+              } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
             >
               <IoCarSportOutline size={18} />
               <p className="text-sm">Car Rental</p>
@@ -138,7 +138,7 @@ function HomePage() {
                 isPriorityPass
                   ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
                   : "text-white bg-transparent border-white"
-              } transition-all border-dashed border-[.5px]`}
+              } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
             >
               <MdOutlineLuggage size={18} />
               <p className="text-sm">Priority Pass</p>
