@@ -127,7 +127,7 @@ function HomePage() {
                 isCarRental
                   ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
                   : "text-white bg-transparent border-white"
-              } transition-all border-dashed border-[.5px]`}
+              } transition-all border-dashed border-[1.5px] lg:border-[.5px]`}
             >
               <IoCarSportOutline size={18} />
               <p className="text-sm">Car Rental</p>
