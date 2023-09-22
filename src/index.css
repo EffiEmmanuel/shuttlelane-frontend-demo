@@ -85,3 +85,75 @@ html {
 .css-1hb7zxy-IndicatorsContainer {
   display: none !important;
 }
+
+/* NAVBAR ANIMATION */
+
+.rec,
+.rec2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.rec {
+  display: flex;
+  justify-content: end;
+}
+
+.animateFirstRec {
+  animation: slideOut 0.15s forwards;
+}
+
+.animateSecondRec {
+  animation: slideOut2 0.2s forwards;
+  animation-delay: 0.15s;
+}
+
+.animateFirstRecReverse {
+  animation: slideOutReverse 0.2s forwards;
+  animation-delay: 0.2s;
+}
+
+.animateSecondRecReverse {
+  animation: slideOut2Reverse 0.3s forwards;
+}
+
+@keyframes slideOut {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes slideOut2 {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 95%;
+  }
+}
+
+@keyframes slideOutReverse {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@keyframes slideOut2Reverse {
+  from {
+    width: 95%;
+  }
+  to {
+    width: 0%;
+  }
+}
