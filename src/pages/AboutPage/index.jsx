@@ -56,7 +56,7 @@ function AboutPage() {
 
       {/* Our Experience */}
       <div
-        className="px-8 relative lg:px-24 py-32 bg-[#C19C52] bg-opacity-40"
+        className="px-8 relative lg:px-24 py-32 bg-[#C19C52] bg-opacity-20"
         ref={howItWorksRef}
       >
         <div className="absolute z-0 overflow-hidden top-0 left-0 w-full h-full">
@@ -99,10 +99,10 @@ function AboutPage() {
           <div className="flex flex-col gap-y-5 lg:w-[55%] w-full">
             <div className="">
               <div className="">
-                <h3 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
+                <h3 className="text-3xl text-center lg:text-left font-semibold mt-3 max-w-xl leading-[39px]">
                   About Shuttlelane
                 </h3>
-                <div className="flex flex-col gap-y-3 leading-[22px] mt-3">
+                <div className="flex flex-col text-center lg:text-left gap-y-3 leading-[22px] mt-3">
                   <p className="text-md">
                     At Shuttlelane, we give you the best of executive airport
                     services. Because we are committed to enriching your travel
