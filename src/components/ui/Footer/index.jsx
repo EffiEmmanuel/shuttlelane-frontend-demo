@@ -13,18 +13,19 @@ import downloadFromAppstore from "../../../assets/logos/downloadAppstore.svg";
 
 function Footer() {
   return (
-    <footer className="text-white py-20 px-10 relative arrowAssetBg">
-      <div className="my-auto lg:flex lg:justify-between w-full relative">
-        <div className="w-full lg:w-1/4 ml-5 lg:ml-0">
-          <div className="w-36">
-            <img
-              src={shuttlelaneLogo}
-              alt="Shuttlelane Limited"
-              className="w-full"
-            />
-          </div>
+    <footer className="text-white py-10 px-10 relative arrowAssetBg">
+      <div className="lg:flex lg:justify-between w-full relative">
+        <div className="px-5 flex flex-col lg:flex-row lg:px-0 align-start justify-between w-full flex-wrap">
+          <div className="w-full lg:w-1/4 ml-5 lg:ml-0">
+            <div className="w-36">
+              <img
+                src={shuttlelaneLogo}
+                alt="Shuttlelane Limited"
+                className="w-full"
+              />
+            </div>
 
-          <div className="flex gap-x-3 items-center lg:items-start lg:flex-row gap-y-3 mt-10 mb-5">
+            {/* <div className="flex gap-x-3 items-center lg:items-start lg:flex-row gap-y-3 mt-10 mb-5">
             <img
               src={downloadFromPlaystore}
               alt="Download the Shuttlelane app from the Google Play Store"
@@ -35,40 +36,35 @@ function Footer() {
               alt="Download the Shuttlelane app from the Apple App Store"
               className="w-[130px]"
             />
+          </div> */}
+
+            <div className="flex flex-col gap-y-2 mt-5">
+              <div className="flex items-center gap-x-2">
+                <BiLogoGmail size={14} className="text-white" />
+                <a
+                  href="mailto:@blupayfinance@gmail.com"
+                  className="font-light text-sm"
+                >
+                  info@shuttlelane.com
+                </a>
+              </div>
+
+              <div className="flex items-center gap-x-2">
+                <BiSolidPhone size={14} className="text-white" />
+                <a href="tel:+2349030009452" className="font-light text-sm">
+                  +234 903 000 9452
+                </a>
+              </div>
+
+              <div className="flex items-center gap-x-2">
+                <IoLogoWhatsapp size={14} className="text-white" />
+                <a href="tel:+2349030009108" className="font-light text-sm">
+                  +234 903 000 9108
+                </a>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-y-2">
-            <div className="flex items-center gap-x-2">
-              <BiLogoGmail size={14} className="text-white" />
-              <a
-                href="mailto:@blupayfinance@gmail.com"
-                className="font-light text-sm"
-              >
-                info@shuttlelane.com
-              </a>
-            </div>
-
-            <div className="flex items-center gap-x-2">
-              <BiSolidPhone size={14} className="text-white" />
-              <a href="tel:+2349030009452" className="font-light text-sm">
-                +234 903 000 9452
-              </a>
-            </div>
-
-            <div className="flex items-center gap-x-2">
-              <IoLogoWhatsapp size={14} className="text-white" />
-              <a href="tel:+2349030009108" className="font-light text-sm">
-                +234 903 000 9108
-              </a>
-            </div>
-          </div>
-
-          <p className="font-light w-full mt-10 text-sm">
-            All rights Reserved. © 2023 Shuttlelane Limited.
-          </p>
-        </div>
-
-        <div className="my-auto px-5 flex flex-col lg:flex-row lg:px-0 align-start justify-between w-full mt-10 lg:ml-10 flex-wrap">
           <FooterLinks
             linkHeading="Services"
             links={[
@@ -124,9 +120,10 @@ function Footer() {
         </div>
       </div> */}
 
-      <div className="flex justify-center w-full">
-        <p className="text-center text-sm w-full mt-10">
-          Designed & Developed by Gethsemane Tech
+      <div className="flex flex-col gap-y-1 justify-center text-center w-full">
+        <p className="text-xs w-full mt-10">
+          All rights Reserved. © 2023 Shuttlelane Limited. Designed & Developed
+          by Gethsemane Tech
         </p>
       </div>
     </footer>

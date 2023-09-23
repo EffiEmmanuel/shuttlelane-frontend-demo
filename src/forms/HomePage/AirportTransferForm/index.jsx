@@ -20,6 +20,7 @@ function AirportTransferForm() {
         <div className="bg-white lg:h-[250px] h-[520px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl">
           <Fade duration={1500}>
             <div className="flex items-center gap-x-5">
+              {/* TRIP TYPE */}
               <select
                 value={bookingType}
                 onChange={(e) => setBookingType(e.target.value)}
@@ -33,6 +34,7 @@ function AirportTransferForm() {
                 </option>
               </select>
 
+              {/* PASSENGERS */}
               <div className="flex items-center gap-x-2">
                 <input
                   type="tel"
@@ -62,33 +64,14 @@ function AirportTransferForm() {
                 <p className="text-sm text-shuttlelaneBlack">Passengers</p>
               </div>
             </div>
-            {/* 
-        <div className="flex lg:items-center lg:justify-between py-5">
-          <div className="lg:w-[30%]">
-            <small className="text-[.8rem] text-shuttlelaneBlack">From</small>
-            <div className="flex h-[47px] items-center py-2 gap-x-2 w-full ">
-              <div className="w-[5%]">
-                <IoLocationOutline
-                  size={16}
-                  className="text-shuttlelaneBlack"
-                />
-              </div>
-
-              <div className="w-[98%]">
-                <GoogleLocationInput placeholder="Pickup Location" />
-              </div>
-            </div>
-          </div>
-          <div className="h-[100px] w-[4px] bg-gray-200"></div>
-        </div> */}
 
             <div className="w-full flex items-center mt-5">
               <div className="flex w-full items-center lg:flex-row flex-col">
                 <div className="py-3 w-full lg:w-[50%] px-4 border-shuttlelaneBlack bg-transparent border-dashed border-[.2px] rounded-lg">
                   <div className="flex flex-col gap-y-2">
-                    {/* <small className="text-[.7rem] text-shuttlelaneBlack">
-                  FROM
-                </small> */}
+                    <small className="text-[.7rem] text-shuttlelaneBlack">
+                      FROM
+                    </small>
 
                     <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                       <div className="w-[5%]">
@@ -135,7 +118,7 @@ function AirportTransferForm() {
                   </div>
                 </div>
 
-                <div className="h-[55px] shadow-[#4540cf85] shadow-md bg-shuttlelanePurple w-[55px] min-h-[55px] min-w-[55px] bg-[#EBEBEF] z-10 relative lg:-left-3 flex items-center justify-center rounded-full">
+                <div className="h-[55px] shadow-[#4540cf85] shadow-md bg-shuttlelanePurple w-[55px] min-h-[55px] min-w-[55px] z-10 relative lg:-left-3 flex items-center justify-center rounded-full">
                   <HiOutlineSwitchHorizontal
                     size={20}
                     className="text-white rotate-90 lg:rotate-0"
@@ -144,7 +127,9 @@ function AirportTransferForm() {
 
                 <div className="py-3 px-4 w-full lg:w-[50%] relative lg:-left-6 border-shuttlelaneBlack bg-transparent border-dashed border-[1px] lg:border-[.2px] rounded-lg">
                   <div className="flex flex-col gap-y-2">
-                    {/* <small className="text-[.7rem] text-shuttlelaneBlack">TO</small> */}
+                    <small className="text-[.7rem] text-shuttlelaneBlack">
+                      TO
+                    </small>
 
                     <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                       <div className="w-[5%]">

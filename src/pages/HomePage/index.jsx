@@ -163,7 +163,7 @@ function HomePage() {
           </div>
 
           {/* FORMS */}
-          <div className="bg-white bg-opacity-60 w-full mt-14 h-auto transition-all p-3 rounded-xl">
+          <div className="bg-white bg-opacity-60 w-full mt-20 lg:mt-14 h-auto transition-all p-3 rounded-xl">
             {isAirportTransfer && <AirportTransferForm />}
             {isCarRental && <CarRentalForm />}
             {isPriorityPass && <PriorityPassForm />}
@@ -189,7 +189,7 @@ function HomePage() {
       {/* Main Section */}
       <div className="">
         {/* How it works */}
-        <div className="px-8 lg:px-24 py-10 lg:py-44 pb-0" ref={howItWorksRef}>
+        <div className="px-8 lg:px-24 pb-10 lg:py-44" ref={howItWorksRef}>
           {/* <Fade direction="up" duration={500}> */}
           <div className="w-full flex flex-col items-center justify-center text-center">
             <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">

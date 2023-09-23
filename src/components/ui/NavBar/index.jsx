@@ -10,7 +10,7 @@ import ShuttlelaneLogoColored from "../../../assets/logos/logo.png";
 import { Fade } from "react-awesome-reveal";
 import { useWindowScroll } from "@uidotdev/usehooks";
 
-function NavBar() {
+function NavBar(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navClass, setNavClass] = useState("");
   const [navClass2, setNavClass2] = useState("");
@@ -36,7 +36,7 @@ function NavBar() {
           <ul className="flex flex-col w-full gap-y-7">
             <li className="w-full">
               <Link
-                to=""
+                to="/company/about-us"
                 className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
               >
                 About Us
@@ -71,14 +71,16 @@ function NavBar() {
       </div>
 
       {/* NavBar */}
-      <Fade duration={700} delay={300}>
+      <Fade duration={700} delay={70}>
         <nav
           className={`flex justify-between ${
-            y > 5 ? "bg-white text-shuttlelaneBlack" : "text-white"
-          } items-center transition-all duration-700 py-7 px-8 lg:px-24 drop-shadow-sm`}
+            y > 5 || props?.isPurpleLogo
+              ? "bg-white text-shuttlelaneBlack"
+              : "text-white"
+          } items-center transition-all duration-700 py-5 px-8 lg:px-24 drop-shadow-sm`}
         >
           <Link to="/" className="">
-            {y > 5 ? (
+            {y > 5 || props?.isPurpleLogo ? (
               <img
                 src={ShuttlelaneLogoColored}
                 className="object-contain w-36"
@@ -89,7 +91,7 @@ function NavBar() {
           </Link>
           <ul className="hidden lg:flex items-center md:gap-x-12">
             <li>
-              <Link to="" className="text-sm">
+              <Link to="/company/about-us" className="text-sm">
                 About Us
               </Link>
             </li>
