@@ -61,6 +61,13 @@ html {
   background-position: 0 -150px;
 }
 
+.experienceBg {
+  background-image: url(./assets/images/experienceBg1.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 -150px;
+}
+
 .aboutBg {
   background-image: url(./assets/images/aboutBg.png);
   background-repeat: no-repeat;

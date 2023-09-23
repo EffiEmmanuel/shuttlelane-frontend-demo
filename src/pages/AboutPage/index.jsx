@@ -56,7 +56,7 @@ function AboutPage() {
 
       {/* Our Experience */}
       <div
-        className="px-8 relative lg:px-24 py-32 bg-[#C19C52] bg-opacity-20"
+        className="px-8 relative lg:px-24 py-32 bg-opacity-20"
         ref={howItWorksRef}
       >
         <div className="absolute z-0 overflow-hidden top-0 left-0 w-full h-full">
@@ -133,31 +133,20 @@ function AboutPage() {
       </div>
 
       {/* Our Experience */}
-      <div
-        className="px-8 lg:px-24 py-20 bg-[#F7F6FF] lg:bg-transparent"
-        ref={howItWorksRef}
-      >
+      <div className="px-8 lg:px-24 py-20 experienceBg" ref={howItWorksRef}>
         {/* <Fade direction="up" duration={500}> */}
 
-        <div className="flex lg:flex-row flex-col lg:justify-between lg:items-center">
-          <div className="w-full lg:w-[40%] h-[300px] p-5 bg-[#F7F6FF] rounded-lg hidden lg:inline-block">
-            <img
-              src={experience}
-              alt=""
-              className="object-cover h-full w-full rounded-lg"
-            />
-          </div>
-
+        <div className="flex justify-center text-center items-center">
           <div className="flex flex-col gap-y-5 lg:w-[55%] w-full">
-            <div className="flex flex-col justify-center lg:text-left text-center">
-              <h2 className="text-3xl text-boomRangBlack lg:text-left text-center font-semibold mt-3 lg:max-w-xl leading-[39px]">
+            <div className="flex text-white flex-col justify-center text-center">
+              <h2 className="text-3xl text-center font-semibold mt-3 leading-[39px]">
                 Our Experience
               </h2>
-              <h4 className="text-sm lg:text-left text-center">
+              <h4 className="text-sm text-center">
                 Our experience in what we do is impeccable
               </h4>
             </div>
-            <p className="text-md lg:text-left text-center">
+            <p className="text-md text-center text-white">
               We remain a tested and trusted service provider in ground
               transportation in Nigeria’s commercial heartbeat – Lagos. We are
               set out to make travelling experience comfortable and memorable
@@ -173,7 +162,7 @@ function AboutPage() {
 
       {/* Unique Selling Point */}
       <div
-        className="relative px-8 lg:px-24 py-20 bg-shuttlelanePurple text-center"
+        className="relative px-8 lg:px-24 py-20 bg-[#F7F6FF] text-center"
         ref={howItWorksRef}
       >
         <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
@@ -183,56 +172,58 @@ function AboutPage() {
         <div className="flex lg:flex-row-reverse flex-col lg:justify-between lg:items-center">
           <div className="flex flex-col gap-y-5 w-full">
             <div className="flex flex-col justify-center text-center text-white">
-              <h2 className="text-3xl text-boomRangBlack text-center font-semibold mt-3 leading-[39px]">
+              <h2 className="text-3xl text-shuttlelaneBlack text-center font-semibold mt-3 leading-[39px]">
                 Our Unique Selling Point
               </h2>
-              <h4 className="text-sm text-center">
+              <h4 className="text-sm text-center text-shuttlelaneBlack">
                 Dealing with us gives you:
               </h4>
             </div>
 
             <div className="mt-10">
               <div className="flex  rounded-lg justify-center gap-x-10 items-center flex-wrap gap-y-10">
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-white flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-white font-semibold shadow-md flex items-center justify-center bg-shuttlelanePurple">
+                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
+                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
                     1
                   </div>
 
-                  <p className="text-md">Unparalleled safety and comfort.</p>
+                  <p className="text-md text-white">
+                    Unparalleled safety and comfort.
+                  </p>
                 </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-white flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-white font-semibold shadow-md flex items-center justify-center bg-shuttlelanePurple">
+                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
+                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
                     2
                   </div>
 
-                  <p className="text-md">
+                  <p className="text-md text-white">
                     Punctual and responsive service delivery.
                   </p>
                 </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-white flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-white font-semibold shadow-md flex items-center justify-center bg-shuttlelanePurple">
+                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
+                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
                     3
                   </div>
 
-                  <p className="text-md">
+                  <p className="text-md text-white">
                     Timely communication via email and text.
                   </p>
                 </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-white flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-white font-semibold shadow-md flex items-center justify-center bg-shuttlelanePurple">
+                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
+                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
                     4
                   </div>
 
-                  <p className="text-md">
+                  <p className="text-md text-white">
                     Empathetic and professional Chauffer.
                   </p>
                 </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-white flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-white font-semibold shadow-md flex items-center justify-center bg-shuttlelanePurple">
+                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
+                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
                     5
                   </div>
 
-                  <p className="text-md">
+                  <p className="text-md text-white">
                     And indeed, a service provider committed to excellent
                     service.
                   </p>
