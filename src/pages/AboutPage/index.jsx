@@ -56,7 +56,7 @@ function AboutPage() {
 
       {/* Our Experience */}
       <div
-        className="px-8 relative lg:px-24 py-32 bg-[#E2B442] bg-opacity-40"
+        className="px-8 relative lg:px-24 py-32 bg-[#C19C52] bg-opacity-40"
         ref={howItWorksRef}
       >
         <div className="absolute z-0 overflow-hidden top-0 left-0 w-full h-full">
