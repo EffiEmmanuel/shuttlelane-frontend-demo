@@ -16,7 +16,7 @@ function Footer() {
     <footer className="text-white py-10 px-10 relative arrowAssetBg">
       <div className="lg:flex lg:justify-between w-full relative">
         <div className="px-5 flex flex-col lg:flex-row lg:px-0 align-start justify-between w-full flex-wrap">
-          <div className="w-full lg:w-1/4 ml-5 lg:ml-0">
+          <div className="w-full lg:w-1/4 lg:ml-5 lg:ml-0">
             <div className="w-36">
               <img
                 src={shuttlelaneLogo}
@@ -120,10 +120,12 @@ function Footer() {
         </div>
       </div> */}
 
-      <div className="flex flex-col gap-y-1 justify-center text-center w-full">
-        <p className="text-xs w-full mt-10">
-          All rights Reserved. © 2023 Shuttlelane Limited. Designed & Developed
-          by Gethsemane Tech
+      <div className="flex flex-col mt-10 gap-y-2 justify-center text-center w-full">
+        <p className="text-xs w-full">
+          All rights Reserved. © 2023 Shuttlelane Limited.
+        </p>
+        <p className="text-xs w-full">
+          Designed & Developed by Gethsemane Tech
         </p>
       </div>
     </footer>

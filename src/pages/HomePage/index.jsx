@@ -122,7 +122,7 @@ function HomePage() {
               } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
             >
               <BsAirplane size={16} />
-              <p className="text-sm">Airport</p>
+              <p className="text-sm">Airport Transfer</p>
             </button>
             <button
               onClick={() => toggleService("carRental")}
