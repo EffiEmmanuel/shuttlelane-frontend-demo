@@ -145,15 +145,15 @@ function AirportTransferForm() {
 
                 <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                    <div className="w-[100%]">
+                    <div className="w-full">
                       <input
                         type="date"
-                        className="text-sm px-3 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
+                        className="text-sm px-3 bg-red-500 w-full focus:outline-none text-shuttlelaneBlack"
                       />
                     </div>
                   </div>
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                    <div className="w-[100%]">
+                    <div className="w-full">
                       <input
                         type="time"
                         className="text-sm px-3 bg-red-500 w-full focus:outline-none text-shuttlelaneBlack"
