@@ -60,7 +60,7 @@ function CustomerReviews() {
             </div>
           </div>
         </Slide>
-        <p className="text-[23rem] hidden lg:inline-block text-shuttlelaneBlack absolute top-0 right-10 font-bold opacity-50">
+        <p className="text-[20rem] hidden lg:inline-block text-shuttlelaneBlack spaceGroteskText absolute top-0 right-10 font-bold opacity-50">
           "
         </p>
       </div>

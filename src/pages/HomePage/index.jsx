@@ -98,7 +98,7 @@ function HomePage() {
         <NavBar />
       </div>
       {/* Hero Section */}
-      <div className="min-h-screen heroBg relative text-white pt-36 pb-52 lg:pb-10 lg:px-24 px-7">
+      <div className="h-[90vh] lg:h-[70vh] heroBg relative text-white pt-32 pb-52 lg:pb-10 lg:px-24 px-7">
         <div className="h-full w-full">
           {/* HEADLINE */}
           <div className="">
@@ -112,7 +112,7 @@ function HomePage() {
           </div>
 
           {/* SERVICE OPTIONS */}
-          <div className="lg:h-14 mt-10 h-auto gap-y-3 w-full flex flex-wrap justify-center items-center lg:items-center lg:justify-center py-2 gap-x-4 px-4 relative rounded-2xl">
+          <div className="lg:h-14 mt-5 h-auto gap-y-3 w-full flex flex-wrap justify-center items-center lg:items-center lg:justify-center py-2 gap-x-4 px-4 relative rounded-2xl">
             <button
               onClick={() => toggleService("airport")}
               className={`flex  items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
@@ -163,31 +163,39 @@ function HomePage() {
           </div>
 
           {/* FORMS */}
-          <div className="bg-white bg-opacity-60 w-full mt-20 lg:mt-14 h-auto transition-all p-3 rounded-xl">
-            {isAirportTransfer && <AirportTransferForm />}
-            {isCarRental && <CarRentalForm />}
-            {isPriorityPass && <PriorityPassForm />}
-          </div>
-
-          {/* GO DOWN BUTTON */}
-          <div className="flex justify-center">
-            <div
-              onClick={() => {
-                howItWorksRef.current.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                });
-              }}
-              className="animate-bounce cursor-pointer w-8 h-8 flex justify-center items-center rounded-full border-white border-[1px] mt-10"
-            >
-              <AiOutlineArrowDown size={16} className="text-white" />
+          <div className="lg:mt-14 bg-white shadow-lg bg-opacity-60 w-full mt-20 lg:mt-10 h-auto transition-all p-3 rounded-xl">
+            <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
+              <div
+                className={`transition-all bg-white ${
+                  isAirportTransfer
+                    ? "lg:h-[280px] h-auto pb-10 lg:pb-0"
+                    : isCarRental
+                    ? "lg:h-[250px] h-auto pb-10 lg:pb-0"
+                    : "lg:h-[250px] h-auto pb-10 lg:pb-0"
+                } w-auto shadow-lg py-5 gap-y-5 gap-x-4 px-7 lg:px-4 lg:px-5 z-0 relative rounded-2xl`}
+              >
+                {isAirportTransfer && <AirportTransferForm />}
+                {isCarRental && <CarRentalForm />}
+                {isPriorityPass && <PriorityPassForm />}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Section */}
-      <div className="">
+      <div
+        // Adjusting the margin between the "How it works" section and the forms based on what form is selected
+        className={`transition-all ${
+          isAirportTransfer
+            ? "mt-[550px] md:mt-20"
+            : isCarRental
+            ? "mt-[400px] md:mt-20"
+            : isPriorityPass
+            ? "mt-[450px] md:mt-20"
+            : "mt-[350px] md:mt-20"
+        }`}
+      >
         {/* How it works */}
         <div className="px-8 lg:px-24 pb-10 lg:py-44" ref={howItWorksRef}>
           {/* <Fade direction="up" duration={500}> */}

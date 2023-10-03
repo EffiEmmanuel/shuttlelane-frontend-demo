@@ -33,6 +33,17 @@
   font-weight: 800;
 }
 
+/* Space Grotesk Font */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("./assets/font/SpaceGrotesk/SpaceGrotesk-Bold.ttf");
+  font-weight: 700;
+}
+
+.spaceGroteskText {
+  font-family: "Space Grotesk";
+}
+
 html {
   background-color: #262471 !important;
 }
@@ -58,7 +69,7 @@ html {
   background-image: url(./assets/images/heroBg.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 0 -150px;
+  background-position: 0 -100px;
 }
 
 .experienceBg {
