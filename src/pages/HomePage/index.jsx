@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import NavBar from "../../components/ui/NavBar";
 import Typewriter from "typewriter-effect";
 import {
@@ -92,13 +92,34 @@ function HomePage() {
     }
   }
 
+  const handleScroll = (ref) => {
+    window.scrollTo({
+      top: ref.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // This checks for changes in the URL
+  // Solely for "scrolling to content"
+  useEffect(() => {
+    if (window.location.href.includes("#")) {
+      const scrollTag = window.location.href.split("#")[1];
+      console.log(scrollTag);
+      if (scrollTag == "howItWorks") {
+        console.log("HELLO::");
+        howItWorksRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [window.location.href]);
+
   return (
     <div className="relative bg-white">
       <div className="fixed w-full z-20">
         <NavBar />
       </div>
       {/* Hero Section */}
-      <div className="h-[90vh] lg:h-[70vh] heroBg relative text-white pt-32 pb-52 lg:pb-10 lg:px-24 px-7">
+      <div className="h-[80vh] lg:min-h-screen heroBg relative text-white pt-32 pb-52 lg:pb-10 lg:px-24 px-7">
         <div className="h-full w-full">
           {/* HEADLINE */}
           <div className="">
@@ -163,7 +184,7 @@ function HomePage() {
           </div>
 
           {/* FORMS */}
-          <div className="lg:mt-14 bg-white shadow-lg bg-opacity-60 w-full mt-20 lg:mt-10 h-auto transition-all p-3 rounded-xl">
+          <div className="bg-white shadow-lg bg-opacity-60 w-full mt-20 lg:mt-16 h-auto transition-all p-3 rounded-xl">
             <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
               <div
                 className={`transition-all bg-white ${
@@ -188,27 +209,33 @@ function HomePage() {
         // Adjusting the margin between the "How it works" section and the forms based on what form is selected
         className={`transition-all ${
           isAirportTransfer
-            ? "mt-[550px] md:mt-20"
+            ? "mt-[550px] md:mt-[450px] lg:mt-5"
             : isCarRental
-            ? "mt-[400px] md:mt-20"
+            ? "mt-[400px] md:mt-[300px] lg:mt-20"
             : isPriorityPass
-            ? "mt-[450px] md:mt-20"
-            : "mt-[350px] md:mt-20"
+            ? "mt-[450px] md:mt-[300px] lg:mt-20"
+            : "mt-[350px] md:mt-[250px] lg:mt-20"
         }`}
       >
         {/* How it works */}
-        <div className="px-8 lg:px-24 pb-10 lg:py-44" ref={howItWorksRef}>
+        <div
+          className="px-8 lg:px-24 pb-10 lg:py-44"
+          id="howItWorks"
+          ref={howItWorksRef}
+        >
           {/* <Fade direction="up" duration={500}> */}
           <div className="w-full flex flex-col items-center justify-center text-center">
             <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
               How it works
             </h2>
-            <h4 className="text-sm">Booking with Shuttlelane is very easy</h4>
+            <h4 className="text-sm font-normal">
+              Booking with Shuttlelane is very easy
+            </h4>
           </div>
           {/* </Fade> */}
 
           <div className="mt-20">
-            <div className="flex justify-between gap-x-10 items-center flex-wrap gap-y-10">
+            <div className="flex justify-center gap-x-20 items-center flex-wrap gap-y-10">
               <div className="lg:max-w-[300px] h-[200px] flex flex-col items-center text-center gap-y-3">
                 <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                   <BsFillBookmarksFill size={22} className="text-white" />
@@ -259,7 +286,10 @@ function HomePage() {
         {/* Why choose us? */}
         <div className="px-8 lg:px-24 overflow-hidden text-white bg-shuttlelanePurple min-h-[70vh] py-20 relative">
           <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
-            <img src={arrowAsset} className="object-cover w-full h-full" />
+            <img
+              src={arrowAsset}
+              className="object-cover w-full h-full opacity-30"
+            />
           </div>
 
           <Fade direction="up" duration={800}>
@@ -267,7 +297,7 @@ function HomePage() {
               <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
                 Why choose us?
               </h2>
-              <h4 className="text-sm">
+              <h4 className="text-sm font-normal">
                 We strive to provide quality service and great customer
                 satisfaction
               </h4>
@@ -275,7 +305,7 @@ function HomePage() {
           </Fade>
 
           <div className="mt-10">
-            <div className="flex justify-between gap-x-10 items-center bg-white flex-wrap gap-y-10 px-10 py-16 rounded-lg">
+            <div className="flex justify-center gap-x-20 items-center bg-white flex-wrap gap-y-10 px-10 py-16 rounded-lg">
               <Fade duration={800} delay={50}>
                 <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
                   <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-shuttlelanePurple">
@@ -335,7 +365,7 @@ function HomePage() {
               <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
                 Our Fleet
               </h2>
-              <h4 className="text-sm">
+              <h4 className="text-sm font-normal">
                 Shuttlelane offers a variety of service class you can choose
                 from, depending on your needs.
               </h4>
@@ -349,7 +379,10 @@ function HomePage() {
         {/* Testimonials */}
         <div className="px-8 lg:px-24 overflow-hidden text-white bg-shuttlelanePurple min-h-[90vh] pt-20 relative">
           <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
-            <img src={circleAsset} className="object-cover w-full h-full" />
+            <img
+              src={circleAsset}
+              className="object-cover w-full h-full opacity-30"
+            />
           </div>
 
           <Fade direction="up" duration={800}>
@@ -357,7 +390,7 @@ function HomePage() {
               <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
                 What our Clients are saying
               </h2>
-              <h4 className="text-sm">
+              <h4 className="text-sm font-normal">
                 Our clients are saying great things about us. Here are a few
               </h4>
             </div>
@@ -393,7 +426,7 @@ function HomePage() {
                 <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
                   Download the Shuttlelane Mobile App
                 </h2>
-                <h4 className="text-sm">
+                <h4 className="text-sm font-normal">
                   Available on both Google PlayStore and Apple AppStore
                 </h4>
               </div>
@@ -435,6 +468,11 @@ function HomePage() {
                 className="object-contain lg:w-[140px] w-[140px]"
               />
               <img
+                src={"https://www.cdnlogo.com/logos/p/27/paystack.svg"}
+                alt=""
+                className="object-contain lg:w-[140px] w-[140px]"
+              />
+              <img
                 src={paypal}
                 alt=""
                 className="object-contain lg:w-[90px] w-[90px]"
@@ -450,7 +488,7 @@ function HomePage() {
       </div>
 
       {/* Footer */}
-      <Footer />
+      <Footer howItWorksRef={howItWorksRef} />
     </div>
   );
 }

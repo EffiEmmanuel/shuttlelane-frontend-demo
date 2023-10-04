@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { BsPerson, BsPlusCircleDotted } from "react-icons/bs";
 import { HiArrowLongRight } from "react-icons/hi2";
 import GoogleLocationInput from "../../../components/ui/GoogleLocationInput";
@@ -11,19 +11,36 @@ import "react-toastify/dist/ReactToastify.css";
 import Fade from "react-reveal";
 import LocationInput from "../../../components/ui/Form/LocationInput";
 import DatePicker from "rsuite/DatePicker";
+import "rsuite/dist/rsuite.css";
+import enGB from "date-fns/locale/en-GB";
 import { BiMinus, BiSolidCity } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import Switch from "react-switch";
 
 function AirportTransferForm() {
+  // Date Setup
+  const minSelectableDate = new Date(); //
+  // A function to disable dates earlier than the minimum date
+  const disableDateBeforeMin = (date) => {
+    return date < minSelectableDate;
+  };
+
   const [bookingType, setBookingType] = useState("round-trip");
   const [isOneWay, setIsOneWay] = useState(false);
   const [passengers, setPassengers] = useState(1);
 
   // FORM FIELDS
   const [pickupLocation, setPickupLocation] = useState();
+  const pickupLocationRef = useRef(null);
+  const [pickupLocationInput, setPickupLocationInput] = useState();
+  const [pickupDate, setPickupDate] = useState();
+  const [pickupTime, setPickupTime] = useState();
   const [dropoffLocation, setDropoffLocation] = useState();
+  const dropoffLocationRef = useRef(null);
+  const [dropoffLocationInput, setDropoffLocationInput] = useState();
+  const [dropoffDate, setDropoffDate] = useState();
+  const [dropoffTime, setDropoffTime] = useState();
   const [selectedCity, setSelectedCity] = useState();
 
   const data = [
@@ -36,8 +53,6 @@ function AirportTransferForm() {
   return (
     <>
       <ToastContainer toastClassName="text-sm" />
-      {/* <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
-        <div className="bg-white lg:h-[250px] h-[520px] w-auto shadow-lg py-5 gap-y-5 gap-x-4 px-7 lg:px-4 lg:px-5 z-0 relative rounded-2xl"> */}
       <Fade duration={1500}>
         <div className="flex items-center gap-x-5">
           {/* TRIP TYPE */}
@@ -57,18 +72,6 @@ function AirportTransferForm() {
               onColor="#262471"
             />
           </div>
-          {/* <select
-            value={bookingType}
-            onChange={(e) => setBookingType(e.target.value)}
-            className="transition-all active:outline-none focus:outline-none text-sm border-dashed border-[1.2px] lg:border-[.5px] text-shuttlelaneBlack bg-transparent border-shuttlelaneBlack h-[30px] min-w-[60px] px-5 rounded-full"
-          >
-            <option value="round-trip" className="text-sm">
-              Round Trip
-            </option>
-            <option value="one-way" className="text-sm">
-              One Way
-            </option>
-          </select> */}
         </div>
 
         <div className="w-full flex items-center mt-5">
@@ -83,7 +86,7 @@ function AirportTransferForm() {
                     <BiSolidCity size={16} className="text-gray-500" />
                   </div>
 
-                  <div className="w-[95%] text-shuttlelaneBlack text-sm">
+                  <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
                     {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
                     <Select
                       value={selectedCity}
@@ -97,6 +100,8 @@ function AirportTransferForm() {
                             : "transparent",
                           borderWidth: state.isFocused ? "0" : "0",
                           backgroundColor: "transparent",
+                          position: "relative",
+                          zIndex: 80,
                         }),
 
                         placeholder: (baseStyles, state) => ({
@@ -121,16 +126,17 @@ function AirportTransferForm() {
 
                 <div className="relative flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
-                    <IoLocationOutline
-                      size={16}
-                      className="text-shuttlelaneBlack"
-                    />
+                    <IoLocationOutline size={16} className="text-gray-700" />
                   </div>
 
-                  <div className="w-[98%] relative">
+                  <div className="w-full relative">
                     <LocationInput
                       placeholder="From (Airport, Port, Address)"
                       setLocation={setPickupLocation}
+                      location={pickupLocation}
+                      locationRef={pickupLocationRef}
+                      locationInput={pickupLocationInput}
+                      setLocationInput={setPickupLocationInput}
                     />
                     {/* <DatePicker
                           size="lg"
@@ -146,17 +152,37 @@ function AirportTransferForm() {
                 <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                     <div className="w-full">
-                      <input
-                        type="date"
-                        className="text-sm px-3 bg-red-500 w-full focus:outline-none text-shuttlelaneBlack"
+                      <DatePicker
+                        locale={enGB}
+                        disabledDate={disableDateBeforeMin}
+                        value={pickupDate}
+                        appearance="subtle"
+                        onChange={(date) => {
+                          setPickupDate(date);
+                        }}
+                        placeholder="Pickup Date"
+                        style={{
+                          backgroundColor: "transparent",
+                        }}
+                        className="text-sm w-full bg-transparent text-shuttlelaneBlack"
                       />
                     </div>
                   </div>
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                     <div className="w-full">
-                      <input
-                        type="time"
-                        className="text-sm px-3 bg-red-500 w-full focus:outline-none text-shuttlelaneBlack"
+                      <DatePicker
+                        format="HH:mm"
+                        value={pickupTime}
+                        appearance="subtle"
+                        onChange={(time) => {
+                          console.log("TIME:", time);
+                          setPickupTime(time);
+                        }}
+                        placeholder="Pickup Time"
+                        style={{
+                          backgroundColor: "transparent",
+                        }}
+                        className="text-sm w-full bg-transparent text-shuttlelaneBlack"
                       />
                     </div>
                   </div>
@@ -175,23 +201,24 @@ function AirportTransferForm() {
               <div className="flex flex-col gap-y-2">
                 <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
-                    <IoLocationOutline
-                      size={16}
-                      className="text-shuttlelaneBlack"
-                    />
+                    <IoLocationOutline size={16} className="text-gray-700" />
                   </div>
 
                   <div className="w-[95%] text-shuttlelaneBlack relative">
                     <LocationInput
                       placeholder="To (Airport, Port, Address)"
                       setLocation={setDropoffLocation}
+                      location={dropoffLocation}
+                      locationRef={dropoffLocationRef}
+                      locationInput={dropoffLocationInput}
+                      setLocationInput={setDropoffLocationInput}
                     />
                   </div>
                 </div>
 
                 <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
-                    <BsPerson size={16} className="text-shuttlelaneBlack" />
+                    <BsPerson size={16} className="text-gray-700" />
                   </div>
 
                   <div className="w-[95%] text-shuttlelaneBlack relative">
@@ -269,20 +296,42 @@ function AirportTransferForm() {
 
                   {!isOneWay && (
                     <>
-                      <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                        <div className="w-[100%]">
-                          <input
-                            type="date"
-                            className="text-sm px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
-                          />
+                      <div className="flex w-full flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
+                        <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                          <div className="w-full">
+                            <DatePicker
+                              locale={enGB}
+                              disabledDate={disableDateBeforeMin}
+                              value={dropoffDate}
+                              appearance="subtle"
+                              onChange={(date) => {
+                                setDropoffDate(date);
+                              }}
+                              placeholder="Dropoff Date"
+                              style={{
+                                backgroundColor: "transparent",
+                              }}
+                              className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                        <div className="w-[100%]">
-                          <input
-                            type="time"
-                            className="text-sm px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
-                          />
+                        <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                          <div className="w-full">
+                            <DatePicker
+                              format="HH:mm"
+                              value={dropoffTime}
+                              appearance="subtle"
+                              onChange={(time) => {
+                                console.log("TIME:", time);
+                                setDropoffTime(time);
+                              }}
+                              placeholder="Dropoff Time"
+                              style={{
+                                backgroundColor: "transparent",
+                              }}
+                              className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                            />
+                          </div>
                         </div>
                       </div>
                     </>
@@ -305,8 +354,6 @@ function AirportTransferForm() {
           </button>
         </div>
       </Fade>
-      {/* </div>
-      </div> */}
     </>
   );
 }

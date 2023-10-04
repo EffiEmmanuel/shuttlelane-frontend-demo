@@ -6,7 +6,7 @@ function FooterLinks(props) {
   const linkHeadingSlug = linkHeadingLowerCase.replace(/ /g, "-");
   return (
     <div
-      className={`lg:w-1/4 w-full my-5 lg:my-0 mx-auto ${
+      className={`lg:w-auto w-full my-5 lg:my-0 mx-auto ${
         props.linkHeading === "" ? "hidden lg:inline-block" : "inline-block"
       }`}
     >
@@ -18,9 +18,19 @@ function FooterLinks(props) {
           return (
             <li key={linkSlug} className="mt-3 font-light">
               {props.isInnerLink ? (
-                <Link to={linkHeadingSlug + "/" + linkSlug}>{link}</Link>
+                <Link
+                  className="text-white visited:text-white visited:no-underline hover:no-underline hover:text-gray-200"
+                  to={linkHeadingSlug + "/" + linkSlug}
+                >
+                  {link}
+                </Link>
               ) : (
-                <Link to={linkSlug}>{link}</Link>
+                <Link
+                  className="text-white visited:text-white visited:no-underline hover:no-underline hover:text-gray-200"
+                  to={linkSlug}
+                >
+                  {link}
+                </Link>
               )}
             </li>
           );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   BsAirplane,
   BsPlusCircleDotted,
@@ -21,8 +21,16 @@ import {
   MdPerson,
   MdPersonOutline,
 } from "react-icons/md";
+import LocationInput from "../../../components/ui/Form/LocationInput";
 
 function PriorityPassForm() {
+  // FORM FIELDS
+  const [pickupLocation, setPickupLocation] = useState();
+  const pickupLocationRef = useRef(null);
+  const [pickupLocationInput, setPickupLocationInput] = useState();
+  const [pickupDate, setPickupDate] = useState();
+  const [pickupTime, setPickupTime] = useState();
+
   const [passType, setPassType] = useState("standard-pass");
   const [passengers, setPassengers] = useState(1);
   const [service, setSelectedCar] = useState();
@@ -104,7 +112,14 @@ function PriorityPassForm() {
                   </div>
 
                   <div className="w-[95%]">
-                    <GoogleLocationInput placeholder="Pickup Location" />
+                    <LocationInput
+                      placeholder="From (Airport, Port, Address)"
+                      setLocation={setPickupLocation}
+                      location={pickupLocation}
+                      locationRef={pickupLocationRef}
+                      locationInput={pickupLocationInput}
+                      setLocationInput={setPickupLocationInput}
+                    />
                   </div>
                   {/* <input
                           type="text"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import { HiArrowLongRight } from "react-icons/hi2";
 import GoogleLocationInput from "../../../components/ui/GoogleLocationInput";
@@ -14,10 +14,16 @@ import { Fade } from "react-reveal";
 import LocationInput from "../../../components/ui/Form/LocationInput";
 
 function CarRentalForm() {
+  // FORM FIELDS
+  const [pickupLocation, setPickupLocation] = useState();
+  const pickupLocationRef = useRef(null);
+  const [pickupLocationInput, setPickupLocationInput] = useState();
+  const [pickupDate, setPickupDate] = useState();
+  const [pickupTime, setPickupTime] = useState();
+
   const [bookingType, setBookingType] = useState("round-trip");
   const [passengers, setPassengers] = useState(1);
   const [selectedCar, setSelectedCar] = useState();
-  const [pickupLocation, setPickupLocation] = useState();
 
   const data = [
     { value: "toyota-rav-4", label: "Toyota Rav 4" },
@@ -85,7 +91,12 @@ function CarRentalForm() {
                     <LocationInput
                       placeholder="From (Airport, Port, Address)"
                       setLocation={setPickupLocation}
+                      location={pickupLocation}
+                      locationRef={pickupLocationRef}
+                      locationInput={pickupLocationInput}
+                      setLocationInput={setPickupLocationInput}
                     />
+
                     {/* <DatePicker
                           size="lg"
                           placeholder="Pickup Date"
