@@ -85,7 +85,7 @@ function NavBar(props) {
                 <BiLogoGmail size={14} className="text-red-400" />
                 <Link
                   to="mailto:@info@shuttlelane.com"
-                  className="font-light text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
+                  className="font-light text-xs lg:text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
                 >
                   info@shuttlelane.com
                 </Link>
@@ -95,7 +95,7 @@ function NavBar(props) {
                 <BiSolidPhone size={14} className="text-blue-600" />
                 <Link
                   to="tel:+2349030009452"
-                  className="font-light text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
+                  className="font-light text-xs lg:text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
                 >
                   +234 903 000 9452
                 </Link>
@@ -105,7 +105,7 @@ function NavBar(props) {
                 <IoLogoWhatsapp size={14} className="text-green-600" />
                 <Link
                   to="tel:+2349030009108"
-                  className="font-light text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
+                  className="font-light text-xs lg:text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
                 >
                   +234 903 000 9108
                 </Link>
@@ -132,7 +132,7 @@ function NavBar(props) {
                 />
               )}
             </Link>
-            <ul className="hidden lg:flex items-center md:gap-x-12">
+            <ul className="hidden lg:flex items-center md:gap-x-12 mb-0">
               <NavLink
                 title="About Us"
                 isPurpleLogo={props?.isPurpleLogo}

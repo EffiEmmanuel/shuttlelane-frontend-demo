@@ -1,13 +1,15 @@
 import { BiLogoGmail, BiLogoWhatsapp, BiSolidPhone } from "react-icons/bi";
 
-function HowToReachUs() {
+function HowToReachUs(props) {
   return (
     <div className="px-8 lg:px-24 py-20 ">
       <div className="flex justify-center w-full text-center items-center">
         <div className="flex flex-col gap-y-5 w-full">
           <div className="flex text-shuttlelaneBlack flex-col justify-center text-center">
             <h2 className="text-3xl text-center font-semibold mt-3 leading-[39px]">
-              How To Reach Us
+              {props?.differentHeading
+                ? props?.differentHeading
+                : "How To Reach Us"}
             </h2>
             <h4 className="text-sm text-center font-normal">
               Want to get in touch? You can use any of the below channels.

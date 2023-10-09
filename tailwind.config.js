@@ -11,6 +11,7 @@ module.exports = {
       backgroundColor: {
         shuttlelaneBlack: "#000",
         shuttlelanePurple: "#262471",
+        shuttlelaneLightPurple: "#F7F6FF",
         shuttlelaneGold: "#E2B442",
       },
       borderColor: {

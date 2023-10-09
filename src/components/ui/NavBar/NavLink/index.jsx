@@ -34,7 +34,7 @@ function NavLink(props) {
                   return (
                     <Link
                       to={`/${props?.linkHeading}/${linkSlug}`}
-                      className="text-gray-500 text-sm hover:text-gray-500 visited:text-gray-500 hover:no-underline visited:no-underline"
+                      className="text-shuttlelaneBlack text-sm hover:text-gray-500 visited:text-shuttlelaneBlack hover:no-underline visited:no-underline"
                     >
                       {link}
                     </Link>

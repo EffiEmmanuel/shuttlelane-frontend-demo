@@ -225,16 +225,16 @@ function HomePage() {
         >
           {/* <Fade direction="up" duration={500}> */}
           <div className="w-full flex flex-col items-center justify-center text-center">
-            <h2 className="text-3xl text-boomRangBlack font-semibold mt-3 max-w-xl leading-[39px]">
+            <h2 className="text-3xl text-shuttlelaneBlack font-semibold mt-3 max-w-xl leading-[39px]">
               How it works
             </h2>
-            <h4 className="text-sm font-normal">
+            <h4 className="text-sm text-shuttlelaneBlack font-normal">
               Booking with Shuttlelane is very easy
             </h4>
           </div>
           {/* </Fade> */}
 
-          <div className="mt-20">
+          <div className="mt-20 text-shuttlelaneBlack">
             <div className="flex justify-center gap-x-20 items-center flex-wrap gap-y-10">
               <div className="lg:max-w-[300px] h-[200px] flex flex-col items-center text-center gap-y-3">
                 <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
@@ -359,7 +359,7 @@ function HomePage() {
           </div>
         </div>
         {/* Our fleet */}
-        <div className="px-8 lg:px-24 py-32">
+        <div className="px-8 lg:px-24 py-32 text-shuttlelaneBlack">
           <Fade direction="up" duration={800}>
             <div className="w-full flex flex-col items-center justify-center text-shuttlelaneBlack text-center">
               <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">

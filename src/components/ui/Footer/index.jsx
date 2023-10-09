@@ -51,8 +51,6 @@ function Footer() {
               "Who We Are",
               "Become A Partner",
               "Get In Touch",
-              "Terms Of Use",
-              "Privacy Policy",
             ]}
             isInnerLink={true}
           />
@@ -77,25 +75,25 @@ function Footer() {
               <li className="mt-3 font-light">
                 <Link
                   className="text-white visited:text-white visited:no-underline hover:no-underline hover:text-gray-200"
-                  to={"/#howItWorks"}
+                  to={"/customer-service/faqs"}
                 >
-                  How It Works
+                  Frequently Asked Questions (FAQs)
                 </Link>
               </li>
               <li className="mt-3 font-light">
                 <Link
                   className="text-white visited:text-white visited:no-underline hover:no-underline hover:text-gray-200"
-                  to={"customer-service/faqs"}
+                  to={"/customer-service/terms-of-use"}
                 >
-                  Frequently Asked Questions
+                  Terms Of Use
                 </Link>
               </li>
               <li className="mt-3 font-light">
                 <Link
                   className="text-white visited:text-white visited:no-underline hover:no-underline hover:text-gray-200"
-                  to={"customer-service/faqs"}
+                  to={"/customer-service/privacy-policy"}
                 >
-                  Frequently Asked Questions
+                  Privacy Policy
                 </Link>
               </li>
             </ul>

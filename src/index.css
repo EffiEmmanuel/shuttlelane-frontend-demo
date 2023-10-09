@@ -94,6 +94,52 @@ html {
   background-size: cover;
 }
 
+/* Who we are */
+.customerServiceBg {
+  background-image: url(./assets/images/customerService.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.communicationBg {
+  background-image: url(./assets/images/communicationBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.reliabilityBg {
+  background-image: url(./assets/images/reliabilityBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.passengerSafetyBg {
+  background-image: url(./assets/images/passengerSafety.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.punctualityBg {
+  background-image: url(./assets/images/punctuality.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.luxuryBg {
+  background-image: url(./assets/images/luxuryBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+
+/* Partnership */
+.becomeAPartnerBg {
+  background-image: url(./assets/images/becomeAPartner.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+
 .formWidthFull {
   width: 100%;
   transition: width 1s;
