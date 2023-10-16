@@ -1,3 +1,4 @@
+import React from "react";
 import { IoAirplaneOutline } from "react-icons/io5";
 import GoogleLocationInput from "../../GoogleLocationInput";
 import { useState } from "react";
@@ -16,6 +17,7 @@ function LocationInput({
 
   // Programmatically set the value of the input
   const setAutocompleteValue = (value) => {
+    console.log("LOCATION REF 1:", locationRef.current);
     if (locationRef.current) {
       setIsAirportSelectClicked(true);
       console.log("CURRENT LOCATION:", value);
@@ -45,6 +47,7 @@ function LocationInput({
           <div className="flex flex-col gap-y-6">
             <div
               onClick={() => {
+                console.log("Hello from here oooooo");
                 setIsAirportSelectClicked(true);
                 setAutocompleteValue(
                   "Murtala Mohammed International Airport I (MMIA I)"
@@ -72,8 +75,10 @@ function LocationInput({
             </div>
             <div
               onClick={() => {
-                setLocation(
-                  "Murtala Mohammed International Airport Ii (MMIA iI"
+                console.log("Hello from here oooooo");
+                setIsAirportSelectClicked(true);
+                setAutocompleteValue(
+                  "Murtala Mohammed International Airport I (MMIA I)"
                 );
               }}
               className="cursor-pointer flex items-center gap-x-3"

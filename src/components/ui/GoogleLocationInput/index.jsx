@@ -39,9 +39,12 @@ function GoogleLocationInput({
   }
 
   useEffect(() => {
+    console.log("LOCATION REF:", locationRef);
     if (locationRef.current) {
       locationRef.current.value = locationInput;
     }
+
+    console.log("LOCATION INPUT:", locationInput);
   }, [locationInput]);
 
   return (
@@ -51,6 +54,7 @@ function GoogleLocationInput({
     >
       <StandaloneSearchBox
         onLoad={(ref) => (locationRef.current = ref)}
+        ref={locationRef}
         onPlacesChanged={handlePlacesChanged}
       >
         <>
@@ -79,9 +83,10 @@ function GoogleLocationInput({
             // Hide the airport select dialog once the input is out of focus
             onBlur={() => {
               console.log("isAirportSelectClicked:", isAirportSelectClicked);
+              console.log("hi:", locationRef.current);
               setTimeout(() => {
                 setIsAirportSelectOpen(false);
-              }, 100);
+              }, 300);
             }}
             className="bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
           />

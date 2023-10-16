@@ -20,7 +20,7 @@ function PaymentPartners() {
       </Fade>
 
       <Fade duration={800}>
-        <div className="mt-4 flex flex-row justify-center items-center gap-y-0 gap-x-10 -mt-5 lg:mt-0 flex-wrap">
+        <div className="mt-4 flex flex-row justify-center items-center gap-y-0 gap-x-10 lg:mt-0 flex-wrap">
           <img
             src={flutterwave}
             alt=""

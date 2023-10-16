@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontSize: {
+        md: "1rem",
+      },
       textColor: {
         shuttlelaneBlack: "#000",
         shuttlelanePurple: "#262471",

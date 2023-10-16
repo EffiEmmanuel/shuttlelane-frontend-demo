@@ -22,6 +22,11 @@ import {
   MdPersonOutline,
 } from "react-icons/md";
 import LocationInput from "../../../components/ui/Form/LocationInput";
+import { BiSolidCity } from "react-icons/bi";
+import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
+import DatePicker from "rsuite/DatePicker";
+import "rsuite/dist/rsuite.css";
+import enGB from "date-fns/locale/en-GB";
 
 function PriorityPassForm() {
   // FORM FIELDS
@@ -30,9 +35,16 @@ function PriorityPassForm() {
   const [pickupLocationInput, setPickupLocationInput] = useState();
   const [pickupDate, setPickupDate] = useState();
   const [pickupTime, setPickupTime] = useState();
+  const [selectedCity, setSelectedCity] = useState();
+
+  // Date Setup
+  const minSelectableDate = new Date(); //
+  // A function to disable dates earlier than the minimum date
+  const disableDateBeforeMin = (date) => {
+    return date < minSelectableDate;
+  };
 
   const [passType, setPassType] = useState("standard-pass");
-  const [passengers, setPassengers] = useState(1);
   const [service, setSelectedCar] = useState();
 
   const services = [
@@ -45,73 +57,71 @@ function PriorityPassForm() {
     { value: "Premium Pass", label: "Premium Pass" },
   ];
 
+  const cityData = [
+    { value: "Lagos", label: "Lagos" },
+    { value: "Accra", label: "Accra" },
+    { value: "Ogun", label: "Ogun" },
+    { value: "Ibadans", label: "Ibadanss" },
+  ];
+
   return (
     <>
       <ToastContainer toastClassName="text-sm" />
       {/* <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
         <div className="bg-white lg:h-[250px] h-[520px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl"> */}
       <Fade duration={1500}>
-        <div className="flex items-center gap-x-5">
-          <select
-            value={passType}
-            onChange={(e) => setPassType(e.target.value)}
-            className="transition-all active:outline-none focus:outline-none text-sm border-dashed border-[1.2px] lg:border-[.5px] text-shuttlelaneBlack bg-transparent border-shuttlelaneBlack h-[30px] min-w-[60px] px-5 rounded-full"
-          >
-            <option value="standard-pass" className="text-sm">
-              Standard Pass
-            </option>
-            <option value="premium-pass" className="text-sm">
-              Premium Pass
-            </option>
-          </select>
-
-          <div className="flex items-center gap-x-2">
-            <input
-              type="tel"
-              maxLength={2}
-              max={10}
-              min={1}
-              value={passengers}
-              // Validate input to ensure it takes in ONLY numbers
-              onInput={(e) => {
-                if (isNaN(e.currentTarget.value)) {
-                  e.currentTarget.value = 1;
-                  toast.info("This field supports only numbers");
-                }
-              }}
-              onChange={(e) => {
-                // Make sure passengers does not excees 10
-                if (e.target.value > 10) {
-                  toast.info("You cannot have more than 10 passengers");
-                } else if (e.target.value < 0) {
-                  toast.info("Invalid value passed");
-                } else {
-                  setPassengers(e.target.value);
-                }
-              }}
-              className="max-w-[25px] text-sm text-center px-1 py-1 rounded-sm border-b-shuttlelaneBlack bg-transparent border-b-dashed border-b-[.2px] focus:outline-none text-shuttlelaneBlack"
-            />
-            <p className="text-sm text-shuttlelaneBlack">Passengers</p>
-          </div>
-        </div>
-
         <div className="w-full flex items-center mt-5">
           <div className="flex w-full items-center lg:flex-row flex-col">
-            <div className="py-3 w-full lg:w-[50%] px-4 border-shuttlelaneBlack bg-transparent border-dashed lg:border-[.2px] border-[1px] rounded-lg">
+            <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
               <div className="flex flex-col gap-y-2">
-                <small className="text-[.7rem] text-shuttlelaneBlack">
-                  PICKUP FROM
-                </small>
-
-                <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
-                    <IoLocationOutline
-                      size={16}
-                      className="text-shuttlelaneBlack"
-                    />
+                    <BiSolidCity size={16} className="text-gray-500" />
                   </div>
 
-                  <div className="w-[95%]">
+                  <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
+                    <Select
+                      value={selectedCity}
+                      onChange={(value) => console.log("VALUE:", value)}
+                      options={cityData}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
+                          zIndex: 80,
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select City"
+                    />
+                  </div>
+                </div>
+
+                <div className="relative flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-[5%]">
+                    <IoLocationOutline size={16} className="text-gray-700" />
+                  </div>
+
+                  <div className="w-full relative text-shuttlelaneBlack">
                     <LocationInput
                       placeholder="From (Airport, Port, Address)"
                       setLocation={setPickupLocation}
@@ -121,74 +131,99 @@ function PriorityPassForm() {
                       setLocationInput={setPickupLocationInput}
                     />
                   </div>
-                  {/* <input
-                          type="text"
-                          className="bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
-                        /> */}
                 </div>
 
                 <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                    <div className="w-[5%]">
-                      <CiCalendar size={16} className="text-shuttlelaneBlack" />
-                    </div>
-
-                    <div className="w-[95%]">
-                      <input
-                        type="date"
-                        className="text-sm px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
+                    <div className="w-full">
+                      <DatePicker
+                        locale={enGB}
+                        disabledDate={disableDateBeforeMin}
+                        value={pickupDate}
+                        appearance="subtle"
+                        onChange={(date) => {
+                          setPickupDate(date);
+                        }}
+                        placeholder="Pickup Date"
+                        style={{
+                          backgroundColor: "transparent",
+                        }}
+                        className="text-sm w-full bg-transparent text-shuttlelaneBlack"
                       />
                     </div>
-                    {/* <input
-                          type="text"
-                        /> */}
-                  </div>
-                  <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                    <div className="w-[5%]">
-                      <CiClock1 size={16} className="text-shuttlelaneBlack" />
-                    </div>
-
-                    <div className="w-[95%]">
-                      <input
-                        type="time"
-                        className="text-sm px-3 bg-transparent w-full focus:outline-none text-sm text-shuttlelaneBlack"
-                      />
-                    </div>
-                    {/* <input
-                          type="text"
-                        /> */}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="h-[55px] shadow-[#4540cf85] shadow-md bg-shuttlelanePurple w-[55px] min-h-[55px] min-w-[55px] bg-[#EBEBEF] z-10 relative lg:-left-3 flex items-center justify-center rounded-full">
+            <div className="h-[55px] shadow-[#4540cf85] shadow-md bg-shuttlelanePurple w-[55px] min-h-[55px] min-w-[55px] bg-[#EBEBEF] z-10 relative flex items-center justify-center rounded-full">
               <HiOutlineSwitchHorizontal
                 size={20}
                 className="text-white rotate-90 lg:rotate-0"
               />
             </div>
 
-            <div className="py-3 px-4 w-full lg:w-[50%] relative lg:-left-6 border-shuttlelaneBlack bg-transparent border-dashed border-[.2px] rounded-lg">
+            <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
               <div className="flex flex-col gap-y-2">
-                <small className="text-[.7rem] text-shuttlelaneBlack">
-                  SERVICE & FLIGHT DETAILS
-                </small>
-
                 <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
                     <MdOutlineNordicWalking
                       size={18}
-                      className="text-shuttlelaneBlack"
+                      className="text-gray-500"
+                    />
+                  </div>
+
+                  <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[99]">
+                    {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
+                    <Select
+                      value={service}
+                      onChange={(value) => console.log("VALUE:", value)}
+                      options={services}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
+                          zIndex: 99,
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select Protocol Service"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg relative z-[80]">
+                  <div className="w-[5%]">
+                    <FaPersonWalkingDashedLineArrowRight
+                      size={18}
+                      className="text-gray-500"
                     />
                   </div>
 
                   <div className="w-[95%] text-shuttlelaneBlack text-sm">
                     {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
                     <Select
-                      value={service}
+                      value={passType}
                       onChange={(value) => console.log("VALUE:", value)}
-                      options={services}
+                      options={passes}
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -214,12 +249,31 @@ function PriorityPassForm() {
                           // fontSize: ".75rem",
                         }),
                       }}
-                      placeholder="Select Protocol Service"
+                      placeholder="Select Pass"
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-x-3">
+                <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-full">
+                    <DatePicker
+                      format="HH:mm"
+                      value={pickupTime}
+                      appearance="subtle"
+                      onChange={(time) => {
+                        console.log("TIME:", time);
+                        setPickupTime(time);
+                      }}
+                      placeholder="Pickup Time"
+                      style={{
+                        backgroundColor: "transparent",
+                      }}
+                      className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                    />
+                  </div>
+                </div>
+
+                {/* <div className="flex items-center justify-between gap-x-3">
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-[48%] lg:w-full rounded-lg">
                     <div className="w-[5%]">
                       <BsAirplane size={16} className="text-shuttlelaneBlack" />
@@ -249,7 +303,7 @@ function PriorityPassForm() {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

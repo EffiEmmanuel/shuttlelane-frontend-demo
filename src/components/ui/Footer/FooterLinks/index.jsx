@@ -7,7 +7,7 @@ function FooterLinks(props) {
 
   return (
     <div
-      className={`lg:w-auto w-full my-5 lg:my-0 mx-auto ${
+      className={`lg:w-auto w-full my-5 lg:my-0 ${
         props.linkHeading === "" ? "hidden lg:inline-block" : "inline-block"
       }`}
     >

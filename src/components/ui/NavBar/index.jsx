@@ -166,11 +166,7 @@ function NavBar(props) {
                 isPurpleLogo={props?.isPurpleLogo}
                 y={y}
                 linkHeading="partnership"
-                subLinks={[
-                  "Drive For Shuttlelane",
-                  "Fleet Management",
-                  "Hotel Transfer Solution",
-                ]}
+                subLinks={["Drive For Shuttlelane", "Fleet Management"]}
               />
 
               <li>

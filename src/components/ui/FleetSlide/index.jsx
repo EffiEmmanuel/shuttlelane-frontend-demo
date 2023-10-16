@@ -32,7 +32,7 @@ function FleetSlide() {
 
               <p className="text-sm text-shuttlelaneBlack">
                 The most economic and popular class suitable for most trips.
-                Promises a smooth and convenient ride. Can accommodate up to 4
+                Promises a smooth and convenient ride. Can accommodate up to 3
                 passengers and 2 luggages. Select from our available services
                 and make a booking by specifying your travel date, pickup
                 location, destination, and other required information.
@@ -49,7 +49,7 @@ function FleetSlide() {
                       size={20}
                       className="text-shuttlelaneBlack"
                     />
-                    <p className="text-sm text-shuttlelaneBlack">4</p>
+                    <p className="text-sm text-shuttlelaneBlack">3</p>
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@ function FleetSlide() {
               </h4>
 
               <p className="text-sm text-shuttlelaneBlack">
-                Can accommodate up to 4 passengers and comes with extra space
+                Can accommodate up to 3 passengers and comes with extra space
                 for luggages. It also promises a smooth and convenient ride.
               </p>
 
@@ -82,7 +82,7 @@ function FleetSlide() {
                       size={20}
                       className="text-shuttlelaneBlack"
                     />
-                    <p className="text-sm text-shuttlelaneBlack">4</p>
+                    <p className="text-sm text-shuttlelaneBlack">3</p>
                   </div>
                 </div>
               </div>
@@ -101,21 +101,21 @@ function FleetSlide() {
 
               <p className="text-sm text-shuttlelaneBlack">
                 A step closer to luxury. Comfort and convenience is guaranteed.
-                Can accommodate up to 4 passengers and 2 luggages.
+                Can accommodate up to 3 passengers and 3 luggages.
               </p>
 
               <div className="flex justify-center lg:justify-center">
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
-                    <p className="text-sm text-shuttlelaneBlack">2</p>
+                    <p className="text-sm text-shuttlelaneBlack">3</p>
                   </div>
                   <div className="flex item-center gap-x-1">
                     <MdPersonOutline
                       size={20}
                       className="text-shuttlelaneBlack"
                     />
-                    <p className="text-sm text-shuttlelaneBlack">4</p>
+                    <p className="text-sm text-shuttlelaneBlack">3</p>
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ function FleetSlide() {
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
-                    <p className="text-sm text-shuttlelaneBlack">3</p>
+                    <p className="text-sm text-shuttlelaneBlack">4</p>
                   </div>
                   <div className="flex item-center gap-x-1">
                     <MdPersonOutline
@@ -204,7 +204,7 @@ function FleetSlide() {
               <p className="text-sm text-shuttlelaneBlack">
                 The most spacious vehicles in our fleet. It is for those who
                 love to travel in numbers and comfort. Can accommodate up to 10
-                passengers and 7 luggages. It also promises a smooth and
+                passengers and 10 luggages. It also promises a smooth and
                 convenient ride.
               </p>
 
@@ -212,7 +212,7 @@ function FleetSlide() {
                 <div className="flex item-center gap-x-3 border-dashed border-[0.5px] border-shuttlelaneBlack w-[100px] justify-center p-1 rounded-full">
                   <div className="flex item-center gap-x-1">
                     <LuLuggage size={20} className="text-shuttlelaneBlack" />
-                    <p className="text-sm text-shuttlelaneBlack">7</p>
+                    <p className="text-sm text-shuttlelaneBlack">10</p>
                   </div>
                   <div className="flex item-center gap-x-1">
                     <MdPersonOutline

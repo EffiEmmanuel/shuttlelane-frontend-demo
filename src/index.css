@@ -39,9 +39,19 @@
   src: url("./assets/font/SpaceGrotesk/SpaceGrotesk-Bold.ttf");
   font-weight: 700;
 }
+/* Great Vibes Font */
+@font-face {
+  font-family: "GreatVibes";
+  src: url("./assets/font/Great_Vibes/GreatVibes-Regular.ttf");
+  font-weight: 400;
+}
 
 .spaceGroteskText {
   font-family: "Space Grotesk";
+}
+
+.greatVibesText {
+  font-family: "GreatVibes";
 }
 
 html {
@@ -127,6 +137,18 @@ html {
 }
 .luxuryBg {
   background-image: url(./assets/images/luxuryBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.voaBg {
+  background-image: url(./assets/images/voa.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.conciergeBg {
+  background-image: url(./assets/images/concierge.png);
   background-repeat: no-repeat;
   background-size: cover;
   /* background-position: 0 -150px; */

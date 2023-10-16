@@ -22,8 +22,10 @@ import { useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import AirportTransferForm from "../../forms/HomePage/AirportTransferForm";
 import CarRentalForm from "../../forms/HomePage/CarRentalForm";
+import Footer from "../../components/ui/Footer";
 import PriorityPassForm from "../../forms/HomePage/PriorityPassForm";
 import CustomerReviews from "../../components/ui/CustomerReviews";
+import PaymentPartners from "../../components/ui/PaymentPartners";
 
 // Images
 import circleAsset from "../../assets/images/circle-asset.svg";
@@ -39,9 +41,9 @@ import appstoreDownload from "../../assets/logos/downloadAppstore.svg";
 import playstoreDownload from "../../assets/logos/downloadPlaystore.svg";
 // import appstore from "../../assets/logos/appstore.svg";
 import googlePlay from "../../assets/logos/googlePlay.svg";
-import Footer from "../../components/ui/Footer";
 import { toast } from "react-toastify";
 import doodleBg from "../../assets/images/doodle.svg";
+import { useLocation } from "react-router-dom";
 
 function HomePage() {
   // SERVICE STATES
@@ -209,12 +211,12 @@ function HomePage() {
         // Adjusting the margin between the "How it works" section and the forms based on what form is selected
         className={`transition-all ${
           isAirportTransfer
-            ? "mt-[550px] md:mt-[450px] lg:mt-5"
+            ? "mt-[500px] md:mt-[450px] lg:mt-0"
             : isCarRental
-            ? "mt-[400px] md:mt-[300px] lg:mt-20"
+            ? "mt-[450px] md:mt-[350px] lg:mt-0"
             : isPriorityPass
-            ? "mt-[450px] md:mt-[300px] lg:mt-20"
-            : "mt-[350px] md:mt-[250px] lg:mt-20"
+            ? "mt-[450px] md:mt-[350px] lg:mt-0"
+            : "mt-[350px] md:mt-[250px] lg:mt-0"
         }`}
       >
         {/* How it works */}
@@ -240,11 +242,11 @@ function HomePage() {
                 <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                   <BsFillBookmarksFill size={22} className="text-white" />
                 </div>
-                <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
                   Make Booking
                 </h4>
 
-                <p className="text-sm">
+                <p className="text-sm ">
                   Select from our available services and make a booking by
                   specifying your travel date, pickup location, destination, and
                   other required information
@@ -256,11 +258,11 @@ function HomePage() {
                 <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                   <BsCreditCardFill size={22} className="text-white" />
                 </div>
-                <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
                   Pay
                 </h4>
 
-                <p className="text-sm">
+                <p className="text-sm ">
                   Confirm your booking by securely making instant online
                   payment, either using a credit or debit card.
                 </p>
@@ -271,11 +273,11 @@ function HomePage() {
                 <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                   <MdOutlineModeOfTravel size={22} className="text-white" />
                 </div>
-                <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
                   Travel
                 </h4>
 
-                <p className="text-sm">
+                <p className="text-sm ">
                   Our driver will arrive on schedule for pickup at pickup
                   location and proceed to your destination
                 </p>
@@ -297,7 +299,7 @@ function HomePage() {
               <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
                 Why choose us?
               </h2>
-              <h4 className="text-sm font-normal">
+              <h4 className="text-sm lgLtext-md font-normal">
                 We strive to provide quality service and great customer
                 satisfaction
               </h4>
@@ -311,11 +313,11 @@ function HomePage() {
                   <div className="h-12 w-12 flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsHourglassSplit size={22} className="text-white" />
                   </div>
-                  <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                  <h4 className="font-semibold text-shuttlelanePurple text-lg ">
                     Always on time
                   </h4>
 
-                  <p className="text-sm">
+                  <p className="text-sm ">
                     Punctuality is one of our strength. We strictly keep to
                     schedule as we don't want to keep our clients waiting.
                   </p>
@@ -328,11 +330,11 @@ function HomePage() {
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsStarFill size={22} className="text-white" />
                   </div>
-                  <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                  <h4 className="font-semibold text-shuttlelanePurple text-lg ">
                     Great Value
                   </h4>
 
-                  <p className="text-sm">
+                  <p className="text-sm ">
                     Despite the quality of the service we render to our clients,
                     our rates are one of the most affordable in the industry.
                   </p>
@@ -345,11 +347,11 @@ function HomePage() {
                   <div className="h-12 w-12 shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
                     <BsShieldFillCheck size={22} className="text-white" />
                   </div>
-                  <h4 className="font-semibold text-shuttlelanePurple text-lg">
+                  <h4 className="font-semibold text-shuttlelanePurple text-lg ">
                     Secure and Reliable
                   </h4>
 
-                  <p className="text-sm">
+                  <p className="text-sm ">
                     Our client's safety and satisfaction is our priority and as
                     such, we prioritize their security and comfort.
                   </p>
@@ -365,7 +367,7 @@ function HomePage() {
               <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
                 Our Fleet
               </h2>
-              <h4 className="text-sm font-normal">
+              <h4 className="text-sm  font-normal">
                 Shuttlelane offers a variety of service class you can choose
                 from, depending on your needs.
               </h4>
@@ -402,17 +404,17 @@ function HomePage() {
               <img
                 src={trustpilot}
                 alt=""
-                className="object-contain lg:w-[120px] w-[100px]"
+                className="object-contain lg:w-[130px] w-[100px]"
               />
               <img
                 src={google}
                 alt=""
-                className="object-contain lg:w-[35px] w-[25px]"
+                className="object-contain lg:w-[45px] w-[25px]"
               />
               <img
                 src={tripAdvisor}
                 alt=""
-                className="object-contain lg:w-[120px] w-[100px]"
+                className="object-contain lg:w-[130px] w-[100px]"
               />
             </div>
           </div>
@@ -449,42 +451,7 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="mt-4 lg:px-24 px-7 bg-[#F7F6FF] flex lg:flex-row flex-col lg:items-center lg:justify-center gap-x-2">
-          <Fade duration={800}>
-            <div className="flex items-center justify-center lg:justify-normal gap-x-2 mt-10 lg:mt-0">
-              <h4 className="text-sm font-semibold uppercase text-gray-500">
-                OUR PAYMENT PARTNERS
-              </h4>
-
-              <MdArrowRightAlt size={16} className="text-gray-500" />
-            </div>
-          </Fade>
-
-          <Fade duration={800}>
-            <div className="flex flex-row items-center gap-y-0 gap-x-10 -mt-5 lg:mt-0 flex-wrap">
-              <img
-                src={flutterwave}
-                alt=""
-                className="object-contain lg:w-[140px] w-[140px]"
-              />
-              <img
-                src={"https://www.cdnlogo.com/logos/p/27/paystack.svg"}
-                alt=""
-                className="object-contain lg:w-[140px] w-[140px]"
-              />
-              <img
-                src={paypal}
-                alt=""
-                className="object-contain lg:w-[90px] w-[90px]"
-              />
-              <img
-                src={stripe}
-                alt=""
-                className="object-contain lg:w-[80px] w-[80px]"
-              />
-            </div>
-          </Fade>
-        </div>
+        <PaymentPartners />
       </div>
 
       {/* Footer */}

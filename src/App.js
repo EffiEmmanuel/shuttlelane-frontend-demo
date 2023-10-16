@@ -12,6 +12,8 @@ import GetInTouchPage from "./pages/company/GetInTouchPage";
 import FAQsPage from "./pages/customer-service/FAQsPage";
 import TermsOfUsePage from "./pages/customer-service/TermsOfUsePage";
 import PrivacyPolicyPage from "./pages/customer-service/PrivacyPolicyPage";
+import VisaOnArrivalPage from "./pages/services/VisaOnArrival";
+import ConciergePage from "./pages/services/ShuttlelaneConcierge";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path="airport-transfer" element={<AirportTransferPage />} />
         <Route path="car-rental" element={<CarRentalPage />} />
         <Route path="priority-pass" element={<PriorityPassPage />} />
+        <Route path="visa-on-arrival" element={<VisaOnArrivalPage />} />
+        <Route path="shuttlelane-concierge" element={<ConciergePage />} />
       </Route>
 
       <Route path="/customer-service">

@@ -7,12 +7,14 @@ import {
   MdOutlineLuggage,
   MdOutlineMarkUnreadChatAlt,
   MdOutlineModeOfTravel,
+  MdSpeed,
 } from "react-icons/md";
 import {
   AiFillPhone,
   AiOutlineCheckCircle,
   AiOutlineClose,
   AiOutlineSafety,
+  AiOutlineStar,
 } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -27,6 +29,7 @@ import stripe from "../../../assets/logos/stripe.svg";
 import flutterwave from "../../../assets/logos/flutterwave.png";
 import aboutsvg from "../../../assets/images/aboutsvg.svg";
 import {
+  BiCheckShield,
   BiLogoGmail,
   BiLogoWhatsapp,
   BiMenu,
@@ -38,10 +41,16 @@ import { FiArrowDown } from "react-icons/fi";
 import { GrStatusGood, GrUserManager } from "react-icons/gr";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
-import { BsPersonCheck } from "react-icons/bs";
+import {
+  BsHourglassSplit,
+  BsPersonCheck,
+  BsShieldFillCheck,
+  BsStarFill,
+} from "react-icons/bs";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
+import { FaRegHandshake } from "react-icons/fa";
 
-function AboutPage() {
+function VisaOnArrivalPage() {
   const howItWorksRef = useRef(null);
   const moreAboutUsRef = useRef(null);
 
@@ -62,55 +71,63 @@ function AboutPage() {
               className="bg-white shadow-lg rounded-lg h-full w-full py-5"
             >
               <h2 className="text-xl font-medium px-5 mb-4 text-shuttlelanePurple">
-                Company
+                Services
               </h2>
               <ul className="text-xs flex flex-col gap-y-1">
+                <li className="py-3 px-5">
+                  <Link
+                    to="/services/airport-transfer"
+                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
+                  >
+                    Airport Transfer
+                  </Link>
+                </li>
+                <li className="py-3 px-5">
+                  <Link
+                    to="/services/car-rental"
+                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
+                  >
+                    Car Rental
+                  </Link>
+                </li>
+                <li className="py-3 px-5">
+                  <Link
+                    to="/services/priority-pass"
+                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
+                  >
+                    Priority Pass
+                  </Link>
+                </li>
                 <li className="py-3 px-5 bg-shuttlelanePurple text-white">
                   <Link
-                    to="/company/about-shuttlelane"
+                    to="/services/visa-on-arrival"
                     className="inline-block w-full hover:no-underline visited:no-underline hover:text-white visited:text-white text-white"
                   >
-                    About Shuttlelane
+                    Visa On Arrival
                   </Link>
                 </li>
                 <li className="py-3 px-5">
                   <Link
-                    to="/company/who-we-are"
+                    to="/services/shuttlelane-concierge"
                     className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
                   >
-                    Who We Are
+                    Shuttlelane Concierge
                   </Link>
                 </li>
                 <li className="py-3 px-5">
                   <Link
-                    to="/company/partnership"
+                    to="/services/corporate-travel"
                     className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
                   >
-                    Become a Partner
+                    Corporate Travel
                   </Link>
                 </li>
                 <li className="py-3 px-5">
                   <Link
-                    to="/company/get-in-touch"
+                    to="/services/wedding-services"
                     className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
                   >
-                    Get In Touch
-                  </Link>
-                </li>
-                <li className="py-3 px-5">
-                  <Link
-                    to="/company/terms-of-use"
-                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
-                  >
-                    Terms Of Use
-                  </Link>
-                </li>
-                <li className="py-3 px-5">
-                  <Link
-                    to="/company/privacy-policy"
-                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
-                  >
-                    Privacy Policy
+                    Wedding Services
                   </Link>
                 </li>
               </ul>
@@ -145,9 +162,9 @@ function AboutPage() {
         <NavBar isPurpleLogo={false} />
       </div>
 
-      {/* About Shuttlelane */}
+      {/* Visa On Arrival */}
       <div
-        className="px-8 relative lg:px-24 py-32 pt-44 min-h-screen flex items-center justify-center experienceBg"
+        className="px-8 relative lg:px-24 py-32 pt-44 min-h-screen flex items-center justify-center voaBg"
         ref={howItWorksRef}
       >
         <div className="flex relative z-10 lg:flex-row flex-col lg:justify-between lg:items-center">
@@ -155,23 +172,18 @@ function AboutPage() {
             <div className="">
               <div className="text-white">
                 <h3 className="text-3xl lg:text-6xl text-center font-semibold mt-3 leading-[39px]">
-                  About Shuttlelane
+                  Visa On Arrival
                 </h3>
                 <div className="flex flex-col text-center gap-y-2 leading-[22px] mt-3 lg:max-w-3xl">
                   <p className="text-lg font-normal">
-                    At Shuttlelane, we give you the best of executive airport
-                    services. Because we are committed to enriching your travel
-                    experiences, we always make sure that you get unique
-                    standard services from us.
-                  </p>
-                  <p className="text-lg">
-                    Our focus at Shuttlelane is simple – to give you
-                    comfortable, safe airport taxi. And, we do this by putting
-                    quality services and customer satisfaction first.
-                  </p>
-                  <p className="text-lg">
-                    Take your time to enjoy our finest customer-centered
-                    services because you deserve only the best.
+                    If you need to process a Nigeria visa application urgently,
+                    our urgent Nigeria Visa on Arrival service would be of
+                    benefit to you. The benefit of the service is that it makes
+                    your desire to travel to Nigeria come true and gives you
+                    peace of mind that your visa case is being handled properly
+                    by our visa team experts. We take away the stress that comes
+                    with applying for an emergency Nigeria visa so that you can
+                    focus on other travel plans of yours.
                   </p>
                 </div>
 
@@ -194,114 +206,105 @@ function AboutPage() {
         </div>
       </div>
 
-      {/* Our Experience */}
-      <div ref={moreAboutUsRef} className="px-8 lg:px-24 py-20 ">
-        {/* <Fade direction="up" duration={500}> */}
-
-        <div className="flex justify-center text-center items-center">
-          <div className="flex flex-col gap-y-5 lg:w-[55%] w-full">
-            <div className="flex text-shuttlelaneBlack flex-col justify-center text-center">
-              <h2 className="text-3xl text-center font-semibold mt-3 leading-[39px]">
-                Our Experience
-              </h2>
-              <h4 className="text-sm text-center font-normal">
-                Our experience in what we do is impeccable
-              </h4>
-            </div>
-            <p className="text-md text-center">
-              We remain a tested and trusted service provider in ground
-              transportation in Nigeria’s commercial heartbeat – Lagos. We are
-              set out to make travelling experience comfortable and memorable
-              for our clients. We are always delighted to have them reach their
-              intended destinations with satisfaction. This is what we do, this
-              is our forte and we have made a good name of it.
-            </p>
-          </div>
-        </div>
-
-        {/* </Fade> */}
-      </div>
-
-      {/* Unique Selling Point */}
+      {/* Why choose us? */}
       <div
-        className="relative px-8 lg:px-24 py-20 bg-[#F7F6FF] text-center"
-        ref={howItWorksRef}
+        ref={moreAboutUsRef}
+        className="px-8 lg:px-24 overflow-hidden text-white bg-shuttlelaneLightPurple min-h-[70vh] py-20 relative"
       >
         <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
           <img
             src={arrowAsset}
-            className="object-cover w-full h-full opacity-40"
+            className="object-cover w-full h-full opacity-30"
           />
         </div>
 
-        <div className="flex lg:flex-row-reverse flex-col lg:justify-between lg:items-center">
-          <div className="flex flex-col gap-y-5 w-full">
-            <div className="flex flex-col justify-center text-center text-white">
-              <h2 className="text-3xl text-shuttlelaneBlack text-center font-semibold mt-3 leading-[39px]">
-                Our Unique Selling Point
-              </h2>
-              <h4 className="text-sm font-normal text-center text-shuttlelaneBlack">
-                Dealing with us gives you:
-              </h4>
-            </div>
+        <Fade direction="up" duration={800}>
+          <div className="w-full flex flex-col items-center justify-center text-shuttlelaneBlack text-center">
+            <h2 className="text-3xl font-semibold mt-3 max-w-xl leading-[39px]">
+              Why choose us?
+            </h2>
+            <h4 className="text-sm lgLtext-md font-normal">
+              We strive to provide quality service and great customer
+              satisfaction
+            </h4>
+          </div>
+        </Fade>
 
-            <div className="mt-10">
-              <div className="flex  rounded-lg justify-center gap-x-10 items-center flex-wrap gap-y-10">
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                    <AiOutlineSafety size={24} />
-                  </div>
-
-                  <p className="text-md text-white">
-                    Unparalleled safety and comfort.
-                  </p>
+        <div className="mt-10">
+          <div className="flex justify-center gap-x-20 items-center bg-white flex-wrap gap-y-14 px-10 py-16 rounded-lg">
+            <Fade duration={800} delay={50}>
+              <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
+                <div className="max-h-[48px] max-w-[48px] h-[48px] w-[48px] min-h-[48px] min-w-[48px] flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <AiOutlineStar size={22} className="text-white" />
                 </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                    <BiTimer size={28} />
-                  </div>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
+                  Service Simplicity
+                </h4>
 
-                  <p className="text-md text-white">
-                    Punctual and responsive service delivery.
-                  </p>
-                </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                    <MdOutlineMarkUnreadChatAlt size={24} />
-                  </div>
-
-                  <p className="text-md text-white">
-                    Timely communication via email and text.
-                  </p>
-                </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                    <BsPersonCheck
-                      size={23}
-                      className="text-shuttlelanePurple"
-                    />
-                  </div>
-
-                  <p className="text-md text-white">
-                    Empathetic and professional Chauffer.
-                  </p>
-                </div>
-                <div className="md:max-w-[300px] h-[200px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
-                  <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                    <HiOutlineCheckBadge size={24} />
-                  </div>
-
-                  <p className="text-md text-white">
-                    And indeed, a service provider committed to excellent
-                    service.
-                  </p>
-                </div>
+                <p className="text-sm ">
+                  We guarantee a seamless, traveler-friendly application
+                  process. Our long and good working relationship with the
+                  Nigeria Immigration Service makes it much less complicated to
+                  work with us than dealing with the government.
+                </p>
               </div>
-            </div>
+            </Fade>
+
+            <Fade duration={800} delay={100}>
+              {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
+              <div className="lg:max-w-[300px] h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
+                <div className="max-h-[48px] max-w-[48px] h-[48px] w-[48px] min-h-[48px] min-w-[48px] shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <MdSpeed size={22} className="text-white" />
+                </div>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
+                  Fast-track Visa Approval
+                </h4>
+
+                <p className="text-sm ">
+                  Our team of experts works with Nigeria Immigration to expedite
+                  your visa approval and send all documents to you within 12-24
+                  hours.
+                </p>
+              </div>
+            </Fade>
+
+            <Fade duration={800} delay={150}>
+              {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
+              <div className="lg:max-w-[300px] lg:h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
+                <div className="max-h-[48px] max-w-[48px] h-[48px] w-[48px] min-h-[48px] min-w-[48px] shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <BiCheckShield size={22} className="text-white" />
+                </div>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
+                  Tested And Trusted
+                </h4>
+
+                <p className="text-sm ">
+                  Over the years, we have proven to be a reliable and trusted
+                  Nigerian Visa Assistance Partner when it comes to processing
+                  and securing Nigeria visa on arrival.
+                </p>
+              </div>
+            </Fade>
+
+            <Fade duration={800} delay={150}>
+              {/* <img className="w-[100px] object-cover" src={stepsArrow} /> */}
+              <div className="lg:max-w-[300px] lg:h-[200px] text-shuttlelaneBlack flex flex-col items-center text-center gap-y-3">
+                <div className="max-h-[48px] max-w-[48px] h-[48px] w-[48px] min-h-[48px] min-w-[48px] shadow-[#4540cf85] shadow-md flex items-center justify-center rounded-lg bg-shuttlelanePurple">
+                  <FaRegHandshake size={22} className="text-white" />
+                </div>
+                <h4 className="font-semibold text-shuttlelanePurple text-lg ">
+                  Hasle-free Experience
+                </h4>
+
+                <p className="text-sm ">
+                  We ensure that you enjoy your travels and take away the
+                  hurdles and pains people go through to procure Nigeria visa on
+                  arrival, and our customer support is open to help 24/7.
+                </p>
+              </div>
+            </Fade>
           </div>
         </div>
-
-        {/* </Fade> */}
       </div>
 
       {/* How To Reach Us */}
@@ -334,4 +337,4 @@ function AboutPage() {
   );
 }
 
-export default AboutPage;
+export default VisaOnArrivalPage;

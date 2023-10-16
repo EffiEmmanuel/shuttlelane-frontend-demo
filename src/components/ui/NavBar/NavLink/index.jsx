@@ -11,7 +11,7 @@ function NavLink(props) {
         <p
           onMouseOver={() => setIsSubLinksOpen(true)}
           onMouseOut={() => setIsSubLinksOpen(false)}
-          className={`text-sm cursor-pointer hover:no-underline hover:text-gray-200 transition-colors ${
+          className={`text-md cursor-pointer hover:no-underline hover:text-gray-200 transition-colors ${
             props?.y > 5 || props?.isPurpleLogo
               ? "text-shuttlelaneBlack"
               : "text-white"
@@ -34,7 +34,7 @@ function NavLink(props) {
                   return (
                     <Link
                       to={`/${props?.linkHeading}/${linkSlug}`}
-                      className="text-shuttlelaneBlack text-sm hover:text-gray-500 visited:text-shuttlelaneBlack hover:no-underline visited:no-underline"
+                      className="text-shuttlelaneBlack text-md hover:text-gray-500 visited:text-shuttlelaneBlack hover:no-underline visited:no-underline"
                     >
                       {link}
                     </Link>

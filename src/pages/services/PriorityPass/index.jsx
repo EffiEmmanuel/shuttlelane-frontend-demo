@@ -211,7 +211,7 @@ function PriorityPassPage() {
                 <div className="md:max-w-[400px] h-[270px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
                   <div className="flex flex-col gap-y-2 justify-center w-full items-center">
                     <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                      <FaPassport size={18} className="text-shuttlelaneBlack" />
+                      <FaPassport size={18} className="" />
                     </div>
                     <p className="text-md text-white">Standard Pass</p>
                   </div>
@@ -225,10 +225,7 @@ function PriorityPassPage() {
                 <div className="md:max-w-[400px] h-[270px] px-10 w-full justify-center rounded-lg bg-shuttlelanePurple flex flex-col items-center text-center gap-y-3">
                   <div className="flex flex-col gap-y-2 justify-center w-full items-center">
                     <div className="h-12 w-12 rounded-full shadow-[#4540cf85] text-shuttlelanePurple font-semibold shadow-md flex items-center justify-center bg-white">
-                      <MdWorkspacePremium
-                        size={18}
-                        className="text-shuttlelaneBlack"
-                      />
+                      <MdWorkspacePremium size={18} className="" />
                     </div>
                     <p className="text-md text-white font-semibold">
                       Premium Pass

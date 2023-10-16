@@ -27,8 +27,8 @@ function AirportTransferForm() {
   };
 
   const [bookingType, setBookingType] = useState("round-trip");
-  const [isOneWay, setIsOneWay] = useState(false);
-  const [passengers, setPassengers] = useState(1);
+  const [isRoundTrip, setIsRoundTrip] = useState(false);
+  const [passengers, setPassengers] = useState("");
 
   // FORM FIELDS
   const [pickupLocation, setPickupLocation] = useState();
@@ -58,12 +58,12 @@ function AirportTransferForm() {
           {/* TRIP TYPE */}
           <div className="flex transition-all items-center gap-x-1 text-shuttlelaneBlack">
             <p className="text-sm transition-all">
-              {isOneWay ? "One Way" : "Round Trip"}
+              {!isRoundTrip ? "One Way" : "Round Trip"}
             </p>
 
             <Switch
-              onChange={(checked) => setIsOneWay(checked)}
-              checked={isOneWay}
+              onChange={(checked) => setIsRoundTrip(checked)}
+              checked={isRoundTrip}
               height={15}
               width={35}
               handleDiameter={10}
@@ -78,16 +78,12 @@ function AirportTransferForm() {
           <div className="flex w-full items-center justify-between gap-x-2 lg:flex-row flex-col">
             <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
               <div className="flex flex-col gap-y-2">
-                {/* <small className="text-[.7rem] text-shuttlelaneBlack">
-                      FROM
-                    </small> */}
                 <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
                     <BiSolidCity size={16} className="text-gray-500" />
                   </div>
 
                   <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
-                    {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
                     <Select
                       value={selectedCity}
                       onChange={(value) => console.log("VALUE:", value)}
@@ -129,7 +125,7 @@ function AirportTransferForm() {
                     <IoLocationOutline size={16} className="text-gray-700" />
                   </div>
 
-                  <div className="w-full relative">
+                  <div className="w-full relative text-shuttlelaneBlack">
                     <LocationInput
                       placeholder="From (Airport, Port, Address)"
                       setLocation={setPickupLocation}
@@ -138,14 +134,6 @@ function AirportTransferForm() {
                       locationInput={pickupLocationInput}
                       setLocationInput={setPickupLocationInput}
                     />
-                    {/* <DatePicker
-                          size="lg"
-                          placeholder="Pickup Date"
-                          // appearance="subtle"
-                          style={{
-                            color: "#000",
-                          }}
-                        /> */}
                   </div>
                 </div>
 
@@ -284,9 +272,9 @@ function AirportTransferForm() {
                 </div>
 
                 <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
-                  {isOneWay && (
+                  {!isRoundTrip && (
                     <button
-                      onClick={() => setIsOneWay(false)}
+                      onClick={() => setIsRoundTrip(true)}
                       className="flex h-[47px] text-shuttlelaneBlack items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg"
                     >
                       <BsPlusCircleDotted size={16} />
@@ -294,7 +282,7 @@ function AirportTransferForm() {
                     </button>
                   )}
 
-                  {!isOneWay && (
+                  {isRoundTrip && (
                     <>
                       <div className="flex w-full flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
                         <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
