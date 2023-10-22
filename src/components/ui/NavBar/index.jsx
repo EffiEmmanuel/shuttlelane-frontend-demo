@@ -20,10 +20,10 @@ function NavBar(props) {
   const [{ x, y }, scrollTo] = useWindowScroll();
 
   return (
-    <div className="relative z-30">
+    <div className="relative z-[30]">
       <div className={`rec ${navClass} bg-[#E6C061]`}></div>
       <div className={`rec2 ${navClass2}`}>
-        <nav className="lg:hidden relative z-40 w-full min-h-screen flex flex-col gap-y-12 items-start bg-white py-4 px-8 pl-14 drop-shadow-sm">
+        <nav className="lg:hidden relative z-[40] w-full min-h-screen flex flex-col gap-y-12 items-start bg-white py-4 px-8 pl-14 drop-shadow-sm">
           <div className="flex justify-end w-full relative top-4 -right-5">
             <VscClose
               size={26}

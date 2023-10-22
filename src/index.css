@@ -135,6 +135,55 @@ html {
   background-size: cover;
   /* background-position: 0 -150px; */
 }
+.privateJetBg {
+  background-image: url(./assets/images/concierge/privateJet.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.helicopterBg {
+  background-image: url(./assets/images/concierge/helicopterBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.yatchBg {
+  background-image: url(./assets/images/concierge/yatchBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.villaBg {
+  background-image: url(./assets/images/concierge/villaBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.luxuryHotelsBg {
+  background-image: url(./assets/images/concierge/luxuryHotelsBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.restaurantBg {
+  background-image: url(./assets/images/concierge/restaurantBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.personalShoppingBg {
+  background-image: url(./assets/images/concierge/personalShoppingBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.propertyBg {
+  background-image: url(./assets/images/concierge/propertyBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+
 .luxuryBg {
   background-image: url(./assets/images/luxuryBg.png);
   background-repeat: no-repeat;
@@ -153,10 +202,44 @@ html {
   background-size: cover;
   /* background-position: 0 -150px; */
 }
+.corporateTravelBg {
+  background-image: url(./assets/images/corporateTravelBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.weddingServicesBg {
+  background-image: url(./assets/images/weddingServicesBg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+.conciergeBg2 {
+  background-image: url(./assets/images/concierge/concierge2.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
 
 /* Partnership */
 .becomeAPartnerBg {
   background-image: url(./assets/images/becomeAPartner.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+
+/* Partnership */
+.driveForShuttlelaneBg {
+  background-image: url(./assets/images/driver/signup/driveForShuttlelane1.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+
+/* Driver Signup */
+.driverSignupBg {
+  background-image: url(./assets/images/driver/signup/driveForShuttlelane.png);
   background-repeat: no-repeat;
   background-size: cover;
   /* background-position: 0 -150px; */
