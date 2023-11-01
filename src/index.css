@@ -54,9 +54,14 @@
   font-family: "GreatVibes";
 }
 
+.maxContent {
+  width: max-content;
+}
+
 html {
   background-color: #262471 !important;
   scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
 
 * {
@@ -335,4 +340,29 @@ html {
   to {
     transform: translateX(-100%);
   }
+}
+
+/* Custom Scrollbar */
+.shuttlelaneScrollbar::-webkit-scrollbar {
+  width: 1px;
+}
+.shuttlelaneScrollbar::-webkit-scrollbar-thumb {
+  background-color: #262471;
+  border-radius: 30px;
+  height: 10px;
+}
+
+/* Custom Scrollbar */
+.shuttlelaneScrollbarHoriz::-webkit-scrollbar:horizontal {
+  height: 1px;
+}
+.shuttlelaneScrollbarHoriz::-webkit-scrollbar-thumb:horizontal {
+  background-color: #262471;
+  border-radius: 30px;
+  height: 2px;
+}
+
+/* Apex Charts Custom Rules */
+tspan {
+  font-size: 0.75rem !important;
 }

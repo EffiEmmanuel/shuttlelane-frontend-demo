@@ -3,7 +3,8 @@ import FooterLinks from "./FooterLinks";
 import shuttlelaneLogo from "../../../assets/logos/shuttlelane-white.png";
 import arrowAsset from "../../../assets/images/arrow-asset.svg";
 import { IoLogoWhatsapp } from "react-icons/io5";
-import { FaFacebook, FaPhoneAlt, FaTwitter } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { RiWhatsappFill } from "react-icons/ri";
 import downloadFromPlaystore from "../../../assets/logos/downloadPlaystore.svg";
 import downloadFromAppstore from "../../../assets/logos/downloadAppstore.svg";
@@ -138,7 +139,7 @@ function Footer() {
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-3">
             <AiFillInstagram size={20} className="text-gray-300" />
-            <FaTwitter size={20} className="text-gray-300" />
+            <FaXTwitter size={20} className="text-gray-300" />
             <FaFacebook size={20} className="text-gray-300" />
             <RiWhatsappFill size={20} className="text-gray-300" />
           </div>
