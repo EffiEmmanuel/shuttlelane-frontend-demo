@@ -32,12 +32,19 @@ import AdminDashboardVendorsPage from "./pages/admin/dashboard/users/VendorsPage
 import AdminDashboardEnquiriesPage from "./pages/admin/dashboard/broadcasts/EnquiriesPage";
 import AdminDashboardPushNotificationsPage from "./pages/admin/dashboard/broadcasts/PushNotificationsPage";
 import AdminDashboardBulkEmailPage from "./pages/admin/dashboard/broadcasts/BulkEmailPage";
+import ConfirmBookingPage from "./pages/booking/confirm-booking";
 
 function App() {
   return (
     <Routes>
       {/* Home Route */}
       <Route path="/" element={<HomePage />} />
+
+      {/* Booking Page Route */}
+      <Route path="booking">
+        {/* Confirm Booking Route */}
+        <Route path="confirm-booking" element={<ConfirmBookingPage />} />
+      </Route>
 
       {/* Company Routes */}
       <Route path="/company">
