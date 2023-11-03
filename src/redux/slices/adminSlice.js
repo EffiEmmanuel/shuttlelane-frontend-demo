@@ -2,10 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const loginAdmin = createAsyncThunk("admin/loginAdmin", () => {
-  return axios
-    .post(`${process.env.REACT_APP_API_BASE_URL}/auth/admin/login`)
-    .then((res) => res.data)
-    .catch((err) => console.log("LOGIN ADMIN ERROR:", err.message));
+  return (
+    axios
+      // .post(`${process.env.REACT_APP_API_BASE_URL}/auth/admin/login`)
+      .post(`http://localhost:3001/api/v1/auth/admin/login`)
+      .then((res) => res.data)
+      .catch((err) => console.log("LOGIN ADMIN ERROR:", err.message))
+  );
 });
 
 export const adminSlice = createSlice({

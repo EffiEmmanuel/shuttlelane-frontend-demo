@@ -1,14 +1,24 @@
+// @ts-nocheck
 import React, { useEffect, useRef, useState } from "react";
 import AdminLoginForm from "../../../forms/admin/AdminLoginForm";
 
 // Images
 import arrowAsset from "../../../assets/images/arrow-asset.svg";
 import shuttlelaneLogo from "../../../assets/logos/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAdmin } from "../../../redux/slices/adminSlice";
 
 function AdminLoginPage(props) {
   // Form fields
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { isLoading } = useSelector((store) => store.admin);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loginAdmin());
+  }, []);
 
   return (
     <div className="flex min-h-screen">
