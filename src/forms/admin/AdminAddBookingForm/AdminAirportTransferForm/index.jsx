@@ -117,7 +117,7 @@ function AdminAirportTransferForm() {
             <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
               <Select
                 value={selectedCity}
-                onChange={(value) => console.log("VALUE:", value)}
+                onChange={(value) => setSelectedCity(value)}
                 options={cityData}
                 styles={{
                   control: (baseStyles, state) => ({

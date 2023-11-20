@@ -1,17 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaPassport, FaUser } from "react-icons/fa";
-import { MdLuggage, MdOutlineFlightTakeoff } from "react-icons/md";
-import { IoCarSport } from "react-icons/io5";
-import { HiOutlineExternalLink } from "react-icons/hi";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { BiSearch } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import AdminDashboardNavbar from "../../../../../components/ui/Admin/AdminDashboardNavbar";
 import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteUserById,
+  fetchUsers,
+} from "../../../../../redux/slices/adminSlice";
+import { ImSpinner2 } from "react-icons/im";
+import { ToastContainer } from "react-toastify";
 
 function AdminDashboardUsersPage() {
+  const { isLoading, users, currentUser, userData, token } = useSelector(
+    (store) => store.admin
+  );
+  const dispatch = useDispatch();
+
   // Chart Setup
+  const [userDataByMonth, setUserDataByMonth] = useState();
   const state = {
     options: {
       chart: {
@@ -73,13 +81,46 @@ function AdminDashboardUsersPage() {
     series: [
       {
         name: "",
-        data: [20, 70, 10, 5, 30, 100, 60, 200, 50, 40, 20, 6],
+        data: userDataByMonth,
       },
     ],
   };
 
+  // Fetch Users
+  useEffect(() => {
+    console.log("UEEFFECT");
+    dispatch(fetchUsers(token));
+  }, [token]);
+
+  // Configure userDataByMonth
+  useEffect(() => {
+    function prepareUserDataByMonth() {
+      let preparedData = [];
+      for (let i = 1; i <= 12; i++) {
+        userData?.forEach((data) => {
+          if (data?._id?.month == i) {
+            preparedData.push(data?.count);
+          } else {
+            preparedData.push(0);
+          }
+        });
+      }
+      setUserDataByMonth(preparedData);
+      console.log("PREAPRED DATA:", preparedData);
+    }
+
+    prepareUserDataByMonth();
+  }, [token, userData]);
+
+  // function to handle deleting a user
+  function deleteUser(userId) {
+    dispatch(deleteUserById({ token, userId }));
+  }
+
   return (
     <div className="">
+      <ToastContainer />
+
       {/* Navbar here */}
       <AdminDashboardNavbar link="users" sublink="manage-users" />
 
@@ -99,7 +140,9 @@ function AdminDashboardUsersPage() {
                   <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
-                        <p className="font-medium">Total Users - 20</p>
+                        <p className="font-medium">
+                          Total Users - {users?.length}
+                        </p>
                         <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                       </div>
                       {/* <p className="text-sm underline offset-7">2023</p> */}
@@ -140,80 +183,68 @@ function AdminDashboardUsersPage() {
 
                     {/* Table header */}
                     <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                      <p className="w-200px lg:w-[20%] text-xs">Full name</p>
-                      <p className="w-200px lg:w-[20%] text-xs">
+                      <p className="w-200px lg:w-[25%] text-xs">Full name</p>
+                      <p className="w-200px lg:w-[25%] text-xs">
                         Email Address
                       </p>
-                      <p className="w-200px lg:w-[20%] text-xs">Phone Number</p>
-                      <p className="w-200px lg:w-[20%] text-xs">Last Booking</p>
-                      <p className="w-200px lg:w-[20%] text-xs">Actions</p>
+                      <p className="w-200px lg:w-[25%] text-xs">Phone Number</p>
+                      {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
+                      <p className="w-200px lg:w-[25%] text-xs">Actions</p>
                     </div>
 
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
+                    {/* Table body - User card */}
+                    {users?.map((user) => (
+                      <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {user?.firstName} {user?.lastName}
+                        </p>
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {user?.email}
+                        </p>
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {user?.countryCode} {user?.mobile}
+                        </p>
+                        {/* <p className="w-200px lg:w-[25%] text-xs">
                         12 November 2023
-                      </p>
+                      </p> */}
 
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
+                        <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                          {!isLoading ? (
+                            <button
+                              onClick={() => deleteUser(user?._id)}
+                              className="text-xs"
+                            >
+                              <AiFillDelete
+                                size={16}
+                                className="text-red-500"
+                              />
+                            </button>
+                          ) : (
+                            <ImSpinner2 size={16} className="text-gray-400" />
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ))}
 
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        12 November 2023
-                      </p>
-
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
+                    {users?.length < 1 && (
+                      <div className="flex justify-center">
+                        <p className="text-center text-sm">
+                          No data to show for now...
+                        </p>
                       </div>
-                    </div>
-
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        12 November 2023
-                      </p>
-
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

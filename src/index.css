@@ -366,3 +366,8 @@ html {
 tspan {
   font-size: 0.75rem !important;
 }
+
+/* React Modal Custom Rules */
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+    z-index: 99
+}

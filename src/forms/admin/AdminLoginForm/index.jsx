@@ -3,18 +3,32 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import AdminLoginSchema from "./validation";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAdmin, resetMessage } from "../../../redux/slices/adminSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import { redirect, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function AdminLoginForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { isLoading, admin, message, requestStatus, token, isAdminLoggedIn } =
+    useSelector((store) => store.admin);
+  const dispatch = useDispatch();
 
   // Function: Handle log in admin
   async function onSubmit(values, actions) {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
+    dispatch(
+      loginAdmin({ username: values.username, password: values.password })
+    );
   }
+
+  useEffect(() => {
+    if (!isLoading && requestStatus == 200) {
+      navigate("/admin/dashboard");
+    }
+  }, [requestStatus]);
 
   const { values, errors, handleSubmit, handleChange } = useFormik({
     initialValues: {
@@ -27,6 +41,7 @@ function AdminLoginForm() {
 
   return (
     <div className="px-10 pt-10">
+      <ToastContainer />
       <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
         Admin Log in
       </h2>

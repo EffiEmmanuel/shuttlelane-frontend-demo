@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPassport, FaUser } from "react-icons/fa";
 import { MdLuggage, MdOutlineFlightTakeoff } from "react-icons/md";
@@ -9,9 +9,21 @@ import Chart from "react-apexcharts";
 import { BiSearch } from "react-icons/bi";
 import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import { AiFillDelete } from "react-icons/ai";
+import {
+  deleteVendorById,
+  fetchVendors,
+} from "../../../../../redux/slices/adminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ImSpinner2 } from "react-icons/im";
 
 function AdminDashboardVendorsPage() {
+  const dispatch = useDispatch();
+  const { isLoading, vendors, vendorData, token } = useSelector(
+    (store) => store.admin
+  );
+
   // Chart Setup
+  const [vendorDataByMonth, setVendorDataByMonth] = useState();
   const state = {
     options: {
       chart: {
@@ -73,10 +85,40 @@ function AdminDashboardVendorsPage() {
     series: [
       {
         name: "",
-        data: [20, 70, 10, 5, 30, 100, 60, 200, 50, 40, 20, 6],
+        data: vendorDataByMonth,
       },
     ],
   };
+
+  // Fetch Vendors
+  useEffect(() => {
+    dispatch(fetchVendors(token));
+  }, [token]);
+
+  // Configure vendorDataByMonth
+  useEffect(() => {
+    function prepareDriverDataByMonth() {
+      let preparedData = [];
+      for (let i = 1; i <= 12; i++) {
+        vendorData?.forEach((data) => {
+          if (data?._id?.month == i) {
+            preparedData.push(data?.count);
+          } else {
+            preparedData.push(0);
+          }
+        });
+      }
+      setVendorDataByMonth(preparedData);
+      console.log("PREAPRED DATA:", preparedData);
+    }
+
+    prepareDriverDataByMonth();
+  }, [token, vendorData]);
+
+  // function to handle deleting a vendor
+  function deleteVendor(vendorId) {
+    dispatch(deleteVendorById({ token, vendorId }));
+  }
 
   return (
     <div className="">
@@ -99,7 +141,9 @@ function AdminDashboardVendorsPage() {
                   <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
-                        <p className="font-medium">Total Vendors - 20</p>
+                        <p className="font-medium">
+                          Total Vendors - {vendors?.length}
+                        </p>
                         <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                       </div>
                       {/* <p className="text-sm underline offset-7">2023</p> */}
@@ -140,80 +184,70 @@ function AdminDashboardVendorsPage() {
 
                     {/* Table header */}
                     <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                      <p className="w-200px lg:w-[20%] text-xs">Full name</p>
-                      <p className="w-200px lg:w-[20%] text-xs">
+                      <p className="w-200px lg:w-[25%] text-xs">Full name</p>
+                      <p className="w-200px lg:w-[25%] text-xs">
                         Email Address
                       </p>
-                      <p className="w-200px lg:w-[20%] text-xs">Phone Number</p>
-                      <p className="w-200px lg:w-[20%] text-xs">Last Booking</p>
-                      <p className="w-200px lg:w-[20%] text-xs">Actions</p>
+                      <p className="w-200px lg:w-[25%] text-xs">
+                        Contact Number
+                      </p>
+                      {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
+                      <p className="w-200px lg:w-[25%] text-xs">Actions</p>
                     </div>
 
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
+                    {/* Table body - Vendor card */}
+                    {vendors?.map((vendor) => (
+                      <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {vendor?.companyName}
+                        </p>
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {vendor?.email}
+                        </p>
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {vendor?.countryCode} {vendor?.mobile}
+                        </p>
+                        {/* <p className="w-200px lg:w-[25%] text-xs">
                         12 November 2023
-                      </p>
+                      </p> */}
 
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
+                        <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                          {!isLoading ? (
+                            <button
+                              onClick={() => deleteVendor(vendor?._id)}
+                              className="text-xs"
+                            >
+                              <AiFillDelete
+                                size={16}
+                                className="text-red-500"
+                              />
+                            </button>
+                          ) : (
+                            <ImSpinner2 size={16} className="text-gray-400" />
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ))}
 
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        12 November 2023
-                      </p>
-
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
+                    {vendors?.length < 1 && (
+                      <div className="flex justify-center">
+                        <p className="text-center text-sm">
+                          No data to show for now...
+                        </p>
                       </div>
-                    </div>
-
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        12 November 2023
-                      </p>
-
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

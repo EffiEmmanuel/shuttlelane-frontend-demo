@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import Select from "react-select";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { sendBulkEmail } from "../../../redux/slices/adminSlice";
 
 function AdminBulkEmailForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { isLoading, token } = useSelector((store) => store.admin);
 
   // Form fields
   const [targetAudience, setTargetAudience] = useState(null);
@@ -29,8 +35,43 @@ function AdminBulkEmailForm() {
     },
   ];
 
+  // React Quill formats
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+  ];
+
+  // Handle send email
+  async function handleSendBulkEmail(e) {
+    e.preventDefault();
+    if (!targetAudience || !subject || !message) {
+      toast.error("Please fill in the empty fields");
+      return;
+    }
+    console.log("message:", message);
+    console.log("targetAudience:", targetAudience?.value);
+    dispatch(
+      sendBulkEmail({
+        token,
+        targetAudience: targetAudience?.value,
+        subject,
+        message,
+      })
+    );
+  }
+
   return (
     <div className="">
+      <ToastContainer />
       <h2 className="font-semibold text-xl text-shuttlelaneBlack">
         Bulk Email
       </h2>
@@ -39,7 +80,7 @@ function AdminBulkEmailForm() {
       </p>
 
       {/*  */}
-      <div className="lg:w-1/4 w-full">
+      <div className="w-full">
         <form className="text-shuttlelaneBlack mt-7 flex flex-col gap-y-5">
           {/* Target Audience */}
           <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
@@ -49,7 +90,7 @@ function AdminBulkEmailForm() {
               </label>
               <Select
                 value={targetAudience}
-                onChange={setTargetAudience}
+                onChange={(value) => setTargetAudience(value)}
                 options={targetAudienceOptions}
                 styles={{
                   control: (baseStyles, state) => ({
@@ -115,22 +156,23 @@ function AdminBulkEmailForm() {
               <label htmlFor="message" className="text-sm">
                 Message
               </label>
-              <textarea
-                placeholder="An awesome message..."
-                name="message"
+              <ReactQuill
+                theme="snow"
                 value={message}
-                maxLength={70}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full h-44 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-              ></textarea>
+                onChange={setMessage}
+                formats={formats}
+              />
             </div>
           </div>
 
-          <button className="lg:w-44 text-sm w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg">
+          <button
+            onClick={(e) => handleSendBulkEmail(e)}
+            className="lg:w-44 text-sm w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg"
+          >
             {isLoading ? (
               <ImSpinner2 size={21} className="text-white animate-spin" />
             ) : (
-              "Send Notification"
+              "Send Email"
             )}
           </button>
         </form>

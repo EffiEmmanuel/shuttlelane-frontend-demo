@@ -1,17 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaPassport, FaUser } from "react-icons/fa";
-import { MdLuggage, MdOutlineFlightTakeoff } from "react-icons/md";
-import { IoCarSport } from "react-icons/io5";
+import React, { useState } from "react";
 import AdminDashboardNavbar from "../../../../../components/ui/Admin/AdminDashboardNavbar";
 import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
-import { HiOutlineExternalLink } from "react-icons/hi";
 import Chart from "react-apexcharts";
 import { BiSearch } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteDriverById,
+  fetchDrivers,
+} from "../../../../../redux/slices/adminSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 function AdminDashboardDriversPage() {
+  const dispatch = useDispatch();
+  const { isLoading, drivers, driverData, token } = useSelector(
+    (store) => store.admin
+  );
+
   // Chart Setup
+  const [driverDataByMonth, setDriverDataByMonth] = useState();
   const state = {
     options: {
       chart: {
@@ -73,10 +81,40 @@ function AdminDashboardDriversPage() {
     series: [
       {
         name: "",
-        data: [20, 70, 10, 5, 30, 100, 60, 200, 50, 40, 20, 6],
+        data: driverDataByMonth,
       },
     ],
   };
+
+  // Fetch Drivers
+  useEffect(() => {
+    dispatch(fetchDrivers(token));
+  }, [token]);
+
+  // Configure driverDataByMonth
+  useEffect(() => {
+    function prepareDriverDataByMonth() {
+      let preparedData = [];
+      for (let i = 1; i <= 12; i++) {
+        driverData?.forEach((data) => {
+          if (data?._id?.month == i) {
+            preparedData.push(data?.count);
+          } else {
+            preparedData.push(0);
+          }
+        });
+      }
+      setDriverDataByMonth(preparedData);
+      console.log("PREAPRED DATA:", preparedData);
+    }
+
+    prepareDriverDataByMonth();
+  }, [token, driverData]);
+
+  // function to handle deleting a driver
+  function deleteDriver(driverId) {
+    dispatch(deleteDriverById({ token, driverId }));
+  }
 
   return (
     <div className="">
@@ -99,7 +137,9 @@ function AdminDashboardDriversPage() {
                   <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
-                        <p className="font-medium">Total Drivers - 20</p>
+                        <p className="font-medium">
+                          Total Drivers - {drivers?.length}
+                        </p>
                         <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                       </div>
                       {/* <p className="text-sm underline offset-7">2023</p> */}
@@ -140,80 +180,67 @@ function AdminDashboardDriversPage() {
 
                     {/* Table header */}
                     <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                      <p className="w-200px lg:w-[20%] text-xs">Full name</p>
-                      <p className="w-200px lg:w-[20%] text-xs">
+                      <p className="w-200px lg:w-[25%] text-xs">Full name</p>
+                      <p className="w-200px lg:w-[25%] text-xs">
                         Email Address
                       </p>
-                      <p className="w-200px lg:w-[20%] text-xs">Phone Number</p>
-                      <p className="w-200px lg:w-[20%] text-xs">Last Booking</p>
-                      <p className="w-200px lg:w-[20%] text-xs">Actions</p>
+                      <p className="w-200px lg:w-[25%] text-xs">Phone Number</p>
+                      {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
+                      <p className="w-200px lg:w-[25%] text-xs">Actions</p>
                     </div>
-
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
+                    {/* Table body - Driver card */}
+                    {drivers?.map((driver) => (
+                      <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {driver?.firstName} {driver?.lastName}
+                        </p>
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {driver?.email}
+                        </p>
+                        <p
+                          className={`w-200px lg:w-[25%] text-xs ${
+                            isLoading && "text-gray-400"
+                          }`}
+                        >
+                          {driver?.countryCode} {driver?.mobile}
+                        </p>
+                        {/* <p className="w-200px lg:w-[25%] text-xs">
                         12 November 2023
-                      </p>
+                      </p> */}
 
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
+                        <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                          {!isLoading ? (
+                            <button
+                              onClick={() => deleteDriver(driver?._id)}
+                              className="text-xs"
+                            >
+                              <AiFillDelete
+                                size={16}
+                                className="text-red-500"
+                              />
+                            </button>
+                          ) : (
+                            <ImSpinner2 size={16} className="text-gray-400" />
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ))}
 
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        12 November 2023
-                      </p>
-
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
+                    {drivers?.length < 1 && (
+                      <div className="flex justify-center">
+                        <p className="text-center text-sm">
+                          No data to show for now...
+                        </p>
                       </div>
-                    </div>
-
-                    {/* Table body - Upcoming booking card */}
-                    <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        Effi Emmanuel
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        effiemmanuel.n@gmail.com
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        +2348118412819
-                      </p>
-                      <p className="w-200px lg:w-[20%] text-xs">
-                        12 November 2023
-                      </p>
-
-                      <div className="w-[180px] lg:w-[20%] flex items-center gap-x-3">
-                        <button className="text-xs">
-                          <AiFillDelete size={16} className="text-red-500" />
-                        </button>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

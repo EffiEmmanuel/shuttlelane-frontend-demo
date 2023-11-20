@@ -5,26 +5,32 @@ import { IoCarSport, IoPeopleOutline } from "react-icons/io5";
 import {
   MdFlight,
   MdLuggage,
+  MdOutlineCurrencyExchange,
   MdOutlineFlightTakeoff,
   MdOutlineLocationCity,
   MdOutlineNotifications,
 } from "react-icons/md";
 import { PiBinocularsBold } from "react-icons/pi";
+import { AiOutlineDollar } from "react-icons/ai";
 import { RiBroadcastFill } from "react-icons/ri";
 import { GoMail } from "react-icons/go";
+import { IoIosGlobe } from "react-icons/io";
 import { TbBrandBooking, TbLogout2, TbSteeringWheel } from "react-icons/tb";
 import { BiPlus } from "react-icons/bi";
-import { LiaMailBulkSolid } from "react-icons/lia";
+import { LiaCarSolid, LiaMailBulkSolid } from "react-icons/lia";
 import { useState } from "react";
 import { Slide } from "react-awesome-reveal";
 
 // Images
 import shuttlelaneSLogo from "../../../../assets/logos/icon.png";
+import { FaHandHoldingDollar } from "react-icons/fa6";
 
 function AdminDashboardNavbar(props) {
   const [isBookingMenuOpen, setIsBookingMenuOpen] = useState(false);
   const [isBroadcastMenuOpen, setIsBroadcastMenuOpen] = useState(false);
   const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
+  const [isRatesMenuOpen, setIsRatesMenuOpen] = useState(false);
+
   return (
     <div
       className={`lg:w-[6vw] w-24 ${
@@ -60,16 +66,19 @@ function AdminDashboardNavbar(props) {
             setIsBookingMenuOpen(true);
             setIsBroadcastMenuOpen(false);
             setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
           }}
           onMouseOut={() => {
             setIsBookingMenuOpen(false);
             setIsBroadcastMenuOpen(false);
             setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
           }}
           onClick={() => {
             setIsBookingMenuOpen(true);
             setIsBroadcastMenuOpen(false);
             setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
           }}
         >
           <FaMap
@@ -315,16 +324,19 @@ function AdminDashboardNavbar(props) {
             setIsBookingMenuOpen(false);
             setIsBroadcastMenuOpen(true);
             setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
           }}
           onMouseOut={() => {
             setIsBookingMenuOpen(false);
             setIsBroadcastMenuOpen(false);
             setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
           }}
           onClick={() => {
             setIsBookingMenuOpen(false);
             setIsBroadcastMenuOpen(true);
             setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
           }}
         >
           <RiBroadcastFill
@@ -405,6 +417,124 @@ function AdminDashboardNavbar(props) {
             </div>
           )}
         </div>
+
+        <div
+          className={`relative h-11 w-11 cursor-pointer flex justify-center items-center rounded-lg ${
+            props?.link == "rates" &&
+            "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
+          }`}
+          onMouseOver={() => {
+            setIsBookingMenuOpen(false);
+            setIsBroadcastMenuOpen(false);
+            setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(true);
+          }}
+          onMouseOut={() => {
+            setIsBookingMenuOpen(false);
+            setIsBroadcastMenuOpen(false);
+            setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(false);
+          }}
+          onClick={() => {
+            setIsBookingMenuOpen(false);
+            setIsBroadcastMenuOpen(false);
+            setIsUsersMenuOpen(false);
+            setIsRatesMenuOpen(true);
+          }}
+        >
+          <AiOutlineDollar
+            size={20}
+            className={`${
+              props?.link == "rates" ? "text-white" : "text-gray-400"
+            }`}
+          />
+
+          {/* SUB MENUS */}
+          {isRatesMenuOpen && (
+            <div
+              className={`flex flex-col gap-y-4 absolute left-12 top-0 maxContent max-w-none h-auto p-3 z-[30] rounded-lg bg-white shadow-lg`}
+              style={{
+                zIndex: 30,
+              }}
+            >
+              {/* <Link
+                to="/admin/dashboard/rates/vehicle-classes"
+                className={`flex items-center gap-x-2 text-xs ${
+                  props?.sublink === "vehicle-classes"
+                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                } hover:no-underline visited:no-underline`}
+              >
+                <LiaCarSolid size={18} className="" />
+                <span
+                  className={`text-sm ${
+                    props?.sublink === "vehicle-classes" && "font-semibold"
+                  }`}
+                >
+                  Vehicle Classes
+                </span>
+                {props?.sublink === "vehicle-classes" && (
+                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                )}
+              </Link> */}
+              <Link
+                to="/admin/dashboard/rates/booking-rates"
+                className={`flex items-center gap-x-2 text-xs ${
+                  props?.sublink === "booking-rates"
+                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                } hover:no-underline visited:no-underline`}
+              >
+                <FaHandHoldingDollar size={16} className="" />
+                <span
+                  className={`text-sm ${
+                    props?.sublink === "booking-rates" && "font-semibold"
+                  }`}
+                >
+                  Booking Rates
+                </span>
+                {props?.sublink === "booking-rates" && (
+                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                )}
+              </Link>
+              <Link
+                to="/admin/dashboard/rates/exchange-rates"
+                className={`flex items-center gap-x-2 text-xs ${
+                  props?.sublink === "exchange-rates"
+                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                } hover:no-underline visited:no-underline`}
+              >
+                <MdOutlineCurrencyExchange size={16} className="" />
+                <span
+                  className={`text-sm ${
+                    props?.sublink === "exchange-rates" && "font-semibold"
+                  }`}
+                >
+                  Exchange Rates
+                </span>
+                {props?.sublink === "exchange-rates" && (
+                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                )}
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <Link
+          to="/admin/dashboard/blog"
+          className={`h-11 w-11 flex justify-center items-center rounded-lg ${
+            props?.link == "blog" &&
+            "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
+          }`}
+        >
+          <IoIosGlobe
+            size={22}
+            className={`${
+              props?.link == "blog" ? "text-white" : "text-gray-400"
+            }`}
+          />
+        </Link>
 
         <Link
           to="/admin/dashboard/bookingapi"

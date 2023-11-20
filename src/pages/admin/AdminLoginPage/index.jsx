@@ -9,17 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginAdmin } from "../../../redux/slices/adminSlice";
 
 function AdminLoginPage(props) {
-  // Form fields
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const { isLoading } = useSelector((store) => store.admin);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loginAdmin());
-  }, []);
-
   return (
     <div className="flex min-h-screen">
       <div className="lg:w-[50vw] overflow-hidden h-screen bg-shuttlelanePurple fixed z-[40] lg:flex flex-col justify-center items-center hidden">
