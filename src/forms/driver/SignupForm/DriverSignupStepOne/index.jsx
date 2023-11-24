@@ -3,7 +3,7 @@ import { BiSolidCity } from "react-icons/bi";
 import Select from "react-select";
 import CountryData from "country-codes-list";
 
-function DriverSignupStepOne(props) {
+function DriverSignupStepOne({ isStepOne, stepOneStates }) {
   const genderOptions = [
     {
       value: "Male",
@@ -41,17 +41,12 @@ function DriverSignupStepOne(props) {
     },
   ];
 
-  // Form fields
-  const [selectedGender, setSelectedGender] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedEducation, setSelectedEducation] = useState("");
-
   // Scroll to top handler
   const scrollTopRef = useRef(null);
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
     scrollTopRef.current.scrollIntoView();
-  }, [props?.isStepOne]);
+  }, [isStepOne]);
 
   return (
     <div className="px-10 pt-10" ref={scrollTopRef}>
@@ -69,6 +64,13 @@ function DriverSignupStepOne(props) {
           </label>
           <input
             placeholder="John"
+            type="text"
+            name="firstName"
+            value={stepOneStates?.firstName}
+            onChange={(e) => {
+              console.log("state:", e.target.value);
+              stepOneStates?.setFirstName(e.target.value);
+            }}
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
@@ -80,6 +82,13 @@ function DriverSignupStepOne(props) {
             </label>
             <input
               placeholder="Snow"
+              type="text"
+              name="middleName"
+              value={stepOneStates?.middleName}
+              onChange={(e) => {
+                console.log("state:", e.target.value);
+                stepOneStates?.setMiddleName(e.target.value);
+              }}
               className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
             />
           </div>
@@ -89,6 +98,13 @@ function DriverSignupStepOne(props) {
             </label>
             <input
               placeholder="Doe"
+              type="text"
+              name="lastName"
+              value={stepOneStates?.lastName}
+              onChange={(e) => {
+                console.log("state:", e.target.value);
+                stepOneStates?.setLastName(e.target.value);
+              }}
               className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
             />
           </div>
@@ -96,12 +112,18 @@ function DriverSignupStepOne(props) {
 
         {/* Email Address */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
+          <label htmlFor="email" className="text-sm">
             Email Address
           </label>
           <input
             type="email"
             placeholder="abc@example.com"
+            name="email"
+            value={stepOneStates?.email}
+            onChange={(e) => {
+              console.log("state:", e.target.value);
+              stepOneStates?.setEmail(e.target.value);
+            }}
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
@@ -112,8 +134,10 @@ function DriverSignupStepOne(props) {
             Gender
           </label>
           <Select
-            value={selectedGender}
-            onChange={(value) => setSelectedGender(value)}
+            value={stepOneStates?.gender}
+            onChange={(value) => {
+              stepOneStates?.setGender(value);
+            }}
             options={genderOptions}
             styles={{
               control: (baseStyles, state) => ({
@@ -149,36 +173,50 @@ function DriverSignupStepOne(props) {
 
         {/* Phone */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
+          <label htmlFor="mobile" className="text-sm">
             Phone
           </label>
           <input
             type="tel"
-            placeholder="+2341234567890"
+            name="mobile"
+            value={stepOneStates?.mobile}
+            onChange={(e) => {
+              console.log("state:", e.target.value);
+              stepOneStates?.setMobile(e.target.value);
+            }}
+            placeholder="+2341234567890 (Please include country code e.g +234)"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
         {/* Alternative Phone */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
+          <label htmlFor="alternateMobile" className="text-sm">
             Alternative Phone
           </label>
           <input
             type="tel"
-            placeholder="+2341234567890"
+            name="alternateMobile"
+            value={stepOneStates?.alternateMobile}
+            onChange={(e) => {
+              console.log("state:", e.target.value);
+              stepOneStates?.setAlternateMobile(e.target.value);
+            }}
+            placeholder="+2341234567890 (Please include country code e.g +234)"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
         {/* Education */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
+          <label htmlFor="education" className="text-sm">
             Education
           </label>
           <Select
-            value={selectedEducation}
-            onChange={(value) => setSelectedEducation(value)}
+            value={stepOneStates?.education}
+            onChange={(value) => {
+              stepOneStates?.setEducation(value);
+            }}
             options={educationOptions}
             styles={{
               control: (baseStyles, state) => ({

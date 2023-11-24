@@ -30,6 +30,9 @@ import { calculateExchangeRate } from "../../../../../util";
 import { ToastContainer, toast } from "react-toastify";
 import AdminRatePerMile from "../../../../../components/ui/Admin/Dashboard/rates/RatePerMile";
 import AdminVisaOnArrivalRate from "../../../../../components/ui/Admin/Dashboard/rates/VisaOnArrivalRate";
+import AdminVehicleClassesRate from "../../../../../components/ui/Admin/Dashboard/rates/VehicleClasses";
+import AdminCarRates from "../../../../../components/ui/Admin/Dashboard/rates/CarRates";
+import AdminPriorityPassRates from "../../../../../components/ui/Admin/Dashboard/rates/PriorityPassRates";
 
 function AdminDashboardBookingRatesPage() {
   const { token, isLoading, currencies, ratePerMile } = useSelector(
@@ -207,6 +210,9 @@ function AdminDashboardBookingRatesPage() {
 
               {isRatePerMile && <AdminRatePerMile />}
               {isVisaOnArrivalRate && <AdminVisaOnArrivalRate />}
+              {isVehicleClasses && <AdminVehicleClassesRate />}
+              {isCarRates && <AdminCarRates />}
+              {isPriorityPassRates && <AdminPriorityPassRates />}
             </div>
           </div>
         </div>

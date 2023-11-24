@@ -4,75 +4,28 @@ import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
 
-function DriverSignupStepThree(props) {
-  const genderOptions = [
-    {
-      value: "Male",
-      label: "Male",
-    },
-    {
-      value: "Female",
-      label: "Female",
-    },
-    {
-      value: "Prefer not to say",
-      label: "Prefer not to say",
-    },
-  ];
+function DriverSignupStepThree({ isStepThree, stepThreeStates }) {
   const carTypeOptions = [
     {
-      value: "Toyota Rav 4",
-      label: "Toyota Rav 4",
+      value: "Salon",
+      label: "Salon",
     },
     {
-      value: "Toyota Rav 5",
-      label: "Toyota Rav 5",
+      value: "SUV",
+      label: "SUV",
     },
     {
-      value: "Toyota Rav 6",
-      label: "Toyota Rav 6",
-    },
-    {
-      value: "Toyota Rav 6",
-      label: "Toyota Rav 6",
+      value: "Mini Bus",
+      label: "Mini Bus",
     },
   ];
-  const educationOptions = [
-    {
-      value: "Primary",
-      label: "Primary",
-    },
-    {
-      value: "Secondary",
-      label: "Secondary",
-    },
-    {
-      value: "Polytechnic",
-      label: "Polytechnic",
-    },
-    {
-      value: "University",
-      label: "University",
-    },
-    {
-      value: "Other",
-      label: "Other",
-    },
-  ];
-
-  // Form fields
-  const [selectedCarType, setSelectedCarType] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedEducation, setSelectedEducation] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState();
-  const [selectedMaritalStatus, setSelectedMaritalStatus] = useState("");
 
   // Scroll to top handler
   const scrollTopRef = useRef(null);
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
     scrollTopRef.current.scrollIntoView();
-  }, [props?.isStepThree]);
+  }, [isStepThree]);
 
   return (
     <div className="px-10 pt-10" ref={scrollTopRef}>
@@ -95,8 +48,10 @@ function DriverSignupStepThree(props) {
             Car Type
           </label>
           <Select
-            value={selectedMaritalStatus}
-            onChange={(value) => setSelectedCarType(value)}
+            value={stepThreeStates?.carType}
+            onChange={(value) => {
+              stepThreeStates?.setCarType(value);
+            }}
             options={carTypeOptions}
             styles={{
               control: (baseStyles, state) => ({
@@ -137,6 +92,11 @@ function DriverSignupStepThree(props) {
           </label>
           <input
             type="text"
+            name="carName"
+            value={stepThreeStates?.carName}
+            onChange={(e) => {
+              stepThreeStates?.setCarName(e.target.value);
+            }}
             placeholder="Car Name"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -149,6 +109,11 @@ function DriverSignupStepThree(props) {
           </label>
           <input
             type="text"
+            name="carModel"
+            value={stepThreeStates?.carModel}
+            onChange={(e) => {
+              stepThreeStates?.setCarModel(e.target.value);
+            }}
             placeholder="Car Model"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -161,6 +126,11 @@ function DriverSignupStepThree(props) {
           </label>
           <input
             type="text"
+            name="carYear"
+            value={stepThreeStates?.carYear}
+            onChange={(e) => {
+              stepThreeStates?.setCarYear(e.target.value);
+            }}
             placeholder="Car Year"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />

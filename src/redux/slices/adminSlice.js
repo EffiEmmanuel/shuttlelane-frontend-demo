@@ -400,6 +400,46 @@ export const createVisaOnArrivalRate = createAsyncThunk(
       );
   }
 );
+// FUNCTION: This function updates a visa on arrival rate / country
+export const updateVisaOnArrivalRate = createAsyncThunk(
+  "admin/visa-on-arrival-rates/updateOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/visa-on-arrival-rates/${payload?._id}`,
+      {
+        method: "PUT",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          visaFee: payload?.visaFee,
+          voaBaseFeeId: payload?.voaBaseFeeId,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE VISA ON ARRIVAL RATE ERROR:", err));
+  }
+);
+// FUNCTION: This function deletes a visa on arrival rate / country
+export const deleteVisaOnArrivalRate = createAsyncThunk(
+  "admin/visa-on-arrival-rates/deleteOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/visa-on-arrival-rates/${payload?._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE VISA ON ARRIVAL RATE ERROR:", err));
+  }
+);
 
 // VOA BASE FEES
 // FUNCTION: This function fetches the visa on arrival rates
@@ -437,11 +477,465 @@ export const setVisaOnArrivalBaseFees = createAsyncThunk(
           transactionFee: payload?.transactionFee,
           processingFee: payload?.processingFee,
           biometricFee: payload?.biometricFee,
+          _id: payload?._id,
         }),
       }
     )
       .then((res) => res.json())
       .catch((err) => console.log("SET VISA ON ARRIVAL BASE RATE ERROR:", err));
+  }
+);
+
+// VEHICLE CLASSES
+// FUNCTION: This function fetches vehicle classes
+export const fetchVehicleClasses = createAsyncThunk(
+  "admin/vehicle-classes/getAll",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/vehicle-classes`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH VISA ON ARRIVAL BASE RATES ERROR:", err)
+      );
+  }
+);
+// FUNCTION: This function creates vehicle classes
+export const createVehicleClasses = createAsyncThunk(
+  "admin/vehicle-classes/createOne",
+  async (payload) => {
+    console.log("payload.image:::", payload.image);
+
+    // UPLOAD IMAGE TO CLOUDINARY FIRST
+    const formData = new FormData();
+    formData.append("file", payload.image);
+    formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("upload successful");
+        const data = await response.json();
+        return fetch(`http://localhost:3001/api/v1/admin/vehicle-classes`, {
+          method: "POST",
+          headers: {
+            token: `Bearer ${JSON.parse(payload?.token)}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: data.secure_url,
+            className: payload?.vehicleClassName,
+            passengers: payload?.passengers,
+            luggages: payload?.luggages,
+            basePrice: payload?.basePrice,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((err) => console.log("CREATE VEHICLE CLASS ERROR:", err));
+      } else {
+        // Handle error
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  }
+);
+// FUNCTION: This function updates a vehicle classe
+export const updateVehicleClass = createAsyncThunk(
+  "admin/vehicle-classes/updateOne",
+  async (payload) => {
+    switch (typeof payload?.image) {
+      // If the image was not updated, no need to upload anything to cloudinary
+      case "string":
+        return fetch(
+          `http://localhost:3001/api/v1/admin/vehicle-classes/${payload?.vehicleClassId}`,
+          {
+            method: "PUT",
+            headers: {
+              token: `Bearer ${JSON.parse(payload?.token)}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              className: payload?.className,
+              passengers: payload?.passengers,
+              luggages: payload?.luggages,
+              basePrice: payload?.basePrice,
+            }),
+          }
+        )
+          .then((res) => res.json())
+          .catch((err) => console.log("UPLOAD VEHICLE CLASS ERROR:", err));
+        break;
+
+      default:
+        // UPLOAD IMAGE TO CLOUDINARY FIRST
+        const formData = new FormData();
+        formData.append("file", payload.image);
+        formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
+
+        try {
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (response.ok) {
+            console.log("upload successful");
+            const data = await response.json();
+            return fetch(
+              `http://localhost:3001/api/v1/admin/vehicle-classes/${payload?.vehicleClassId}`,
+              {
+                method: "PUT",
+                headers: {
+                  token: `Bearer ${JSON.parse(payload?.token)}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  image: data.secure_url,
+                  className: payload?.vehicleClassName,
+                  passengers: payload?.passengers,
+                  luggages: payload?.luggages,
+                  basePrice: payload?.basePrice,
+                }),
+              }
+            )
+              .then((res) => res.json())
+              .catch((err) => console.log("CREATE VEHICLE CLASS ERROR:", err));
+          } else {
+            // Handle error
+            console.error("Upload failed");
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+        break;
+    }
+  }
+);
+// FUNCTION: This function deletes a vehicle class
+export const deleteVehicleClass = createAsyncThunk(
+  "admin/vehicle-classes/deleteOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/vehicle-classes/${payload?.vehicleClassId}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE VEHICLE CLASS ERROR:", err));
+  }
+);
+
+// CAR RATES
+// FUNCTION: This function fetches cars
+export const fetchCars = createAsyncThunk(
+  "admin/cars/getAll",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/cars`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH CARS ERROR:", err));
+  }
+);
+// FUNCTION: This function creates a car
+export const createCar = createAsyncThunk(
+  "admin/cars/createOne",
+  async (payload) => {
+    console.log("payload.image:::", payload.image);
+
+    return fetch(`http://localhost:3001/api/v1/admin/cars`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: payload?.name,
+        price: payload?.price,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("CREATE CAR ERROR:", err));
+  }
+);
+// FUNCTION: This function updates a car
+export const updateCar = createAsyncThunk(
+  "admin/cars/updateOne",
+  async (payload) => {
+    return fetch(`http://localhost:3001/api/v1/admin/cars/${payload?.carId}`, {
+      method: "PUT",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: payload?.name,
+        price: payload?.price,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE CAR ERROR:", err));
+  }
+);
+// FUNCTION: This function deletes a car
+export const deleteCar = createAsyncThunk(
+  "admin/car/deleteOne",
+  async (payload) => {
+    return fetch(`http://localhost:3001/api/v1/admin/cars/${payload?.carId}`, {
+      method: "DELETE",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE CAR ERROR:", err));
+  }
+);
+
+// PRIORITY PASS RATES
+// FUNCTION: This function fetches passes
+export const fetchPasses = createAsyncThunk(
+  "admin/passes/getAll",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/passes`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH PASSES ERROR:", err));
+  }
+);
+// FUNCTION: This function creates a pass
+export const createPass = createAsyncThunk(
+  "admin/passes/createOne",
+  async (payload) => {
+    console.log("payload.image:::", payload.image);
+
+    return fetch(`http://localhost:3001/api/v1/admin/passes`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: payload?.name,
+        price: payload?.price,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("CREATE PASS ERROR:", err));
+  }
+);
+// FUNCTION: This function updates a pass
+export const updatePass = createAsyncThunk(
+  "admin/passes/updateOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/passes/${payload?.passId}`,
+      {
+        method: "PUT",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: payload?.name,
+          price: payload?.price,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE PASS ERROR:", err));
+  }
+);
+// FUNCTION: This function deletes a pass
+export const deletePass = createAsyncThunk(
+  "admin/passes/deleteOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/passes/${payload?.passId}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE PASS ERROR:", err));
+  }
+);
+
+// BLOG MANAGEMENT
+// FUNCTION: This function fetches blog posts
+export const fetchBlogPosts = createAsyncThunk(
+  "admin/blog/getPosts",
+  async () => {
+    return fetch(`http://localhost:3001/api/v1/blog-posts`, {})
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BLOG OPSTS ERROR:", err));
+  }
+);
+// FUNCTION: This function creates a blog post
+export const createBlogPost = createAsyncThunk(
+  "admin/blog/createPost",
+  async (payload) => {
+    console.log("payload.image:::", payload.image);
+
+    // UPLOAD IMAGE TO CLOUDINARY FIRST
+    const formData = new FormData();
+    formData.append("file", payload.image);
+    formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("upload successful");
+        const data = await response.json();
+        // SAVE BLOG POST TO THE DATABASE
+        return fetch(`http://localhost:3001/api/v1/admin/blog-posts`, {
+          method: "POST",
+          headers: {
+            token: `Bearer ${JSON.parse(payload?.token)}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: data.secure_url,
+            title: payload?.title,
+            content: payload?.content,
+            author: payload?.author,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((err) => console.log("CREATE VEHICLE CLASS ERROR:", err));
+      } else {
+        // Handle error
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  }
+);
+// FUNCTION: This function updates a blog post
+export const updateBlogPost = createAsyncThunk(
+  "admin/blog/updateOne",
+  async (payload) => {
+    switch (typeof payload?.image) {
+      // If the image was not updated, no need to upload anything to cloudinary
+      case "string":
+        return fetch(
+          `http://localhost:3001/api/v1/admin/blog-posts/${payload?.blogPostId}`,
+          {
+            method: "PUT",
+            headers: {
+              token: `Bearer ${JSON.parse(payload?.token)}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: payload?.title,
+              content: payload?.content,
+              author: payload?.author,
+            }),
+          }
+        )
+          .then((res) => res.json())
+          .catch((err) => console.log("UPDATE BLOG POST ERROR:", err));
+        break;
+
+      default:
+        // UPLOAD IMAGE TO CLOUDINARY FIRST
+        const formData = new FormData();
+        formData.append("file", payload.image);
+        formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
+
+        try {
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (response.ok) {
+            console.log("upload successful");
+            const data = await response.json();
+            return fetch(
+              `http://localhost:3001/api/v1/admin/blog-posts/${payload?.blogPostId}`,
+              {
+                method: "PUT",
+                headers: {
+                  token: `Bearer ${JSON.parse(payload?.token)}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  title: payload?.title,
+                  content: payload?.content,
+                  author: payload?.author,
+                }),
+              }
+            )
+              .then((res) => res.json())
+              .catch((err) => console.log("UPDATE BLOG POST ERROR:", err));
+          } else {
+            // Handle error
+            console.error("Upload failed");
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+        break;
+    }
+  }
+);
+// FUNCTION: This function deletes a blog post
+export const deleteBlogPost = createAsyncThunk(
+  "admin/blog/deleteOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/blog-posts/${payload?.blogPostId}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE BLOG POST ERROR:", err));
   }
 );
 
@@ -496,9 +990,21 @@ export const adminSlice = createSlice({
     // The following state is for rate per mile management
     ratePerMile: null,
 
-    // The following state is for visa on arrival rates management
+    // The following states are for visa on arrival rates management
     visaOnArrivalRates: null,
     voaBaseFees: null,
+
+    // The following state is for vehicle class management
+    vehicleClasses: null,
+
+    // The following state is for car management
+    cars: null,
+
+    // The following state is for pass management (Priority Pass)
+    passes: null,
+
+    // The following state is for blog management
+    blogPosts: null,
   },
   reducers: {
     setAdmin: (state, action) => {
@@ -916,6 +1422,48 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
+      }) // Update Visa On Arrival Rates AsyncThunk states
+      .addCase(updateVisaOnArrivalRate.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateVisaOnArrivalRate.fulfilled, (state, action) => {
+        console.log(
+          "ACTION.PAYLOAD UPDATE VISA ON ARRIVAL RATE",
+          action.payload
+        );
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.visaOnArrivalRates = action.payload?.visaOnArrivalRates;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateVisaOnArrivalRate.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Visa On Arrival Rates AsyncThunk states
+      .addCase(deleteVisaOnArrivalRate.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteVisaOnArrivalRate.fulfilled, (state, action) => {
+        console.log(
+          "ACTION.PAYLOAD UPDATE VISA ON ARRIVAL RATE",
+          action.payload
+        );
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.visaOnArrivalRates = action.payload?.visaOnArrivalRates;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteVisaOnArrivalRate.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
       }) // Set Visa On Arrival BASE Fees AsyncThunk states
       .addCase(setVisaOnArrivalBaseFees.pending, (state) => {
         state.isLoading = true;
@@ -928,6 +1476,7 @@ export const adminSlice = createSlice({
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
           state.voaBaseFees = action.payload?.voaBaseFees;
+          state.visaOnArrivalRates = action.payload?.visaOnArrivalRates;
         } else {
           toast.error(action.payload?.message);
         }
@@ -950,6 +1499,274 @@ export const adminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchVisaOnArrivalBaseRates.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Vehicle Classes AsyncThunk states
+      .addCase(fetchVehicleClasses.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchVehicleClasses.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH VEHICLE CLASSES", action.payload);
+        state.vehicleClasses = action.payload?.vehicleClasses;
+        state.isLoading = false;
+      })
+      .addCase(fetchVehicleClasses.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Create Vehicle Classes AsyncThunk states
+      .addCase(createVehicleClasses.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createVehicleClasses.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD CREATE VEHICLE CLASSES", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.vehicleClasses = action.payload?.vehicleClasses;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(createVehicleClasses.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Update Vehicle Classes AsyncThunk states
+      .addCase(updateVehicleClass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateVehicleClass.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE VEHICLE CLASSES", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.vehicleClasses = action.payload?.vehicleClasses;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateVehicleClass.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Vehicle Classes AsyncThunk states
+      .addCase(deleteVehicleClass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteVehicleClass.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE VEHICLE CLASSES", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.vehicleClasses = action.payload?.vehicleClasses;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteVehicleClass.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Cars AsyncThunk states
+      .addCase(fetchCars.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCars.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH CARS", action.payload);
+        state.cars = action.payload?.cars;
+        state.isLoading = false;
+      })
+      .addCase(fetchCars.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Create Car AsyncThunk states
+      .addCase(createCar.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createCar.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD CREATE CAR", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.cars = action.payload?.cars;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(createCar.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Update Car AsyncThunk states
+      .addCase(updateCar.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCar.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE CAR", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.cars = action.payload?.cars;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateCar.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Car AsyncThunk states
+      .addCase(deleteCar.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCar.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE CAR", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.cars = action.payload?.cars;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteCar.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Passes AsyncThunk states
+      .addCase(fetchPasses.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPasses.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH PASS", action.payload);
+        state.passes = action.payload?.passes;
+        state.isLoading = false;
+      })
+      .addCase(fetchPasses.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Create Pass AsyncThunk states
+      .addCase(createPass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createPass.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD CREATE PASS", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.passes = action.payload?.passes;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(createPass.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Update Pass AsyncThunk states
+      .addCase(updatePass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePass.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE PASS", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.passes = action.payload?.passes;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updatePass.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Pass AsyncThunk states
+      .addCase(deletePass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePass.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE PASS", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.passes = action.payload?.passes;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deletePass.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Blog Posts AsyncThunk states
+      .addCase(fetchBlogPosts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchBlogPosts.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH BLOG POSTS", action.payload);
+        state.blogPosts = action.payload?.blogPosts;
+        state.isLoading = false;
+      })
+      .addCase(fetchBlogPosts.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Create Blog Posts AsyncThunk states
+      .addCase(createBlogPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBlogPost.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD CREATE BLOG POST", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.blogPosts = action.payload?.blogPosts;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(createBlogPost.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Update Blog Posts AsyncThunk states
+      .addCase(updateBlogPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateBlogPost.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE BLOG POST", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.blogPosts = action.payload?.blogPosts;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateBlogPost.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Blog Post AsyncThunk states
+      .addCase(deleteBlogPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteBlogPost.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE BLOG POST", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.blogPosts = action.payload?.blogPosts;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteBlogPost.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

@@ -4,7 +4,7 @@ import { BiSolidCity } from "react-icons/bi";
 import Select from "react-select";
 import CountryData from "country-codes-list";
 
-function DriverSignupStepFive(props) {
+function DriverSignupStepFive({ isStepFive, stepFiveStates }) {
   const otherRideHailingOptions = [
     {
       value: "Yes",
@@ -25,7 +25,7 @@ function DriverSignupStepFive(props) {
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
     scrollTopRef.current.scrollIntoView();
-  }, [props?.isStepFive]);
+  }, [isStepFive]);
 
   return (
     <div className="px-10 pt-10" ref={scrollTopRef}>
@@ -50,8 +50,10 @@ function DriverSignupStepFive(props) {
             Taxify, Oride,etc.)
           </label>
           <Select
-            value={selectedOtherRideHailing}
-            onChange={(value) => setSelectedOtherRideHailing(value)}
+            value={stepFiveStates?.isDrivingForHailingPlatforms}
+            onChange={(value) =>
+              stepFiveStates?.setIsDrivingForHailingPlatforms(value)
+            }
             options={otherRideHailingOptions}
             styles={{
               control: (baseStyles, state) => ({

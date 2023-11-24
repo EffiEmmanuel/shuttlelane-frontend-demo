@@ -4,13 +4,13 @@ import { BiSolidCity } from "react-icons/bi";
 import Select from "react-select";
 import CountryData from "country-codes-list";
 
-function DriverSignupStepSix(props) {
+function DriverSignupStepSix({ isStepSix, stepSixStates }) {
   // Scroll to top handler
   const scrollTopRef = useRef(null);
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
     scrollTopRef.current.scrollIntoView();
-  }, [props?.isStepSix]);
+  }, [isStepSix]);
 
   return (
     <div className="px-10 pt-10" ref={scrollTopRef}>
@@ -38,13 +38,16 @@ function DriverSignupStepSix(props) {
           </label>
           <input
             type="password"
+            name="password"
+            value={stepSixStates?.password}
+            onChange={(e) => stepSixStates?.setPassword(e.target.value)}
             placeholder="********"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
         {/* Confirm Password */}
-        <div className="flex flex-col gap-y-1">
+        {/* <div className="flex flex-col gap-y-1">
           <label htmlFor="confirmPassword" className="text-sm">
             Confirm Password
           </label>
@@ -53,7 +56,7 @@ function DriverSignupStepSix(props) {
             placeholder="********"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
-        </div>
+        </div> */}
       </form>
     </div>
   );

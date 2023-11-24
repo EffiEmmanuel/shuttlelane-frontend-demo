@@ -34,10 +34,11 @@ import AdminDashboardEnquiriesPage from "./pages/admin/dashboard/broadcasts/Enqu
 import AdminDashboardPushNotificationsPage from "./pages/admin/dashboard/broadcasts/PushNotificationsPage";
 import AdminDashboardBulkEmailPage from "./pages/admin/dashboard/broadcasts/BulkEmailPage";
 import ConfirmBookingPage from "./pages/booking/confirm-booking";
-import { AdminProtectedRoute } from "./components/security/ProtectedRoute";
+// import { AdminProtectedRoute } from "./components/security/ProtectedRoute";
 import Modal from "react-modal";
 import AdminDashboardExchangeRatesPage from "./pages/admin/dashboard/rates/ExchangeRates";
 import AdminDashboardBookingRatesPage from "./pages/admin/dashboard/rates/BookingRates";
+import AdminDashboardBlogPage from "./pages/admin/dashboard/blog";
 
 // Modal.setAppElement("#appElement");
 
@@ -102,7 +103,7 @@ function App() {
               element={
                 // <AdminProtectedRoute>
                 <AdminDashboardHomePage />
-                // {/* </AdminProtectedRoute> */}
+                // </AdminProtectedRoute>
               }
             />
 
@@ -113,7 +114,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardAddBookingPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
@@ -121,7 +122,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardAirportTransferPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
@@ -129,7 +130,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardCarRentalPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
@@ -137,7 +138,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardPriorityPassPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
@@ -145,7 +146,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardVisaOnArrivalPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
             </Route>
@@ -155,7 +156,7 @@ function App() {
               element={
                 // <AdminProtectedRoute>
                 <AdminDashboardCitiesPage />
-                // {/* </AdminProtectedRoute> */}
+                // </AdminProtectedRoute>
               }
             />
 
@@ -166,7 +167,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardUsersPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
@@ -174,7 +175,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardDriversPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
@@ -182,7 +183,7 @@ function App() {
                 element={
                   //   <AdminProtectedRoute>
                   <AdminDashboardVendorsPage />
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
             </Route>
@@ -193,30 +194,24 @@ function App() {
                 path="enquiries"
                 element={
                   //   <AdminProtectedRoute>
-
                   <AdminDashboardEnquiriesPage />
-
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
                 path="push-notifications"
                 element={
                   //   <AdminProtectedRoute>
-
                   <AdminDashboardPushNotificationsPage />
-
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
                 path="bulk-email"
                 element={
                   //   <AdminProtectedRoute>
-
                   <AdminDashboardBulkEmailPage />
-
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
             </Route>
@@ -227,23 +222,29 @@ function App() {
                 path="booking-rates"
                 element={
                   //   <AdminProtectedRoute>
-
                   <AdminDashboardBookingRatesPage />
-
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
               <Route
                 path="exchange-rates"
                 element={
                   //   <AdminProtectedRoute>
-
                   <AdminDashboardExchangeRatesPage />
-
-                  //   {/* </AdminProtectedRoute> */}
+                  //   </AdminProtectedRoute>
                 }
               />
             </Route>
+
+            {/* /admin/dashboard/blog */}
+            <Route
+              path="blog"
+              element={
+                // <AdminProtectedRoute>
+                <AdminDashboardBlogPage />
+                // </AdminProtectedRoute>
+              }
+            />
           </Route>
         </Route>
       </Routes>

@@ -4,7 +4,7 @@ import { BiSolidCity } from "react-icons/bi";
 import Select from "react-select";
 import CountryData from "country-codes-list";
 
-function DriverSignupStepFour(props) {
+function DriverSignupStepFour({ isStepFour, stepFourStates }) {
   const relationshipOptions = [
     {
       value: "Father",
@@ -37,7 +37,7 @@ function DriverSignupStepFour(props) {
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
     scrollTopRef.current.scrollIntoView();
-  }, [props?.isStepFour]);
+  }, [isStepFour]);
 
   return (
     <div className="px-10 pt-10" ref={scrollTopRef}>
@@ -57,32 +57,47 @@ function DriverSignupStepFour(props) {
       <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
         {/* First Name */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="firstName" className="text-sm">
+          <label htmlFor="emergencyFirstName" className="text-sm">
             First Name
           </label>
           <input
             placeholder="John"
+            name="emergencyFirstName"
+            value={stepFourStates?.emergencyFirstName}
+            onChange={(e) => {
+              stepFourStates?.setEmergencyFirstName(e.target.value);
+            }}
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
         {/* Last Name */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="lastName" className="text-sm">
+          <label htmlFor="emergencyLastName" className="text-sm">
             Last Name
           </label>
           <input
             placeholder="Doe"
+            name="emergencylastName"
+            value={stepFourStates?.emergencylastName}
+            onChange={(e) => {
+              stepFourStates?.setEmergencyLastName(e.target.value);
+            }}
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
         {/* Address */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="address" className="text-sm">
+          <label htmlFor="emergencyAddress" className="text-sm">
             Address
           </label>
           <input
             type="text"
+            name="emergencyAddress"
+            value={stepFourStates?.emergencyAddress}
+            onChange={(e) => {
+              stepFourStates?.setEmergencyAddress(e.target.value);
+            }}
             placeholder="Home address"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -90,11 +105,16 @@ function DriverSignupStepFour(props) {
 
         {/* Phone */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
+          <label htmlFor="emergencyMobile" className="text-sm">
             Phone
           </label>
           <input
             type="tel"
+            name="emergencyMobile"
+            value={stepFourStates?.emergencyMobile}
+            onChange={(e) => {
+              stepFourStates?.setEmergencyMobile(e.target.value);
+            }}
             placeholder="+2341234567890"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -102,12 +122,14 @@ function DriverSignupStepFour(props) {
 
         {/* Relationship */}
         <div className="flex flex-col gap-y-1">
-          <label htmlFor="relationship" className="text-sm">
+          <label htmlFor="emergencyRelationship" className="text-sm">
             Relationship
           </label>
           <Select
-            value={selectedRelationship}
-            onChange={(value) => setSelectedRelationship(value)}
+            value={stepFourStates?.emergencyRelationship}
+            onChange={(value) => {
+              stepFourStates?.setEmergencyRelationship(value);
+            }}
             options={relationshipOptions}
             styles={{
               control: (baseStyles, state) => ({

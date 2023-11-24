@@ -4,7 +4,7 @@ import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
 
-function DriverSignupStepTwo(props) {
+function DriverSignupStepTwo({ isStepTwo, stepTwoStates }) {
   const genderOptions = [
     {
       value: "Male",
@@ -72,7 +72,7 @@ function DriverSignupStepTwo(props) {
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
     scrollTopRef.current.scrollIntoView();
-  }, [props?.isStepTwo]);
+  }, [isStepTwo]);
 
   return (
     <div className="px-10 pt-10" ref={scrollTopRef}>
@@ -96,11 +96,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <DatePicker
             locale={enGB}
-            value={dateOfBirth}
-            appearance="subtle"
+            value={stepTwoStates?.dateOfBirth}
             onChange={(date) => {
-              setDateOfBirth(date);
+              stepTwoStates?.setDateOfBirth(date);
             }}
+            appearance="subtle"
             placeholder="Date of birth"
             style={{
               backgroundColor: "transparent",
@@ -122,6 +122,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <input
             type="text"
+            name="address"
+            value={stepTwoStates?.address}
+            onChange={(e) => {
+              stepTwoStates?.setAddress(e.target.value);
+            }}
             placeholder="Home address"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -134,6 +139,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <input
             type="text"
+            name="city"
+            value={stepTwoStates?.city}
+            onChange={(e) => {
+              stepTwoStates?.setCity(e.target.value);
+            }}
             placeholder="City"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -146,6 +156,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <input
             type="text"
+            name="state"
+            value={stepTwoStates?.state}
+            onChange={(e) => {
+              stepTwoStates?.setState(e.target.value);
+            }}
             placeholder="State"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -157,8 +172,10 @@ function DriverSignupStepTwo(props) {
             Marital Status
           </label>
           <Select
-            value={selectedMaritalStatus}
-            onChange={(value) => setSelectedMaritalStatus(value)}
+            value={stepTwoStates?.maritalStatus}
+            onChange={(value) => {
+              stepTwoStates?.setMaritalStatus(value);
+            }}
             options={maritalStatusOptions}
             styles={{
               control: (baseStyles, state) => ({
@@ -187,7 +204,7 @@ function DriverSignupStepTwo(props) {
                 // fontSize: ".75rem",
               }),
             }}
-            placeholder="Select Gender"
+            placeholder="Select Marital Status"
             className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
@@ -199,6 +216,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <input
             type="tel"
+            name="bvn"
+            value={stepTwoStates?.bvn}
+            onChange={(e) => {
+              stepTwoStates?.setBvn(e.target.value);
+            }}
             placeholder="***********"
             name="bvn"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
@@ -212,6 +234,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <input
             type="tel"
+            name="nin"
+            value={stepTwoStates?.nin}
+            onChange={(e) => {
+              stepTwoStates?.setNin(e.target.value);
+            }}
             placeholder="***********"
             name="nin"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
@@ -225,6 +252,11 @@ function DriverSignupStepTwo(props) {
           </label>
           <input
             type="tel"
+            name="driverLicenseNumber"
+            value={stepTwoStates?.driverLicense}
+            onChange={(e) => {
+              stepTwoStates?.setDriverLicense(e.target.value);
+            }}
             placeholder="***********"
             name="driverLicenseNumber"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
