@@ -23,6 +23,7 @@ import {
   FaXmark,
 } from "react-icons/fa6";
 import Modal from "react-modal";
+import Select from "react-select";
 
 // Images
 import empty from "../../../../../../assets/images/empty.png";
@@ -68,11 +69,12 @@ function AdminVisaOnArrivalRate() {
   // Add Country Form Fields
   const [country, setCountry] = useState();
   const [visaFee, setVisaFee] = useState();
+  const [isVisaRequired, setIsVisaRequired] = useState();
 
   // FUNCTION: This function handles the creation of a country / visa on arrival rate
   async function handleAddCountry(e) {
     e.preventDefault();
-    if (!country || !visaFee) {
+    if (!country || !visaFee || !isVisaRequired) {
       toast.error("Please fill in the missing fields");
       return;
     }
@@ -81,6 +83,7 @@ function AdminVisaOnArrivalRate() {
         token,
         country,
         visaFee,
+        isNigerianVisaRequired: isVisaRequired?.value,
       })
     );
   }
@@ -118,15 +121,26 @@ function AdminVisaOnArrivalRate() {
   // MODIFY VISA ON ARRIVAL RATE
   const [isRateDetailModalOpen, setIsRateDetailModalOpen] = useState(false);
   const [currentVOARate, setCurrentVOARate] = useState();
-  const [visaFeeModified, setVisaFeeModified] = useState();
+  const [countryModified, setCountryModified] = useState();
+  const [visaFeeModified, setVisaFeeModified] = useState(
+    currentVOARate?.visaFee
+  );
+  const [isVisaRequiredModified, setIsVisaRequiredModified] = useState();
   useEffect(() => {
+    console.log("TF:", currentVOARate?.isNigerianVisaRequired);
     setVisaFeeModified(currentVOARate?.visaFee ?? 0);
+    setCountryModified(currentVOARate?.country);
+    setIsVisaRequiredModified({
+      value: currentVOARate?.isNigerianVisaRequired,
+      label: currentVOARate?.isNigerianVisaRequired === true ? "Yes" : "No",
+    });
   }, [currentVOARate]);
 
   async function handleModifyVisaOnArrivalRate(e) {
     e.preventDefault();
 
-    if (!visaFeeModified) {
+    if (!visaFeeModified || !countryModified || !isVisaRequiredModified) {
+      console.log(visaFeeModified, countryModified, isVisaRequiredModified);
       toast.error("Please fill in the missing fields");
       return;
     }
@@ -134,6 +148,8 @@ function AdminVisaOnArrivalRate() {
       updateVisaOnArrivalRate({
         token,
         _id: currentVOARate?._id,
+        country: countryModified,
+        isNigerianVisaRequired: isVisaRequiredModified?.value,
         visaFee: visaFeeModified,
         voaBaseFeeId: voaBaseFees?._id,
       })
@@ -144,6 +160,12 @@ function AdminVisaOnArrivalRate() {
 
     dispatch(deleteVisaOnArrivalRate({ token, _id: currentVOARate?._id }));
   }
+
+  // "Is Visa Required For Citizens Of This Country To Visit Nigeria?" Data
+  const isVisaRequiredData = [
+    { value: false, label: "No" },
+    { value: true, label: "Yes" },
+  ];
 
   return (
     <div className="mt-10">
@@ -337,6 +359,50 @@ function AdminVisaOnArrivalRate() {
                 </div>
               </div>
 
+              <div className="w-full flex flex-col">
+                <label htmlFor="visaFee" className="text-sm">
+                  Is visa required for citizens of this country to visit
+                  Nigeria?
+                </label>
+                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative z-[80]">
+                    <Select
+                      value={isVisaRequired}
+                      onChange={(value) => setIsVisaRequired(value)}
+                      options={isVisaRequiredData}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
+                          zIndex: 80,
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select Yes or No"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <button
                 type="submit"
                 disabled={isLoading}
@@ -373,9 +439,28 @@ function AdminVisaOnArrivalRate() {
             />
           </div>
 
-          {/* Add Country */}
           <form className="w-full mt-5">
             <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
+              <div className="w-full flex flex-col">
+                <label htmlFor="country" className="text-sm">
+                  Country Name
+                </label>
+
+                <div className="w-full flex items-center justify-between">
+                  <input
+                    type="text"
+                    placeholder="United States"
+                    name="country"
+                    value={countryModified}
+                    onChange={(e) => {
+                      console.log("RATE:", e.target.value);
+                      setCountryModified(e.target.value);
+                    }}
+                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                  />
+                </div>
+              </div>
+
               <div className="w-full flex flex-col">
                 <label htmlFor="visaFee" className="text-sm">
                   Visa Fee
@@ -399,6 +484,50 @@ function AdminVisaOnArrivalRate() {
                         setVisaFeeModified(e.target.value);
                       }}
                       className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full flex flex-col">
+                <label htmlFor="visaFee" className="text-sm">
+                  Is visa required for citizens of this country to visit
+                  Nigeria?
+                </label>
+                <div className="flex items-center border-[0.3px] border-gray-400 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative z-[80]">
+                    <Select
+                      value={isVisaRequiredModified}
+                      onChange={(value) => setIsVisaRequiredModified(value)}
+                      options={isVisaRequiredData}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
+                          zIndex: 80,
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select Yes or No"
                     />
                   </div>
                 </div>
@@ -484,6 +613,21 @@ function AdminVisaOnArrivalRate() {
       {/* VOA TABLE */}
       {!isLoading && (
         <div className="mt-5 w-full lg:overflow-x-hidden overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
+          <div className="flex flex-col gap-y-1">
+            <div className="flex items-center gap-x-1">
+              <div className="h-1 w-5 bg-green-400"></div>
+              <small>indicates visa is NOT required to visit Nigeria</small>
+            </div>
+            <div className="flex items-center gap-x-1">
+              <div className="h-1 w-5 bg-red-400"></div>
+              <small>indicates visa is required to visit Nigeria</small>
+            </div>
+            <div className="flex items-center gap-x-1">
+              <div className="h-1 w-5 bg-yellow-400"></div>
+              <small>indicates value not yet set</small>
+            </div>
+          </div>
+
           {/* Table header */}
           <div className="maxContent lg:max-w-full lg:min-w-full flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
             <p className="w-[200px] lg:w-[14.2%] text-xs">Country</p>
@@ -510,6 +654,13 @@ function AdminVisaOnArrivalRate() {
                 }`}
               >
                 {visaOnArrivalRate?.country}
+                {visaOnArrivalRate?.isNigerianVisaRequired ? (
+                  <div className="h-1 w-5 bg-red-400"></div>
+                ) : visaOnArrivalRate?.isNigerianVisaRequired == null ? (
+                  <div className="h-1 w-5 bg-yellow-400"></div>
+                ) : (
+                  <div className="h-1 w-5 bg-green-400"></div>
+                )}
               </p>
               <p
                 className={`w-[200px] lg:w-[14.2%] text-xs ${

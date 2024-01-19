@@ -369,5 +369,27 @@ tspan {
 
 /* React Modal Custom Rules */
 .ReactModal__Overlay.ReactModal__Overlay--after-open {
-    z-index: 99
+  z-index: 99;
+}
+
+/* React Select Custom Rules */
+.selectContainer > .css-b62m3t-container {
+  width: 100% !important;
+}
+
+/* React Flag Input Custom Rules */
+.flag-dropdown {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+input.form-control {
+  border: none !important;
+  padding-top: 0 !important;
+  height: 100% !important;
+}
+
+/* Toast Container Custom Rules */
+.Toastify__toast-container {
+  z-index: 9999 !important;
 }

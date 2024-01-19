@@ -16,8 +16,6 @@ import {
   BsStarFill,
 } from "react-icons/bs";
 import { IoCarSportOutline } from "react-icons/io5";
-import { FiChevronDown } from "react-icons/fi";
-import { AiOutlineArrowDown } from "react-icons/ai";
 import { useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import AirportTransferForm from "../../forms/HomePage/AirportTransferForm";
@@ -26,6 +24,8 @@ import Footer from "../../components/ui/Footer";
 import PriorityPassForm from "../../forms/HomePage/PriorityPassForm";
 import CustomerReviews from "../../components/ui/CustomerReviews";
 import PaymentPartners from "../../components/ui/PaymentPartners";
+import { toast } from "react-toastify";
+import VisaOnArrivalForm from "../../forms/HomePage/VisaOnArrivalForm";
 
 // Images
 import circleAsset from "../../assets/images/circle-asset.svg";
@@ -34,16 +34,8 @@ import FleetSlide from "../../components/ui/FleetSlide";
 import google from "../../assets/logos/google.svg";
 import tripAdvisor from "../../assets/logos/tripAdvisor.svg";
 import trustpilot from "../../assets/logos/trustpilot.svg";
-import paypal from "../../assets/logos/paypal.svg";
-import stripe from "../../assets/logos/stripe.svg";
-import flutterwave from "../../assets/logos/flutterwave.png";
 import appstoreDownload from "../../assets/logos/downloadAppstore.svg";
 import playstoreDownload from "../../assets/logos/downloadPlaystore.svg";
-// import appstore from "../../assets/logos/appstore.svg";
-import googlePlay from "../../assets/logos/googlePlay.svg";
-import { toast } from "react-toastify";
-import doodleBg from "../../assets/images/doodle.svg";
-import { useLocation } from "react-router-dom";
 
 function HomePage() {
   // SERVICE STATES
@@ -170,14 +162,11 @@ function HomePage() {
               <p className="text-sm">Priority Pass</p>
             </button>
             <button
-              //   onClick={() => toggleService("visaOnArrival")}
-              onClick={() => {
-                toast.info("This service is under construction");
-              }}
+              onClick={() => toggleService("visaOnArrival")}
               className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
                 isVisaOnArrival
-                  ? "text-white bg-shuttlelanePurple border-white"
-                  : "text-white bg-transparent border-white "
+                  ? "text-shuttlelanePurple bg-white border-shuttlelaneBlack"
+                  : "text-white bg-transparent border-white"
               } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
             >
               <BsAirplane size={16} />
@@ -194,12 +183,15 @@ function HomePage() {
                     ? "lg:h-[280px] h-auto pb-10 lg:pb-0"
                     : isCarRental
                     ? "lg:h-[250px] h-auto pb-10 lg:pb-0"
-                    : "lg:h-[250px] h-auto pb-10 lg:pb-0"
+                    : isPriorityPass
+                    ? "lg:h-[250px] h-auto pb-10 lg:pb-0"
+                    : "h-auto pb-10 lg:pb-0"
                 } w-auto shadow-lg py-5 gap-y-5 gap-x-4 px-7 lg:px-4 lg:px-5 z-0 relative rounded-2xl`}
               >
                 {isAirportTransfer && <AirportTransferForm />}
                 {isCarRental && <CarRentalForm />}
                 {isPriorityPass && <PriorityPassForm />}
+                {isVisaOnArrival && <VisaOnArrivalForm />}
               </div>
             </div>
           </div>

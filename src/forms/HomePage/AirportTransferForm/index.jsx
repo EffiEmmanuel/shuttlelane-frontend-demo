@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { BsPerson, BsPlusCircleDotted } from "react-icons/bs";
 import { HiArrowLongRight } from "react-icons/hi2";
 import GoogleLocationInput from "../../../components/ui/GoogleLocationInput";
@@ -17,6 +18,11 @@ import { BiMinus, BiSolidCity } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import Switch from "react-switch";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCities,
+  setBookingDetails,
+} from "../../../redux/slices/userSlice";
 
 function AirportTransferForm() {
   // Date Setup
@@ -43,12 +49,88 @@ function AirportTransferForm() {
   const [dropoffTime, setDropoffTime] = useState();
   const [selectedCity, setSelectedCity] = useState();
 
-  const data = [
-    { value: "Lagos", label: "Lagos" },
-    { value: "Accra", label: "Accra" },
-    { value: "Ogun", label: "Ogun" },
-    { value: "Ibadans", label: "Ibadanss" },
-  ];
+  const { isLoading, cities } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCities());
+  }, []);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
+
+  // Update airport based on selected city
+  const [airports, setAirports] = useState();
+  useEffect(() => {
+    if (cities) {
+      const citySelected = cities?.filter(
+        (city) => city?._id == selectedCity?.value
+      );
+      setAirports(citySelected[0]?.airports);
+    }
+  }, [selectedCity]);
+
+  // Handle BOOK NOW
+  const navigate = useNavigate();
+  function handleBookNow(e) {
+    e.preventDefault();
+    console.log("PD:", pickupDate);
+    console.log("PT:", pickupTime);
+    if (
+      isRoundTrip &&
+      (!pickupLocationInput ||
+        !pickupDate ||
+        !pickupTime ||
+        !dropoffLocationInput ||
+        !dropoffDate ||
+        !dropoffTime ||
+        !selectedCity ||
+        !passengers)
+    ) {
+      toast.info("Please fill in the missing fields.");
+      return;
+    } else if (
+      !isRoundTrip &&
+      (!pickupLocationInput ||
+        !pickupDate ||
+        !pickupTime ||
+        !dropoffLocationInput ||
+        !selectedCity ||
+        !passengers)
+    ) {
+      toast.info("Please fill in the missing fields.");
+      return;
+    } else {
+      dispatch(
+        setBookingDetails({
+          bookingType: "Airport",
+          bookingDetails: {
+            isRoundTrip,
+            pickupLocation: pickupLocationInput,
+            pickupDate,
+            pickupTime,
+            dropoffLocation: dropoffLocationInput,
+            dropoffDate,
+            dropoffTime,
+            selectedCity,
+            passengers,
+          },
+        })
+      );
+      navigate("/booking/confirm-booking");
+    }
+  }
 
   return (
     <>
@@ -86,8 +168,8 @@ function AirportTransferForm() {
                   <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
                     <Select
                       value={selectedCity}
-                      onChange={(value) => console.log("VALUE:", value)}
-                      options={data}
+                      onChange={(value) => setSelectedCity(value)}
+                      options={citiesData}
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -120,22 +202,28 @@ function AirportTransferForm() {
                   </div>
                 </div>
 
-                <div className="relative flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-[5%]">
-                    <IoLocationOutline size={16} className="text-gray-700" />
-                  </div>
+                {isLoading && (
+                  <div className="relative flex h-[47px] items-center bg-gray-100 animate-pulse py-2 px-2 gap-x-2 w-full rounded-lg"></div>
+                )}
+                {!isLoading && (
+                  <div className="relative flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                    <div className="w-[5%]">
+                      <IoLocationOutline size={16} className="text-gray-700" />
+                    </div>
 
-                  <div className="w-full relative text-shuttlelaneBlack">
-                    <LocationInput
-                      placeholder="From (Airport, Port, Address)"
-                      setLocation={setPickupLocation}
-                      location={pickupLocation}
-                      locationRef={pickupLocationRef}
-                      locationInput={pickupLocationInput}
-                      setLocationInput={setPickupLocationInput}
-                    />
+                    <div className="w-full relative text-shuttlelaneBlack">
+                      <LocationInput
+                        placeholder="From (Airport, Port, Address)"
+                        setLocation={setPickupLocation}
+                        location={pickupLocation}
+                        locationRef={pickupLocationRef}
+                        locationInput={pickupLocationInput}
+                        setLocationInput={setPickupLocationInput}
+                        airports={airports}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
                   <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
@@ -160,6 +248,7 @@ function AirportTransferForm() {
                     <div className="w-full">
                       <DatePicker
                         format="HH:mm"
+                        hideSeconds={true}
                         value={pickupTime}
                         appearance="subtle"
                         onChange={(time) => {
@@ -187,22 +276,28 @@ function AirportTransferForm() {
 
             <div className="py-3 px-4 w-full lg:w-[50%] relative border-gray-400 bg-transparent border-dashed border-[1px] lg:border-[.2px] rounded-lg">
               <div className="flex flex-col gap-y-2">
-                <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-[5%]">
-                    <IoLocationOutline size={16} className="text-gray-700" />
-                  </div>
+                {isLoading && (
+                  <div className="relative flex h-[47px] items-center bg-gray-100 animate-pulse py-2 px-2 gap-x-2 w-full rounded-lg"></div>
+                )}
 
-                  <div className="w-[95%] text-shuttlelaneBlack relative">
-                    <LocationInput
-                      placeholder="To (Airport, Port, Address)"
-                      setLocation={setDropoffLocation}
-                      location={dropoffLocation}
-                      locationRef={dropoffLocationRef}
-                      locationInput={dropoffLocationInput}
-                      setLocationInput={setDropoffLocationInput}
-                    />
+                {!isLoading && (
+                  <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                    <div className="w-[5%]">
+                      <IoLocationOutline size={16} className="text-gray-700" />
+                    </div>
+
+                    <div className="w-[95%] text-shuttlelaneBlack relative">
+                      <LocationInput
+                        placeholder="To (Airport, Port, Address)"
+                        setLocation={setDropoffLocation}
+                        location={dropoffLocation}
+                        locationRef={dropoffLocationRef}
+                        locationInput={dropoffLocationInput}
+                        setLocationInput={setDropoffLocationInput}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
                   <div className="w-[5%]">
@@ -335,7 +430,7 @@ function AirportTransferForm() {
             type="submit"
             className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             // disabled={isSubmitting}
-            // onClick={() => onSubmit(values)}
+            onClick={(e) => handleBookNow(e)}
           >
             <span className="text-sm">Book Now</span>
             <HiArrowLongRight size={16} className="" />

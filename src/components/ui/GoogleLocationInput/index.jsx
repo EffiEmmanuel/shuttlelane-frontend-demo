@@ -81,9 +81,13 @@ function GoogleLocationInput({
               }
             }}
             // Hide the airport select dialog once the input is out of focus
-            onBlur={() => {
+            onBlur={(e) => {
               console.log("isAirportSelectClicked:", isAirportSelectClicked);
               console.log("hi:", locationRef.current);
+              if (!location) {
+                console.log("Hello:", location);
+                setLocationInput("");
+              }
               setTimeout(() => {
                 setIsAirportSelectOpen(false);
               }, 300);

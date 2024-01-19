@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import { HiArrowLongRight } from "react-icons/hi2";
 import GoogleLocationInput from "../../../components/ui/GoogleLocationInput";
@@ -18,6 +18,13 @@ import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
 import { BiMinus, BiSolidCity } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCars,
+  fetchCities,
+  setBookingDetails,
+} from "../../../redux/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function CarRentalForm() {
   // FORM FIELDS
@@ -26,11 +33,10 @@ function CarRentalForm() {
   const [pickupLocationInput, setPickupLocationInput] = useState();
   const [pickupDate, setPickupDate] = useState();
   const [pickupTime, setPickupTime] = useState();
-
-  // City
+  const [days, setDays] = useState("");
+  const [selectedCar, setSelectedCar] = useState();
   const [selectedCity, setSelectedCity] = useState();
 
-  // Date setup
   // Date Setup
   const minSelectableDate = new Date(); //
   // A function to disable dates earlier than the minimum date
@@ -39,17 +45,6 @@ function CarRentalForm() {
   };
 
   const [bookingType, setBookingType] = useState("round-trip");
-  const [days, setDays] = useState("");
-  const [selectedCar, setSelectedCar] = useState();
-
-  const data = [
-    { value: "toyota-rav-4", label: "Toyota Rav 4" },
-    { value: "g-wagon", label: "G-Wagon" },
-    { value: "toyota-rav-5", label: "Toyota Rav 5" },
-    { value: "toyota-rav-6", label: "Toyota Rav 6" },
-    { value: "toyota-rav-7", label: "Toyota Rav 7" },
-    { value: "toyota-rav-8", label: "Toyota Rav 8" },
-  ];
 
   const cityData = [
     { value: "Lagos", label: "Lagos" },
@@ -57,6 +52,88 @@ function CarRentalForm() {
     { value: "Ogun", label: "Ogun" },
     { value: "Ibadans", label: "Ibadanss" },
   ];
+
+  const { isLoading, cities, cars } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  // Fetch cars and cities
+  useEffect(() => {
+    dispatch(fetchCars());
+    dispatch(fetchCities());
+  }, []);
+
+  // Format cars
+  const [carsData, setCarsData] = useState();
+  useEffect(() => {
+    let updatedCarsData = [];
+    cars?.forEach((car) => {
+      updatedCarsData.push({
+        value: car,
+        label: car?.name,
+      });
+    });
+
+    console.log("CARS:::", updatedCarsData);
+
+    setCarsData(updatedCarsData);
+  }, [cars]);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
+
+  // Update airport based on selected city
+  const [airports, setAirports] = useState();
+  useEffect(() => {
+    if (cities) {
+      const citySelected = cities?.filter(
+        (city) => city?._id == selectedCity?.value
+      );
+      setAirports(citySelected[0]?.airports);
+    }
+  }, [selectedCity]);
+
+  // Handle BOOK NOW
+  const navigate = useNavigate();
+  function handleBookNow(e) {
+    e.preventDefault();
+    if (
+      !pickupLocationInput ||
+      !pickupDate ||
+      !pickupTime ||
+      !days ||
+      !selectedCar ||
+      !selectedCity
+    ) {
+      toast.info("Please fill in the missing fields.");
+      return;
+    } else {
+      dispatch(
+        setBookingDetails({
+          bookingType: "Car",
+          bookingDetails: {
+            pickupLocation: pickupLocationInput,
+            pickupDate,
+            pickupTime,
+            days,
+            carSelected: selectedCar,
+            citySelected: selectedCity,
+          },
+        })
+      );
+      navigate("/booking/confirm-booking");
+    }
+  }
 
   return (
     <>
@@ -75,8 +152,8 @@ function CarRentalForm() {
                   <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
                     <Select
                       value={selectedCity}
-                      onChange={(value) => console.log("VALUE:", value)}
-                      options={cityData}
+                      onChange={(value) => setSelectedCity(value)}
+                      options={citiesData}
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -116,12 +193,13 @@ function CarRentalForm() {
 
                   <div className="w-full relative text-shuttlelaneBlack">
                     <LocationInput
-                      placeholder="From (Airport, Port, Address)"
+                      placeholder="Pickup From (Airport, Port, Address)"
                       setLocation={setPickupLocation}
                       location={pickupLocation}
                       locationRef={pickupLocationRef}
                       locationInput={pickupLocationInput}
                       setLocationInput={setPickupLocationInput}
+                      airports={airports}
                     />
                   </div>
                 </div>
@@ -167,8 +245,8 @@ function CarRentalForm() {
                     {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
                     <Select
                       value={selectedCar}
-                      onChange={(value) => console.log("VALUE:", value)}
-                      options={data}
+                      onChange={(value) => setSelectedCar(value)}
+                      options={carsData}
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -305,7 +383,7 @@ function CarRentalForm() {
             type="submit"
             className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             // disabled={isSubmitting}
-            // onClick={() => onSubmit(values)}
+            onClick={(e) => handleBookNow(e)}
           >
             <span className="text-sm">Book Now</span>
             <HiArrowLongRight size={16} className="" />

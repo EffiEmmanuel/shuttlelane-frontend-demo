@@ -44,6 +44,7 @@ function AdminVehicleClassesRate() {
   // Add Vehicle Class Form Fields
   const [image, setImage] = useState();
   const [vehicleClassName, setVehicleClassName] = useState();
+  const [vehicleClassDescription, setVehicleClassDescription] = useState();
   const [passengers, setPassengers] = useState();
   const [luggages, setLuggages] = useState();
   const [basePrice, setBasePrice] = useState();
@@ -51,7 +52,14 @@ function AdminVehicleClassesRate() {
   // FUNCTION: This function handles the creation of a vehicle class
   async function handleAddVehicleClass(e) {
     e.preventDefault();
-    if (!image || !vehicleClassName || !passengers || !luggages || !basePrice) {
+    if (
+      !image ||
+      !vehicleClassName ||
+      !vehicleClassDescription ||
+      !passengers ||
+      !luggages ||
+      !basePrice
+    ) {
       toast.error("Please fill in the missing fields");
       return;
     }
@@ -59,6 +67,7 @@ function AdminVehicleClassesRate() {
       createVehicleClasses({
         image,
         vehicleClassName,
+        description: vehicleClassDescription,
         passengers,
         luggages,
         basePrice,
@@ -82,12 +91,14 @@ function AdminVehicleClassesRate() {
   // MODIFY VEHICLE CLASS FORM FIELDS
   const [modifiedImage, setModifiedImage] = useState();
   const [modifiedClassName, setModifiedClassName] = useState();
+  const [modifiedClassDescription, setModifiedClassDescription] = useState();
   const [modifiedPassengers, setModifiedPassengers] = useState();
   const [modifiedLuggages, setModifiedLuggages] = useState();
   const [modifiedbasePrice, setModifiedBasePrice] = useState();
   useEffect(() => {
     setModifiedImage(currentVehicleClass?.image ?? "");
     setModifiedClassName(currentVehicleClass?.className ?? "");
+    setModifiedClassDescription(currentVehicleClass?.description ?? "");
     setModifiedPassengers(currentVehicleClass?.passengers ?? "");
     setModifiedLuggages(currentVehicleClass?.luggages ?? "");
     setModifiedBasePrice(currentVehicleClass?.basePrice ?? "");
@@ -99,6 +110,7 @@ function AdminVehicleClassesRate() {
     if (
       !modifiedImage ||
       !modifiedClassName ||
+      !modifiedClassDescription ||
       !modifiedPassengers ||
       !modifiedLuggages ||
       !modifiedbasePrice
@@ -115,6 +127,7 @@ function AdminVehicleClassesRate() {
         token,
         image: modifiedImage,
         className: modifiedClassName,
+        description: modifiedClassDescription,
         passengers: modifiedPassengers,
         luggages: modifiedLuggages,
         basePrice: modifiedbasePrice,
@@ -172,7 +185,7 @@ function AdminVehicleClassesRate() {
             />
           </div>
 
-          {/* Add Country */}
+          {/* Add Vehicle Class */}
           <form className="w-full mt-5">
             <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
               <div className="w-full flex flex-col">
@@ -213,7 +226,7 @@ function AdminVehicleClassesRate() {
               </div>
               <div className="w-full flex flex-col">
                 <label htmlFor="vehicleClassName" className="text-sm">
-                  Class Name
+                  Vehicle Class Name
                 </label>
 
                 <div className="w-full flex items-center justify-between">
@@ -224,6 +237,24 @@ function AdminVehicleClassesRate() {
                     value={vehicleClassName}
                     onChange={(e) => {
                       setVehicleClassName(e.target.value);
+                    }}
+                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                  />
+                </div>
+              </div>
+              <div className="w-full flex flex-col">
+                <label htmlFor="vehicleClassDescription" className="text-sm">
+                  Vehicle Class Description
+                </label>
+
+                <div className="w-full flex items-center justify-between">
+                  <input
+                    type="text"
+                    placeholder="Desctiption..."
+                    name="vehicleClassDescription"
+                    value={vehicleClassDescription}
+                    onChange={(e) => {
+                      setVehicleClassDescription(e.target.value);
                     }}
                     className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
                   />
@@ -373,7 +404,7 @@ function AdminVehicleClassesRate() {
               </div>
               <div className="w-full flex flex-col">
                 <label htmlFor="vehicleClassName" className="text-sm">
-                  Class Name
+                  Vehicle Class Name
                 </label>
 
                 <div className="w-full flex items-center justify-between">
@@ -384,6 +415,24 @@ function AdminVehicleClassesRate() {
                     value={modifiedClassName}
                     onChange={(e) => {
                       setModifiedClassName(e.target.value);
+                    }}
+                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                  />
+                </div>
+              </div>
+              <div className="w-full flex flex-col">
+                <label htmlFor="vehicleClassDescription" className="text-sm">
+                  Vehicle Class Description
+                </label>
+
+                <div className="w-full flex items-center justify-between">
+                  <input
+                    type="text"
+                    placeholder="Description..."
+                    name="vehicleClassDescription"
+                    value={modifiedClassDescription}
+                    onChange={(e) => {
+                      setModifiedClassDescription(e.target.value);
                     }}
                     className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
                   />

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   BsAirplane,
   BsPlusCircleDotted,
@@ -27,15 +27,32 @@ import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
+import { useNavigate } from "react-router-dom";
+import {
+  fetchCities,
+  fetchPasses,
+  setBookingDetails,
+} from "../../../redux/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function PriorityPassForm() {
+  const [passType, setPassType] = useState("standard-pass");
+
+  const services = [
+    { value: "Arrival Protocol", label: "Arrival Protocol" },
+    { value: "Departure Protocol", label: "Departure Protocol" },
+  ];
+
   // FORM FIELDS
   const [pickupLocation, setPickupLocation] = useState();
   const pickupLocationRef = useRef(null);
   const [pickupLocationInput, setPickupLocationInput] = useState();
   const [pickupDate, setPickupDate] = useState();
   const [pickupTime, setPickupTime] = useState();
+  const [days, setDays] = useState("");
+  const [selectedPass, setSelectedPass] = useState();
   const [selectedCity, setSelectedCity] = useState();
+  const [selectedProtocol, setSelectedProtocol] = useState();
 
   // Date Setup
   const minSelectableDate = new Date(); //
@@ -44,25 +61,91 @@ function PriorityPassForm() {
     return date < minSelectableDate;
   };
 
-  const [passType, setPassType] = useState("standard-pass");
-  const [service, setSelectedCar] = useState();
+  const { isLoading, cities, cars, passes } = useSelector(
+    (store) => store.user
+  );
+  const dispatch = useDispatch();
 
-  const services = [
-    { value: "Arrival Protocol", label: "Arrival Protocol" },
-    { value: "Departure Protocol", label: "Departure Protocol" },
-  ];
+  // Fetch passes and cities
+  useEffect(() => {
+    dispatch(fetchPasses());
+    dispatch(fetchCities());
+  }, []);
 
-  const passes = [
-    { value: "Standard Pass", label: "Standard Pass" },
-    { value: "Premium Pass", label: "Premium Pass" },
-  ];
+  // Format passes
+  const [passesData, setPassessData] = useState();
+  useEffect(() => {
+    let updatedPassesData = [];
+    passes?.forEach((pass) => {
+      updatedPassesData.push({
+        value: pass,
+        label: pass?.name,
+      });
+    });
 
-  const cityData = [
-    { value: "Lagos", label: "Lagos" },
-    { value: "Accra", label: "Accra" },
-    { value: "Ogun", label: "Ogun" },
-    { value: "Ibadans", label: "Ibadanss" },
-  ];
+    console.log("PASSES:::", updatedPassesData);
+
+    setPassessData(updatedPassesData);
+  }, [passes]);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
+
+  // Update airport based on selected city
+  const [airports, setAirports] = useState();
+  useEffect(() => {
+    if (cities) {
+      const citySelected = cities?.filter(
+        (city) => city?._id == selectedCity?.value
+      );
+      setAirports(citySelected[0]?.airports);
+    }
+  }, [selectedCity]);
+
+  // Handle BOOK NOW
+  const navigate = useNavigate();
+  function handleBookNow(e) {
+    e.preventDefault();
+    if (
+      !pickupLocationInput ||
+      !pickupDate ||
+      !pickupTime ||
+      !selectedPass ||
+      !selectedProtocol ||
+      !selectedCity
+    ) {
+      toast.info("Please fill in the missing fields.");
+      return;
+    } else {
+      dispatch(
+        setBookingDetails({
+          bookingType: "Priority",
+          bookingDetails: {
+            pickupLocation: pickupLocationInput,
+            pickupDate,
+            pickupTime,
+            days,
+            passSelected: selectedPass,
+            protocolSelected: selectedProtocol,
+            citySelected: selectedCity,
+            passengers: 1,
+          },
+        })
+      );
+      navigate("/booking/confirm-booking");
+    }
+  }
 
   return (
     <>
@@ -82,8 +165,8 @@ function PriorityPassForm() {
                   <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
                     <Select
                       value={selectedCity}
-                      onChange={(value) => console.log("VALUE:", value)}
-                      options={cityData}
+                      onChange={(value) => setSelectedCity(value)}
+                      options={citiesData}
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -123,7 +206,7 @@ function PriorityPassForm() {
 
                   <div className="w-full relative text-shuttlelaneBlack">
                     <LocationInput
-                      placeholder="From (Airport, Port, Address)"
+                      placeholder="Pickup From (Airport, Port, Address)"
                       setLocation={setPickupLocation}
                       location={pickupLocation}
                       locationRef={pickupLocationRef}
@@ -176,8 +259,8 @@ function PriorityPassForm() {
                   <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[99]">
                     {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
                     <Select
-                      value={service}
-                      onChange={(value) => console.log("VALUE:", value)}
+                      value={selectedProtocol}
+                      onChange={(value) => setSelectedProtocol(value)}
                       options={services}
                       styles={{
                         control: (baseStyles, state) => ({
@@ -221,9 +304,9 @@ function PriorityPassForm() {
                   <div className="w-[95%] text-shuttlelaneBlack text-sm">
                     {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
                     <Select
-                      value={passType}
-                      onChange={(value) => console.log("VALUE:", value)}
-                      options={passes}
+                      value={selectedPass}
+                      onChange={(value) => setSelectedPass(value)}
+                      options={passesData}
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
@@ -314,7 +397,7 @@ function PriorityPassForm() {
             type="submit"
             className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             // disabled={isSubmitting}
-            // onClick={() => onSubmit(values)}
+            onClick={(e) => handleBookNow(e)}
           >
             <span className="text-sm">Book Now</span>
             <HiArrowLongRight size={16} className="" />

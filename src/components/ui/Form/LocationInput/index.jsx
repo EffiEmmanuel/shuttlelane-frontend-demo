@@ -10,6 +10,7 @@ function LocationInput({
   locationRef,
   locationInput,
   setLocationInput,
+  airports,
 }) {
   const [isAirportSelectOpen, setIsAirportSelectOpen] = useState(false);
 
@@ -45,62 +46,36 @@ function LocationInput({
       {isAirportSelectOpen && (
         <div className="bg-white shadow-lg h-auto w-full absolute top-10 z-[99] left-0 p-5">
           <div className="flex flex-col gap-y-6">
-            <div
-              onClick={() => {
-                console.log("Hello from here oooooo");
-                setIsAirportSelectClicked(true);
-                setAutocompleteValue(
-                  "Murtala Mohammed International Airport I (MMIA I)"
-                );
-              }}
-              className="cursor-pointer flex items-center gap-x-3"
-            >
-              <IoAirplaneOutline
-                size={20}
-                className="text-gray-500 -rotate-45 lg:inline-block hidden"
-              />
-              <IoAirplaneOutline
-                size={30}
-                className="text-gray-500 -rotate-45 lg:hidden inline-block"
-              />
+            {airports?.map((airport) => (
+              <div
+                onClick={() => {
+                  console.log("Hello from here oooooo");
+                  setIsAirportSelectClicked(true);
+                  setAutocompleteValue(`${airport}`);
+                }}
+                className="cursor-pointer flex items-center gap-x-3"
+              >
+                <IoAirplaneOutline
+                  size={20}
+                  className="text-gray-500 -rotate-45 lg:inline-block hidden"
+                />
+                <IoAirplaneOutline
+                  size={30}
+                  className="text-gray-500 -rotate-45 lg:hidden inline-block"
+                />
 
-              <div className="flex flex-col gap-y-1">
-                <p className="font-semibold text-gray-500 text-sm lg:text-md">
-                  Murtala Mohammed International Airport I (MMIA)
-                </p>
-                <p className="text-xs text-gray-500">
-                  Murtala Mohammed International Airport I
-                </p>
+                <div className="flex flex-col gap-y-1">
+                  <p className="font-semibold text-gray-500 text-sm lg:text-md">
+                    {airport}
+                  </p>
+                  <p className="text-xs text-gray-500">{airport}</p>
+                </div>
               </div>
-            </div>
-            <div
-              onClick={() => {
-                console.log("Hello from here oooooo");
-                setIsAirportSelectClicked(true);
-                setAutocompleteValue(
-                  "Murtala Mohammed International Airport I (MMIA I)"
-                );
-              }}
-              className="cursor-pointer flex items-center gap-x-3"
-            >
-              <IoAirplaneOutline
-                size={20}
-                className="text-gray-500 -rotate-45 lg:inline-block hidden"
-              />
-              <IoAirplaneOutline
-                size={30}
-                className="text-gray-500 -rotate-45 lg:hidden inline-block"
-              />
+            ))}
 
-              <div className="flex flex-col gap-y-1">
-                <p className="font-semibold text-gray-500 text-sm lg:text-md">
-                  Murtala Mohammed International Airport II (MMIA II)
-                </p>
-                <p className="text-xs text-gray-500">
-                  Murtala Mohammed International Airport II
-                </p>
-              </div>
-            </div>
+            {(!airports || airports?.length < 1) && (
+              <small>Start typing to find an address or airport...</small>
+            )}
           </div>
         </div>
       )}

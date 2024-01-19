@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaPassport, FaUser } from "react-icons/fa";
+import { FaPassport, FaTrash, FaUser } from "react-icons/fa";
 import { MdDelete, MdLuggage, MdOutlineFlightTakeoff } from "react-icons/md";
 import { IoCarSport } from "react-icons/io5";
 import AdminDashboardNavbar from "../../../../../components/ui/Admin/AdminDashboardNavbar";
@@ -17,11 +17,9 @@ import AdminAddBookingForm from "../../../../../forms/admin/AdminAddBookingForm"
 import { useDispatch, useSelector } from "react-redux";
 import {
   createNewCurrency,
+  deleteCurrency,
   fetchCurrencies,
-  fetchEnquiries,
-  markEnquiryAsRead,
-  markEnquiryAsUnread,
-  setCurrentCurrency,
+  updateCurrency,
 } from "../../../../../redux/slices/adminSlice";
 import Modal from "react-modal";
 import { ImSpinner2 } from "react-icons/im";
@@ -30,14 +28,31 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 
 function AdminDashboardExchangeRatesPage() {
-  const { token, isLoading, currencies, currentCurrency } = useSelector(
-    (store) => store.admin
-  );
+  const { token, isLoading, currencies } = useSelector((store) => store.admin);
   const dispatch = useDispatch();
 
   // Modify Rate Modal
+  const [currentCurrency, setCurrentCurrency] = useState();
   const [isModifyRateModalOpen, setIsModifyRateModalOpen] = useState(false);
+  // Form fields
+  const [modifiedCurrencyLabel, setModifiedCurrencyLabel] = useState();
   const [modifiedExchangeRate, setModifiedExchangeRate] = useState();
+  const [modifiedCurrencySymbol, setModifiedCurrencySymbol] = useState();
+  const [modifiedCurrencyAlias, setModifiedCurrencyAlias] = useState();
+  const [modifiedSupportedCountries, setModifiedSupportedCountries] =
+    useState();
+  const [modifiedSupportedCountry, setModifiedSupportedCountry] = useState();
+
+  // Update fields for the modify rae modal
+  useEffect(() => {
+    if (currentCurrency) {
+      setModifiedSupportedCountries(currentCurrency?.supportedCountries);
+      setModifiedExchangeRate(currentCurrency?.exchangeRate);
+      setModifiedCurrencyLabel(currentCurrency?.currencyLabel);
+      setModifiedCurrencySymbol(currentCurrency?.symbol);
+      setModifiedCurrencyAlias(currentCurrency?.alias);
+    }
+  }, [currentCurrency]);
 
   // Add Currency Modal
   const [isAddCurrencyModalOpen, setIsAddCurrencyModalOpen] = useState(false);
@@ -45,8 +60,11 @@ function AdminDashboardExchangeRatesPage() {
   const [exchangeRate, setExchangeRate] = useState();
   const [currencySymbol, setCurrencySymbol] = useState();
   const [currencyAlias, setCurrencyAlias] = useState();
+  const [supportedCountries, setSupportedCountries] = useState([]);
+  const [supportedCountry, setSupportedCountry] = useState();
   const [currencyColor, setCurrencyColor] = useState();
 
+  // FUNCTION: Handles creation of a new currency
   async function handleCreateCurrency(e) {
     e.preventDefault();
     if (!currencyLabel || !exchangeRate || !currencySymbol || !currencyAlias) {
@@ -68,6 +86,43 @@ function AdminDashboardExchangeRatesPage() {
         currencySymbol,
         currencyAlias,
         currencyColor,
+        supportedCountries,
+      })
+    );
+  }
+
+  // FUNCTION: Handles updating a currency
+  async function handleUpdateCurrency(e) {
+    e.preventDefault();
+    if (
+      !modifiedCurrencyLabel ||
+      !modifiedExchangeRate ||
+      !modifiedCurrencySymbol ||
+      !modifiedCurrencyAlias
+    ) {
+      toast.error("Please fill in the missing fields before proceeding");
+      return;
+    }
+    dispatch(
+      updateCurrency({
+        token,
+        _id: currentCurrency?._id,
+        currencyLabel: modifiedCurrencyLabel,
+        exchangeRate: modifiedExchangeRate,
+        currencySymbol: modifiedCurrencySymbol,
+        currencyAlias: modifiedCurrencyAlias,
+        supportedCountries: modifiedSupportedCountries,
+      })
+    );
+  }
+
+  // FUNCTION: Handles updating a currency
+  async function handleDeleteCurrency(e) {
+    e.preventDefault();
+    dispatch(
+      deleteCurrency({
+        token,
+        _id: currentCurrency?._id,
       })
     );
   }
@@ -76,6 +131,32 @@ function AdminDashboardExchangeRatesPage() {
   useEffect(() => {
     dispatch(fetchCurrencies(token));
   }, [token]);
+
+  // FUNCTION: Handles adding supported countries to the array
+  function handleAddSupportedCountry(
+    countryToAdd,
+    countryArray,
+    countryArraySetter
+  ) {
+    if (countryToAdd.trim() != "") {
+      countryArraySetter([...countryArray, countryToAdd]);
+    } else {
+      toast.info(
+        "Cannot perform operation on an empty string. You must specify a country."
+      );
+    }
+  }
+
+  // FUNCTION: Handles removing a supported country from the array
+  function handleRemoveCountrySupport(
+    countryToRemove,
+    countryArray,
+    countryArraySetter
+  ) {
+    const indexToRemove = countryArray.indexOf(countryToRemove);
+    const newArray = countryArray.filter((_, index) => index !== indexToRemove);
+    countryArraySetter(newArray);
+  }
 
   return (
     <div className="">
@@ -86,20 +167,46 @@ function AdminDashboardExchangeRatesPage() {
         onRequestClose={() => setIsModifyRateModalOpen(false)}
         className="flex h-full min-h-screen justify-center items-center lg:px-24 px-7"
       >
-        <div className="bg-white shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10">
+        <div className="bg-white shuttlelaneScrollbar min-h-[90vh] max-h-[90vh] h-[90vh] overflow-y-scroll shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold">Modify Exchange Rate</h4>
 
-            <FaXmark
-              size={20}
-              onClick={() => setIsModifyRateModalOpen(false)}
-              className="cursor-pointer"
-            />
+            <div className="flex items-center gap-2">
+              <FaTrash
+                size={18}
+                onClick={(e) => {
+                  handleDeleteCurrency(e);
+                  setIsModifyRateModalOpen(false);
+                }}
+                className="cursor-pointer text-red-500"
+              />
+
+              <FaXmark
+                size={20}
+                onClick={() => setIsModifyRateModalOpen(false)}
+                className="cursor-pointer"
+              />
+            </div>
           </div>
 
           <form className="w-full mt-5">
             <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
-              {/* Modify Rate */}
+              {/* Modified Label */}
+              <div className="w-full flex flex-col">
+                <label htmlFor="modifiedCurrencyLabel" className="text-sm">
+                  Currency Label
+                </label>
+                <input
+                  type="text"
+                  placeholder="Dollars"
+                  name="modifiedCurrencyLabel"
+                  value={modifiedCurrencyLabel}
+                  onChange={(e) => setModifiedCurrencyLabel(e.target.value)}
+                  className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                />
+              </div>
+
+              {/* Modified Rate */}
               <div className="w-full flex items-center justify-between">
                 <div className="w-[80%] flex items-center">
                   <label
@@ -118,13 +225,105 @@ function AdminDashboardExchangeRatesPage() {
                   />
                 </div>
                 <label htmlFor="rate" className="text-sm">
-                  / USD
+                  / {currentCurrency?.alias}
                 </label>
+              </div>
+
+              {/* Modified Symbol */}
+              <div className="w-full flex flex-col">
+                <label htmlFor="modifiedCurrencySymbol" className="text-sm">
+                  Currency Symbol
+                </label>
+                <input
+                  type="text"
+                  placeholder="$"
+                  name="modifiedCurrencySymbol"
+                  value={modifiedCurrencySymbol}
+                  onChange={(e) => setModifiedCurrencySymbol(e.target.value)}
+                  className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                />
+              </div>
+
+              {/* Modified Alias */}
+              <div className="w-full flex flex-col">
+                <label htmlFor="modifiedCurrencyAlias" className="text-sm">
+                  Currency Alias
+                </label>
+                <input
+                  type="text"
+                  placeholder="USD"
+                  name="modifiedCurrencyAlias"
+                  value={modifiedCurrencyAlias}
+                  onChange={(e) => setModifiedCurrencyAlias(e.target.value)}
+                  className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                />
+              </div>
+
+              {/* Modified Supported Countries */}
+              <div className="w-full flex flex-col">
+                <label htmlFor="modifiedSupportedCountry" className="text-sm">
+                  Supported countries
+                </label>
+                <div className="flex items-center flex-wrap gap-4 my-2">
+                  {modifiedSupportedCountries?.map(
+                    (modifiedSupportedCountry) => (
+                      <div className="bg-shuttlelanePurple text-white h-10 p-2 flex items-center justify-between rounded-md">
+                        <span className="text-sm">
+                          {modifiedSupportedCountry}
+                        </span>
+                        <FaXmark
+                          size={16}
+                          onClick={() =>
+                            handleRemoveCountrySupport(
+                              modifiedSupportedCountry,
+                              modifiedSupportedCountries,
+                              setModifiedSupportedCountries,
+                              setModifiedSupportedCountry
+                            )
+                          }
+                          className="cursor-pointer"
+                        />
+                      </div>
+                    )
+                  )}
+                  {modifiedSupportedCountries?.length < 1 && (
+                    <div className="border-[2px] border-gray-300 border-dashed text-gray-300 h-10 p-2 flex items-center justify-between rounded-md">
+                      <span className="text-sm">Add supported countries</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="text"
+                    placeholder="Nigeria"
+                    name="modifiedSupportedCountry"
+                    value={modifiedSupportedCountry}
+                    onChange={(e) =>
+                      setModifiedSupportedCountry(e.target.value)
+                    }
+                    className="w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg"
+                  />
+
+                  <button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={(e) =>
+                      handleAddSupportedCountry(
+                        modifiedSupportedCountry,
+                        modifiedSupportedCountries,
+                        setModifiedSupportedCountries
+                      )
+                    }
+                    className="w-[15%] flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                  >
+                    Add
+                  </button>
+                </div>
               </div>
               <button
                 type="submit"
                 disabled={isLoading}
-                // onClick={(e) => createNewCity(e)}
+                onClick={(e) => handleUpdateCurrency(e)}
                 className="w-full flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-lg"
               >
                 {isLoading ? (
@@ -144,7 +343,7 @@ function AdminDashboardExchangeRatesPage() {
         onRequestClose={() => setIsAddCurrencyModalOpen(false)}
         className="flex h-full min-h-screen justify-center items-center lg:px-24 px-7"
       >
-        <div className="bg-white shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10">
+        <div className="bg-white max-h[90vh] min-h-[90vh] h-[90vh] shuttlelaneScrollbar overflow-y-scroll shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold">Add New Currency</h4>
 
@@ -198,7 +397,7 @@ function AdminDashboardExchangeRatesPage() {
                     />
                   </div>
                   <label htmlFor="rate" className="text-sm">
-                    / USD
+                    / {currencyAlias}
                   </label>
                 </div>
               </div>
@@ -231,10 +430,68 @@ function AdminDashboardExchangeRatesPage() {
                 />
               </div>
 
+              <div className="w-full flex flex-col">
+                <label htmlFor="supportedCountry" className="text-sm">
+                  Supported countries
+                </label>
+                <div className="flex items-center flex-wrap gap-4 my-2">
+                  {supportedCountries?.map((supportedCountry) => (
+                    <div className="bg-shuttlelanePurple text-white h-10 p-2 flex items-center justify-between rounded-md">
+                      <span className="text-sm">{supportedCountry}</span>
+                      <FaXmark
+                        size={16}
+                        onClick={() =>
+                          handleRemoveCountrySupport(
+                            supportedCountry,
+                            supportedCountries,
+                            setSupportedCountries,
+                            setSupportedCountry
+                          )
+                        }
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  ))}
+                  {supportedCountries?.length < 1 && (
+                    <div className="border-[2px] border-gray-300 border-dashed text-gray-300 h-10 p-2 flex items-center justify-between rounded-md">
+                      <span className="text-sm">Add supported countries</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="text"
+                    placeholder="Nigeria"
+                    name="supportedCountry"
+                    value={supportedCountry}
+                    onChange={(e) => setSupportedCountry(e.target.value)}
+                    className="w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg"
+                  />
+
+                  <button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={(e) =>
+                      handleAddSupportedCountry(
+                        supportedCountry,
+                        supportedCountries,
+                        setSupportedCountries
+                      )
+                    }
+                    className="w-[15%] flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
               <button
                 type="submit"
                 disabled={isLoading}
-                onClick={(e) => handleCreateCurrency(e)}
+                onClick={(e) => {
+                  handleCreateCurrency(e);
+                  setIsAddCurrencyModalOpen(false);
+                }}
                 className="w-full flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-lg"
               >
                 {isLoading ? (
@@ -280,7 +537,8 @@ function AdminDashboardExchangeRatesPage() {
                   <button
                     key={currency?._id}
                     onClick={() => {
-                      dispatch(setCurrentCurrency(currency));
+                      console.log("CURRENT CURRENCY IS:", currency);
+                      setCurrentCurrency(currency);
                       setIsModifyRateModalOpen(true);
                     }}
                     className="border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"

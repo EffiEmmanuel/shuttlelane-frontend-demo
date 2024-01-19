@@ -324,10 +324,56 @@ export const createNewCurrency = createAsyncThunk(
         currencySymbol: payload?.currencySymbol,
         currencyAlias: payload?.currencyAlias,
         currencyColor: payload?.currencyColor,
+        supportedCountries: payload?.supportedCountries,
       }),
     })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE NEW CURRENCY ERROR:", err));
+  }
+);
+
+// FUNCTION: This function updates a currency
+export const updateCurrency = createAsyncThunk(
+  "admin/currencies/updateOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/currencies/${payload?._id}`,
+      {
+        method: "PUT",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currencyLabel: payload?.currencyLabel,
+          exchangeRate: payload?.exchangeRate,
+          symbol: payload?.symbol,
+          alias: payload?.alias,
+          supportedCountries: payload?.supportedCountries,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE CURRENCY ERROR:", err));
+  }
+);
+
+// FUNCTION: This function deletes a currency
+export const deleteCurrency = createAsyncThunk(
+  "admin/currencies/deleteOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/admin/currencies/${payload?._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE CURRENCY ERROR:", err));
   }
 );
 
@@ -392,6 +438,7 @@ export const createVisaOnArrivalRate = createAsyncThunk(
       body: JSON.stringify({
         country: payload?.country,
         visaFee: payload?.visaFee,
+        isNigerianVisaRequired: payload?.isNigerianVisaRequired,
       }),
     })
       .then((res) => res.json())
@@ -413,7 +460,9 @@ export const updateVisaOnArrivalRate = createAsyncThunk(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          country: payload?.country,
           visaFee: payload?.visaFee,
+          isNigerianVisaRequired: payload?.isNigerianVisaRequired,
           voaBaseFeeId: payload?.voaBaseFeeId,
         }),
       }
@@ -491,11 +540,14 @@ export const setVisaOnArrivalBaseFees = createAsyncThunk(
 export const fetchVehicleClasses = createAsyncThunk(
   "admin/vehicle-classes/getAll",
   async (token) => {
-    return fetch(`http://localhost:3001/api/v1/vehicle-classes`, {
-      headers: {
-        token: `Bearer ${JSON.parse(token)}`,
-      },
-    })
+    return fetch(
+      `http://localhost:3001/api/v1/vehicle-classes?isAdminRequest=true`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .catch((err) =>
         console.log("FETCH VISA ON ARRIVAL BASE RATES ERROR:", err)
@@ -534,6 +586,7 @@ export const createVehicleClasses = createAsyncThunk(
           body: JSON.stringify({
             image: data.secure_url,
             className: payload?.vehicleClassName,
+            description: payload?.description,
             passengers: payload?.passengers,
             luggages: payload?.luggages,
             basePrice: payload?.basePrice,
@@ -567,6 +620,7 @@ export const updateVehicleClass = createAsyncThunk(
             },
             body: JSON.stringify({
               className: payload?.className,
+              description: payload?.description,
               passengers: payload?.passengers,
               luggages: payload?.luggages,
               basePrice: payload?.basePrice,
@@ -719,7 +773,7 @@ export const deleteCar = createAsyncThunk(
 export const fetchPasses = createAsyncThunk(
   "admin/passes/getAll",
   async (token) => {
-    return fetch(`http://localhost:3001/api/v1/passes`, {
+    return fetch(`http://localhost:3001/api/v1/passes?isAdminRequest=true`, {
       headers: {
         token: `Bearer ${JSON.parse(token)}`,
       },
@@ -1351,6 +1405,42 @@ export const adminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(createNewCurrency.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Update Currency AsyncThunk states
+      .addCase(updateCurrency.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCurrency.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE CURRENCY", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.currencies = action.payload?.currencies;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateCurrency.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Currency AsyncThunk states
+      .addCase(deleteCurrency.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCurrency.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE CURRENCY", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.currencies = action.payload?.currencies;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteCurrency.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
