@@ -393,3 +393,13 @@ input.form-control {
 .Toastify__toast-container {
   z-index: 9999 !important;
 }
+
+/* All round box shadow */
+.allRoundBoxShadow {
+  box-shadow: 0px 1px 7px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* RSuite DatePicker Style Rules (For update booking) */
+.rs-anim-fade.rs-anim-in.placement-bottom-start.rs-picker-date-menu.rs-picker-menu {
+  z-index: 99 !important;
+}

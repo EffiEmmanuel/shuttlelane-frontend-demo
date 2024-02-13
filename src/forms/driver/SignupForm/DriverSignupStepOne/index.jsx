@@ -1,9 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BiSolidCity } from "react-icons/bi";
+import { ImSpinner2 } from "react-icons/im";
 import Select from "react-select";
 import CountryData from "country-codes-list";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { useDispatch, useSelector } from "react-redux";
+import { validateFields } from "../../../../util";
+import { updateDriver } from "../../../../redux/slices/driverSlice";
+import { ToastContainer, toast } from "react-toastify";
 
-function DriverSignupStepOne({ isStepOne, stepOneStates }) {
+function DriverSignupStepOne({
+  isStepOne,
+  stepOneStates,
+  isUpdateDriverAccount,
+}) {
   const genderOptions = [
     {
       value: "Male",
@@ -45,15 +56,70 @@ function DriverSignupStepOne({ isStepOne, stepOneStates }) {
   const scrollTopRef = useRef(null);
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
-    scrollTopRef.current.scrollIntoView();
+    if (!isUpdateDriverAccount) {
+      scrollTopRef.current.scrollIntoView();
+    }
   }, [isStepOne]);
 
+  // UPDATE DRIVER STATES
+  const { isLoading, token, driver } = useSelector((store) => store.driver);
+  const dispatch = useDispatch();
+  // UPDATE DRIVER HANDLER
+  async function handleUpdateDriver(e) {
+    console.log("HELLO");
+    e.preventDefault();
+    const areFieldsEmpty = validateFields([
+      stepOneStates?.firstName,
+      stepOneStates?.middleName,
+      stepOneStates?.lastName,
+      stepOneStates?.email,
+      stepOneStates?.gender,
+      stepOneStates?.mobile,
+      stepOneStates?.alternateMobile,
+      stepOneStates?.education,
+    ]);
+    if (areFieldsEmpty) {
+      console.log("HELLO 2");
+      toast.error(areFieldsEmpty?.message);
+    } else {
+      console.log("HELLO 3");
+      const values = {
+        firstName: stepOneStates?.firstName,
+        middleName: stepOneStates?.middleName,
+        lastName: stepOneStates?.lastName,
+        email: stepOneStates?.email,
+        gender: stepOneStates?.gender?.value,
+        mobile: stepOneStates?.mobile,
+        alternateMobile: stepOneStates?.alternateMobile,
+        education: stepOneStates?.education?.value,
+      };
+
+      console.log("HELLO 4");
+
+      dispatch(
+        updateDriver({
+          values: { ...values },
+          token: token,
+          driverId: driver?._id,
+        })
+      );
+    }
+  }
+
   return (
-    <div className="px-10 pt-10" ref={scrollTopRef}>
-      <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
-        Create an account
-      </h2>
-      <p className="text-sm">Sign up to start driving for Shuttlelane</p>
+    <div
+      className={`${!isUpdateDriverAccount && "px-10 pt-10"}`}
+      ref={scrollTopRef}
+    >
+      <ToastContainer />
+      {!isUpdateDriverAccount && (
+        <>
+          <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
+            Create an account
+          </h2>
+          <p className="text-sm">Sign up to start driving for Shuttlelane</p>
+        </>
+      )}
 
       {/* FORM */}
       <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
@@ -171,42 +237,6 @@ function DriverSignupStepOne({ isStepOne, stepOneStates }) {
           />
         </div>
 
-        {/* Phone */}
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="mobile" className="text-sm">
-            Phone
-          </label>
-          <input
-            type="tel"
-            name="mobile"
-            value={stepOneStates?.mobile}
-            onChange={(e) => {
-              console.log("state:", e.target.value);
-              stepOneStates?.setMobile(e.target.value);
-            }}
-            placeholder="+2341234567890 (Please include country code e.g +234)"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Alternative Phone */}
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="alternateMobile" className="text-sm">
-            Alternative Phone
-          </label>
-          <input
-            type="tel"
-            name="alternateMobile"
-            value={stepOneStates?.alternateMobile}
-            onChange={(e) => {
-              console.log("state:", e.target.value);
-              stepOneStates?.setAlternateMobile(e.target.value);
-            }}
-            placeholder="+2341234567890 (Please include country code e.g +234)"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
         {/* Education */}
         <div className="flex flex-col gap-y-1">
           <label htmlFor="education" className="text-sm">
@@ -225,7 +255,6 @@ function DriverSignupStepOne({ isStepOne, stepOneStates }) {
                 borderWidth: state.isFocused ? "0" : "0",
                 backgroundColor: "transparent",
                 position: "relative",
-                zIndex: 80,
                 width: "100%",
                 height: "100%",
               }),
@@ -246,9 +275,58 @@ function DriverSignupStepOne({ isStepOne, stepOneStates }) {
               }),
             }}
             placeholder="Education"
-            className="w-full h-12 flex items-center border-[0.3px] z-[80] focus:outline-none border-gray-400 rounded-lg"
+            className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
+
+        {/* Phone */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="mobile" className="text-sm">
+            Phone
+          </label>
+
+          <PhoneInput
+            country={"us"}
+            searchPlaceholder="Search"
+            placeholder="---- --- ----"
+            value={stepOneStates?.mobile}
+            onChange={(value) => stepOneStates?.setMobile(`+${value}`)}
+            containerClass="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+            inputClass="border-none h-full"
+            buttonClass="bg-transparent"
+          />
+        </div>
+
+        {/* Alternative Phone */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="alternateMobile" className="text-sm">
+            Alternative Phone
+          </label>
+          <PhoneInput
+            country={"us"}
+            searchPlaceholder="Search"
+            placeholder="---- --- ----"
+            value={stepOneStates?.alternateMobile}
+            onChange={(value) => stepOneStates?.setAlternateMobile(`+${value}`)}
+            containerClass="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+            inputClass="border-none h-full"
+            buttonClass="bg-transparent"
+          />
+        </div>
+
+        {isUpdateDriverAccount && (
+          <button
+            type="submit"
+            onClick={(e) => handleUpdateDriver(e)}
+            className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelaneGold flex items-center justify-center text-white border-gray-400 rounded-lg"
+          >
+            {isLoading ? (
+              <ImSpinner2 size={21} className="text-white animate-spin" />
+            ) : (
+              "Save changes"
+            )}
+          </button>
+        )}
       </form>
     </div>
   );

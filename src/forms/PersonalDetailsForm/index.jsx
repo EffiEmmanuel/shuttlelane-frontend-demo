@@ -93,7 +93,7 @@ export default function PersonalDetailsForm({
       </div>
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
-          <label htmlFor="fullName" className="text-xs text-gray-500">
+          <label htmlFor="phoneNumber" className="text-xs text-gray-500">
             Phone Number
           </label>
 

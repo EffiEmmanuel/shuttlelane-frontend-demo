@@ -24,7 +24,7 @@ import Footer from "../../components/ui/Footer";
 import PriorityPassForm from "../../forms/HomePage/PriorityPassForm";
 import CustomerReviews from "../../components/ui/CustomerReviews";
 import PaymentPartners from "../../components/ui/PaymentPartners";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import VisaOnArrivalForm from "../../forms/HomePage/VisaOnArrivalForm";
 
 // Images
@@ -107,8 +107,19 @@ function HomePage() {
     }
   }, [window.location.href]);
 
+  // Check if the user was redirected from the "confirm-booking" page
+  const queryParameters = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    if (queryParameters.get("redirectFrom")) {
+      toast.error(
+        "You must select a booking type before proceeding to the booking summary page."
+      );
+    }
+  }, [queryParameters.get("redirectFrom")]);
+
   return (
     <div className="relative bg-white">
+      <ToastContainer />
       <div className="fixed w-full z-20">
         <NavBar />
       </div>

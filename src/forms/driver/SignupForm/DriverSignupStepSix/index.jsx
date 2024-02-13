@@ -19,12 +19,12 @@ function DriverSignupStepSix({ isStepSix, stepSixStates }) {
           Create Password
         </h2>
 
-        <button
+        {/* <button
           disabled
           className="h-5 w-16 disabled:bg-shuttlelaneLightPurple disabled:border-gray-400 disabled:text-gray-400 text-sm flex items-center justify-center border-[.3px] border-shuttlelaneBlack rounded-full p-2"
         >
           Skip
-        </button>
+        </button> */}
       </div>
 
       <p className="text-sm">Sign up to start driving for Shuttlelane</p>

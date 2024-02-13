@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useMemo } from "react";
+import { setDriver, setDriverToken } from "../../../redux/slices/driverSlice";
 
 export function AdminProtectedRoute({ children }) {
   const navigate = useNavigate();
@@ -56,14 +57,57 @@ export function AdminProtectedRoute({ children }) {
 }
 
 export function DriverProtectedRoute({ children }) {
-  // Check if driver is logged in
-  const isDriverLoggedIn = localStorage.getItem("driverToken");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  if (!isDriverLoggedIn) {
-    return <Navigate to="/driver/login" replace />;
-  } else {
-    return children;
+  const driverToken = localStorage.getItem("driverToken");
+
+  async function verifyToken() {
+    try {
+      const res = await axios.post(
+        `http://localhost:3001/api/v1/auth/verify-token`,
+        JSON.stringify({
+          token: JSON.parse(driverToken),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.data?.status === 200) {
+        const driver = JSON.parse(localStorage.getItem("driver"));
+        dispatch(setDriver(driver));
+        dispatch(setDriverToken(driverToken));
+      } else {
+        navigate("/driver/login");
+        toast.error(
+          "Session expired. Please log in to continue to your dashboard"
+        );
+      }
+    } catch (err) {
+      console.log("VERIFY ERROR:", err);
+      if (err?.response?.data?.status === 403) {
+        navigate("/driver/login");
+        toast.error(
+          "Session expired. Please log in to continue to your dashboard"
+        );
+      }
+    }
   }
+
+  const isDriverLoggedIn = useMemo(() => {
+    if (driverToken) {
+      verifyToken();
+      return true; // Assume driver is logged in; actual status will be updated after token verification
+    }
+    return false;
+  }, [driverToken]);
+
+  return (
+    <>{isDriverLoggedIn ? children : <Navigate to="/driver/login" replace />}</>
+  );
 }
 
 export function VendorProtectedRoute({ children }) {

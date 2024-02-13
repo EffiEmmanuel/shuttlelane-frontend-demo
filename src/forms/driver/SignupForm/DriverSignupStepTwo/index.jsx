@@ -3,8 +3,17 @@ import Select from "react-select";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
+import { ImSpinner2 } from "react-icons/im";
+import { useDispatch, useSelector } from "react-redux";
+import { updateDriver } from "../../../../redux/slices/driverSlice";
+import { validateFields } from "../../../../util";
+import { toast } from "react-toastify";
 
-function DriverSignupStepTwo({ isStepTwo, stepTwoStates }) {
+function DriverSignupStepTwo({
+  isStepTwo,
+  stepTwoStates,
+  isUpdateDriverAccount,
+}) {
   const genderOptions = [
     {
       value: "Male",
@@ -60,44 +69,90 @@ function DriverSignupStepTwo({ isStepTwo, stepTwoStates }) {
     },
   ];
 
-  // Form fields
-  const [selectedGender, setSelectedGender] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedEducation, setSelectedEducation] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState();
-  const [selectedMaritalStatus, setSelectedMaritalStatus] = useState("");
-
   // Scroll to top handler
   const scrollTopRef = useRef(null);
   useEffect(() => {
-    console.log("HELLO FROM THIS COMPONENT");
-    scrollTopRef.current.scrollIntoView();
+    if (!isUpdateDriverAccount) {
+      scrollTopRef.current.scrollIntoView();
+    }
   }, [isStepTwo]);
 
-  return (
-    <div className="px-10 pt-10" ref={scrollTopRef}>
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
-          Personal Details
-        </h2>
+  // UPDATE DRIVER STATES
+  const { isLoading, token, driver } = useSelector((store) => store.driver);
+  const dispatch = useDispatch();
 
-        <button className="h-5 w-16 text-sm flex items-center justify-center border-[.3px] border-shuttlelaneBlack rounded-full p-2">
+  // UPDATE DRIVER HANDLER
+  async function handleUpdateDriver(e) {
+    e.preventDefault();
+    const areFieldsEmpty = validateFields([
+      stepTwoStates?.dateOfBirth,
+      stepTwoStates?.address,
+      stepTwoStates?.city,
+      stepTwoStates?.state,
+      stepTwoStates?.maritalStatus,
+      stepTwoStates?.bvn,
+      stepTwoStates?.nin,
+      stepTwoStates?.driverLicense,
+    ]);
+    if (areFieldsEmpty) {
+      toast.error(areFieldsEmpty?.message);
+    } else {
+      const values = {
+        dateOfBirth: stepTwoStates?.dateOfBirth?.split("T")[1],
+        address: stepTwoStates?.address,
+        city: stepTwoStates?.city,
+        state: stepTwoStates?.state,
+        maritalStatus: stepTwoStates?.maritalStatus?.value,
+        bvn: stepTwoStates?.bvn,
+        nin: stepTwoStates?.nin,
+        driverLicense: stepTwoStates?.driverLicense,
+      };
+
+      dispatch(
+        updateDriver({
+          values: { ...values },
+          token: token,
+          driverId: driver?._id,
+        })
+      );
+    }
+  }
+
+  return (
+    <div
+      className={`${!isUpdateDriverAccount && "px-10 pt-10"}`}
+      ref={scrollTopRef}
+    >
+      {!isUpdateDriverAccount && (
+        <>
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
+              Personal Details
+            </h2>
+
+            {/* <button className="h-5 w-16 text-sm flex items-center justify-center border-[.3px] border-shuttlelaneBlack rounded-full p-2">
           Skip
-        </button>
-      </div>
-      <p className="text-sm">Sign up to start driving for Shuttlelane</p>
+        </button> */}
+          </div>
+          <p className="text-sm">Sign up to start driving for Shuttlelane</p>
+        </>
+      )}
 
       {/* FORM */}
       <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
-        {/* First Name */}
+        {/* Date of birth */}
         <div className="flex flex-col gap-y-1">
           <label htmlFor="dateOfBirth" className="text-sm">
-            Date Of Birth
+            Date Of Birth{" "}
+            {isUpdateDriverAccount && (
+              <span>: {stepTwoStates?.dateOfBirth?.split("T")[0]}</span>
+            )}
           </label>
           <DatePicker
             locale={enGB}
             value={stepTwoStates?.dateOfBirth}
             onChange={(date) => {
+              console.log("DATE:", date);
               stepTwoStates?.setDateOfBirth(date);
             }}
             appearance="subtle"
@@ -262,6 +317,20 @@ function DriverSignupStepTwo({ isStepTwo, stepTwoStates }) {
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
+
+        {isUpdateDriverAccount && (
+          <button
+            //   type="submit"
+            onClick={(e) => handleUpdateDriver(e)}
+            className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelaneGold flex items-center justify-center text-white border-gray-400 rounded-lg"
+          >
+            {isLoading ? (
+              <ImSpinner2 size={21} className="text-white animate-spin" />
+            ) : (
+              "Save changes"
+            )}
+          </button>
+        )}
       </form>
     </div>
   );

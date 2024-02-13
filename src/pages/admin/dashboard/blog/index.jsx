@@ -153,7 +153,7 @@ function AdminDashboardBlogPage() {
             />
           </div>
 
-          {/* Add Car */}
+          {/* Add New Post */}
           <form className="w-full mt-5">
             <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
               <div className="w-full flex flex-col">

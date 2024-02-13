@@ -81,6 +81,7 @@ function VisaOnArrivalForm() {
 
               <div className="mt-4 text-sm">
                 <ReactCountryFlagsSelect
+                  disabled={isLoading}
                   selected={country}
                   onSelect={setCountry}
                   fullWidth

@@ -34,11 +34,19 @@ import AdminDashboardEnquiriesPage from "./pages/admin/dashboard/broadcasts/Enqu
 import AdminDashboardPushNotificationsPage from "./pages/admin/dashboard/broadcasts/PushNotificationsPage";
 import AdminDashboardBulkEmailPage from "./pages/admin/dashboard/broadcasts/BulkEmailPage";
 import ConfirmBookingPage from "./pages/booking/confirm-booking";
-import { AdminProtectedRoute } from "./components/security/ProtectedRoute";
+import {
+  AdminProtectedRoute,
+  DriverProtectedRoute,
+} from "./components/security/ProtectedRoute";
 import Modal from "react-modal";
 import AdminDashboardExchangeRatesPage from "./pages/admin/dashboard/rates/ExchangeRates";
 import AdminDashboardBookingRatesPage from "./pages/admin/dashboard/rates/BookingRates";
 import AdminDashboardBlogPage from "./pages/admin/dashboard/blog";
+import DriverLoginPage from "./pages/driver/LoginPage";
+import DriverDashboardHomePage from "./pages/driver/dashboard";
+import DriverDashboardBookingPage from "./pages/driver/dashboard/bookings";
+import DriverDashboardAccountPage from "./pages/driver/dashboard/account";
+import DriverDashboardSecurityPage from "./pages/driver/dashboard/security/ResetPasswordPage";
 
 // Modal.setAppElement("#appElement");
 
@@ -92,6 +100,42 @@ function App() {
         {/* Driver Routes */}
         <Route path="/driver">
           <Route path="signup" element={<DriverSignupPage />} />
+          <Route path="login" element={<DriverLoginPage />} />
+
+          <Route path="dashboard">
+            <Route
+              path=""
+              element={
+                <DriverProtectedRoute>
+                  <DriverDashboardHomePage />
+                </DriverProtectedRoute>
+              }
+            />
+            <Route
+              path="bookings"
+              element={
+                <DriverProtectedRoute>
+                  <DriverDashboardBookingPage />
+                </DriverProtectedRoute>
+              }
+            />
+            <Route
+              path="account"
+              element={
+                <DriverProtectedRoute>
+                  <DriverDashboardAccountPage />
+                </DriverProtectedRoute>
+              }
+            />
+            <Route
+              path="security"
+              element={
+                <DriverProtectedRoute>
+                  <DriverDashboardSecurityPage />
+                </DriverProtectedRoute>
+              }
+            />
+          </Route>
         </Route>
 
         {/* Admin Routes */}

@@ -3,8 +3,17 @@ import Select from "react-select";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
+import { useDispatch, useSelector } from "react-redux";
+import { ImSpinner2 } from "react-icons/im";
+import { validateFields } from "../../../../util";
+import { toast } from "react-toastify";
+import { updateDriver } from "../../../../redux/slices/driverSlice";
 
-function DriverSignupStepThree({ isStepThree, stepThreeStates }) {
+function DriverSignupStepThree({
+  isStepThree,
+  stepThreeStates,
+  isUpdateDriverAccount,
+}) {
   const carTypeOptions = [
     {
       value: "Salon",
@@ -24,21 +33,62 @@ function DriverSignupStepThree({ isStepThree, stepThreeStates }) {
   const scrollTopRef = useRef(null);
   useEffect(() => {
     console.log("HELLO FROM THIS COMPONENT");
-    scrollTopRef.current.scrollIntoView();
+    if (!isUpdateDriverAccount) {
+      scrollTopRef.current.scrollIntoView();
+    }
   }, [isStepThree]);
 
-  return (
-    <div className="px-10 pt-10" ref={scrollTopRef}>
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
-          Car Details
-        </h2>
+  // UPDATE DRIVER STATES
+  const { isLoading, token, driver } = useSelector((store) => store.driver);
+  const dispatch = useDispatch();
 
-        <button className="h-5 w-16 text-sm flex items-center justify-center border-[.3px] border-shuttlelaneBlack rounded-full p-2">
+  // UPDATE DRIVER HANDLER
+  async function handleUpdateDriver(e) {
+    e.preventDefault();
+    const areFieldsEmpty = validateFields([
+      stepThreeStates?.carType,
+      stepThreeStates?.carName,
+      stepThreeStates?.carModel,
+      stepThreeStates?.carYear,
+    ]);
+    if (areFieldsEmpty) {
+      toast.error(areFieldsEmpty?.message);
+    } else {
+      const values = {
+        carType: stepThreeStates?.carType?.value,
+        carName: stepThreeStates?.carName,
+        carModel: stepThreeStates?.carModel,
+        carYear: stepThreeStates?.carYear,
+      };
+
+      dispatch(
+        updateDriver({
+          values: { ...values },
+          token: token,
+          driverId: driver?._id,
+        })
+      );
+    }
+  }
+  return (
+    <div
+      className={`${!isUpdateDriverAccount && "px-10 pt-10"}`}
+      ref={scrollTopRef}
+    >
+      {!isUpdateDriverAccount && (
+        <>
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
+              Car Details
+            </h2>
+
+            {/* <button className="h-5 w-16 text-sm flex items-center justify-center border-[.3px] border-shuttlelaneBlack rounded-full p-2">
           Skip
-        </button>
-      </div>
-      <p className="text-sm">Sign up to start driving for Shuttlelane</p>
+        </button> */}
+          </div>
+          <p className="text-sm">Sign up to start driving for Shuttlelane</p>
+        </>
+      )}
 
       {/* FORM */}
       <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
@@ -135,6 +185,20 @@ function DriverSignupStepThree({ isStepThree, stepThreeStates }) {
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
+
+        {isUpdateDriverAccount && (
+          <button
+            //   type="submit"
+            onClick={(e) => handleUpdateDriver(e)}
+            className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelaneGold flex items-center justify-center text-white border-gray-400 rounded-lg"
+          >
+            {isLoading ? (
+              <ImSpinner2 size={21} className="text-white animate-spin" />
+            ) : (
+              "Save changes"
+            )}
+          </button>
+        )}
       </form>
     </div>
   );

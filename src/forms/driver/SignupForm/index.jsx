@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useRef, useState } from "react";
 import DriverSignupStepOne from "./DriverSignupStepOne";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -9,11 +10,18 @@ import DriverSignupStepFive from "./DriverSignupStepFive";
 import DriverSignupStepSix from "./DriverSignupStepSix";
 import DriverSignupStepSeven from "./DriverSignupStepSeven";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { signupDriver } from "../../../redux/slices/driverSlice";
+import {
+  resendOTP,
+  resetHasVerifiedPhone,
+  signupDriver,
+  verifyOTP,
+} from "../../../redux/slices/driverSlice";
 import { ImSpinner2 } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
-function DriverSignupForm() {
+function DriverSignupForm(props) {
   const [isStepOne, setIsStepOne] = useState(true);
   const [isStepTwo, setIsStepTwo] = useState(false);
   const [isStepThree, setIsStepThree] = useState(false);
@@ -55,7 +63,7 @@ function DriverSignupForm() {
       if (
         !dateOfBirth ||
         !address ||
-        !city ||
+        // !city ||
         !state ||
         !maritalStatus ||
         !bvn ||
@@ -266,7 +274,7 @@ function DriverSignupForm() {
   const [emergencyLastName, setEmergencyLastName] = useState();
   const [emergencyAddress, setEmergencyAddress] = useState();
   const [emergencyMobile, setEmergencyMobile] = useState();
-  const [emergencyRelationship, setEmergencyRelationship] = useState();
+  const [emergencyRelationship, setEmergencyRelationship] = useState({});
 
   // Object to pass to prop
   const stepFourStates = {
@@ -303,8 +311,18 @@ function DriverSignupForm() {
     setPassword,
   };
 
+  // STEP 7
+  const [otp, setOtp] = useState();
+  // Object to pass to prop
+  const stepSevenStates = {
+    otp,
+    setOtp,
+  };
+
   // Hande Signup Driver
-  const { isLoading } = useSelector((store) => store.driver);
+  const { isLoading, hasSignedUp, hasVerifiedPhone, driver } = useSelector(
+    (store) => store.driver
+  );
   const dispatch = useDispatch();
   async function handleSignupDriver() {
     const values = {
@@ -341,11 +359,103 @@ function DriverSignupForm() {
     dispatch(signupDriver({ values: { ...values } }));
   }
 
+  useEffect(() => {
+    if (hasSignedUp) {
+      setIsStepSeven(true);
+      setIsStepSix(false);
+      setIsStepFive(false);
+      setIsStepFour(false);
+      setIsStepThree(false);
+      setIsStepTwo(false);
+      setIsStepOne(false);
+    }
+  }, [hasSignedUp]);
+
+  const navigator = useNavigate();
+  useEffect(() => {
+    if (hasVerifiedPhone && !props?.isUpdateDriverAccount) {
+      setTimeout(() => {
+        navigator("/driver/dashboard");
+      }, 1000);
+      dispatch(resetHasVerifiedPhone());
+    }
+  }, [hasVerifiedPhone]);
+
+  // PRE-FILL ALL THE FORM FIELDS IF IT'S THE DRIVER UPDATE VARIATION
+  useEffect(() => {
+    if (props?.isUpdateDriverAccount) {
+      // PRE-FILL ALL CONTACT INFORMATON DETALS
+      setFirstName(driver?.firstName);
+      setMiddleName(driver?.middleName);
+      setLastName(driver?.lastName);
+      setEmail(driver?.email);
+      setGender({
+        value: driver?.gender,
+        label: driver?.gender,
+      });
+      setMobile(driver?.mobile);
+      setAlternateMobile(driver?.alternateMobile);
+      setEducation({
+        value: driver?.education,
+        label: driver?.education,
+      });
+
+      // PRE-FILL ALL PERSONAL INFORMATION DETAILS
+      //   setDateOfBirth(driver?.dateOfBirth);
+      setAddress(driver?.address);
+      setCity(driver?.city);
+      setState(driver?.state);
+      setMaritalStatus({
+        value: driver?.maritalStatus,
+        label: driver?.maritalStatus,
+      });
+      setBvn(driver?.bvn);
+      setNin(driver?.nin);
+      setDriverLicense(driver?.driverLicense);
+
+      // PRE-FILL ALL CAR DETAILS INFORMATION
+      setCarType({
+        value: driver?.carType,
+        label: driver?.carType,
+      });
+      setCarName(driver?.carName);
+      setCarModel(driver?.carModel);
+      setCarYear(driver?.carYear);
+
+      // PRE-FILL ALL EMERGENCY CONTACT DETAILS
+      setEmergencyFirstName(driver?.emergencyFirstName);
+      setEmergencyLastName(driver?.emergencyLastName);
+      setEmergencyAddress(driver?.emergencyAddress);
+      setEmergencyMobile(driver?.emergencyMobile);
+      setEmergencyRelationship({
+        value: driver?.emergencyRelationship,
+        label: driver?.emergencyRelationship,
+      });
+
+      // PRE-FILL ADDITIONAL INFORMATION DETAILS
+      setIsDrivingForHailingPlatforms({
+        value: driver?.isDrivingForHailingPlatforms,
+        label: driver?.isDrivingForHailingPlatforms == false ? "No" : "Yes",
+      });
+      setOtherHailingPlatforms(driver?.otherHailingPlatforms);
+    }
+  }, [driver]);
+
+  // VERIFY OTP
+  async function handleVerifyOTP() {
+    dispatch(
+      verifyOTP({
+        driver: driver,
+        code: otp,
+      })
+    );
+  }
+
   return (
     <div className="">
       <ToastContainer />
       {/* Progress bar */}
-      {!isStepSeven && (
+      {!isStepSeven && !props?.isUpdateDriverAccount && (
         <div className="lg:w-[50vw] w-full bg-gray-300 h-1 fixed top-0 z-[95]">
           <div
             className={`w-[${progressbarWidth}%] transition-all bg-shuttlelaneGold h-full`}
@@ -353,105 +463,202 @@ function DriverSignupForm() {
           ></div>
         </div>
       )}
-
-      <div>
-        {isStepOne && (
-          <Slide direction={`${slideDirection}`} duration={500}>
+      {/* isUpdateDriverAccount={true}
+      isContactInformation={isContactInformation}
+      isPersonalDetails={isPersonalDetails}
+      carDetails={carDetails}
+      isEmergencyContact={isEmergencyContact}
+      isPhoneVerification={isPhoneVerification} */}
+      {props?.isUpdateDriverAccount ? (
+        <div>
+          {props?.isContactInformation && (
             <DriverSignupStepOne
               isStepOne={isStepOne}
               stepOneStates={stepOneStates}
+              isUpdateDriverAccount={props?.isUpdateDriverAccount}
             />
-          </Slide>
-        )}
-        {isStepTwo && (
-          <Slide direction={`${slideDirection}`} duration={500}>
+          )}
+          {props?.isPersonalDetails && (
             <DriverSignupStepTwo
               isStepTwo={isStepTwo}
               stepTwoStates={stepTwoStates}
+              isUpdateDriverAccount={props?.isUpdateDriverAccount}
             />
-          </Slide>
-        )}
-        {isStepThree && (
-          <Slide direction={`${slideDirection}`} duration={500}>
-            <DriverSignupStepThree
-              isStepThree={isStepThree}
-              stepThreeStates={stepThreeStates}
-            />
-          </Slide>
-        )}
-        {isStepFour && (
-          <Slide direction={`${slideDirection}`} duration={500}>
-            <DriverSignupStepFour
-              isStepFour={isStepFour}
-              stepFourStates={stepFourStates}
-            />
-          </Slide>
-        )}
-        {isStepFive && (
-          <Slide direction={`${slideDirection}`} duration={500}>
+          )}
+          {props?.carDetails && (
+            <>
+              {props?.isUpdateDriverAccount ? (
+                <DriverSignupStepThree
+                  isStepThree={isStepThree}
+                  stepThreeStates={stepThreeStates}
+                  isUpdateDriverAccount={props?.isUpdateDriverAccount}
+                />
+              ) : (
+                <Slide direction={`${slideDirection}`} duration={500}>
+                  <DriverSignupStepThree
+                    isStepThree={isStepThree}
+                    stepThreeStates={stepThreeStates}
+                    isUpdateDriverAccount={props?.isUpdateDriverAccount}
+                  />
+                </Slide>
+              )}
+            </>
+          )}
+          {props?.isEmergencyContact && (
+            <>
+              {props?.isUpdateDriverAccount ? (
+                <DriverSignupStepFour
+                  isStepFour={isStepFour}
+                  stepFourStates={stepFourStates}
+                  isUpdateDriverAccount={props?.isUpdateDriverAccount}
+                />
+              ) : (
+                <Slide direction={`${slideDirection}`} duration={500}>
+                  <DriverSignupStepFour
+                    isStepFour={isStepFour}
+                    stepFourStates={stepFourStates}
+                    isUpdateDriverAccount={props?.isUpdateDriverAccount}
+                  />
+                </Slide>
+              )}
+            </>
+          )}
+          {props?.isAdditionalDetails && (
             <DriverSignupStepFive
               isStepFive={isStepFive}
               stepFiveStates={stepFiveStates}
+              isUpdateDriverAccount={props?.isUpdateDriverAccount}
             />
-          </Slide>
-        )}
-        {isStepSix && (
-          <Slide direction={`${slideDirection}`} duration={500}>
-            <DriverSignupStepSix
-              isStepSix={isStepSix}
-              stepSixStates={stepSixStates}
+          )}
+          {props?.isPhoneVerification && (
+            <DriverSignupStepSeven
+              isStepSeven={isStepSeven}
+              stepSevenStates={stepSevenStates}
+              isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              setIsContactInformation={props?.setIsContactInformation}
+              setIsPersonalDetails={props?.setIsPersonalDetails}
+              setIsCarDetails={props?.setIsCarDetails}
+              setIsEmergencyContact={props?.setIsEmergencyContact}
+              setIsAdditionalDetails={props?.setIsAdditionalDetails}
+              setIsPhoneVerification={props?.setIsPhoneVerification}
             />
-          </Slide>
-        )}
-        {isStepSeven && (
-          <Slide direction={`${slideDirection}`} duration={500}>
-            <DriverSignupStepSeven isStepSeven={isStepSeven} />
-          </Slide>
-        )}
-      </div>
-
-      {/* Control buttons */}
-      <div className="lg:pl-[50%] fixed bottom-0 left-0 w-full z-[30]">
-        <div className="w-full flex justify-between items-center bg-shuttlelaneLightPurple h-20 p-7 lg:px-10">
-          <button
-            onClick={() => handlePrev()}
-            disabled={isStepOne || isStepSeven}
-            className="disabled:text-gray-400 flex gap-x-2 items-center text-shuttlelaneBlack"
-          >
-            <AiOutlineArrowLeft size={16} className="" />
-            <span className="">Go back</span>
-          </button>
-          {!isStepSeven && !isStepSix && (
-            <button
-              onClick={() => handleNext()}
-              disabled={isStepSeven}
-              className="flex gap-x-2 disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 items-center bg-shuttlelaneGold text-white w-32 h-10 rounded-lg p-3 justify-center hover:bg-transparent hover:text-shuttlelaneBlack hover:border-[.5px] hover:border-shuttlelaneBlack transition-all"
-            >
-              <span className="">Next</span>
-            </button>
-          )}
-          {isStepSix && (
-            <button
-              onClick={() => handleSignupDriver()}
-              className="flex gap-x-2 items-center bg-shuttlelaneGold text-white w-32 h-10 rounded-lg p-3 justify-center hover:bg-transparent hover:text-shuttlelaneBlack hover:border-[.5px] hover:border-shuttlelaneBlack transition-all"
-            >
-              {isLoading ? (
-                <ImSpinner2 size={18} className="animate-spin" />
-              ) : (
-                <span className="">Finish</span>
-              )}
-            </button>
-          )}
-          {isStepSeven && (
-            <button
-              onClick={() => handleNext()}
-              className="flex gap-x-2 items-center bg-shuttlelaneGold text-white w-32 h-10 rounded-lg p-3 justify-center hover:bg-transparent hover:text-shuttlelaneBlack hover:border-[.5px] hover:border-shuttlelaneBlack transition-all"
-            >
-              <span className="">Verify</span>
-            </button>
           )}
         </div>
-      </div>
+      ) : (
+        <div>
+          {isStepOne && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepOne
+                isStepOne={isStepOne}
+                stepOneStates={stepOneStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+          {isStepTwo && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepTwo
+                isStepTwo={isStepTwo}
+                stepTwoStates={stepTwoStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+          {isStepThree && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepThree
+                isStepThree={isStepThree}
+                stepThreeStates={stepThreeStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+          {isStepFour && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepFour
+                isStepFour={isStepFour}
+                stepFourStates={stepFourStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+          {isStepFive && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepFive
+                isStepFive={isStepFive}
+                stepFiveStates={stepFiveStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+          {isStepSix && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepSix
+                isStepSix={isStepSix}
+                stepSixStates={stepSixStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+          {isStepSeven && (
+            <Slide direction={`${slideDirection}`} duration={500}>
+              <DriverSignupStepSeven
+                isStepSeven={isStepSeven}
+                stepSevenStates={stepSevenStates}
+                isUpdateDriverAccount={props?.isUpdateDriverAccount}
+              />
+            </Slide>
+          )}
+        </div>
+      )}
+      {/* Control buttons */}
+      {!props?.isUpdateDriverAccount && (
+        <div className="lg:pl-[50%] fixed bottom-0 left-0 w-full">
+          <div className="w-full flex justify-between items-center bg-shuttlelaneLightPurple h-20 p-7 lg:px-10">
+            <button
+              onClick={() => handlePrev()}
+              disabled={isStepOne}
+              className="disabled:text-gray-400 flex gap-x-2 items-center text-shuttlelaneBlack"
+            >
+              <AiOutlineArrowLeft size={16} className="" />
+              <span className="">Go back</span>
+            </button>
+            {!isStepSeven && !isStepSix && (
+              <button
+                onClick={() => handleNext()}
+                disabled={isStepSeven}
+                className="flex gap-x-2 disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 items-center bg-shuttlelaneGold text-white w-32 h-10 rounded-lg p-3 justify-center hover:bg-transparent hover:text-shuttlelaneBlack hover:border-[.5px] hover:border-shuttlelaneBlack transition-all"
+              >
+                <span className="">Next</span>
+              </button>
+            )}
+            {isStepSix && (
+              <button
+                onClick={() => handleSignupDriver()}
+                className="flex gap-x-2 items-center bg-shuttlelaneGold text-white w-32 h-10 rounded-lg p-3 justify-center hover:bg-transparent hover:text-shuttlelaneBlack hover:border-[.5px] hover:border-shuttlelaneBlack transition-all"
+              >
+                {isLoading ? (
+                  <ImSpinner2 size={18} className="animate-spin" />
+                ) : (
+                  <span className="">Finish</span>
+                )}
+              </button>
+            )}
+            {isStepSeven && (
+              <button
+                onClick={() => handleVerifyOTP()}
+                className="flex gap-x-2 items-center bg-shuttlelaneGold text-white w-32 h-10 rounded-lg p-3 justify-center hover:bg-transparent hover:text-shuttlelaneBlack hover:border-[.5px] hover:border-shuttlelaneBlack transition-all"
+              >
+                {isLoading ? (
+                  <ImSpinner2 size={18} className="animate-spin" />
+                ) : (
+                  <span className="">Veirfy</span>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

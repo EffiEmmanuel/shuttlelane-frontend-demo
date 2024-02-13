@@ -45,8 +45,8 @@ function AirportTransferForm() {
   const [dropoffLocation, setDropoffLocation] = useState();
   const dropoffLocationRef = useRef(null);
   const [dropoffLocationInput, setDropoffLocationInput] = useState();
-  const [dropoffDate, setDropoffDate] = useState();
-  const [dropoffTime, setDropoffTime] = useState();
+  const [returnDate, setReturnDate] = useState();
+  const [returnTime, setReturnTime] = useState();
   const [selectedCity, setSelectedCity] = useState();
 
   const { isLoading, cities } = useSelector((store) => store.user);
@@ -93,8 +93,8 @@ function AirportTransferForm() {
         !pickupDate ||
         !pickupTime ||
         !dropoffLocationInput ||
-        !dropoffDate ||
-        !dropoffTime ||
+        !returnDate ||
+        !returnTime ||
         !selectedCity ||
         !passengers)
     ) {
@@ -121,8 +121,8 @@ function AirportTransferForm() {
             pickupDate,
             pickupTime,
             dropoffLocation: dropoffLocationInput,
-            dropoffDate,
-            dropoffTime,
+            returnDate,
+            returnTime,
             selectedCity,
             passengers,
           },
@@ -385,12 +385,12 @@ function AirportTransferForm() {
                             <DatePicker
                               locale={enGB}
                               disabledDate={disableDateBeforeMin}
-                              value={dropoffDate}
+                              value={returnDate}
                               appearance="subtle"
                               onChange={(date) => {
-                                setDropoffDate(date);
+                                setReturnDate(date);
                               }}
-                              placeholder="Dropoff Date"
+                              placeholder="Return Date"
                               style={{
                                 backgroundColor: "transparent",
                               }}
@@ -402,13 +402,13 @@ function AirportTransferForm() {
                           <div className="w-full">
                             <DatePicker
                               format="HH:mm"
-                              value={dropoffTime}
+                              value={returnTime}
                               appearance="subtle"
                               onChange={(time) => {
                                 console.log("TIME:", time);
-                                setDropoffTime(time);
+                                setReturnTime(time);
                               }}
-                              placeholder="Dropoff Time"
+                              placeholder="Return Time"
                               style={{
                                 backgroundColor: "transparent",
                               }}
