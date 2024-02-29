@@ -122,7 +122,7 @@ function CarRentalForm() {
         setBookingDetails({
           bookingType: "Car",
           bookingDetails: {
-            pickupLocation: pickupLocationInput,
+            pickupAddress: pickupLocationInput,
             pickupDate,
             pickupTime,
             days,

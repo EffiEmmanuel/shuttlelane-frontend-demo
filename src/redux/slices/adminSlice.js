@@ -154,6 +154,20 @@ export const fetchDrivers = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function fetches approved drivers
+export const fetchApprovedDrivers = createAsyncThunk(
+  "admin/drivers/getAllApproved",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/admin/drivers/approved`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH DRIVERS ERROR:", err));
+  }
+);
+
 // FUNCTION: This function deletes a driver by Id
 export const deleteDriverById = createAsyncThunk(
   "admin/drivers/deleteOne",
@@ -851,7 +865,7 @@ export const fetchBlogPosts = createAsyncThunk(
   async () => {
     return fetch(`http://localhost:3001/api/v1/blog-posts`, {})
       .then((res) => res.json())
-      .catch((err) => console.log("FETCH BLOG OPSTS ERROR:", err));
+      .catch((err) => console.log("FETCH BLOG POSTS ERROR:", err));
   }
 );
 // FUNCTION: This function creates a blog post
@@ -993,6 +1007,99 @@ export const deleteBlogPost = createAsyncThunk(
   }
 );
 
+// BOOKINGS
+
+// FUNCTION: This function fetches upcoming bookings
+export const adminFetchUpcomingBookings = createAsyncThunk(
+  "admin/bookings/upcoming",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/admin/bookings/upcoming`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH UPCOMING BOOKINGS ERROR (ADMIN):", err)
+      );
+  }
+);
+// FUNCTION: This function fetches unassigned bookings
+export const adminFetchBookingsAwaitingAssignment = createAsyncThunk(
+  "admin/bookings/unassigned",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/admin/bookings/unassigned`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH UNASSIGNED BOOKINGS ERROR (ADMIN):", err)
+      );
+  }
+);
+// FUNCTION: This function deletes a booking
+export const deleteBooking = createAsyncThunk(
+  "admin/bookings/deleteOne",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/booking/delete-booking/${payload?._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE BOOKING ERROR:", err));
+  }
+);
+// FUNCTION: This function assigns a driver / vendor to a booking / job
+export const assignToJob = createAsyncThunk(
+  "admin/bookings/assignToJob",
+  async (payload) => {
+    console.log("PAYLOAD FROM AsyncThunk:", payload);
+    return fetch(
+      `http://localhost:3001/api/v1/admin/assign-to-booking/${payload?.userType}/${payload?.userId}/${payload?.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bookingRate: payload?.bookingRate,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("ASSIGN TO BOOKING ERROR (ADMIN):", err));
+  }
+);
+// FUNCTION: This function approves a driver account
+export const approveDriverAccount = createAsyncThunk(
+  "admin/drivers/approveAccount",
+  async (payload) => {
+    console.log("PAYLOAD FROM AsyncThunk:", payload);
+    return fetch(
+      `http://localhost:3001/api/v1/admin/drivers/${payload?.driverId}/account/approve`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("APPROVE DRIVER ACCOUNT ERROR (ADMIN):", err)
+      );
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -1012,6 +1119,7 @@ export const adminSlice = createSlice({
     users: null,
     drivers: null,
     upcomingBookings: null,
+    unassignedBookings: null,
 
     // The following states are for the "cities" page
     currentCity: null, // The current selected city per time
@@ -1026,6 +1134,7 @@ export const adminSlice = createSlice({
     // The following states are for driver management
     currentDriver: null,
     drivers: null,
+    approvedDrivers: null,
     driverData: null,
 
     // The following states are for vendor management
@@ -1238,6 +1347,20 @@ export const adminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchDrivers.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Approved Drivers AsyncThunk states
+      .addCase(fetchApprovedDrivers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchApprovedDrivers.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DRIVERS", action.payload);
+        state.approvedDrivers = action.payload?.drivers;
+        // state.driverData = action.payload?.data;
+        state.isLoading = false;
+      })
+      .addCase(fetchApprovedDrivers.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
@@ -1857,6 +1980,95 @@ export const adminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteBlogPost.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Upcoming Bookings  AsyncThunk states
+      .addCase(adminFetchUpcomingBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(adminFetchUpcomingBookings.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH UPCOMING BOOKINGS", action.payload);
+        state.upcomingBookings = action.payload?.upcomingBookings;
+        state.isLoading = false;
+      })
+      .addCase(adminFetchUpcomingBookings.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Unassigned Bookings  AsyncThunk states
+      .addCase(adminFetchBookingsAwaitingAssignment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        adminFetchBookingsAwaitingAssignment.fulfilled,
+        (state, action) => {
+          console.log(
+            "ACTION.PAYLOAD FETCH UNASSIGNED BOOKINGS",
+            action.payload
+          );
+          state.unassignedBookings = action.payload?.bookings;
+          state.isLoading = false;
+        }
+      )
+      .addCase(adminFetchBookingsAwaitingAssignment.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Booking AsyncThunk states
+      .addCase(deleteBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteBooking.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE BOOKING", action.payload);
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.bookings = action.payload?.bookings;
+          state.unassignedBookings = action.payload?.bookingsAwaitingAssignment;
+          state.upcomingBookings = action.payload?.upcomingBookings;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Assign To Booking AsyncThunk states
+      .addCase(assignToJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(assignToJob.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD ASSIGN TO BOOKING", action.payload);
+        if (action.payload?.status == 201) {
+          state.unassignedBookings = action.payload?.unassignedBookings;
+          toast.success(action.payload?.message);
+          state.isLoading = false;
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(assignToJob.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Approve driver account AsyncThunk states
+      .addCase(approveDriverAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(approveDriverAccount.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD APPROVE DRIVER ACCOUNT", action.payload);
+        if (action.payload?.status == 201) {
+          state.drivers = action.payload?.drivers;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(approveDriverAccount.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

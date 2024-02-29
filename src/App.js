@@ -47,6 +47,8 @@ import DriverDashboardHomePage from "./pages/driver/dashboard";
 import DriverDashboardBookingPage from "./pages/driver/dashboard/bookings";
 import DriverDashboardAccountPage from "./pages/driver/dashboard/account";
 import DriverDashboardSecurityPage from "./pages/driver/dashboard/security/ResetPasswordPage";
+import BlogsPage from "./pages/company/BlogsPage";
+import PostPage from "./pages/company/BlogsPage/PostPage";
 
 // Modal.setAppElement("#appElement");
 
@@ -69,6 +71,8 @@ function App() {
           <Route path="who-we-are" element={<WhoWeArePage />} />
           <Route path="partnership" element={<PartnershipPage />} />
           <Route path="get-in-touch" element={<GetInTouchPage />} />
+          <Route path="blog" element={<BlogsPage />} />
+          <Route path="blog/posts/:slug" element={<PostPage />} />
         </Route>
 
         {/* Services Routes */}

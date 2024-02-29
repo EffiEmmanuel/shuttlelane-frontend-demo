@@ -72,6 +72,7 @@ export default function VisaOnArrivalBookingSummary() {
   const [surname, setSurname] = useState();
   const [firstName, setFirstName] = useState();
   const [middleName, setMiddleName] = useState();
+  const [email, setEmail] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
   const [placeOfBirth, setPlaceOfBirth] = useState();
   const [gender, setGender] = useState();
@@ -176,6 +177,76 @@ export default function VisaOnArrivalBookingSummary() {
     }
   }
 
+  // UPDATE BOOKING DETAILS
+  useEffect(() => {
+    dispatch(
+      setBookingDetails({
+        bookingType: "Visa",
+        bookingDetails: {
+          visaClass,
+          passportType,
+          nationality,
+          passportPhotograph,
+          title,
+          surname,
+          firstName,
+          middleName,
+          dateOfBirth,
+          placeOfBirth,
+          gender,
+          maritalStatus,
+          passportNumber,
+          passportExpiryDate,
+          purposeOfJourney,
+          airline,
+          flightNumber,
+          countryOfDeparture,
+          departureDate,
+          arrivalDate,
+          portOfEntry,
+          durationOfStay,
+          contactName,
+          contactNumber,
+          contactAddress,
+          contactCity,
+          contactState,
+          contactEmail,
+          contactPostalCode,
+        },
+      })
+    );
+  }, [
+    visaClass,
+    passportType,
+    nationality,
+    passportPhotograph,
+    title,
+    surname,
+    firstName,
+    middleName,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    maritalStatus,
+    passportNumber,
+    passportExpiryDate,
+    purposeOfJourney,
+    airline,
+    flightNumber,
+    countryOfDeparture,
+    departureDate,
+    arrivalDate,
+    portOfEntry,
+    durationOfStay,
+    contactName,
+    contactNumber,
+    contactAddress,
+    contactCity,
+    contactState,
+    contactEmail,
+    contactPostalCode,
+  ]);
+
   return (
     <div className="">
       <ToastContainer />
@@ -268,6 +339,7 @@ export default function VisaOnArrivalBookingSummary() {
                       surname &&
                       firstName &&
                       middleName &&
+                      email &&
                       dateOfBirth &&
                       placeOfBirth &&
                       gender &&
@@ -306,6 +378,8 @@ export default function VisaOnArrivalBookingSummary() {
                 setFirstName={setFirstName}
                 middleName={middleName}
                 setMiddleName={setMiddleName}
+                email={email}
+                setEmail={setEmail}
                 dateOfBirth={dateOfBirth}
                 setDateOfBirth={setDateOfBirth}
                 placeOfBirth={placeOfBirth}
@@ -334,6 +408,7 @@ export default function VisaOnArrivalBookingSummary() {
                   !surname ||
                   !firstName ||
                   !middleName ||
+                  !email ||
                   !dateOfBirth ||
                   !placeOfBirth ||
                   !gender ||
@@ -502,7 +577,44 @@ export default function VisaOnArrivalBookingSummary() {
             </div>
           </div>
 
-          <Pay />
+          <Pay
+            isPaymentDisabled={
+              !visaClass ||
+              !passportType ||
+              !nationality ||
+              !passportPhotograph ||
+              !title ||
+              !surname ||
+              !firstName ||
+              !middleName ||
+              !email ||
+              !dateOfBirth ||
+              !placeOfBirth ||
+              !gender ||
+              !maritalStatus ||
+              !passportNumber ||
+              !passportExpiryDate ||
+              !purposeOfJourney ||
+              !airline ||
+              !flightNumber ||
+              !countryOfDeparture ||
+              !departureDate ||
+              !arrivalDate ||
+              !portOfEntry ||
+              !durationOfStay ||
+              !contactName ||
+              !contactNumber ||
+              !contactAddress ||
+              !contactCity ||
+              !contactState ||
+              !contactEmail ||
+              !contactPostalCode
+                ? true
+                : false
+            }
+
+            isVisaOnArrival={true}
+          />
         </div>
         <div className="lg:w-[35%] w-full mt-10 lg:mt-0">
           <div className="bg-white p-7 transition-all">
@@ -568,7 +680,7 @@ export default function VisaOnArrivalBookingSummary() {
 
                     {!isLoading && (
                       <>
-                        {!userCurrency?.symbol ? "$" : userCurrency?.symbol}
+                        $
                         {isNaN(bookingTotal)
                           ? "0.00"
                           : Intl.NumberFormat("en-US", {}).format(bookingTotal)}

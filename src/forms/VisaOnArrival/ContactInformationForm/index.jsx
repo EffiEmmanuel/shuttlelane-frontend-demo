@@ -98,6 +98,11 @@ export default function ContactInformationForm({
               className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
+        <div className="w-full flex flex-col gap-y-4 lg:w-[50%]">
           <div className="w-full flex flex-col gap-y-1">
             <label htmlFor="contactState" className="text-xs text-gray-500">
               State
@@ -112,9 +117,7 @@ export default function ContactInformationForm({
             />
           </div>
         </div>
-      </div>
 
-      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="contactEmail" className="text-xs text-gray-500">
             Contact Email Address
@@ -128,6 +131,9 @@ export default function ContactInformationForm({
             className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
           />
         </div>
+      </div>
+
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="postalCode" className="text-xs text-gray-500">
             Postal Code

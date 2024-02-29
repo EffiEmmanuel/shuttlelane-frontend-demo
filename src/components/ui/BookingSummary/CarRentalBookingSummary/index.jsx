@@ -64,7 +64,7 @@ export default function CarRentalBookingSummary() {
     { value: "Ms", label: "Ms" },
   ];
 
-  // FORM FIELD STATES
+  // Personal Details Form Fields
   const [selectedTitle, setSelectedTitle] = useState();
   const [fullName, setFullName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
@@ -102,7 +102,7 @@ export default function CarRentalBookingSummary() {
           bookingType: "Car",
           alertUser: true,
           bookingDetails: {
-            pickupLocation: pickupLocationInput,
+            pickupAddress: pickupLocationInput,
             pickupDate,
             pickupTime,
             days,
@@ -503,7 +503,26 @@ export default function CarRentalBookingSummary() {
             />
           </div>
 
-          <Pay />
+          <Pay
+            isPaymentDisabled={
+              !bookingDetails?.carSelected ||
+              !bookingDetails?.citySelected ||
+              !bookingDetails?.days ||
+              !bookingDetails?.pickupAddress ||
+              !bookingDetails?.pickupDate ||
+              !bookingDetails?.pickupTime ||
+              !selectedTitle ||
+              !fullName ||
+              !phoneNumber ||
+              !email
+                ? true
+                : false
+            }
+            selectedTitle={selectedTitle}
+            fullName={fullName}
+            phoneNumber={phoneNumber}
+            email={email}
+          />
         </div>
         <div className="lg:w-[35%] w-full mt-10 lg:mt-0">
           <div className="bg-white p-7 transition-all">
@@ -537,7 +556,7 @@ export default function CarRentalBookingSummary() {
                   <MdLocationPin size={16} />
                   <div className="flex flex-col gap-y-1">
                     <span className="text-xs font-medium">
-                      {bookingDetails?.pickupLocation ?? (
+                      {bookingDetails?.pickupAddress ?? (
                         <span className="text-gray-300 text-xs">
                           Not yet selected
                         </span>
@@ -642,7 +661,7 @@ export default function CarRentalBookingSummary() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-7 mt-10">
+          <div className="bg-white p-7 mt-4">
             <div className="mt-5">
               <div className="w-full max-h-[163px] h-[163px] min-h-[163px] overflow-hidden">
                 <iframe

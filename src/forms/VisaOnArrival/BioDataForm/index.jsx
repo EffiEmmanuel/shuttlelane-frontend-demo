@@ -24,6 +24,8 @@ export default function BiodataForm({
   setFirstName,
   middleName,
   setMiddleName,
+  email,
+  setEmail,
   dateOfBirth,
   setDateOfBirth,
   placeOfBirth,
@@ -242,6 +244,19 @@ export default function BiodataForm({
 
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
+          <label htmlFor="email" className="text-xs text-gray-500">
+            Email Address
+          </label>
+          <input
+            type="email"
+            name="email"
+            placeholder="abd@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+          />
+        </div>
+        <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="firstName" className="text-xs text-gray-500">
             Date Of Birth
           </label>
@@ -265,7 +280,9 @@ export default function BiodataForm({
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="placeOfBirth" className="text-xs text-gray-500">
             Place Of Birth
@@ -279,9 +296,6 @@ export default function BiodataForm({
             className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
           />
         </div>
-      </div>
-
-      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="gender" className="text-xs text-gray-500">
             Gender
@@ -322,6 +336,9 @@ export default function BiodataForm({
             />
           </div>
         </div>
+      </div>
+
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="maritalStatus" className="text-xs text-gray-500">
             Marital Status
@@ -362,9 +379,6 @@ export default function BiodataForm({
             />
           </div>
         </div>
-      </div>
-
-      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="passportNumber" className="text-xs text-gray-500">
             Passport Number
@@ -378,7 +392,9 @@ export default function BiodataForm({
             className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
           />
         </div>
+      </div>
 
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="passportExpiryDate" className="text-xs text-gray-500">
             Passport Expiry Date

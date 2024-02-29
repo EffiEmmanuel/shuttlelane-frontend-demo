@@ -192,31 +192,151 @@ export const fetchVisaOnArrivalRates = createAsyncThunk(
 export const createBooking = createAsyncThunk(
   "user/bookings/createOne",
   async (payload) => {
-    const values = {
-      bookingType: payload?.bookingType,
-      title: payload?.bookingDetails?.title?.value,
-      firstName: payload?.bookingDetails?.fullName?.split(" ")[0],
-      lastName: payload?.bookingDetails?.fullName?.split(" ")[1],
-      email: payload?.bookingDetails?.email,
-      mobile: payload?.bookingDetails?.mobile,
+    console.log("VALUES:", payload);
+    let values;
+    // Upload the passport photograph to cloudinary
+    if (payload?.bookingType === "Visa") {
+      const formData = new FormData();
+      formData.append("file", payload.bookingDetails?.passportPhotograph);
+      formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
 
-      // AT-Specific booking
-      isRoundTrip: payload?.bookingDetails?.isRoundTrip,
-      passengers: payload?.bookingDetails?.passengers,
-      airline: payload?.bookingDetails?.airline,
-      flightNumber: payload?.bookingDetails?.flightNumber,
-      vehicleClass: payload?.bookingDetails?.vehicleClass?._id,
-      city: payload?.bookingDetails?.selectedCity?.cityName,
-      pickupAddress: payload?.bookingDetails?.pickupLocation,
-      pickupDate: payload?.bookingDetails?.pickupDate,
-      pickupTime: payload?.bookingDetails?.pickupTime,
-      dropoffAddress: payload?.bookingDetails?.dropoffLocation,
-      returnDate: payload?.bookingDetails?.returnDate ?? null,
-      returnTime: payload?.bookingDetails?.returnTime ?? null,
-      hasPriorityPass: payload?.bookingDetails?.hasPriorityPass,
-      passType: payload?.bookingDetails?.passType?.value ?? null,
-      priorityPassCount: payload?.bookingDetails?.numberOfPasses ?? null,
-    };
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          console.log("upload successful");
+          const data = await response.json();
+          values = {
+            bookingType: "Visa",
+            visaClass: payload?.bookingDetails?.visaClass?.value,
+            passportType: payload?.bookingDetails?.passportType?.value,
+            nationality: payload?.bookingDetails?.nationality?.value,
+            passportPhotograph: data.secure_url,
+            title: payload?.bookingDetails?.title?.value,
+            surname: payload?.bookingDetails?.surname,
+            firstName: payload?.bookingDetails?.firstName,
+            middleName: payload?.bookingDetails?.middleName,
+            email: payload?.bookingDetails?.email,
+            dateOfBirth: payload?.bookingDetails?.dateOfBirth,
+            placeOfBirth: payload?.bookingDetails?.placeOfBirth,
+            gender: payload?.bookingDetails?.gender?.value,
+            maritalStatus: payload?.bookingDetails?.maritalStatus?.value,
+            passportNumber: payload?.bookingDetails?.passportNumber,
+            passportExpiryDate: payload?.bookingDetails?.passportExpiryDate,
+            purposeOfJourney: payload?.bookingDetails?.purposeOfJourney,
+            airline: payload?.bookingDetails?.airline,
+            flightNumber: payload?.bookingDetails?.flightNumber,
+            countryOfDeparture:
+              payload?.bookingDetails?.countryOfDeparture?.label,
+            departureDate: payload?.bookingDetails?.departureDate,
+            arrivalDate: payload?.bookingDetails?.arrivalDate,
+            portOfEntry: payload?.bookingDetails?.portOfEntry,
+            durationOfStay: payload?.bookingDetails?.durationOfStay,
+            contactName: payload?.bookingDetails?.contactName,
+            contactNumber: payload?.bookingDetails?.contactNumber,
+            contactAddress: payload?.bookingDetails?.contactAddress,
+            contactCity: payload?.bookingDetails?.contactCity,
+            contactState: payload?.bookingDetails?.contactState,
+            contactEmail: payload?.bookingDetails?.contactEmail,
+            contactPostalCode: payload?.bookingDetails?.contactPostalCode,
+          };
+        } else {
+          // Handle error
+          console.error("Upload failed");
+          toast.error(
+            "Failed to upload your passport photograph. Please check yout internet connection and try again."
+          );
+          return;
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        toast.error(
+          "Failed to upload your passport photograph. Please check yout internet connection and try again."
+        );
+        return;
+      }
+    }
+
+    switch (payload?.bookingType) {
+      case "Airport":
+        values = {
+          bookingType: payload?.bookingType,
+          title: payload?.bookingDetails?.title?.value,
+          firstName: payload?.bookingDetails?.fullName?.split(" ")[0],
+          lastName: payload?.bookingDetails?.fullName?.split(" ")[1],
+          email: payload?.bookingDetails?.email,
+          mobile: payload?.bookingDetails?.mobile,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+          isRoundTrip: payload?.bookingDetails?.isRoundTrip,
+          passengers: payload?.bookingDetails?.passengers,
+          airline: payload?.bookingDetails?.airline,
+          flightNumber: payload?.bookingDetails?.flightNumber,
+          vehicleClass: payload?.bookingDetails?.vehicleClass?._id,
+          city: payload?.bookingDetails?.selectedCity?.cityName,
+          pickupAddress: payload?.bookingDetails?.pickupLocation,
+          pickupDate: payload?.bookingDetails?.pickupDate,
+          pickupTime: payload?.bookingDetails?.pickupTime,
+          dropoffAddress: payload?.bookingDetails?.dropoffLocation,
+          returnDate: payload?.bookingDetails?.returnDate ?? null,
+          returnTime: payload?.bookingDetails?.returnTime ?? null,
+          hasPriorityPass: payload?.bookingDetails?.hasPriorityPass,
+          passType: payload?.bookingDetails?.passType?.value ?? null,
+          priorityPassCount: payload?.bookingDetails?.numberOfPasses ?? null,
+        };
+        break;
+      case "Car":
+        console.log("I AM IN CAR");
+        values = {
+          bookingType: payload?.bookingType,
+          title: payload?.bookingDetails?.title?.value,
+          firstName: payload?.bookingDetails?.fullName?.split(" ")[0],
+          lastName: payload?.bookingDetails?.fullName?.split(" ")[1],
+          email: payload?.bookingDetails?.email,
+          mobile: payload?.bookingDetails?.mobile,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+          pickupAddress: payload?.bookingDetails?.pickupAddress,
+          pickupDate: payload?.bookingDetails?.pickupDate,
+          pickupTime: payload?.bookingDetails?.pickupTime,
+          days: payload?.bookingDetails?.days,
+          carSelected: payload?.bookingDetails?.carSelected?._id,
+          citySelected: payload?.bookingDetails?.citySelected?.cityName,
+        };
+        break;
+      case "Priority":
+        values = {
+          bookingType: payload?.bookingType,
+          title: payload?.bookingDetails?.title?.value,
+          firstName: payload?.bookingDetails?.fullName?.split(" ")[0],
+          lastName: payload?.bookingDetails?.fullName?.split(" ")[1],
+          email: payload?.bookingDetails?.email,
+          mobile: payload?.bookingDetails?.mobile,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+          pickupLocation: payload?.bookingDetails?.pickupLocation,
+          pickupDate: payload?.bookingDetails?.pickupDate,
+          pickupTime: payload?.bookingDetails?.pickupTime,
+          days: payload?.bookingDetails?.days,
+          carSelected: payload?.bookingDetails?.carSelected?._id,
+          citySelected: payload?.bookingDetails?.citySelected?.cityName,
+        };
+        break;
+      case "Visa":
+        break;
+      default:
+        toast.error("Invalid booking type detected!");
+        return;
+        break;
+    }
+
+    console.log("VALS:", values);
 
     return fetch("http://localhost:3001/api/v1/booking", {
       method: "POST",
@@ -227,6 +347,28 @@ export const createBooking = createAsyncThunk(
     })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE BOOKING ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch all blog posts
+export const fetchAllBlogPosts = createAsyncThunk(
+  "user/blog/getPosts",
+  async () => {
+    console.log("HI");
+    return fetch(`http://localhost:3001/api/v1/blog-posts`, {})
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BLOG POSTS ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch a blog post
+export const fetchBlogPost = createAsyncThunk(
+  "user/blog/getOne",
+  async (slug) => {
+    console.log("HI");
+    return fetch(`http://localhost:3001/api/v1/blog-posts/${slug}`, {})
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BLOG POST ERROR:", err));
   }
 );
 
@@ -278,6 +420,13 @@ export const userSlice = createSlice({
     currentProcessingFee: 0,
     currentBiometricFee: 0,
     currentVatFee: 0,
+
+    // This state holds the 'booking creation' status code
+    createBookingStatusCode: null,
+
+    // This state handles blog posts
+    blogPosts: null,
+    currentBlogPost: null,
   },
   reducers: {
     setBookingDetails: (state, action) => {
@@ -403,15 +552,43 @@ export const userSlice = createSlice({
         console.log("ACTION.PAYLOAD", action.payload);
         state.isLoading = false;
         if (action.payload?.status == 201) {
+          state.createBookingStatusCode = action.payload?.status;
           toast.success(
             "Booking successfully created, redirecting to your chosen payment portal"
           );
         } else {
+          state.createBookingStatusCode = action.payload?.status;
           toast.error("Failed to create booking. Please try again.");
         }
         // state.voaRates = action.payload?.visaOnArrivalRates;
       })
       .addCase(createBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchAllBlogPosts AsyncThunk states
+      .addCase(fetchAllBlogPosts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllBlogPosts.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD BLOG POSTS", action.payload);
+        state.isLoading = false;
+        state.blogPosts = action.payload?.blogPosts;
+      })
+      .addCase(fetchAllBlogPosts.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchBlogPost AsyncThunk states
+      .addCase(fetchBlogPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchBlogPost.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD BLOG POSTS", action.payload);
+        state.isLoading = false;
+        state.currentBlogPost = action.payload?.blogPost;
+      })
+      .addCase(fetchBlogPost.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

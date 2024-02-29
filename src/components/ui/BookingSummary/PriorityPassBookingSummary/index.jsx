@@ -71,13 +71,14 @@ export default function PriorityPassBookingSummary() {
     { value: "Ms", label: "Ms" },
   ];
 
-  // FORM FIELD STATES
+  // Personal Details Form Fields
   const [selectedTitle, setSelectedTitle] = useState();
   const [fullName, setFullName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();
   const [flightNumber, setFlightNumber] = useState();
   const [airline, setAirline] = useState();
+
   // Edit booking form fields
   const [passengers, setPassengers] = useState(bookingDetails?.passengers);
   const [protocolSelected, setProtocolSelected] = useState(
@@ -570,7 +571,29 @@ export default function PriorityPassBookingSummary() {
             />
           </div>
 
-          <Pay />
+          <Pay
+            isPaymentDisabled={
+              !bookingDetails?.pickupLocation ||
+              !bookingDetails?.pickupDate ||
+              !bookingDetails?.pickupTime ||
+              !bookingDetails?.passSelected ||
+              !bookingDetails?.protocolSelected ||
+              !selectedTitle ||
+              !fullName ||
+              !phoneNumber ||
+              !email ||
+              !flightNumber ||
+              !airline
+                ? true
+                : false
+            }
+            selectedTitle={selectedTitle}
+            fullName={fullName}
+            phoneNumber={phoneNumber}
+            email={email}
+            flightNumber={flightNumber}
+            airline={airline}
+          />
         </div>
         <div className="lg:w-[35%] w-full mt-10 lg:mt-0">
           <div className="bg-white p-7 transition-all">

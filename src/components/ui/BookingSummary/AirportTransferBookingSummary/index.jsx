@@ -82,7 +82,7 @@ export default function AirportTransferBookingSummary() {
   }
 
   useEffect(() => {
-    if (bookingTotal == null) {
+    if (bookingTotal == null || !bookingTotal || bookingTotal == 0) {
       handleSetVehicleClass(null);
     } else {
       handleSetVehicleClass(currentVehicleClass);

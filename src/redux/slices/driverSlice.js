@@ -186,6 +186,25 @@ export const resetDriverPassword = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function fetches the driver's assigned jobs
+export const fetchAssignedJobs = createAsyncThunk(
+  "driver/bookings/getAssignedBookings",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/driver/bookings/assigned/${payload?.driverId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH DRIVER'S ASSIGNED BOOKINGS ERROR:", err)
+      );
+  }
+);
+
 export const driverSlice = createSlice({
   name: "driver",
   initialState: {
@@ -198,6 +217,7 @@ export const driverSlice = createSlice({
     // The following states are for the driver statistics / overview page
     numberOfBookings: null,
     upcomingBookings: null,
+    assignedBookings: null,
 
     // This state tracks when the driver has been created, in order to redirect to the verification page
     hasSignedUp: false,
@@ -416,6 +436,27 @@ export const driverSlice = createSlice({
         }
       })
       .addCase(resetDriverPassword.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchAssignedJobs AsyncThunk states
+      .addCase(fetchAssignedJobs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAssignedJobs.fulfilled, (state, action) => {
+        console.log(
+          "FETCH DRIVER'S ASSIGNED JOBS ACTION.PAYLOAD",
+          action.payload
+        );
+        if (action.payload?.status == 201) {
+          state.assignedBookings = action.payload?.assignedBookings;
+          state.isLoading = false;
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(fetchAssignedJobs.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

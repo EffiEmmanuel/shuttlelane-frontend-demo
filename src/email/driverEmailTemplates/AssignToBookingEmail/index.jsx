@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../reusable/Header";
-import BookingDetails from "../reusable/BookingDetails";
+import Header from "../../reusable/Header";
+import BookingDetails from "../../reusable/BookingDetails";
 
 // Main EmailTemplate component
 const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
