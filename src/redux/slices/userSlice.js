@@ -245,6 +245,8 @@ export const createBooking = createAsyncThunk(
             contactState: payload?.bookingDetails?.contactState,
             contactEmail: payload?.bookingDetails?.contactEmail,
             contactPostalCode: payload?.bookingDetails?.contactPostalCode,
+            bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+            bookingTotal: payload?.bookingDetails?.bookingTotal,
           };
         } else {
           // Handle error
@@ -292,7 +294,7 @@ export const createBooking = createAsyncThunk(
         };
         break;
       case "Car":
-        console.log("I AM IN CAR");
+        console.log("I AM IN CAR:", payload?.bookingDetails?.carSelected);
         values = {
           bookingType: payload?.bookingType,
           title: payload?.bookingDetails?.title?.value,
@@ -306,11 +308,12 @@ export const createBooking = createAsyncThunk(
           pickupDate: payload?.bookingDetails?.pickupDate,
           pickupTime: payload?.bookingDetails?.pickupTime,
           days: payload?.bookingDetails?.days,
-          carSelected: payload?.bookingDetails?.carSelected?._id,
+          carSelected: payload?.bookingDetails?.carSelected?.value?._id,
           citySelected: payload?.bookingDetails?.citySelected?.cityName,
         };
         break;
       case "Priority":
+        console.log("BOOKING VALUES:", payload);
         values = {
           bookingType: payload?.bookingType,
           title: payload?.bookingDetails?.title?.value,
@@ -318,14 +321,17 @@ export const createBooking = createAsyncThunk(
           lastName: payload?.bookingDetails?.fullName?.split(" ")[1],
           email: payload?.bookingDetails?.email,
           mobile: payload?.bookingDetails?.mobile,
+          airline: payload?.bookingDetails?.airline,
+          flightNumber: payload?.bookingDetails?.flightNumber,
           bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
           bookingTotal: payload?.bookingDetails?.bookingTotal,
           pickupLocation: payload?.bookingDetails?.pickupLocation,
           pickupDate: payload?.bookingDetails?.pickupDate,
           pickupTime: payload?.bookingDetails?.pickupTime,
-          days: payload?.bookingDetails?.days,
-          carSelected: payload?.bookingDetails?.carSelected?._id,
-          citySelected: payload?.bookingDetails?.citySelected?.cityName,
+          passengers: payload?.bookingDetails?.passengers,
+          selectedProtocol: payload?.bookingDetails?.protocolSelected?.value,
+          passSelected: payload?.bookingDetails?.passSelected?.value?._id,
+          citySelected: payload?.bookingDetails?.citySelected?.value,
         };
         break;
       case "Visa":
@@ -369,6 +375,41 @@ export const fetchBlogPost = createAsyncThunk(
     return fetch(`http://localhost:3001/api/v1/blog-posts/${slug}`, {})
       .then((res) => res.json())
       .catch((err) => console.log("FETCH BLOG POST ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch a booking by its booking reference
+export const fetchBookingByReference = createAsyncThunk(
+  "user/booking/getOneByReference",
+  async (bookingReference) => {
+    console.log("HI");
+    return fetch(
+      `http://localhost:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      {}
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BOOKING REFERENCE ERROR:", err));
+  }
+);
+
+// FUNCTION: Send Enquiry Email
+export const sendEnquiryEmail = createAsyncThunk(
+  "user/enquiries/sendMessage",
+  async (payload) => {
+    console.log("HI");
+    return fetch(`http://localhost:3001/api/v1/users/enquiries/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: payload?.fullName,
+        email: payload?.email,
+        message: payload?.message,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("SEND ENQUIRY EMAIL ERROR:", err));
   }
 );
 
@@ -427,6 +468,9 @@ export const userSlice = createSlice({
     // This state handles blog posts
     blogPosts: null,
     currentBlogPost: null,
+
+    // This state handles the "track booking" page
+    bookingFetchedByReference: null,
   },
   reducers: {
     setBookingDetails: (state, action) => {
@@ -589,6 +633,41 @@ export const userSlice = createSlice({
         state.currentBlogPost = action.payload?.blogPost;
       })
       .addCase(fetchBlogPost.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchBookingByReference AsyncThunk states
+      .addCase(fetchBookingByReference.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchBookingByReference.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD GET BOOKING BY REFERENCE", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status == 200) {
+          state.bookingFetchedByReference = action.payload?.booking;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(fetchBookingByReference.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // sendEnquiryEmail AsyncThunk states
+      .addCase(sendEnquiryEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendEnquiryEmail.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD SEND ENQUIRY EMAIL", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status == 200) {
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(sendEnquiryEmail.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

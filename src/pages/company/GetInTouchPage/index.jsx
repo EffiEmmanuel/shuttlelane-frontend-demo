@@ -2,17 +2,50 @@
 import React, { useRef, useState } from "react";
 import NavBar from "../../../components/ui/NavBar";
 import { AiOutlineClose } from "react-icons/ai";
+import { ImSpinner2 } from "react-icons/im";
 import { Link } from "react-router-dom";
 import { Fade } from "react-reveal";
 import Footer from "../../../components/ui/Footer";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BiMenu } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { sendEnquiryEmail } from "../../../redux/slices/userSlice";
+import { ToastContainer } from "react-toastify";
 
 function GetInTouchPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
+
+  // FORM FIELDS
+  const [fullName, setFullName] = useState();
+  const [email, setEmail] = useState();
+  const [message, setMessage] = useState();
+
+  // Redux store
+  const { isLoading } = useSelector((store) => store.user);
+  // Dispatch
+  const dispatch = useDispatch();
+
+  // Function: This function handles sending the Get in touch email
+  async function handleSendEnquiryEmail(e) {
+    e.preventDefault();
+
+    setFullName("");
+    setEmail("");
+    setMessage("");
+
+    dispatch(
+      sendEnquiryEmail({
+        fullName,
+        email,
+        message,
+      })
+    );
+  }
+
   return (
     <div className="relative bg-white">
+      <ToastContainer />
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>
@@ -195,56 +228,74 @@ function GetInTouchPage() {
         </div>
 
         {/* "Get In Touch" form */}
-        <div className="w-full lg:w-2/4 flex text-shuttlelaneBlack flex-col gap-y-7">
-          <div className="flex text-shuttlelaneBlack flex-col justify-center">
-            <h2 className="text-3xl font-semibold leading-[39px]">
-              Get in Touch
-            </h2>
-            <h4 className="text-sm font-normal">Send us a message</h4>
-          </div>
-          <form className="w-full flex flex-col gap-y-4">
-            <div className="w-full flex flex-col gap-y-1">
-              <label htmlFor="fullName" className="text-xs text-gray-500">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                placeholder="John Doe"
-                className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
-              />
+        {!isLoading && (
+          <div className="w-full lg:w-2/4 flex text-shuttlelaneBlack flex-col gap-y-7">
+            <div className="flex text-shuttlelaneBlack flex-col justify-center">
+              <h2 className="text-3xl font-semibold leading-[39px]">
+                Get in Touch
+              </h2>
+              <h4 className="text-sm font-normal">Send us a message</h4>
             </div>
-            <div className="w-full flex flex-col gap-y-1">
-              <label htmlFor="email" className="text-xs text-gray-500">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="abc@example.com"
-                className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
-              />
-            </div>
-            <div className="w-full flex flex-col gap-y-1">
-              <label htmlFor="message" className="text-xs text-gray-500">
-                Message
-              </label>
-              <textarea
-                name="message"
-                placeholder="Type your message here..."
-                className="w-full h-32 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
-              >
-                {" "}
-              </textarea>
-            </div>
+            <form className="w-full flex flex-col gap-y-4">
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="fullName" className="text-xs text-gray-500">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="John Doe"
+                  className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+                />
+              </div>
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="email" className="text-xs text-gray-500">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="abc@example.com"
+                  className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+                />
+              </div>
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="message" className="text-xs text-gray-500">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Type your message here..."
+                  className="w-full h-32 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+                >
+                  {" "}
+                </textarea>
+              </div>
 
-            <input
-              type="submit"
-              className="w-full lg:w-32 h-12 p-3 hover:border-[.5px] transition-all hover:bg-transparent hover:border-shuttlelanePurple hover:text-shuttlelanePurple bg-shuttlelanePurple text-white outline-none focus:outline-none rounded-lg text-sm"
-              value="Submit"
+              <input
+                type="submit"
+                onClick={(e) => handleSendEnquiryEmail(e)}
+                className="w-full lg:w-32 h-12 p-3 hover:border-[.5px] transition-all hover:bg-transparent hover:border-shuttlelanePurple hover:text-shuttlelanePurple bg-shuttlelanePurple text-white outline-none focus:outline-none rounded-lg text-sm"
+                value="Submit"
+              />
+            </form>
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="w-full lg:w-2/4 flex flex-row items-center justify-center">
+            <ImSpinner2
+              size={34}
+              className="text-shuttlelanePurple animate-spin"
             />
-          </form>
-        </div>
+          </div>
+        )}
       </div>
 
       {/* How To Reach Us */}

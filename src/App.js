@@ -49,6 +49,7 @@ import DriverDashboardAccountPage from "./pages/driver/dashboard/account";
 import DriverDashboardSecurityPage from "./pages/driver/dashboard/security/ResetPasswordPage";
 import BlogsPage from "./pages/company/BlogsPage";
 import PostPage from "./pages/company/BlogsPage/PostPage";
+import TrackBookingPage from "./pages/booking/track-booking";
 
 // Modal.setAppElement("#appElement");
 
@@ -63,6 +64,8 @@ function App() {
         <Route path="booking">
           {/* Confirm Booking Route */}
           <Route path="confirm-booking" element={<ConfirmBookingPage />} />
+          {/* Track Booking Route */}
+          <Route path="track-booking" element={<TrackBookingPage />} />
         </Route>
 
         {/* Company Routes */}

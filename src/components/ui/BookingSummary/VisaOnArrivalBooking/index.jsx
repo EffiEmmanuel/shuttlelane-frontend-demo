@@ -191,6 +191,7 @@ export default function VisaOnArrivalBookingSummary() {
           surname,
           firstName,
           middleName,
+          email,
           dateOfBirth,
           placeOfBirth,
           gender,
@@ -612,7 +613,6 @@ export default function VisaOnArrivalBookingSummary() {
                 ? true
                 : false
             }
-
             isVisaOnArrival={true}
           />
         </div>
