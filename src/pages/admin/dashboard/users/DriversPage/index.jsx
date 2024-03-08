@@ -14,7 +14,7 @@ import { ImSpinner2 } from "react-icons/im";
 
 function AdminDashboardDriversPage() {
   const dispatch = useDispatch();
-  const { isLoading, drivers, driverData, token } = useSelector(
+  const { isLoading, drivers, driverData, token, admin } = useSelector(
     (store) => store.admin
   );
 
@@ -186,7 +186,9 @@ function AdminDashboardDriversPage() {
                       </p>
                       <p className="w-200px lg:w-[25%] text-xs">Phone Number</p>
                       {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
-                      <p className="w-200px lg:w-[25%] text-xs">Actions</p>
+                      {admin?.role !== "Blogger" && (
+                        <p className="w-200px lg:w-[25%] text-xs">Actions</p>
+                      )}
                     </div>
                     {/* Table body - Driver card */}
                     {drivers?.map((driver) => (
@@ -216,21 +218,23 @@ function AdminDashboardDriversPage() {
                         12 November 2023
                       </p> */}
 
-                        <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
-                          {!isLoading ? (
-                            <button
-                              onClick={() => deleteDriver(driver?._id)}
-                              className="text-xs"
-                            >
-                              <AiFillDelete
-                                size={16}
-                                className="text-red-500"
-                              />
-                            </button>
-                          ) : (
-                            <ImSpinner2 size={16} className="text-gray-400" />
-                          )}
-                        </div>
+                        {admin?.role !== "Blogger" && (
+                          <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                            {!isLoading ? (
+                              <button
+                                onClick={() => deleteDriver(driver?._id)}
+                                className="text-xs"
+                              >
+                                <AiFillDelete
+                                  size={16}
+                                  className="text-red-500"
+                                />
+                              </button>
+                            ) : (
+                              <ImSpinner2 size={16} className="text-gray-400" />
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
 

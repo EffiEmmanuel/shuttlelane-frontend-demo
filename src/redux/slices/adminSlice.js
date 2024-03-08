@@ -604,6 +604,7 @@ export const createVehicleClasses = createAsyncThunk(
             passengers: payload?.passengers,
             luggages: payload?.luggages,
             basePrice: payload?.basePrice,
+            cityId: payload?.cityId,
           }),
         })
           .then((res) => res.json())
@@ -1008,7 +1009,6 @@ export const deleteBlogPost = createAsyncThunk(
 );
 
 // BOOKINGS
-
 // FUNCTION: This function fetches upcoming bookings
 export const adminFetchUpcomingBookings = createAsyncThunk(
   "admin/bookings/upcoming",
@@ -1100,6 +1100,340 @@ export const approveDriverAccount = createAsyncThunk(
   }
 );
 
+// FUNCTION: Fetch a booking by its booking reference
+export const fetchBookingByReference = createAsyncThunk(
+  "admin/booking/getOneByReference",
+  async (bookingReference) => {
+    console.log("HI");
+    return fetch(
+      `http://localhost:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      {}
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BOOKING REFERENCE ERROR:", err));
+  }
+);
+
+// FUNCTION: This function creates a new admin account
+export const createAdminAccount = createAsyncThunk(
+  "admin/accounts/createNew",
+  async (payload) => {
+    return fetch(`http://localhost:3001/api/v1/auth/admin/signup`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: payload?.firstName,
+        lastName: payload?.lastName,
+        email: payload?.email,
+        username: payload?.username,
+        role: payload?.role,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("CREATE NEW ADMIN ACCOUNT ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch all admin accounts
+export const fetchAdminAccounts = createAsyncThunk(
+  "admin/accounts/getAll",
+  async (token) => {
+    console.log("HI");
+    return fetch(`http://localhost:3001/api/v1/admin`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH ADMIN ACCOUNTS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function deletes an admin account
+export const deleteAdminAccount = createAsyncThunk(
+  "admin/accounts/deleteOne",
+  async (payload) => {
+    return fetch(`http://localhost:3001/api/v1/admin/${payload?.adminId}`, {
+      method: "DELETE",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE ADMIN ACCOUNT ERROR:", err));
+  }
+);
+
+// FUNCTION: This function fetches all visa on arrival rates
+export const createBooking = createAsyncThunk(
+  "user/bookings/createOne",
+  async (payload) => {
+    console.log("VALUES:", payload);
+    let values;
+    // Upload the passport photograph to cloudinary
+    if (payload?.bookingType === "Visa") {
+      const formData = new FormData();
+      formData.append("file", payload.bookingDetails?.passportPhotograph);
+      formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          console.log("upload successful");
+          const data = await response.json();
+          values = {
+            bookingType: "Visa",
+            visaClass: payload?.bookingDetails?.visaClass?.value,
+            passportType: payload?.bookingDetails?.passportType?.value,
+            nationality: payload?.bookingDetails?.nationality?.value,
+            passportPhotograph: data.secure_url,
+            title: payload?.bookingDetails?.title?.value,
+            surname: payload?.bookingDetails?.surname,
+            firstName: payload?.bookingDetails?.firstName,
+            middleName: payload?.bookingDetails?.middleName,
+            email: payload?.bookingDetails?.email,
+            dateOfBirth: payload?.bookingDetails?.dateOfBirth,
+            placeOfBirth: payload?.bookingDetails?.placeOfBirth,
+            gender: payload?.bookingDetails?.gender?.value,
+            maritalStatus: payload?.bookingDetails?.maritalStatus?.value,
+            passportNumber: payload?.bookingDetails?.passportNumber,
+            passportExpiryDate: payload?.bookingDetails?.passportExpiryDate,
+            purposeOfJourney: payload?.bookingDetails?.purposeOfJourney,
+            airline: payload?.bookingDetails?.airline,
+            flightNumber: payload?.bookingDetails?.flightNumber,
+            countryOfDeparture:
+              payload?.bookingDetails?.countryOfDeparture?.label,
+            departureDate: payload?.bookingDetails?.departureDate,
+            arrivalDate: payload?.bookingDetails?.arrivalDate,
+            portOfEntry: payload?.bookingDetails?.portOfEntry,
+            durationOfStay: payload?.bookingDetails?.durationOfStay,
+            contactName: payload?.bookingDetails?.contactName,
+            contactNumber: payload?.bookingDetails?.contactNumber,
+            contactAddress: payload?.bookingDetails?.contactAddress,
+            contactCity: payload?.bookingDetails?.contactCity,
+            contactState: payload?.bookingDetails?.contactState,
+            contactEmail: payload?.bookingDetails?.contactEmail,
+            contactPostalCode: payload?.bookingDetails?.contactPostalCode,
+            bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+            bookingTotal: payload?.bookingDetails?.bookingTotal,
+          };
+        } else {
+          // Handle error
+          console.error("Upload failed");
+          toast.error(
+            "Failed to upload your passport photograph. Please check yout internet connection and try again."
+          );
+          return;
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        toast.error(
+          "Failed to upload your passport photograph. Please check yout internet connection and try again."
+        );
+        return;
+      }
+    }
+
+    switch (payload?.bookingType) {
+      case "Airport":
+        values = {
+          bookingType: payload?.bookingType,
+          title: payload?.bookingDetails?.title,
+          firstName: payload?.bookingDetails?.firstName,
+          lastName: payload?.bookingDetails?.lastName,
+          email: payload?.bookingDetails?.email,
+          mobile: payload?.bookingDetails?.mobile,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+          isRoundTrip: payload?.bookingDetails?.isRoundTrip,
+          passengers: payload?.bookingDetails?.passengers,
+          airline: payload?.bookingDetails?.airline,
+          flightNumber: payload?.bookingDetails?.flightNumber,
+          vehicleClass: payload?.bookingDetails?.vehicleClass,
+          city: payload?.bookingDetails?.selectedCity?.cityName,
+          pickupAddress: payload?.bookingDetails?.pickupLocation,
+          pickupDate: payload?.bookingDetails?.pickupDate,
+          pickupTime: payload?.bookingDetails?.pickupTime,
+          dropoffAddress: payload?.bookingDetails?.dropoffLocation,
+          returnDate: payload?.bookingDetails?.returnDate ?? null,
+          returnTime: payload?.bookingDetails?.returnTime ?? null,
+          hasPriorityPass: payload?.bookingDetails?.hasPriorityPass,
+          passType: payload?.bookingDetails?.passType?.value ?? null,
+          priorityPassCount: payload?.bookingDetails?.numberOfPasses ?? null,
+        };
+        break;
+      case "Car":
+        console.log("I AM IN CAR:", payload?.bookingDetails?.carSelected);
+        values = {
+          bookingType: payload?.bookingType,
+          title: payload?.bookingDetails?.title?.value,
+          firstName: payload?.bookingDetails?.firstName,
+          lastName: payload?.bookingDetails?.lastName,
+          email: payload?.bookingDetails?.email,
+          mobile: payload?.bookingDetails?.mobile,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+          pickupAddress: payload?.bookingDetails?.pickupAddress,
+          pickupDate: payload?.bookingDetails?.pickupDate,
+          pickupTime: payload?.bookingDetails?.pickupTime,
+          days: payload?.bookingDetails?.days,
+          carSelected: payload?.bookingDetails?.carSelected,
+          citySelected: payload?.bookingDetails?.citySelected,
+        };
+        break;
+      case "Priority":
+        console.log("BOOKING VALUES:", payload);
+        values = {
+          bookingType: payload?.bookingType,
+          title: payload?.bookingDetails?.title?.value,
+          firstName: payload?.bookingDetails?.firstName,
+          lastName: payload?.bookingDetails?.lastName,
+          email: payload?.bookingDetails?.email,
+          mobile: payload?.bookingDetails?.mobile,
+          airline: payload?.bookingDetails?.airline,
+          flightNumber: payload?.bookingDetails?.flightNumber,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+          pickupLocation: payload?.bookingDetails?.pickupAddress,
+          pickupDate: payload?.bookingDetails?.pickupDate,
+          pickupTime: payload?.bookingDetails?.pickupTime,
+          passengers: payload?.bookingDetails?.passengers,
+          selectedProtocol: payload?.bookingDetails?.protocolSelected,
+          passSelected: payload?.bookingDetails?.passSelected,
+          citySelected: payload?.bookingDetails?.citySelected,
+        };
+        break;
+      case "Visa":
+        break;
+      default:
+        toast.error("Invalid booking type detected!");
+        return;
+        break;
+    }
+
+    console.log("VALS:", values);
+
+    return fetch("http://localhost:3001/api/v1/booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("CREATE BOOKING ERROR:", err));
+  }
+);
+
+// FUNCTION: This function calculates the total for a booking
+export const calculateTotal = createAsyncThunk(
+  "user/calculateBookingTotal",
+  async (payload) => {
+    let sum, data;
+
+    console.log("PAYLOAD.BOOKINGTYPE:", payload?.bookingType);
+
+    // Get user country
+    const userCountry = await axios.get("https://ipapi.co/json");
+
+    switch (payload?.bookingType) {
+      case "Airport":
+        sum = Number(payload?.bookingDetails?.vehicleClass?.baseRate);
+        console.log("HELLO FROM THIS FUNCTION:", payload?.isAddPriorityPass);
+
+        if (!payload?.isAddPriorityPass) {
+          data = {
+            bookingDetails: {
+              bookingType: payload?.bookingType,
+              currentVehicleClass: payload?.currentVehicleClass,
+              pickupLocation: payload?.pickupLocation,
+              dropoffLocation: payload?.dropoffLocation,
+            },
+            userCurrency: payload?.userCurrency,
+          };
+          console.log("HELLO FALSE:", data);
+        } else {
+          console.log("HELLO TRUE");
+          data = {
+            bookingDetails: {
+              bookingType: payload?.bookingType,
+              currentVehicleClass: payload?.currentVehicleClass,
+              pickupLocation: payload?.pickupLocation,
+              dropoffLocation: payload?.dropoffLocation,
+              isAddPriorityPass: payload?.isAddPriorityPass ?? false,
+              numberOfPasses: payload?.numberOfPasses,
+              passType: payload?.passType,
+            },
+            userCurrency: payload?.userCurrency,
+          };
+        }
+        break;
+
+      case "Car":
+        console.log("HELLO WORLD ITS A CAR BOOKING:", payload);
+        data = {
+          bookingDetails: {
+            bookingType: payload?.bookingType,
+            days: payload?.days,
+            carSelected: payload?.carSelected,
+          },
+          userCurrency: payload?.userCurrency,
+        };
+        break;
+
+      case "Priority":
+        console.log("HELLO WORLD ITS A PRIORITY BOOKING:", payload);
+        data = {
+          bookingDetails: {
+            bookingType: payload?.bookingType,
+            passengers: payload?.passengers,
+            passSelected: payload?.passSelected,
+          },
+          userCurrency: payload?.userCurrency,
+        };
+        break;
+
+      case "Visa":
+        console.log("HELLO WORLD ITS A VISA ON ARRIVAL BOOKING:", payload);
+        data = {
+          bookingDetails: {
+            bookingType: payload?.bookingType,
+            country: payload?.country,
+          },
+          userCurrency: payload?.userCurrency,
+        };
+        break;
+      default:
+        break;
+    }
+
+    console.log("sending data");
+    return fetch(
+      `http://localhost:3001/api/v1/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("CALCULATE BOOKING TOTAL ERROR:", err));
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -1168,6 +1502,20 @@ export const adminSlice = createSlice({
 
     // The following state is for blog management
     blogPosts: null,
+
+    // The following states are for booking / booking modal management
+    bookingFetchedByReference: null,
+    isGetBookingByReferenceLoading: false,
+
+    // This state holds all admin accounts
+    adminAccounts: null,
+
+    // Create booking states
+    createBookingStatusCode: null,
+    bookingCurrency: null,
+    bookingTotal: null,
+    bookingDistance: null,
+    tripDuration: null,
   },
   reducers: {
     setAdmin: (state, action) => {
@@ -1269,8 +1617,9 @@ export const adminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchCities.fulfilled, (state, action) => {
-        console.log("ACTION.PAYLOAD", action.payload);
+        console.log("ACTION.PAYLOAD CITIESSSSS", action.payload);
         state.cities = action.payload?.cities;
+        state.bookingCurrency = action.payload?.currency;
         state.isLoading = false;
       })
       .addCase(fetchCities.rejected, (state) => {
@@ -1297,6 +1646,7 @@ export const adminSlice = createSlice({
       .addCase(fetchCity.fulfilled, (state, action) => {
         console.log("ACTION.PAYLOAD", action.payload);
         state.currentCity = action.payload?.city;
+        state.vehicleClasses = action.payload?.city?.vehicleClasses;
         state.isLoading = false;
       })
       .addCase(fetchCity.rejected, (state) => {
@@ -1755,6 +2105,7 @@ export const adminSlice = createSlice({
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
           state.vehicleClasses = action.payload?.vehicleClasses;
+          state.cities = action.payload?.cities;
         } else {
           toast.error(action.payload?.message);
         }
@@ -2072,6 +2423,118 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
+      }) // fetchBookingByReference AsyncThunk states
+      .addCase(fetchBookingByReference.pending, (state) => {
+        state.isGetBookingByReferenceLoading = true;
+      })
+      .addCase(fetchBookingByReference.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD GET BOOKING BY REFERENCE", action.payload);
+        state.isGetBookingByReferenceLoading = false;
+        if (action.payload?.status == 200) {
+          state.bookingFetchedByReference = action.payload?.booking;
+        }
+      })
+      .addCase(fetchBookingByReference.rejected, (state) => {
+        state.isGetBookingByReferenceLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // createAdminAccount AsyncThunk states
+      .addCase(createAdminAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createAdminAccount.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD GET BOOKING BY REFERENCE", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.adminAccounts = action.payload?.adminAccounts;
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(createAdminAccount.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchAdminAccounts AsyncThunk states
+      .addCase(fetchAdminAccounts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAdminAccounts.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH ADMIN ACCOUNTS", action.payload);
+        state.isLoading = false;
+        state.adminAccounts = action.payload?.adminAccounts;
+      })
+      .addCase(fetchAdminAccounts.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // deleteAdminAccount AsyncThunk states
+      .addCase(deleteAdminAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAdminAccount.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE ADMIN ACCOUNT", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status == 201) {
+          state.adminAccounts = action.payload?.adminAccounts;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(deleteAdminAccount.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // createBooking AsyncThunk states
+      .addCase(createBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBooking.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status == 201) {
+          state.createBookingStatusCode = action.payload?.status;
+          toast.success(
+            "Booking successfully created, redirecting to your chosen payment portal"
+          );
+        } else {
+          state.createBookingStatusCode = action.payload?.status;
+          toast.error("Failed to create booking. Please try again.");
+        }
+        // state.voaRates = action.payload?.visaOnArrivalRates;
+      })
+      .addCase(createBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // calculateTotal AsyncThunk states
+      .addCase(calculateTotal.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(calculateTotal.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD", action.payload);
+        state.isLoading = false;
+        state.bookingTotal = action.payload?.total;
+        state.bookingCurrency = action.payload?.userCurrency;
+        state.bookingDistance = action.payload?.distance;
+        state.tripDuration = action.payload?.duration;
+
+        // For visa on arrival (Homepage)
+        state.voaVerificationStatus = action.payload?.voaVerificationStatus;
+        state.voaVerificationMessage = action.payload?.message;
+        state.currentVisaFee = action.payload?.visaFee;
+        state.currentTransactionFee = action.payload?.transactionFee;
+        state.currentProcessingFee = action.payload?.processingFee;
+        state.currentBiometricFee = action.payload?.biometricFee;
+        state.currentVatFee = action.payload?.vat;
+      })
+      .addCase(calculateTotal.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+        toast.error("Failed to update booking");
       });
   },
 });

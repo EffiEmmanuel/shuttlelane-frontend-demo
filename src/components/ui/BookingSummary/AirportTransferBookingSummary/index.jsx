@@ -15,6 +15,7 @@ import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import {
   calculateTotal,
+  fetchCity,
   fetchPasses,
   fetchVehicleClasses,
   setBookingDetails,
@@ -101,10 +102,13 @@ export default function AirportTransferBookingSummary() {
     }
   }, [passes]);
 
-  // Fetch Vehicle Classes and passes
   useEffect(() => {
-    dispatch(fetchVehicleClasses());
     dispatch(fetchPasses());
+    dispatch(
+      fetchCity({
+        cityId: bookingDetails?.selectedCity?.value,
+      })
+    );
   }, []);
 
   // Calculate booking total and watches for changes in the booking details
@@ -127,7 +131,14 @@ export default function AirportTransferBookingSummary() {
         })
       );
     }
-  }, [isAddPriorityPass, numberOfPasses, passType, currentVehicleClass]);
+  }, [
+    isAddPriorityPass,
+    numberOfPasses,
+    passType,
+    currentVehicleClass,
+    bookingDetails?.pickupLocation,
+    bookingDetails?.dropoffLocation,
+  ]);
 
   // Personal Details Form Fields
   const [selectedTitle, setSelectedTitle] = useState();

@@ -191,7 +191,7 @@ export const fetchAssignedJobs = createAsyncThunk(
   "driver/bookings/getAssignedBookings",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/driver/bookings/assigned/${payload?.driverId}`,
+      `http://localhost:3001/api/v1/drivers/bookings/assigned/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -449,7 +449,7 @@ export const driverSlice = createSlice({
           action.payload
         );
         if (action.payload?.status == 201) {
-          state.assignedBookings = action.payload?.assignedBookings;
+          state.assignedBookings = action.payload?.bookings;
           state.isLoading = false;
         } else {
           toast.error(action.payload?.message);

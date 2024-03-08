@@ -28,7 +28,9 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 
 function AdminDashboardExchangeRatesPage() {
-  const { token, isLoading, currencies } = useSelector((store) => store.admin);
+  const { token, isLoading, currencies, admin } = useSelector(
+    (store) => store.admin
+  );
   const dispatch = useDispatch();
 
   // Modify Rate Modal
@@ -525,21 +527,29 @@ function AdminDashboardExchangeRatesPage() {
               </p>
 
               <div className="flex gap-x-6 mt-10 flex-wrap gap-y-10">
-                <button
-                  onClick={() => setIsAddCurrencyModalOpen(true)}
-                  className="border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
-                >
-                  <div className="flex items-center justify-center h-16 w-16 border-[1px] border-dashed border-gray-400 rounded-full">
-                    <AiOutlinePlus size={24} className="text-gray-400" />
-                  </div>
-                </button>
+                {admin?.role !== "Blogger" && (
+                  <button
+                    onClick={() => setIsAddCurrencyModalOpen(true)}
+                    className="border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
+                  >
+                    <div className="flex items-center justify-center h-16 w-16 border-[1px] border-dashed border-gray-400 rounded-full">
+                      <AiOutlinePlus size={24} className="text-gray-400" />
+                    </div>
+                  </button>
+                )}
                 {currencies?.map((currency) => (
                   <button
                     key={currency?._id}
                     onClick={() => {
                       console.log("CURRENT CURRENCY IS:", currency);
-                      setCurrentCurrency(currency);
-                      setIsModifyRateModalOpen(true);
+                      if (admin?.role !== "Blogger") {
+                        setCurrentCurrency(currency);
+                        setIsModifyRateModalOpen(true);
+                      } else {
+                        toast.error(
+                          "You do not have the priviledges to modify exchange rates as a blogger"
+                        );
+                      }
                     }}
                     className="border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
                   >

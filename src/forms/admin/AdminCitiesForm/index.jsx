@@ -15,6 +15,7 @@ import {
 } from "../../../redux/slices/adminSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
+import AdminVehicleClassesRate from "../../../components/ui/Admin/Dashboard/rates/VehicleClasses";
 
 function AdminCitiesForm() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function AdminCitiesForm() {
 
   const [isOverview, setIsOverview] = useState(true);
   const [isManageAirports, setIsManageAirports] = useState(false);
+  const [isVehicleClasses, setIsVehicleClasses] = useState(false);
 
   // Form data
   const cityData = [
@@ -125,6 +127,7 @@ function AdminCitiesForm() {
             onClick={() => {
               setIsOverview(true);
               setIsManageAirports(false);
+              setIsVehicleClasses(false);
               setSelectedCity("");
             }}
             className={`text-xs cursor-pointer transition-all ${
@@ -139,6 +142,7 @@ function AdminCitiesForm() {
             onClick={() => {
               setIsOverview(false);
               setIsManageAirports(true);
+              setIsVehicleClasses(false);
             }}
             className={`text-xs cursor-pointer transition-all ${
               isManageAirports
@@ -147,6 +151,20 @@ function AdminCitiesForm() {
             }`}
           >
             Manage Airports
+          </span>
+          <span
+            onClick={() => {
+              setIsOverview(false);
+              setIsManageAirports(false);
+              setIsVehicleClasses(true);
+            }}
+            className={`text-xs cursor-pointer transition-all ${
+              isVehicleClasses
+                ? "font-semibold text-shuttlelaneBlack border-b-2 border-b-shuttlelaneBlack"
+                : "text-gray-400"
+            }`}
+          >
+            Vehicle Classes
           </span>
         </div>
 
@@ -184,7 +202,7 @@ function AdminCitiesForm() {
                 </div>
               </div>
               {/* Total Card */}
-              <div className="flex flex-row gap-x-2 p-3 items-center rounded-lg border-[.3px] border-gray-100 lg:w-1/4 w-full">
+              {/* <div className="flex flex-row gap-x-2 p-3 items-center rounded-lg border-[.3px] border-gray-100 lg:w-1/4 w-full">
                 <div className="h-10 w-10 rounded-full bg-shuttlelanePurple shadow-[#4540cf85] shadow-md flex justify-center items-center">
                   <MdOutlineFlightTakeoff size={16} className="text-white" />
                 </div>
@@ -192,7 +210,7 @@ function AdminCitiesForm() {
                   <p className="text-2xl font-semibold spaceGroteskText">8</p>
                   <small className="text-sm text-gray-400">Airports</small>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Display cities info here */}
@@ -290,6 +308,8 @@ function AdminCitiesForm() {
             </div>
           </div>
         )}
+
+        {isVehicleClasses && <AdminVehicleClassesRate />}
       </div>
     </div>
   );

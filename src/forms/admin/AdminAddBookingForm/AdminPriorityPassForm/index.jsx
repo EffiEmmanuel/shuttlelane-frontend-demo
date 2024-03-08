@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import AdminAddBookingUserDetailsSchema from "../validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React, { useRef } from "react";
 
 import { BsAirplane, BsPeople } from "react-icons/bs";
-import { MdOutlineLuggage } from "react-icons/md";
+import { MdOutlineLuggage, MdOutlineNordicWalking } from "react-icons/md";
 import { IoCarSportOutline, IoLocationOutline } from "react-icons/io5";
 import Select from "react-select";
 import LocationInput from "../../../../components/ui/Form/LocationInput";
@@ -22,8 +22,17 @@ import shuttle from "../../../../assets/images/cars/shuttle.png";
 import shuttleExtra from "../../../../assets/images/cars/shuttleExtra.png";
 import { ImSpinner2 } from "react-icons/im";
 import { TbBrandDaysCounter } from "react-icons/tb";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { AiOutlinePlus } from "react-icons/ai";
+import {
+  createBooking,
+  fetchCities,
+  fetchCity,
+  fetchPasses,
+} from "../../../../redux/slices/adminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
+import PersonalDetailsForm from "../../../PersonalDetailsForm";
 
 function AdminPriorityPassForm() {
   // Date Setup
@@ -33,13 +42,10 @@ function AdminPriorityPassForm() {
     return date < minSelectableDate;
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const [title, setTitle] = useState("");
-  // Dropoff details
-  const [dropoffLocation, setDropoffLocation] = useState();
-  const [dropoffLocationInput, setDropoffLocationInput] = useState();
-  const dropoffLocationRef = useRef();
+
+  const [selectedService, setSelectedService] = useState();
+  const [selectedPass, setSelectedPass] = useState();
 
   // Pickup details
   const [pickupLocation, setPickupLocation] = useState();
@@ -48,25 +54,59 @@ function AdminPriorityPassForm() {
   const [pickupDate, setPickupDate] = useState();
   const [pickupTime, setPickupTime] = useState();
 
-  // City Data
-  const cityData = [
-    { value: "Lagos", label: "Lagos" },
-    { value: "Accra", label: "Accra" },
-    { value: "Ogun", label: "Ogun" },
-    { value: "Ibadans", label: "Ibadanss" },
-  ];
+  // Redux store states
+  const { isLoading, token, cities, passes, bookingCurrency, bookingTotal } =
+    useSelector((store) => store.admin);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      console.log("HELLO FROM HERE:", token);
+      dispatch(fetchCities(token));
+      dispatch(fetchPasses(token));
+    }
+  }, [token]);
 
   // FORM FIELDS
   const [selectedCity, setSelectedCity] = useState("");
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    console.log("CITIES FETCHED:", cities);
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
 
-  // Function: Handle log in admin
-  async function onSubmit(values, actions) {
-    setIsLoading(true);
+    setCitiesData(updatedCityData);
+  }, [cities]);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
-  }
+  useEffect(() => {
+    dispatch(
+      fetchCity({
+        cityId: selectedCity?.value,
+        token,
+      })
+    );
+  }, [selectedCity]);
+
+  // Format passes
+  const [passData, setPassData] = useState();
+  useEffect(() => {
+    let updatedPassData = [];
+    console.log("PASSES FETCHED:", passes);
+    passes?.forEach((pass) => {
+      updatedPassData.push({
+        value: pass?._id,
+        label: pass?.name,
+      });
+    });
+
+    setPassData(updatedPassData);
+  }, [passes]);
 
   // Title options
   const titleOptions = [
@@ -88,18 +128,54 @@ function AdminPriorityPassForm() {
     },
   ];
 
+  // Service options
+  const services = [
+    { value: "Arrival Protocol", label: "Arrival Protocol" },
+    { value: "Departure Protocol", label: "Departure Protocol" },
+  ];
+
   // Selected Car State
   const [passengers, setPassengers] = useState("");
 
   // Passenger Form Fields
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [middleName, setMiddleName] = useState();
-  const [emailAddress, setEmailAddress] = useState();
-  const [phone, setPhone] = useState();
+  const [fullName, setFullName] = useState();
+  const [email, setEmail] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [selectedTitle, setSelectedTitle] = useState();
+  const [flightNumber, setFlightNumber] = useState();
+  const [airline, setAirline] = useState();
+
+  // Handle create booking
+  async function handleCreateBooking(e) {
+    e.preventDefault();
+    dispatch(
+      createBooking({
+        bookingType: "Priority",
+        bookingDetails: {
+          title: selectedTitle?.value,
+          firstName: fullName?.split(" ")[0],
+          lastName: fullName?.split(" ")[1],
+          email: email,
+          mobile: phoneNumber,
+          bookingCurrency: bookingCurrency?._id,
+          bookingTotal: bookingTotal,
+          passengers: passengers,
+          airline: airline,
+          flightNumber: flightNumber,
+          passSelected: selectedPass?.value,
+          citySelected: selectedCity?.value,
+          selectedProtocol: selectedService?.value,
+          pickupAddress: pickupLocationInput,
+          pickupDate: pickupDate,
+          pickupTime: pickupTime,
+        },
+      })
+    );
+  }
 
   return (
     <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
+      <ToastContainer />
       {/* Booking Details */}
       <div className="mb-1">
         <p className="font-medium">Booking Details</p>
@@ -114,14 +190,14 @@ function AdminPriorityPassForm() {
           </label>
           <div className="flex h-11 items-center border-[0.3px] bg-transparent focus:outline-none border-gray-400 py-2 px-2 gap-x-2 w-full rounded-lg">
             <div className="w-[5%]">
-              <BiSolidCity size={16} className="text-gray-500" />
+              <MdOutlineNordicWalking size={16} className="text-gray-500" />
             </div>
 
             <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
               <Select
-                value={selectedCity}
-                onChange={(value) => console.log("VALUE:", value)}
-                options={cityData}
+                value={selectedService}
+                onChange={(value) => setSelectedService(value)}
+                options={services}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -131,7 +207,6 @@ function AdminPriorityPassForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 80,
                   }),
 
                   placeholder: (baseStyles, state) => ({
@@ -162,14 +237,17 @@ function AdminPriorityPassForm() {
           </label>
           <div className="flex h-11 items-center border-[0.3px] bg-transparent focus:outline-none border-gray-400 py-2 px-2 gap-x-2 w-full rounded-lg">
             <div className="w-[5%]">
-              <BiSolidCity size={16} className="text-gray-500" />
+              <FaPersonWalkingDashedLineArrowRight
+                size={16}
+                className="text-gray-500"
+              />
             </div>
 
             <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
               <Select
-                value={selectedCity}
-                onChange={(value) => console.log("VALUE:", value)}
-                options={cityData}
+                value={selectedPass}
+                onChange={(value) => setSelectedPass(value)}
+                options={passData}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -218,8 +296,8 @@ function AdminPriorityPassForm() {
             <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
               <Select
                 value={selectedCity}
-                onChange={(value) => console.log("VALUE:", value)}
-                options={cityData}
+                onChange={(value) => setSelectedCity(value)}
+                options={citiesData}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -413,129 +491,26 @@ function AdminPriorityPassForm() {
         <div className="h-1 w-[30px] rounded-xl bg-shuttlelanePurple"></div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Title */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="title" className="text-sm">
-            Title
-          </label>
-          <Select
-            value={title}
-            onChange={(value) => setTitle(value)}
-            options={titleOptions}
-            styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                borderColor: state.isFocused ? "transparent" : "transparent",
-                borderWidth: state.isFocused ? "0" : "0",
-                backgroundColor: "transparent",
-                position: "relative",
-                zIndex: 80,
-                width: "100%",
-                height: "100%",
-              }),
+      <PersonalDetailsForm
+        selectedTitle={selectedTitle}
+        setSelectedTitle={setSelectedTitle}
+        fullName={fullName}
+        setFullName={setFullName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        email={email}
+        setEmail={setEmail}
+        hasFlightDetails={true}
+        flightNumber={flightNumber}
+        setFlightNumber={setFlightNumber}
+        airline={airline}
+        setAirline={setAirline}
+      />
 
-              placeholder: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-
-              menuList: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-
-              input: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-            }}
-            placeholder="Select Title"
-            className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* First Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="firstName" className="text-sm">
-            First Name
-          </label>
-          <input
-            type="text"
-            placeholder="John"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Middle Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="middleName" className="text-sm">
-            Middle Name
-          </label>
-          <input
-            type="text"
-            placeholder="Snow"
-            name="middleName"
-            value={middleName}
-            onChange={(e) => setMiddleName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Last Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="lastName" className="text-sm">
-            Last Name
-          </label>
-          <input
-            type="text"
-            placeholder="Doe"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Email Address */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
-            Email Address
-          </label>
-          <input
-            type="email"
-            placeholder="abc@example.com"
-            name="emailAddress"
-            value={emailAddress}
-            onChange={(e) => setEmailAddress(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Phone Number */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="phone" className="text-sm">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            placeholder="+2341234567890"
-            name="phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <button className="lg:w-44 w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg">
+      <button
+        onClick={(e) => handleCreateBooking(e)}
+        className="lg:w-44 w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg"
+      >
         {isLoading ? (
           <ImSpinner2 size={21} className="text-white animate-spin" />
         ) : (

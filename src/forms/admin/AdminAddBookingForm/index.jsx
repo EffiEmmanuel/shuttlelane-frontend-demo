@@ -97,7 +97,7 @@ function AdminAddBookingForm() {
           <MdOutlineLuggage size={18} />
           <p className="text-sm">Priority Pass</p>
         </button>
-        <button
+        {/* <button
           //   onClick={() => toggleService("visaOnArrival")}
           onClick={() => {
             // toast.info("This service is under construction");
@@ -110,7 +110,7 @@ function AdminAddBookingForm() {
         >
           <BsAirplane size={16} />
           <p className="text-sm">Visa On Arrival</p>
-        </button>
+        </button> */}
       </div>
 
       <div className="lg:w-2/4 w-full">

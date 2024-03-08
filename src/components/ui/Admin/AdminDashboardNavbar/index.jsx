@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaMap, FaPassport, FaUsers } from "react-icons/fa";
 import { IoCarSport, IoPeopleOutline } from "react-icons/io5";
 import {
+  MdAdminPanelSettings,
   MdFlight,
   MdLuggage,
   MdOutlineCurrencyExchange,
@@ -24,8 +25,13 @@ import { Slide } from "react-awesome-reveal";
 // Images
 import shuttlelaneSLogo from "../../../../assets/logos/icon.png";
 import { FaHandHoldingDollar } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 function AdminDashboardNavbar(props) {
+  const { isLoading, admin } = useSelector((store) => store.admin);
+
+  const navigate = useNavigate();
+
   const [isBookingMenuOpen, setIsBookingMenuOpen] = useState(false);
   const [isBroadcastMenuOpen, setIsBroadcastMenuOpen] = useState(false);
   const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
@@ -200,20 +206,22 @@ function AdminDashboardNavbar(props) {
           )}
         </div>
 
-        <Link
-          to="/admin/dashboard/cities"
-          className={`h-11 w-11 flex justify-center items-center rounded-lg ${
-            props?.link == "cities" &&
-            "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
-          }`}
-        >
-          <MdOutlineLocationCity
-            size={17}
-            className={`${
-              props?.link == "cities" ? "text-white" : "text-gray-400"
+        {admin?.role !== "Blogger" && (
+          <Link
+            to="/admin/dashboard/cities"
+            className={`h-11 w-11 flex justify-center items-center rounded-lg ${
+              props?.link == "cities" &&
+              "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
             }`}
-          />
-        </Link>
+          >
+            <MdOutlineLocationCity
+              size={17}
+              className={`${
+                props?.link == "cities" ? "text-white" : "text-gray-400"
+              }`}
+            />
+          </Link>
+        )}
 
         <div
           className={`relative h-11 w-11 cursor-pointer flex justify-center items-center rounded-lg ${
@@ -251,6 +259,27 @@ function AdminDashboardNavbar(props) {
                 zIndex: 30,
               }}
             >
+              <Link
+                to="/admin/dashboard/users/manage-admin-accounts"
+                className={`flex items-center gap-x-2 text-xs ${
+                  props?.sublink === "manage-admin-accounts"
+                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                } hover:no-underline visited:no-underline`}
+              >
+                <MdAdminPanelSettings size={16} className="" />
+                <span
+                  className={`text-sm ${
+                    props?.sublink === "manage-admin-accounts" &&
+                    "font-semibold"
+                  }`}
+                >
+                  Manage Admin Accounts
+                </span>
+                {props?.sublink === "manage-admin-accounts" && (
+                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                )}
+              </Link>
               <Link
                 to="/admin/dashboard/users/manage-users"
                 className={`flex items-center gap-x-2 text-xs ${
@@ -315,46 +344,47 @@ function AdminDashboardNavbar(props) {
           )}
         </div>
 
-        <div
-          className={`relative h-11 w-11 cursor-pointer flex justify-center items-center rounded-lg ${
-            props?.link == "broadcasts" &&
-            "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
-          }`}
-          onMouseOver={() => {
-            setIsBookingMenuOpen(false);
-            setIsBroadcastMenuOpen(true);
-            setIsUsersMenuOpen(false);
-            setIsRatesMenuOpen(false);
-          }}
-          onMouseOut={() => {
-            setIsBookingMenuOpen(false);
-            setIsBroadcastMenuOpen(false);
-            setIsUsersMenuOpen(false);
-            setIsRatesMenuOpen(false);
-          }}
-          onClick={() => {
-            setIsBookingMenuOpen(false);
-            setIsBroadcastMenuOpen(true);
-            setIsUsersMenuOpen(false);
-            setIsRatesMenuOpen(false);
-          }}
-        >
-          <RiBroadcastFill
-            size={17}
-            className={`${
-              props?.link == "broadcasts" ? "text-white" : "text-gray-400"
+        {admin?.role !== "Blogger" && (
+          <div
+            className={`relative h-11 w-11 cursor-pointer flex justify-center items-center rounded-lg ${
+              props?.link == "broadcasts" &&
+              "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
             }`}
-          />
+            onMouseOver={() => {
+              setIsBookingMenuOpen(false);
+              setIsBroadcastMenuOpen(true);
+              setIsUsersMenuOpen(false);
+              setIsRatesMenuOpen(false);
+            }}
+            onMouseOut={() => {
+              setIsBookingMenuOpen(false);
+              setIsBroadcastMenuOpen(false);
+              setIsUsersMenuOpen(false);
+              setIsRatesMenuOpen(false);
+            }}
+            onClick={() => {
+              setIsBookingMenuOpen(false);
+              setIsBroadcastMenuOpen(true);
+              setIsUsersMenuOpen(false);
+              setIsRatesMenuOpen(false);
+            }}
+          >
+            <RiBroadcastFill
+              size={17}
+              className={`${
+                props?.link == "broadcasts" ? "text-white" : "text-gray-400"
+              }`}
+            />
 
-          {/* SUB MENUS */}
-          {isBroadcastMenuOpen && (
-            <div
-              className={`flex flex-col gap-y-4 absolute left-12 top-0 maxContent max-w-none h-auto p-3 z-[30] rounded-lg bg-white shadow-lg`}
-              style={{
-                zIndex: 30,
-              }}
-            >
-              <Link
+            {/* SUB MENUS */}
+            {isBroadcastMenuOpen && (
+              <div
+                className={`flex flex-col gap-y-4 absolute left-12 top-0 maxContent max-w-none h-auto p-3 z-[30] rounded-lg bg-white shadow-lg`}
+                style={{
+                  zIndex: 30,
+                }}
+              >
+                {/* <Link
                 to="/admin/dashboard/broadcasts/enquiries"
                 className={`flex items-center gap-x-2 text-xs ${
                   props?.sublink === "enquiries"
@@ -373,50 +403,51 @@ function AdminDashboardNavbar(props) {
                 {props?.sublink === "enquiries" && (
                   <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                 )}
-              </Link>
-              <Link
-                to="/admin/dashboard/broadcasts/push-notifications"
-                className={`flex items-center gap-x-2 text-xs ${
-                  props?.sublink === "push-notifications"
-                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
-                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
-                } hover:no-underline visited:no-underline`}
-              >
-                <MdOutlineNotifications size={18} className="" />
-                <span
-                  className={`text-sm ${
-                    props?.sublink === "push-notifications" && "font-semibold"
-                  }`}
+              </Link> */}
+                <Link
+                  to="/admin/dashboard/broadcasts/push-notifications"
+                  className={`flex items-center gap-x-2 text-xs ${
+                    props?.sublink === "push-notifications"
+                      ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                      : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                  } hover:no-underline visited:no-underline`}
                 >
-                  Push Notifications
-                </span>
-                {props?.sublink === "push-notifications" && (
-                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
-                )}
-              </Link>
-              <Link
-                to="/admin/dashboard/broadcasts/bulk-email"
-                className={`flex items-center gap-x-2 text-xs ${
-                  props?.sublink === "bulk-email"
-                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
-                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
-                } hover:no-underline visited:no-underline`}
-              >
-                <LiaMailBulkSolid size={18} className="" />
-                <span
-                  className={`text-sm ${
-                    props?.sublink === "bulk-email" && "font-semibold"
-                  }`}
+                  <MdOutlineNotifications size={18} className="" />
+                  <span
+                    className={`text-sm ${
+                      props?.sublink === "push-notifications" && "font-semibold"
+                    }`}
+                  >
+                    Push Notifications
+                  </span>
+                  {props?.sublink === "push-notifications" && (
+                    <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                  )}
+                </Link>
+                <Link
+                  to="/admin/dashboard/broadcasts/bulk-email"
+                  className={`flex items-center gap-x-2 text-xs ${
+                    props?.sublink === "bulk-email"
+                      ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                      : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                  } hover:no-underline visited:no-underline`}
                 >
-                  Bulk Email
-                </span>
-                {props?.sublink === "bulk-email" && (
-                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
-                )}
-              </Link>
-            </div>
-          )}
-        </div>
+                  <LiaMailBulkSolid size={18} className="" />
+                  <span
+                    className={`text-sm ${
+                      props?.sublink === "bulk-email" && "font-semibold"
+                    }`}
+                  >
+                    Bulk Email
+                  </span>
+                  {props?.sublink === "bulk-email" && (
+                    <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                  )}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
 
         <div
           className={`relative h-11 w-11 cursor-pointer flex justify-center items-center rounded-lg ${
@@ -477,26 +508,28 @@ function AdminDashboardNavbar(props) {
                   <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                 )}
               </Link> */}
-              <Link
-                to="/admin/dashboard/rates/booking-rates"
-                className={`flex items-center gap-x-2 text-xs ${
-                  props?.sublink === "booking-rates"
-                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
-                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
-                } hover:no-underline visited:no-underline`}
-              >
-                <FaHandHoldingDollar size={16} className="" />
-                <span
-                  className={`text-sm ${
-                    props?.sublink === "booking-rates" && "font-semibold"
-                  }`}
+              {admin?.role !== "Blogger" && (
+                <Link
+                  to="/admin/dashboard/rates/booking-rates"
+                  className={`flex items-center gap-x-2 text-xs ${
+                    props?.sublink === "booking-rates"
+                      ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                      : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                  } hover:no-underline visited:no-underline`}
                 >
-                  Booking Rates
-                </span>
-                {props?.sublink === "booking-rates" && (
-                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
-                )}
-              </Link>
+                  <FaHandHoldingDollar size={16} className="" />
+                  <span
+                    className={`text-sm ${
+                      props?.sublink === "booking-rates" && "font-semibold"
+                    }`}
+                  >
+                    Booking Rates
+                  </span>
+                  {props?.sublink === "booking-rates" && (
+                    <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                  )}
+                </Link>
+              )}
               <Link
                 to="/admin/dashboard/rates/exchange-rates"
                 className={`flex items-center gap-x-2 text-xs ${
@@ -536,22 +569,30 @@ function AdminDashboardNavbar(props) {
           />
         </Link>
 
-        <Link
-          to="/admin/dashboard/bookingapi"
-          className={`h-11 w-11 flex justify-center items-center rounded-lg ${
-            props?.link == "bookingapi" &&
-            "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
-          }`}
-        >
-          <TbBrandBooking
-            size={22}
-            className={`${
-              props?.link == "bookingapi" ? "text-white" : "text-gray-400"
+        {admin?.role !== "Blogger" && (
+          <Link
+            to="/admin/dashboard/bookingapi"
+            className={`h-11 w-11 flex justify-center items-center rounded-lg ${
+              props?.link == "bookingapi" &&
+              "bg-shuttlelanePurple shadow-[#4540cf85] shadow-md"
             }`}
-          />
-        </Link>
+          >
+            <TbBrandBooking
+              size={22}
+              className={`${
+                props?.link == "bookingapi" ? "text-white" : "text-gray-400"
+              }`}
+            />
+          </Link>
+        )}
 
-        <button className="h-11 w-full flex justify-center items-center absolute bottom-0">
+        <button
+          onClick={() => {
+            localStorage.clear();
+            navigate("/admin");
+          }}
+          className="h-11 w-full flex justify-center items-center absolute bottom-0"
+        >
           <TbLogout2 size={17} className="text-gray-400" />
         </button>
       </div>

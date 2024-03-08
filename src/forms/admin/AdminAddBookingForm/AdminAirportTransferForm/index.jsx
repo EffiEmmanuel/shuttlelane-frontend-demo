@@ -1,14 +1,15 @@
+// @ts-nocheck
 import { useFormik } from "formik";
 import AdminAddBookingUserDetailsSchema from "../validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React, { useRef } from "react";
 
-import { BsAirplane } from "react-icons/bs";
+import { BsAirplane, BsPerson, BsPlusCircleDotted } from "react-icons/bs";
 import { MdOutlineLuggage } from "react-icons/md";
 import { IoCarSportOutline, IoLocationOutline } from "react-icons/io5";
 import Select from "react-select";
 import LocationInput from "../../../../components/ui/Form/LocationInput";
-import { BiSolidCity } from "react-icons/bi";
+import { BiMinus, BiSolidCity } from "react-icons/bi";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
@@ -21,8 +22,22 @@ import luxury from "../../../../assets/images/cars/luxury.png";
 import shuttle from "../../../../assets/images/cars/shuttle.png";
 import shuttleExtra from "../../../../assets/images/cars/shuttleExtra.png";
 import { ImSpinner2 } from "react-icons/im";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  calculateTotal,
+  createBooking,
+  fetchCities,
+  fetchCity,
+} from "../../../../redux/slices/adminSlice";
+import PersonalDetailsForm from "../../../PersonalDetailsForm";
+import { AiOutlinePlus } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
+import Switch from "react-switch";
 
 function AdminAirportTransferForm() {
+  const { bookingDetails, bookingCurrency, bookingTotal } = useSelector(
+    (store) => store.admin
+  );
   // Date Setup
   const minSelectableDate = new Date(); //
   // A function to disable dates earlier than the minimum date
@@ -30,13 +45,14 @@ function AdminAirportTransferForm() {
     return date < minSelectableDate;
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const [title, setTitle] = useState("");
+  const [isRoundTrip, setIsRoundTrip] = useState(false);
   // Dropoff details
   const [dropoffLocation, setDropoffLocation] = useState();
   const [dropoffLocationInput, setDropoffLocationInput] = useState();
   const dropoffLocationRef = useRef();
+  const [returnDate, setReturnDate] = useState();
+  const [returnTime, setReturnTime] = useState();
 
   // Pickup details
   const [pickupLocation, setPickupLocation] = useState();
@@ -44,6 +60,9 @@ function AdminAirportTransferForm() {
   const pickupLocationRef = useRef();
   const [pickupDate, setPickupDate] = useState();
   const [pickupTime, setPickupTime] = useState();
+
+  // Passengers
+  const [passengers, setPassengers] = useState("");
 
   // City Data
   const cityData = [
@@ -55,15 +74,6 @@ function AdminAirportTransferForm() {
 
   // FORM FIELDS
   const [selectedCity, setSelectedCity] = useState("");
-
-  // Function: Handle log in admin
-  async function onSubmit(values, actions) {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
-  }
 
   // Title options
   const titleOptions = [
@@ -89,18 +99,138 @@ function AdminAirportTransferForm() {
   const [selectedVehicleClass, setSelectedVehicleClass] = useState("");
 
   // Passenger Form Fields
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [middleName, setMiddleName] = useState();
-  const [emailAddress, setEmailAddress] = useState();
-  const [phone, setPhone] = useState();
+  const [selectedTitle, setSelectedTitle] = useState();
+  const [fullName, setFullName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [email, setEmail] = useState();
+  const [flightNumber, setFlightNumber] = useState();
+  const [airline, setAirline] = useState();
+
+  // Redux store states
+  const { isLoading, token, cities, vehicleClasses } = useSelector(
+    (store) => store.admin
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      console.log("HELLO FROM HERE:", token);
+      dispatch(fetchCities(token));
+    }
+  }, [token]);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    console.log("CITIES FETCHED:", cities);
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
+
+  useEffect(() => {
+    dispatch(
+      fetchCity({
+        cityId: selectedCity?.value,
+        token,
+      })
+    );
+  }, [selectedCity]);
+
+  // Handle create booking
+  async function handleCreateBooking(e) {
+    e.preventDefault();
+    console.log("fullname:", fullName);
+    console.log("title:", selectedTitle);
+    dispatch(
+      createBooking({
+        bookingType: "Airport",
+        bookingDetails: {
+          title: selectedTitle?.value,
+          firstName: fullName?.split(" ")[0],
+          lastName: fullName?.split(" ")[1],
+          email: email,
+          mobile: phoneNumber,
+          bookingCurrency: bookingCurrency?._id,
+          bookingTotal: bookingTotal,
+          isRoundTrip: isRoundTrip,
+          passengers: passengers,
+          airline: airline,
+          flightNumber: flightNumber,
+          vehicleClass: selectedVehicleClass,
+          city: selectedCity?.value,
+          pickupAddress: pickupLocationInput,
+          pickupDate: pickupDate,
+          pickupTime: pickupTime,
+          dropoffAddress: dropoffLocationInput,
+          returnDate: returnDate ?? null,
+          returnTime: returnTime ?? null,
+          //   hasPriorityPass: hasPriorityPass,
+          //   passType: passType?.value ?? null,
+          //   priorityPassCount: numberOfPasses ?? null,
+        },
+      })
+    );
+  }
+
+  const [currentVehicleClass, setCurrentVehicleClass] = useState();
+
+  // Calculate booking total and watches for changes in the booking details
+  useEffect(() => {
+    dispatch(
+      calculateTotal({
+        pickupLocation: bookingDetails?.pickupLocation,
+        dropoffLocation: bookingDetails?.dropoffLocation,
+        currentVehicleClass,
+        //   isAddPriorityPass,
+        //   numberOfPasses,
+        //   passType,
+        bookingCurrency,
+        bookingType: "Airport",
+      })
+    );
+  }, [
+    // isAddPriorityPass,
+    // numberOfPasses,
+    // passType,
+    currentVehicleClass,
+    pickupLocationInput,
+    dropoffLocationInput,
+  ]);
 
   return (
     <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
+      <ToastContainer />
       {/* Booking Details */}
       <div className="mb-1">
         <p className="font-medium">Booking Details</p>
         <div className="h-1 w-[30px] rounded-xl bg-shuttlelanePurple"></div>
+      </div>
+
+      <div className="flex items-center gap-x-5">
+        {/* TRIP TYPE */}
+        <div className="flex transition-all items-center gap-x-1 text-shuttlelaneBlack">
+          <p className="text-sm transition-all">
+            {!isRoundTrip ? "One Way" : "Round Trip"}
+          </p>
+
+          <Switch
+            onChange={(checked) => setIsRoundTrip(checked)}
+            checked={isRoundTrip}
+            height={15}
+            width={35}
+            handleDiameter={10}
+            checkedIcon={false}
+            uncheckedIcon={false}
+            onColor="#262471"
+          />
+        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
@@ -118,7 +248,7 @@ function AdminAirportTransferForm() {
               <Select
                 value={selectedCity}
                 onChange={(value) => setSelectedCity(value)}
-                options={cityData}
+                options={citiesData}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -128,7 +258,6 @@ function AdminAirportTransferForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 80,
                   }),
 
                   placeholder: (baseStyles, state) => ({
@@ -228,6 +357,67 @@ function AdminAirportTransferForm() {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
+        {/* Passengers */}
+        <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+          <div className="w-[5%]">
+            <BsPerson size={16} className="text-gray-700" />
+          </div>
+
+          <div className="w-[95%] text-shuttlelaneBlack relative">
+            <div className="flex items-center">
+              <input
+                type="tel"
+                onChange={(e) => {
+                  if (isNaN(e.target.value)) {
+                    e.target.value = passengers;
+                    toast.info("This field accepts only numbers!");
+                    return;
+                  } else {
+                    if (!(e.target.value > 10)) {
+                      setPassengers(e.target.value);
+                    } else {
+                      toast.info("You cannot have more than 10 passengers!");
+                    }
+                  }
+                }}
+                value={passengers}
+                className="text-sm px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
+                placeholder="Passengers"
+              />
+
+              <div className="flex items-center gap-x-2">
+                <div
+                  onClick={() => {
+                    const newPassengerValue = +passengers - 1;
+                    if (newPassengerValue === 0) {
+                      toast.info("You cannot have less than 1 passenger!");
+                      return;
+                    } else {
+                      setPassengers(+passengers - 1);
+                    }
+                  }}
+                  className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
+                >
+                  <BiMinus size={16} className="text-gray-500" />
+                </div>
+                <div
+                  onClick={() => {
+                    const newPassengerValue = +passengers + 1;
+                    if (newPassengerValue > 10) {
+                      toast.info("You cannot have more than 10 passengers!");
+                      return;
+                    } else {
+                      setPassengers(+passengers + 1);
+                    }
+                  }}
+                  className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
+                >
+                  <AiOutlinePlus size={16} className="text-gray-500" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Pickup Addresss */}
         <div className="w-full flex flex-col gap-y-1">
           <label htmlFor="pickupLocation" className="text-sm">
@@ -251,56 +441,59 @@ function AdminAirportTransferForm() {
           </div>
         </div>
       </div>
+      <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
+        {!isRoundTrip && (
+          <button
+            onClick={() => setIsRoundTrip(true)}
+            className="flex h-[47px] text-shuttlelaneBlack items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg"
+          >
+            <BsPlusCircleDotted size={16} />
+            <p className="text-sm">Add Return</p>
+          </button>
+        )}
 
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        <div className="w-full flex flex-col gap-y-1">
-          <label htmlFor="dropoffDate" className="text-sm">
-            Dropoff Date
-          </label>
-          <div className="flex h-11 items-center border-[0.3px] bg-transparent focus:outline-none border-gray-400 py-2 px-2 gap-x-2 w-full rounded-lg">
-            <div className="w-full">
-              <DatePicker
-                locale={enGB}
-                disabledDate={disableDateBeforeMin}
-                value={pickupDate}
-                appearance="subtle"
-                onChange={(date) => {
-                  setPickupDate(date);
-                }}
-                placeholder="Dropoff Date"
-                style={{
-                  backgroundColor: "transparent",
-                }}
-                className="text-sm w-full bg-transparent text-shuttlelaneBlack"
-              />
+        {isRoundTrip && (
+          <>
+            <div className="flex w-full flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
+              <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                <div className="w-full">
+                  <DatePicker
+                    locale={enGB}
+                    disabledDate={disableDateBeforeMin}
+                    value={returnDate}
+                    appearance="subtle"
+                    onChange={(date) => {
+                      setReturnDate(date);
+                    }}
+                    placeholder="Return Date"
+                    style={{
+                      backgroundColor: "transparent",
+                    }}
+                    className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                  />
+                </div>
+              </div>
+              <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                <div className="w-full">
+                  <DatePicker
+                    format="HH:mm"
+                    value={returnTime}
+                    appearance="subtle"
+                    onChange={(time) => {
+                      console.log("TIME:", time);
+                      setReturnTime(time);
+                    }}
+                    placeholder="Return Time"
+                    style={{
+                      backgroundColor: "transparent",
+                    }}
+                    className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div className="w-full flex flex-col gap-y-1">
-          <label htmlFor="dropoffTime" className="text-sm">
-            Dropoff Time
-          </label>
-
-          <div className="flex h-11 items-center border-[0.3px] bg-transparent focus:outline-none border-gray-400 py-2 px-2 gap-x-2 w-full rounded-lg">
-            <div className="w-full">
-              <DatePicker
-                format="HH:mm"
-                value={pickupTime}
-                appearance="subtle"
-                onChange={(time) => {
-                  console.log("TIME:", time);
-                  setPickupTime(time);
-                }}
-                placeholder="Dropoff Time"
-                style={{
-                  backgroundColor: "transparent",
-                }}
-                className="text-sm w-full bg-transparent text-shuttlelaneBlack"
-              />
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
 
       <div className="flex flex-col w-full gap-y-1 mt-3">
@@ -308,102 +501,32 @@ function AdminAirportTransferForm() {
           Choose Vehicle Class
         </label>
         <div className="flex lg:justify-between flex-wrap gap-x-4 gap-y-5 items-center">
-          {/* Car Card */}
-          <div
-            onClick={() => setSelectedVehicleClass("Economy")}
-            className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
-              selectedVehicleClass === "Economy"
-                ? "bg-shuttlelaneLightPurple shadow-lg"
-                : "border-gray-400 border-[.3px] border-dashed"
-            }  rounded-lg w-[150px] h-[100px] transition-all`}
-          >
-            <img
-              src={economy}
-              className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
-            />
+          {vehicleClasses?.map((vehicleClass) => (
+            <div
+              onClick={() => {
+                setSelectedVehicleClass(vehicleClass?._id);
+                setCurrentVehicleClass(vehicleClass);
+              }}
+              className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
+                selectedVehicleClass === vehicleClass?._id
+                  ? "bg-shuttlelaneLightPurple shadow-lg"
+                  : "border-gray-400 border-[.3px] border-dashed"
+              }  rounded-lg w-[150px] h-[100px] transition-all`}
+            >
+              <img
+                src={vehicleClass?.image}
+                className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
+              />
 
-            <p className="text-sm mt-2">Economy</p>
-          </div>
-          {/* Car Card */}
-          <div
-            onClick={() => setSelectedVehicleClass("Business")}
-            className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
-              selectedVehicleClass === "Business"
-                ? "bg-shuttlelaneLightPurple shadow-lg"
-                : "border-gray-400 border-[.3px] border-dashed"
-            }  rounded-lg w-[150px] h-[100px] transition-all`}
-          >
-            <img
-              src={business}
-              className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
-            />
+              <p className="text-sm mt-2">{vehicleClass?.className}</p>
+            </div>
+          ))}
 
-            <p className="text-sm mt-2">Business</p>
-          </div>
-          {/* Car Card */}
-          <div
-            onClick={() => setSelectedVehicleClass("Executive")}
-            className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
-              selectedVehicleClass === "Executive"
-                ? "bg-shuttlelaneLightPurple shadow-lg"
-                : "border-gray-400 border-[.3px] border-dashed"
-            }  rounded-lg w-[150px] h-[100px] transition-all`}
-          >
-            <img
-              src={executive}
-              className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
-            />
-
-            <p className="text-sm mt-2">Executive</p>
-          </div>
-          {/* Car Card */}
-          <div
-            onClick={() => setSelectedVehicleClass("Luxury")}
-            className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
-              selectedVehicleClass === "Luxury"
-                ? "bg-shuttlelaneLightPurple shadow-lg"
-                : "border-gray-400 border-[.3px] border-dashed"
-            }  rounded-lg w-[150px] h-[100px] transition-all`}
-          >
-            <img
-              src={luxury}
-              className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
-            />
-
-            <p className="text-sm mt-2">Luxury</p>
-          </div>
-          {/* Car Card */}
-          <div
-            onClick={() => setSelectedVehicleClass("Shuttle")}
-            className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
-              selectedVehicleClass === "Shuttle"
-                ? "bg-shuttlelaneLightPurple shadow-lg"
-                : "border-gray-400 border-[.3px] border-dashed"
-            }  rounded-lg w-[150px] h-[100px] transition-all`}
-          >
-            <img
-              src={shuttle}
-              className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
-            />
-
-            <p className="text-sm mt-2">Shuttle</p>
-          </div>
-          {/* Car Card */}
-          <div
-            onClick={() => setSelectedVehicleClass("Shuttle Extra")}
-            className={`flex cursor-pointer flex-col items-center text-center p-2 justify-center ${
-              selectedVehicleClass === "Shuttle Extra"
-                ? "bg-shuttlelaneLightPurple shadow-lg"
-                : "border-gray-400 border-[.3px] border-dashed"
-            }  rounded-lg w-[150px] h-[100px] transition-all`}
-          >
-            <img
-              src={shuttleExtra}
-              className="w-[100px] object-contain max-w-[100px] min-w-[100px]"
-            />
-
-            <p className="text-sm mt-2">Shuttle Extra</p>
-          </div>
+          {!selectedCity && (
+            <p className="text-sm text-slate-400">
+              Select a city to show vehicle classes
+            </p>
+          )}
         </div>
       </div>
 
@@ -413,129 +536,26 @@ function AdminAirportTransferForm() {
         <div className="h-1 w-[30px] rounded-xl bg-shuttlelanePurple"></div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Title */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="title" className="text-sm">
-            Title
-          </label>
-          <Select
-            value={title}
-            onChange={(value) => setTitle(value)}
-            options={titleOptions}
-            styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                borderColor: state.isFocused ? "transparent" : "transparent",
-                borderWidth: state.isFocused ? "0" : "0",
-                backgroundColor: "transparent",
-                position: "relative",
-                zIndex: 80,
-                width: "100%",
-                height: "100%",
-              }),
+      <PersonalDetailsForm
+        selectedTitle={selectedTitle}
+        setSelectedTitle={setSelectedTitle}
+        fullName={fullName}
+        setFullName={setFullName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        email={email}
+        setEmail={setEmail}
+        hasFlightDetails={true}
+        flightNumber={flightNumber}
+        setFlightNumber={setFlightNumber}
+        airline={airline}
+        setAirline={setAirline}
+      />
 
-              placeholder: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-
-              menuList: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-
-              input: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-            }}
-            placeholder="Select Title"
-            className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* First Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="firstName" className="text-sm">
-            First Name
-          </label>
-          <input
-            type="text"
-            placeholder="John"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Middle Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="middleName" className="text-sm">
-            Middle Name
-          </label>
-          <input
-            type="text"
-            placeholder="Snow"
-            name="middleName"
-            value={middleName}
-            onChange={(e) => setMiddleName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Last Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="lastName" className="text-sm">
-            Last Name
-          </label>
-          <input
-            type="text"
-            placeholder="Doe"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Email Address */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
-            Email Address
-          </label>
-          <input
-            type="email"
-            placeholder="abc@example.com"
-            name="emailAddress"
-            value={emailAddress}
-            onChange={(e) => setEmailAddress(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Phone Number */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="phone" className="text-sm">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            placeholder="+2341234567890"
-            name="phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <button className="lg:w-44 w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg">
+      <button
+        onClick={(e) => handleCreateBooking(e)}
+        className="lg:w-44 w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg"
+      >
         {isLoading ? (
           <ImSpinner2 size={21} className="text-white animate-spin" />
         ) : (

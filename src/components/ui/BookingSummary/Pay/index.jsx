@@ -87,6 +87,10 @@ export default function Pay(props) {
   }
 
   useEffect(() => {
+    console.log("USER CURRENCT OVER HERE IS:", userCurrency);
+  }, [userCurrency]);
+
+  useEffect(() => {
     if (createBookingStatusCode == 201) {
       // Handle Payment
       if (isFlutterwave) {
@@ -128,14 +132,14 @@ export default function Pay(props) {
         </p>
       </div>
 
-      {!props?.isVisaOnArrival ? (
+      {bookingType !== "Visa" ? (
         <div
           className={`mt-5 flex flex-row ${
             !userCurrency ||
             userCurrency == null ||
             userCurrency?.currencyLabel == "Naira"
               ? "lg:justify-center"
-              : "lg:justify-between"
+              : ""
           }  justify-center items-center gap-y-0 gap-5 flex-wrap`}
         >
           {!userCurrency ||
@@ -180,7 +184,7 @@ export default function Pay(props) {
             </>
           ) : (
             <>
-              <button
+              {/* <button
                 className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
                   isFlutterwave && "border-shuttlelanePurple border-[2px]"
                 }`}
@@ -196,9 +200,9 @@ export default function Pay(props) {
                   alt=""
                   className="object-contain lg:w-[140px] w-[140px]"
                 />
-              </button>
+              </button> */}
 
-              <button
+              {/* <button
                 className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
                   isPaystack && "border-shuttlelanePurple border-[2px]"
                 }`}
@@ -214,7 +218,7 @@ export default function Pay(props) {
                   alt=""
                   className="object-contain lg:w-[140px] w-[140px]"
                 />
-              </button>
+              </button> */}
 
               <button
                 className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${

@@ -17,15 +17,15 @@ function AdminTopBar(props) {
           Welcome back, {admin?.firstName}
         </h2>
         <p className="text-sm text-gray-400 ">
-          {admin?.firstName} {admin?.lastName}
+          {admin?.firstName} {admin?.lastName} ({admin?.role})
         </p>
       </div>
 
       <div className="flex items-center gap-x-2">
         <div className="h-9 w-9 rounded-full bg-shuttlelanePurple flex justify-center items-center overflow-hidden">
           <img
-            src={profilePicPlaceholder}
-            alt="Tunde Ojobaro"
+            src={admin?.image ?? profilePicPlaceholder}
+            alt={`${admin?.firstName} ${admin?.lastName}`}
             className="h-full w-full object-cover"
           />
         </div>

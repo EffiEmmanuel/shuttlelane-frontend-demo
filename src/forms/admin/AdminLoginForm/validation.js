@@ -5,7 +5,7 @@ const AdminLoginSchema = yup.object().shape({
   username: yup
     .string()
     .min(4, "Username must be more than 4 characters")
-    .max(8, "Username cannot be more than 8 characters")
+    .max(15, "Username cannot be more than 15 characters")
     .required(requiredText),
   password: yup
     .string()

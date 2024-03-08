@@ -50,6 +50,8 @@ import DriverDashboardSecurityPage from "./pages/driver/dashboard/security/Reset
 import BlogsPage from "./pages/company/BlogsPage";
 import PostPage from "./pages/company/BlogsPage/PostPage";
 import TrackBookingPage from "./pages/booking/track-booking";
+import AdminDashboardAdminAccountsPage from "./pages/admin/dashboard/users/AdminPage";
+import AdminCompleteSignupPage from "./pages/admin/AdminCompleteSignupPage";
 
 // Modal.setAppElement("#appElement");
 
@@ -147,7 +149,10 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin">
+          {/* Admin Auth routes */}
           <Route path="" element={<AdminLoginPage />} />
+          <Route path="complete-signup" element={<AdminCompleteSignupPage />} />
+
           <Route path="dashboard">
             <Route
               path=""
@@ -213,6 +218,14 @@ function App() {
 
             {/* /admin/dashboard/users/* */}
             <Route path="users">
+              <Route
+                path="manage-admin-accounts"
+                element={
+                  <AdminProtectedRoute>
+                    <AdminDashboardAdminAccountsPage />
+                  </AdminProtectedRoute>
+                }
+              />
               <Route
                 path="manage-users"
                 element={

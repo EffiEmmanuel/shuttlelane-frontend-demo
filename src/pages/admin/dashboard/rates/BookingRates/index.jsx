@@ -156,7 +156,7 @@ function AdminDashboardBookingRatesPage() {
                     >
                       Visa On Arrival Rate
                     </span>
-                    <span
+                    {/* <span
                       onClick={() => {
                         setIsRatePerMile(false);
                         setIsVisaOnArrivalRate(false);
@@ -171,7 +171,7 @@ function AdminDashboardBookingRatesPage() {
                       }`}
                     >
                       Vehicle Classes
-                    </span>
+                    </span> */}
                     <span
                       onClick={() => {
                         setIsRatePerMile(false);
@@ -210,7 +210,7 @@ function AdminDashboardBookingRatesPage() {
 
               {isRatePerMile && <AdminRatePerMile />}
               {isVisaOnArrivalRate && <AdminVisaOnArrivalRate />}
-              {isVehicleClasses && <AdminVehicleClassesRate />}
+              {/* {isVehicleClasses && <AdminVehicleClassesRate />} */}
               {isCarRates && <AdminCarRates />}
               {isPriorityPassRates && <AdminPriorityPassRates />}
             </div>

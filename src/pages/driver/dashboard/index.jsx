@@ -42,6 +42,7 @@ function DriverDashboardHomePage() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   useEffect(() => {
+    console.log("DRIVER TOKEN:", token);
     dispatch(fetchAssignedJobs({ token, driverId: driver?._id }));
   }, [token]);
 
@@ -106,38 +107,41 @@ function DriverDashboardHomePage() {
                           Assigned Jobs ({assignedBookings?.length})
                         </p>
                         <div className="flex flex-col gap-y-3 mt-5">
-                          {assignedBookings?.map(booking => (
+                          {assignedBookings?.map((booking) => (
+                            <div className="flex h-28 p-3 justify-between items-center allRoundBoxShadow bg-white rounded-lg w-full">
+                              <div className="flex flex-row items-center gap-x-1">
+                                <img
+                                  src={congratsAsset}
+                                  alt=""
+                                  className="object-contain"
+                                />
 
-                          <div className="flex h-28 p-3 justify-between items-center allRoundBoxShadow bg-white rounded-lg w-full">
-                            <div className="flex flex-row items-center gap-x-1">
-                              <img
-                                src={congratsAsset}
-                                alt=""
-                                className="object-contain"
-                              />
+                                <div className="flex flex-col">
+                                  <p className="font-semibold">
+                                    New Job Alert!
+                                  </p>
+                                  <small className="max-w-sm">
+                                    Hello {driver?.firstName}, you have been
+                                    assigned to a new booking with pickup
+                                    location at{" "}
+                                    {booking?.booking?.pickupAddress}
+                                  </small>
+                                </div>
+                              </div>
 
-                              <div className="flex flex-col">
-                                <p className="font-semibold">New Job Alert!</p>
-                                <small className="max-w-sm">
-                                  Hello {driver?.firstName}, you have been assigned to a
-                                  new booking with pickup location at {booking?.booking?.pickupAddress}
-                                </small>
+                              {/* CTA */}
+                              <div className="">
+                                <button
+                                  type="button"
+                                  className="bg-shuttlelaneBlack rounded-full h-10 w-10 flex items-center justify-center"
+                                >
+                                  <BsArrowRight
+                                    size={18}
+                                    className="text-white"
+                                  />
+                                </button>
                               </div>
                             </div>
-
-                            {/* CTA */}
-                            <div className="">
-                              <button
-                                type="button"
-                                className="bg-shuttlelaneBlack rounded-full h-10 w-10 flex items-center justify-center"
-                              >
-                                <BsArrowRight
-                                  size={18}
-                                  className="text-white"
-                                />
-                              </button>
-                            </div>
-                          </div>
                           ))}
                           <div className="flex h-28 p-3 justify-between items-center allRoundBoxShadow bg-white rounded-lg w-full">
                             <div className="flex flex-row items-center gap-x-1">

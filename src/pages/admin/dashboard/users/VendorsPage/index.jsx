@@ -18,7 +18,7 @@ import { ImSpinner2 } from "react-icons/im";
 
 function AdminDashboardVendorsPage() {
   const dispatch = useDispatch();
-  const { isLoading, vendors, vendorData, token } = useSelector(
+  const { isLoading, vendors, vendorData, token, admin } = useSelector(
     (store) => store.admin
   );
 
@@ -184,7 +184,7 @@ function AdminDashboardVendorsPage() {
 
                     {/* Table header */}
                     <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                      <p className="w-200px lg:w-[25%] text-xs">Full name</p>
+                      <p className="w-200px lg:w-[25%] text-xs">Company name</p>
                       <p className="w-200px lg:w-[25%] text-xs">
                         Email Address
                       </p>
@@ -192,7 +192,9 @@ function AdminDashboardVendorsPage() {
                         Contact Number
                       </p>
                       {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
-                      <p className="w-200px lg:w-[25%] text-xs">Actions</p>
+                      {admin?.role !== "Blogger" && (
+                        <p className="w-200px lg:w-[25%] text-xs">Actions</p>
+                      )}
                     </div>
 
                     {/* Table body - Vendor card */}
@@ -222,22 +224,23 @@ function AdminDashboardVendorsPage() {
                         {/* <p className="w-200px lg:w-[25%] text-xs">
                         12 November 2023
                       </p> */}
-
-                        <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
-                          {!isLoading ? (
-                            <button
-                              onClick={() => deleteVendor(vendor?._id)}
-                              className="text-xs"
-                            >
-                              <AiFillDelete
-                                size={16}
-                                className="text-red-500"
-                              />
-                            </button>
-                          ) : (
-                            <ImSpinner2 size={16} className="text-gray-400" />
-                          )}
-                        </div>
+                        {admin?.role !== "Blogger" && (
+                          <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                            {!isLoading ? (
+                              <button
+                                onClick={() => deleteVendor(vendor?._id)}
+                                className="text-xs"
+                              >
+                                <AiFillDelete
+                                  size={16}
+                                  className="text-red-500"
+                                />
+                              </button>
+                            ) : (
+                              <ImSpinner2 size={16} className="text-gray-400" />
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
 

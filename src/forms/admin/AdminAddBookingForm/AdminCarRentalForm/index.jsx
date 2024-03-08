@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import AdminAddBookingUserDetailsSchema from "../validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React, { useRef } from "react";
 
 import { BsAirplane } from "react-icons/bs";
@@ -22,8 +22,16 @@ import shuttle from "../../../../assets/images/cars/shuttle.png";
 import shuttleExtra from "../../../../assets/images/cars/shuttleExtra.png";
 import { ImSpinner2 } from "react-icons/im";
 import { AiOutlinePlus } from "react-icons/ai";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { TbBrandDaysCounter } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createBooking,
+  fetchCars,
+  fetchCities,
+  fetchCity,
+} from "../../../../redux/slices/adminSlice";
+import PersonalDetailsForm from "../../../PersonalDetailsForm";
 
 function AdminCarRentalForm() {
   // Date Setup
@@ -32,8 +40,6 @@ function AdminCarRentalForm() {
   const disableDateBeforeMin = (date) => {
     return date < minSelectableDate;
   };
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const [title, setTitle] = useState("");
   // Dropoff details
@@ -48,25 +54,61 @@ function AdminCarRentalForm() {
   const [pickupDate, setPickupDate] = useState();
   const [pickupTime, setPickupTime] = useState();
 
-  // City Data
-  const cityData = [
-    { value: "Lagos", label: "Lagos" },
-    { value: "Accra", label: "Accra" },
-    { value: "Ogun", label: "Ogun" },
-    { value: "Ibadans", label: "Ibadanss" },
-  ];
-
   // FORM FIELDS
   const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCar, setSelectedCar] = useState("");
 
-  // Function: Handle log in admin
-  async function onSubmit(values, actions) {
-    setIsLoading(true);
+  // Redux store states
+  const { isLoading, token, cities, cars, bookingCurrency, bookingTotal } =
+    useSelector((store) => store.admin);
+  const dispatch = useDispatch();
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
-  }
+  useEffect(() => {
+    if (token) {
+      console.log("HELLO FROM HERE:", token);
+      dispatch(fetchCities(token));
+      dispatch(fetchCars(token));
+    }
+  }, [token]);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    console.log("CITIES FETCHED:", cities);
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
+
+  // Format cars
+  const [carsData, setCarsData] = useState();
+  useEffect(() => {
+    let updatedCarData = [];
+    console.log("CARS FETCHED:", cars);
+    cars?.forEach((car) => {
+      updatedCarData.push({
+        value: car?._id,
+        label: car?.name,
+      });
+    });
+
+    setCarsData(updatedCarData);
+  }, [cars]);
+
+  useEffect(() => {
+    dispatch(
+      fetchCity({
+        cityId: selectedCity?.value,
+        token,
+      })
+    );
+  }, [selectedCity]);
 
   // Title options
   const titleOptions = [
@@ -92,14 +134,39 @@ function AdminCarRentalForm() {
   const [days, setDays] = useState("");
 
   // Passenger Form Fields
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [middleName, setMiddleName] = useState();
-  const [emailAddress, setEmailAddress] = useState();
-  const [phone, setPhone] = useState();
+  const [selectedTitle, setSelectedTitle] = useState();
+  const [fullName, setFullName] = useState();
+  const [email, setEmail] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
+  // Handle create booking
+  async function handleCreateBooking(e) {
+    e.preventDefault();
+    dispatch(
+      createBooking({
+        bookingType: "Car",
+        bookingDetails: {
+          title: selectedTitle?.value,
+          firstName: fullName?.split(" ")[0],
+          lastName: fullName?.split(" ")[1],
+          email: email,
+          mobile: phoneNumber,
+          bookingCurrency: bookingCurrency?._id,
+          bookingTotal: bookingTotal,
+          days: days,
+          city: selectedCity?.value,
+          car: selectedCar?.value,
+          pickupAddress: pickupLocationInput,
+          pickupDate: pickupDate,
+          pickupTime: pickupTime,
+        },
+      })
+    );
+  }
 
   return (
     <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
+      <ToastContainer />
       {/* Booking Details */}
       <div className="mb-1">
         <p className="font-medium">Booking Details</p>
@@ -121,7 +188,7 @@ function AdminCarRentalForm() {
               <Select
                 value={selectedCity}
                 onChange={(value) => setSelectedCity(value)}
-                options={cityData}
+                options={citiesData}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -131,7 +198,6 @@ function AdminCarRentalForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 80,
                   }),
 
                   placeholder: (baseStyles, state) => ({
@@ -243,9 +309,9 @@ function AdminCarRentalForm() {
 
             <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
               <Select
-                value={selectedCity}
-                onChange={(value) => console.log("VALUE:", value)}
-                options={cityData}
+                value={selectedCar}
+                onChange={(value) => setSelectedCar(value)}
+                options={carsData}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -363,129 +429,21 @@ function AdminCarRentalForm() {
         <div className="h-1 w-[30px] rounded-xl bg-shuttlelanePurple"></div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Title */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="title" className="text-sm">
-            Title
-          </label>
-          <Select
-            value={title}
-            onChange={(value) => setTitle(value)}
-            options={titleOptions}
-            styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                borderColor: state.isFocused ? "transparent" : "transparent",
-                borderWidth: state.isFocused ? "0" : "0",
-                backgroundColor: "transparent",
-                position: "relative",
-                zIndex: 80,
-                width: "100%",
-                height: "100%",
-              }),
+      <PersonalDetailsForm
+        selectedTitle={selectedTitle}
+        setSelectedTitle={setSelectedTitle}
+        fullName={fullName}
+        setFullName={setFullName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        email={email}
+        setEmail={setEmail}
+      />
 
-              placeholder: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-
-              menuList: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-
-              input: (baseStyles, state) => ({
-                ...baseStyles,
-                // fontSize: ".75rem",
-              }),
-            }}
-            placeholder="Select Title"
-            className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* First Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="firstName" className="text-sm">
-            First Name
-          </label>
-          <input
-            type="text"
-            placeholder="John"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Middle Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="middleName" className="text-sm">
-            Middle Name
-          </label>
-          <input
-            type="text"
-            placeholder="Snow"
-            name="middleName"
-            value={middleName}
-            onChange={(e) => setMiddleName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Last Name */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="lastName" className="text-sm">
-            Last Name
-          </label>
-          <input
-            type="text"
-            placeholder="Doe"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:items-center gap-x-4">
-        {/* Email Address */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="emailAddress" className="text-sm">
-            Email Address
-          </label>
-          <input
-            type="email"
-            placeholder="abc@example.com"
-            name="emailAddress"
-            value={emailAddress}
-            onChange={(e) => setEmailAddress(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
-        {/* Phone Number */}
-        <div className="lg:w-[50%] w-full flex flex-col gap-y-1">
-          <label htmlFor="phone" className="text-sm">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            placeholder="+2341234567890"
-            name="phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-      </div>
-
-      <button className="lg:w-44 w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg">
+      <button
+        onClick={(e) => handleCreateBooking(e)}
+        className="lg:w-44 w-full h-13 p-3 border-[0.3px] focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg"
+      >
         {isLoading ? (
           <ImSpinner2 size={21} className="text-white animate-spin" />
         ) : (

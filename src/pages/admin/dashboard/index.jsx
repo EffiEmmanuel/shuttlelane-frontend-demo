@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPassport, FaTrash, FaUser } from "react-icons/fa";
-import { MdCheck } from "react-icons/md";
+import { MdCheck, MdLocationPin } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
 import AdminDashboardNavbar from "../../../components/ui/Admin/AdminDashboardNavbar";
 import { HiOutlineExternalLink } from "react-icons/hi";
@@ -23,27 +23,33 @@ import {
   fetchStatistics,
   approveDriverAccount,
   fetchApprovedDrivers,
+  fetchBookingByReference,
+  fetchVendors,
 } from "../../../redux/slices/adminSlice";
 import { Modal as RsuiteModal, Button } from "rsuite";
 import Modal from "react-modal";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import { FaXmark } from "react-icons/fa6";
 // import RemindIcon from '@rsuite/icons/legacy/Remind';
 
 // Images
 import profilePicPlaceholder from "../../../assets/images/profilePicture.png";
+import moment from "moment";
 
 function AdminDashboardHomePage() {
   const {
     isLoading,
     token,
+    admin,
     users,
     drivers,
     approvedDrivers,
     vendors,
     upcomingBookings,
     unassignedBookings,
+    bookingFetchedByReference,
+    isGetBookingByReferenceLoading,
   } = useSelector((store) => store.admin);
 
   const dispatch = useDispatch();
@@ -143,6 +149,10 @@ function AdminDashboardHomePage() {
     setIsDeleteBookingDialogOpen(false);
   }
 
+  // Booking Details Modal States
+  const [isBookingDetailsModalOpen, setIsBookingDetailsModalOpen] =
+    useState(false);
+
   // Assign Driver Modal States
   const [isAssignDriverModalOpen, setIsAssignDriverModalOpen] = useState(false);
   const [isDriver, setIsDriver] = useState({ value: true, label: "Driver" });
@@ -221,8 +231,17 @@ function AdminDashboardHomePage() {
 
   // Fetch approced driver accounts
   useEffect(() => {
-    if (token) dispatch(fetchApprovedDrivers(token));
+    if (token) {
+      dispatch(fetchApprovedDrivers(token));
+      dispatch(fetchVendors(token));
+    }
   }, [token]);
+
+  // Fetch approced driver accounts
+  useEffect(() => {
+    if (currentBooking)
+      dispatch(fetchBookingByReference(currentBooking?.bookingReference));
+  }, [currentBooking]);
 
   return (
     <div className="">
@@ -415,6 +434,1039 @@ function AdminDashboardHomePage() {
             </form>
           </div>
         </div>
+      </Modal>
+
+      {/* Booking Details Modal */}
+      <Modal
+        isOpen={isBookingDetailsModalOpen}
+        onRequestClose={() => setIsBookingDetailsModalOpen(false)}
+        className="flex h-full min-h-screen justify-center items-center lg:px-40 px-7"
+      >
+        {!isGetBookingByReferenceLoading && (
+          <div className="bg-white pb-10 shadow-lg rounded-lg text-shuttlelaneBlack w-full min-h-[80%] max-h-[80%] h-[80%] lg:w-[60%] p-7 px-10 overflow-y-scroll shuttlelaneScrollbar">
+            <div className="flex items-center justify-end">
+              <FaXmark
+                size={20}
+                onClick={() => setIsBookingDetailsModalOpen(false)}
+                className="cursor-pointer"
+              />
+            </div>
+
+            <div className="h-full flex flex-col gap-y-5 pb-20">
+              <>
+                {currentBooking?.bookingType === "Airport" && (
+                  <div className="flex items-center justify-center w-full pb-20">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                      <h2 className="text-2xl font-semibold">Trip Details</h2>
+                      <span className="text-sm text-slate-400">
+                        Airport Transfer Booking
+                      </span>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.passengers} passengers
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.pickupDate).format(
+                            "MMM DD, YYYY"
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.pickupTime).format(
+                            "H:MM A"
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.bookingCurrency?.symbol}
+                          {Intl.NumberFormat("en-US", {}).format(
+                            currentBooking?.bookingTotal
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            !currentBooking?.paymentId?.paymentStatus
+                              ? "text-yellow-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Successful"
+                              ? "text-green-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Pending"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          Payment{" "}
+                          {currentBooking?.paymentId?.paymentStatus ??
+                            "Pending"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.vehicleClass?.className}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            currentBooking?.bookingStatus == "Completed" ||
+                            currentBooking?.bookingStatus == "Ongoing" ||
+                            currentBooking?.bookingStatus == "Scheduled"
+                              ? "text-green-500"
+                              : currentBooking?.bookingStatus ==
+                                  "Awaiting response" ||
+                                currentBooking?.bookingStatus ==
+                                  "Not yet assigned"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {currentBooking?.bookingStatus}
+                        </span>
+                      </div>
+                      <div className="flex flex-col mt-4 gap-y-1">
+                        <div className="flex items-center gap-x-1">
+                          <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
+                          <span className="text-sm">
+                            {currentBooking?.booking?.pickupAddress}
+                          </span>
+                        </div>
+                        <div className="border-r-[1px] border-r-shuttlelanePurple h-5 w-3 border-dashed"></div>
+                        <div className="flex items-center gap-x-1">
+                          <MdLocationPin size={24} className="text-green-500" />
+                          <span className="text-sm">
+                            {currentBooking?.booking?.dropoffAddress}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Passenger Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Passenger Details
+                        </h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Full Name:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.firstName ??
+                                currentBooking?.firstName}{" "}
+                              {currentBooking?.user?.lastName ??
+                                currentBooking?.lastName}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Phone Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.mobile ??
+                                currentBooking?.mobile}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Email Address:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.email ??
+                                currentBooking?.email}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Airline:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.airline}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Flight Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.flightNumber}
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Driver Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Driver Details
+                        </h2>
+
+                        {currentBooking?.assignedDriver ? (
+                          <div className="flex flex-col gap-y-1">
+                            <div className="flex items-center gap-x-2">
+                              <div className="h-16 w-16 rounded-full overflow-hidden">
+                                <img
+                                  src={currentBooking?.assignedDriver?.image}
+                                  alt={`${currentBooking?.assignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+
+                              <div className="flex flex-col">
+                                <span className="text-sm font-semibold">
+                                  Full Name:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.firstName}{" "}
+                                    ${currentBooking?.assignedDriver?.lastName}
+                                  </span>{" "}
+                                </span>
+                                <span className="text-sm font-semibold">
+                                  Email Address:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.email}
+                                  </span>{" "}
+                                </span>
+                                <span className="text-sm font-semibold">
+                                  Phone Number:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.mobile}
+                                  </span>{" "}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <i>
+                              A driver has not yet been assigned to this booking
+                            </i>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Car Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">Car Details</h2>
+                        {currentBooking?.assignedDriver ? (
+                          <div className="flex flex-col gap-y-1">
+                            <span className="text-sm font-semibold">
+                              Type:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carType}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Name:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carName}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Model:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carModel}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Year:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carYear}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Plate Number:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carPlateNumber}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Color:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carColor}
+                              </span>{" "}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <i>
+                              A car has not yet been assigned to this booking
+                            </i>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {isLoading && (
+                      <ImSpinner2
+                        size={24}
+                        className="text-shuttlelanePurple animate-spin"
+                      />
+                    )}
+                    {/* {!currentBooking && (
+            <div className="w-full flex flex-col items-center justify-center">
+              <img
+                src={emptyImage}
+                className="max-w-lg object-contain"
+                alt="Sorry, there are no blog posts for now."
+              />
+              <p className="text-sm">Sorry, there are no blog posts for now.</p>
+            </div>
+          )} */}
+                  </div>
+                )}
+                {currentBooking?.bookingType === "Car" && (
+                  <div className="flex items-center justify-center w-full pb-20">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                      <h2 className="text-2xl font-semibold">Trip Details</h2>
+                      <span className="text-sm text-slate-400">
+                        Car Rental Booking
+                      </span>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.days} days
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.pickupDate).format(
+                            "MMM DD, YYYY"
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.pickupTime).format(
+                            "H:MM A"
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.bookingCurrency?.symbol}
+                          {Intl.NumberFormat("en-US", {}).format(
+                            currentBooking?.bookingTotal
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            !currentBooking?.paymentId?.paymentStatus
+                              ? "text-yellow-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Successful"
+                              ? "text-green-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Pending"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          Payment{" "}
+                          {currentBooking?.paymentId?.paymentStatus ??
+                            "Pending"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.car?.name}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            currentBooking?.bookingStatus == "Completed" ||
+                            currentBooking?.bookingStatus == "Ongoing" ||
+                            currentBooking?.bookingStatus == "Scheduled"
+                              ? "text-green-500"
+                              : currentBooking?.bookingStatus ==
+                                  "Awaiting response" ||
+                                currentBooking?.bookingStatus ==
+                                  "Not yet assigned"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {currentBooking?.bookingStatus}
+                        </span>
+                      </div>
+                      <div className="flex flex-col mt-4 gap-y-1">
+                        <div className="flex items-center gap-x-1">
+                          <MdLocationPin size={24} className="text-green-500" />
+                          <span className="text-sm">
+                            {currentBooking?.booking?.pickupAddress}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Passenger Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Passenger Details
+                        </h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Full Name:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.firstName ??
+                                currentBooking?.firstName}{" "}
+                              {currentBooking?.user?.lastName ??
+                                currentBooking?.lastName}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Phone Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.mobile ??
+                                currentBooking?.mobile}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Email Address:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.email ??
+                                currentBooking?.email}
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Driver Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Driver Details
+                        </h2>
+
+                        {currentBooking?.assignedDriver ? (
+                          <div className="flex flex-col gap-y-1">
+                            <div className="flex items-center gap-x-2">
+                              <div className="h-16 w-16 rounded-full overflow-hidden">
+                                <img
+                                  src={currentBooking?.assignedDriver?.image}
+                                  alt={`${currentBooking?.assignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+
+                              <div className="flex flex-col">
+                                <span className="text-sm font-semibold">
+                                  Full Name:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.firstName}{" "}
+                                    ${currentBooking?.assignedDriver?.lastName}
+                                  </span>{" "}
+                                </span>
+                                <span className="text-sm font-semibold">
+                                  Email Address:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.email}
+                                  </span>{" "}
+                                </span>
+                                <span className="text-sm font-semibold">
+                                  Phone Number:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.mobile}
+                                  </span>{" "}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <i>
+                              A driver has not yet been assigned to this booking
+                            </i>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {isLoading && (
+                      <ImSpinner2
+                        size={24}
+                        className="text-shuttlelanePurple animate-spin"
+                      />
+                    )}
+                    {/* {!currentBooking && (
+            <div className="w-full flex flex-col items-center justify-center">
+              <img
+                src={emptyImage}
+                className="max-w-lg object-contain"
+                alt="Sorry, there are no blog posts for now."
+              />
+              <p className="text-sm">Sorry, there are no blog posts for now.</p>
+            </div>
+          )} */}
+                  </div>
+                )}
+                {currentBooking?.bookingType === "Priority" && (
+                  <div className="flex items-center justify-center w-full pb-20">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                      <h2 className="text-2xl font-semibold">Trip Details</h2>
+                      <span className="text-sm text-slate-400">
+                        Priority Pass Booking
+                      </span>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.passengers} passengers
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.pickupDate).format(
+                            "MMM DD, YYYY"
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.pickupTime).format(
+                            "H:MM A"
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.pass?.name}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {currentBooking?.bookingCurrency?.symbol}
+                          {Intl.NumberFormat("en-US", {}).format(
+                            currentBooking?.bookingTotal
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            !currentBooking?.paymentId?.paymentStatus
+                              ? "text-yellow-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Successful"
+                              ? "text-green-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Pending"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          Payment{" "}
+                          {currentBooking?.paymentId?.paymentStatus ??
+                            "Pending"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.service}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            currentBooking?.bookingStatus == "Completed" ||
+                            currentBooking?.bookingStatus == "Ongoing" ||
+                            currentBooking?.bookingStatus == "Scheduled"
+                              ? "text-green-500"
+                              : currentBooking?.bookingStatus ==
+                                  "Awaiting response" ||
+                                currentBooking?.bookingStatus ==
+                                  "Not yet assigned"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {currentBooking?.bookingStatus}
+                        </span>
+                      </div>
+                      <div className="flex flex-col mt-4 gap-y-1">
+                        <div className="flex items-center gap-x-1">
+                          <MdLocationPin size={24} className="text-green-500" />
+                          <span className="text-sm">
+                            {currentBooking?.booking?.pickupAddress}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Passenger Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Passenger Details
+                        </h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Full Name:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.firstName ??
+                                currentBooking?.firstName}{" "}
+                              {currentBooking?.user?.lastName ??
+                                currentBooking?.lastName}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Phone Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.mobile ??
+                                currentBooking?.mobile}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Email Address:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.user?.email ??
+                                currentBooking?.email}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Airline:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.airline}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Flight Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.flightNumber}
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Driver Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Driver Details
+                        </h2>
+
+                        {currentBooking?.assignedDriver ? (
+                          <div className="flex flex-col gap-y-1">
+                            <div className="flex items-center gap-x-2">
+                              <div className="h-16 w-16 rounded-full overflow-hidden">
+                                <img
+                                  src={currentBooking?.assignedDriver?.image}
+                                  alt={`${currentBooking?.assignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+
+                              <div className="flex flex-col">
+                                <span className="text-sm font-semibold">
+                                  Full Name:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.firstName}{" "}
+                                    ${currentBooking?.assignedDriver?.lastName}
+                                  </span>{" "}
+                                </span>
+                                <span className="text-sm font-semibold">
+                                  Email Address:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.email}
+                                  </span>{" "}
+                                </span>
+                                <span className="text-sm font-semibold">
+                                  Phone Number:{" "}
+                                  <span className="text-sm font-normal">
+                                    {currentBooking?.assignedDriver?.mobile}
+                                  </span>{" "}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <i>
+                              A driver has not yet been assigned to this booking
+                            </i>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Car Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">Car Details</h2>
+                        {currentBooking?.assignedDriver ? (
+                          <div className="flex flex-col gap-y-1">
+                            <span className="text-sm font-semibold">
+                              Type:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carType}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Name:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carName}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Model:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carModel}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Year:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carYear}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Plate Number:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carPlateNumber}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Color:{" "}
+                              <span className="text-sm font-normal">
+                                {currentBooking?.assignedDriver?.carColor}
+                              </span>{" "}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <i>
+                              A car has not yet been assigned to this booking
+                            </i>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {isLoading && (
+                      <ImSpinner2
+                        size={24}
+                        className="text-shuttlelanePurple animate-spin"
+                      />
+                    )}
+                    {/* {!currentBooking && (
+            <div className="w-full flex flex-col items-center justify-center">
+              <img
+                src={emptyImage}
+                className="max-w-lg object-contain"
+                alt="Sorry, there are no blog posts for now."
+              />
+              <p className="text-sm">Sorry, there are no blog posts for now.</p>
+            </div>
+          )} */}
+                  </div>
+                )}
+                {currentBooking?.bookingType === "Visa" && (
+                  <div className="flex items-center justify-center w-full pb-20">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                      <h2 className="text-2xl font-semibold">Trip Details</h2>
+                      <span className="text-sm text-slate-400">
+                        Visa On Arrival Booking
+                      </span>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.airline}{" "}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(
+                            currentBooking?.booking?.departureDate
+                          ).format("MMM DD, YYYY")}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          {moment(currentBooking?.booking?.arrivalDate).format(
+                            "MMM DD, YYYY"
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.bookingReference}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span className="text-sm">
+                          $
+                          {Intl.NumberFormat("en-US", {}).format(
+                            currentBooking?.bookingTotal
+                          )}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            !currentBooking?.paymentId?.paymentStatus
+                              ? "text-yellow-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Successful"
+                              ? "text-green-500"
+                              : currentBooking?.paymentId?.paymentStatus ==
+                                "Pending"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          Payment{" "}
+                          {currentBooking?.paymentId?.paymentStatus ??
+                            "Pending"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-sm">
+                          {currentBooking?.booking?.flightNumber}
+                        </span>
+                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
+                        <span
+                          className={`text-sm ${
+                            currentBooking?.bookingStatus == "Completed" ||
+                            currentBooking?.bookingStatus == "Ongoing" ||
+                            currentBooking?.bookingStatus == "Scheduled"
+                              ? "text-green-500"
+                              : currentBooking?.bookingStatus ==
+                                  "Awaiting response" ||
+                                currentBooking?.bookingStatus ==
+                                  "Not yet assigned"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {currentBooking?.bookingStatus}
+                        </span>
+                      </div>
+                      <div className="flex flex-col mt-4 gap-y-1">
+                        <div className="flex items-center gap-x-1">
+                          <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
+                          <span className="text-sm">
+                            {currentBooking?.booking?.countryOfDeparture}
+                          </span>
+                        </div>
+                        <div className="border-r-[1px] border-r-shuttlelanePurple h-5 w-3 border-dashed"></div>
+
+                        <div className="flex items-center gap-x-1">
+                          <MdLocationPin size={24} className="text-green-500" />
+                          <span className="text-sm">
+                            {currentBooking?.booking?.portOfEntry}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* General Information */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          General Information
+                        </h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Nationality:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.nationality}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Class Of Visa:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.visaClass}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Passport Type:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.passportType}
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Biodata */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">Biodata</h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Full Name:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.title}{" "}
+                              {currentBooking?.booking?.surname}{" "}
+                              {currentBooking?.booking?.middleName}{" "}
+                              {currentBooking?.booking?.firstName}{" "}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Email Address:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.email}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Date Of Birth:{" "}
+                            <span className="text-sm font-normal">
+                              {moment(
+                                currentBooking?.booking?.dateOfBirth
+                              ).format("MMM DD, YYYY")}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Place Of Birth:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.placeOfBirth}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Gender:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.gender}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Marital Status:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.maritalStatus}
+                            </span>{" "}
+                          </span>
+
+                          <span className="text-sm font-semibold">
+                            Passport Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.passportNumber}
+                            </span>{" "}
+                          </span>
+
+                          <span className="text-sm font-semibold">
+                            Passport Expiry Date:{" "}
+                            <span className="text-sm font-normal">
+                              {moment(
+                                currentBooking?.booking?.passportExpiryDate
+                              ).format("MMM DD, YY")}
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Travel Information */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Travel Information
+                        </h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Purpose Of Journey:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.purposeOfJourney}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Airline:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.airline}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Flight Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.flightNumber}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Country Of Departure:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.countryOfDeparture}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Departure Date:{" "}
+                            <span className="text-sm font-normal">
+                              {moment(
+                                currentBooking?.booking?.departureDate
+                              ).format("MMM DD, YYYY")}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Arrival Date:{" "}
+                            <span className="text-sm font-normal">
+                              {moment(
+                                currentBooking?.booking?.arrivalDate
+                              ).format("MMM DD, YYYY")}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Port Of Entry:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.portOfEntry}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Duration Of Stay:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.durationOfStay} days
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Contact Information */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">
+                          Contact Information
+                        </h2>
+
+                        <div className="flex flex-col gap-y-1">
+                          <span className="text-sm font-semibold">
+                            Name:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactName}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Phone Number:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactNumber}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Address:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactAddress}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            City:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactCity}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            State:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactState}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Email Address:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactEmail}
+                            </span>{" "}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Postal Code:{" "}
+                            <span className="text-sm font-normal">
+                              {currentBooking?.booking?.contactPostalCode}
+                            </span>{" "}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    {isLoading && (
+                      <ImSpinner2
+                        size={24}
+                        className="text-shuttlelanePurple animate-spin"
+                      />
+                    )}
+                    {/* {!currentBooking && (
+            <div className="w-full flex flex-col items-center justify-center">
+              <img
+                src={emptyImage}
+                className="max-w-lg object-contain"
+                alt="Sorry, there are no blog posts for now."
+              />
+              <p className="text-sm">Sorry, there are no blog posts for now.</p>
+            </div>
+          )} */}
+                  </div>
+                )}
+              </>
+            </div>
+          </div>
+        )}
+        {isGetBookingByReferenceLoading && (
+          <div className="bg-white pb-10 shadow-lg rounded-lg text-shuttlelaneBlack w-full min-h-[80%] max-h-[80%] h-[80%] lg:w-[60%] p-7 px-10 overflow-y-scroll shuttlelaneScrollbar">
+            <div className="flex w-full h-full items-center justify-center">
+              <ImSpinner2
+                size={20}
+                onClick={() => setIsBookingDetailsModalOpen(false)}
+                className="cursor-loading animate-spin"
+              />
+            </div>
+          </div>
+        )}
       </Modal>
 
       {/* Driver Details Modal */}
@@ -719,61 +1771,80 @@ function AdminDashboardHomePage() {
                             </div>
 
                             {unassignedBookings?.map((booking) => (
-                              <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                                <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                  {booking?.user?.title ?? booking?.title}{" "}
-                                  {booking?.user?.firstName ??
-                                    booking?.firstName}{" "}
-                                  {booking?.user?.firstName ??
-                                    booking?.lastName}
-                                </p>
-                                <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                  {booking?.booking?.pickupDate?.split("T")[0]}
-                                </p>
-                                <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                  {booking?.bookingType}
-                                </p>
+                              <div className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                                <div
+                                  onClick={() => {
+                                    setCurrentBooking(booking);
+                                    console.log("current booking:", booking);
+                                    setIsBookingDetailsModalOpen(true);
+                                    // else {
+                                    //   toast.error(
+                                    //     "You do not have the priviledges to see booking details as a blogger."
+                                    //   );
+                                    // }
+                                  }}
+                                  className="cursor-pointer flex justify-between items-baseline"
+                                >
+                                  <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                    {booking?.user?.title ?? booking?.title}{" "}
+                                    {booking?.user?.firstName ??
+                                      booking?.firstName}{" "}
+                                    {booking?.user?.firstName ??
+                                      booking?.lastName}
+                                  </p>
+                                  <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                    {
+                                      booking?.booking?.pickupDate?.split(
+                                        "T"
+                                      )[0]
+                                    }
+                                  </p>
+                                  <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                    {booking?.bookingType}
+                                  </p>
 
-                                <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
-                                  <div
-                                    className={`h-2 w-2 ${
-                                      booking?.paymentId?.status === "Failed"
-                                        ? "bg-red-500"
+                                  <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
+                                    <div
+                                      className={`h-2 w-2 ${
+                                        booking?.paymentId?.status === "Failed"
+                                          ? "bg-red-500"
+                                          : booking?.paymentId?.status ===
+                                            "Successful"
+                                          ? "bg-green-500"
+                                          : "bg-yellow-500"
+                                      } rounded-full`}
+                                    ></div>
+                                    <span
+                                      className={`text-xs ${
+                                        booking?.paymentId?.status === "Failed"
+                                          ? "text-red-500"
+                                          : booking?.paymentId?.status ===
+                                            "Successful"
+                                          ? "text-green-500"
+                                          : "text-yellow-500"
+                                      }`}
+                                    >
+                                      {booking?.paymentId?.status === "Failed"
+                                        ? "Failed"
                                         : booking?.paymentId?.status ===
                                           "Successful"
-                                        ? "bg-green-500"
-                                        : "bg-yellow-500"
-                                    } rounded-full`}
-                                  ></div>
-                                  <span
-                                    className={`text-xs ${
-                                      booking?.paymentId?.status === "Failed"
-                                        ? "text-red-500"
-                                        : booking?.paymentId?.status ===
-                                          "Successful"
-                                        ? "text-green-500"
-                                        : "text-yellow-500"
-                                    }`}
-                                  >
-                                    {booking?.paymentId?.status === "Failed"
-                                      ? "Failed"
-                                      : booking?.paymentId?.status ===
-                                        "Successful"
-                                      ? "Successful"
-                                      : "Pending"}
-                                  </span>
+                                        ? "Successful"
+                                        : "Pending"}
+                                    </span>
+                                  </div>
                                 </div>
-
                                 <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-3">
-                                  <button
-                                    onClick={() => {
-                                      setCurrentBooking(booking);
-                                      setIsAssignDriverModalOpen(true);
-                                    }}
-                                    className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
-                                  >
-                                    Assign driver
-                                  </button>
+                                  {admin?.role !== "Blogger" && (
+                                    <button
+                                      onClick={() => {
+                                        setCurrentBooking(booking);
+                                        setIsAssignDriverModalOpen(true);
+                                      }}
+                                      className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
+                                    >
+                                      Assign driver
+                                    </button>
+                                  )}
                                   <Link
                                     to="/"
                                     className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
@@ -783,14 +1854,16 @@ function AdminDashboardHomePage() {
                                       className="text-shuttlelaneBlack"
                                     />
                                   </Link>
-                                  <FaTrash
-                                    onClick={() => {
-                                      setCurrentBooking(booking);
-                                      setIsDeleteBookingDialogOpen(true);
-                                    }}
-                                    size={13}
-                                    className="text-red-400 cursor-pointer"
-                                  />
+                                  {admin?.role !== "Blogger" && (
+                                    <FaTrash
+                                      onClick={() => {
+                                        setCurrentBooking(booking);
+                                        setIsDeleteBookingDialogOpen(true);
+                                      }}
+                                      size={13}
+                                      className="text-red-400 cursor-pointer"
+                                    />
+                                  )}
                                 </div>
                               </div>
                             ))}
@@ -873,12 +1946,14 @@ function AdminDashboardHomePage() {
                               </div>
 
                               <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-3">
-                                <button
-                                  onClick={() => {}}
-                                  className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
-                                >
-                                  Assign driver
-                                </button>
+                                {/* {admin?.role !== "Blogger" && (
+                                  <button
+                                    onClick={() => {}}
+                                    className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
+                                  >
+                                    Assign driver
+                                  </button>
+                                )} */}
                                 <Link
                                   to="/"
                                   className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
@@ -888,6 +1963,17 @@ function AdminDashboardHomePage() {
                                     className="text-shuttlelaneBlack"
                                   />
                                 </Link>
+
+                                {admin?.role !== "Blogger" && (
+                                  <FaTrash
+                                    onClick={() => {
+                                      setCurrentBooking(booking);
+                                      setIsDeleteBookingDialogOpen(true);
+                                    }}
+                                    size={13}
+                                    className="text-red-400 cursor-pointer"
+                                  />
+                                )}
                               </div>
                             </div>
                           ))}
@@ -991,8 +2077,14 @@ function AdminDashboardHomePage() {
                         {drivers?.map((driver) => (
                           <div
                             onClick={() => {
-                              setCurrentDriver(driver);
-                              setIsDriverDetailsModalOpen(true);
+                              if (admin?.role == "Blogger") {
+                                toast.error(
+                                  "You do not have the priviledges to view driver details"
+                                );
+                              } else {
+                                setCurrentDriver(driver);
+                                setIsDriverDetailsModalOpen(true);
+                              }
                             }}
                             className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
                           >
@@ -1004,6 +2096,61 @@ function AdminDashboardHomePage() {
                         ))}
 
                         {drivers?.length < 1 && (
+                          <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
+                            <p className="w-full text-xs text-center">
+                              No data to show for now...
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Vendors */}
+                    <div className="mt-11 w-full">
+                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                        <div className="flex items-baseline justify-between">
+                          <div className="flex items-center gap-x-2">
+                            <p className="font-medium">
+                              Vendors - {vendors?.length}
+                            </p>
+                            <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                          </div>
+                          <p className="text-xs underline offset-7">See All</p>
+                        </div>
+
+                        {/* Searchbar */}
+                        {!isLoading && vendors && (
+                          <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                            <BiSearch
+                              size={16}
+                              className="text-gray-400 rotate-90"
+                            />
+                            <input
+                              type="search"
+                              placeholder="Search"
+                              className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
+                            />
+                          </div>
+                        )}
+
+                        {/* Table header */}
+                        {!isLoading && vendors && (
+                          <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
+                            <p className="w-[50%] text-xs">Company Name</p>
+                            <p className="w-[50%] text-xs">Email</p>
+                          </div>
+                        )}
+
+                        {vendors?.map((vendor) => (
+                          <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                            <p className="w-[50%] text-xs">
+                              {vendor?.companyName}
+                            </p>
+                            <p className="w-[50%] text-xs">{vendor?.email}</p>
+                          </div>
+                        ))}
+
+                        {(vendors?.length < 1 || !vendors) && (
                           <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
                             <p className="w-full text-xs text-center">
                               No data to show for now...

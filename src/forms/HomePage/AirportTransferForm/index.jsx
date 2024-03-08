@@ -36,7 +36,6 @@ function AirportTransferForm() {
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [passengers, setPassengers] = useState("");
 
-  // FORM FIELDS
   const [pickupLocation, setPickupLocation] = useState();
   const pickupLocationRef = useRef(null);
   const [pickupLocationInput, setPickupLocationInput] = useState();

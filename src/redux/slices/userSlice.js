@@ -8,9 +8,20 @@ export const fetchCities = createAsyncThunk(
   "user/cities/getAll",
   async (payload) => {
     console.log("PAYLOAD:", payload);
-    return fetch(`http://localhost:3001/api/v1/cities`)
-      .then((res) => res.json())
-      .catch((err) => console.log("FETCH CITIES ERROR:", err));
+    // Get user country
+    const userCountry = await axios.get("https://ipapi.co/json");
+
+    if (userCountry?.data?.country_name) {
+      return fetch(
+        `http://localhost:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
+      )
+        .then((res) => res.json())
+        .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
+    } else {
+      toast.error(
+        "Slow network detected. Please ensure you have internet access. Refresh page if this page does not load correctly."
+      );
+    }
   }
 );
 
@@ -413,6 +424,28 @@ export const sendEnquiryEmail = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function fetches a city
+export const fetchCity = createAsyncThunk(
+  "admin/cities/getOne",
+  async (payload) => {
+    console.log("PAYLOAD:", payload);
+    // Get user country
+    const userCountry = await axios.get("https://ipapi.co/json");
+
+    if (userCountry?.data?.country_name) {
+      return fetch(
+        `http://localhost:3001/api/v1/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
+      )
+        .then((res) => res.json())
+        .catch((err) => console.log("FETCH CITIES ERROR:", err));
+    } else {
+      toast.error(
+        "Slow network detected. Please ensure you have internet access. Refresh page if this page does not load correctly."
+      );
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -501,6 +534,7 @@ export const userSlice = createSlice({
         console.log("CITIES OVER HERE:", action.payload);
         state.isLoading = false;
         state.cities = action.payload?.cities;
+        state.userCurrency = action.payload?.currency;
       })
       .addCase(fetchCities.rejected, (state) => {
         state.isLoading = false;
@@ -668,6 +702,20 @@ export const userSlice = createSlice({
         }
       })
       .addCase(sendEnquiryEmail.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch City AsyncThunk states
+      .addCase(fetchCity.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCity.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD", action.payload);
+        state.currentCity = action.payload?.city;
+        state.vehicleClasses = action.payload?.city?.vehicleClasses;
+        state.isLoading = false;
+      })
+      .addCase(fetchCity.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
