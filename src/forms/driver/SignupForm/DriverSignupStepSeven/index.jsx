@@ -57,7 +57,7 @@ function DriverSignupStepSeven(props) {
   const dispatch = useDispatch();
 
   async function handleResendOTP(e) {
-    e.preventDefault();
+    // e.preventDefault();
     console.log("DRIVER:", driver);
     dispatch(resendOTP({ driver }));
     if (props?.isUpdateDriverAccount) {

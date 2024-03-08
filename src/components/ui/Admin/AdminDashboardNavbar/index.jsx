@@ -24,7 +24,7 @@ import { Slide } from "react-awesome-reveal";
 
 // Images
 import shuttlelaneSLogo from "../../../../assets/logos/icon.png";
-import { FaHandHoldingDollar } from "react-icons/fa6";
+import { FaCcMastercard, FaHandHoldingDollar } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
 function AdminDashboardNavbar(props) {
@@ -199,6 +199,26 @@ function AdminDashboardNavbar(props) {
                   Visa On Arrival
                 </span>
                 {props?.sublink === "visa-on-arrival" && (
+                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                )}
+              </Link>
+              <Link
+                to="/admin/dashboard/bookings/payments"
+                className={`flex items-center gap-x-2 text-xs ${
+                  props?.sublink === "payments"
+                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                } hover:no-underline visited:no-underline`}
+              >
+                <FaCcMastercard size={16} className="" />
+                <span
+                  className={`text-sm ${
+                    props?.sublink === "payments" && "font-semibold"
+                  }`}
+                >
+                  Payments
+                </span>
+                {props?.sublink === "payments" && (
                   <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                 )}
               </Link>

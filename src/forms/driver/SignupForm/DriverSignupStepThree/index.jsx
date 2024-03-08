@@ -50,6 +50,8 @@ function DriverSignupStepThree({
       stepThreeStates?.carName,
       stepThreeStates?.carModel,
       stepThreeStates?.carYear,
+      stepThreeStates?.carColor,
+      stepThreeStates?.carPlateNumber,
     ]);
     if (areFieldsEmpty) {
       toast.error(areFieldsEmpty?.message);
@@ -59,6 +61,8 @@ function DriverSignupStepThree({
         carName: stepThreeStates?.carName,
         carModel: stepThreeStates?.carModel,
         carYear: stepThreeStates?.carYear,
+        carColor: stepThreeStates?.carColor,
+        carPlateNumber: stepThreeStates?.carPlateNumber,
       };
 
       dispatch(
@@ -182,6 +186,40 @@ function DriverSignupStepThree({
               stepThreeStates?.setCarYear(e.target.value);
             }}
             placeholder="Car Year"
+            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+          />
+        </div>
+
+        {/* Color */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="carColor" className="text-sm">
+            Color
+          </label>
+          <input
+            type="text"
+            name="carColor"
+            value={stepThreeStates?.carColor}
+            onChange={(e) => {
+              stepThreeStates?.setCarColor(e.target.value);
+            }}
+            placeholder="Car Color"
+            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+          />
+        </div>
+
+        {/* Plate Number */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="carPlateNumber" className="text-sm">
+            Plate Number
+          </label>
+          <input
+            type="text"
+            name="carPlateNumber"
+            value={stepThreeStates?.carPlateNumber}
+            onChange={(e) => {
+              stepThreeStates?.setCarPlateNumber(e.target.value);
+            }}
+            placeholder="Car Plate Number"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>

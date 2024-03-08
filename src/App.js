@@ -52,6 +52,7 @@ import PostPage from "./pages/company/BlogsPage/PostPage";
 import TrackBookingPage from "./pages/booking/track-booking";
 import AdminDashboardAdminAccountsPage from "./pages/admin/dashboard/users/AdminPage";
 import AdminCompleteSignupPage from "./pages/admin/AdminCompleteSignupPage";
+import AdminDashboardPaymentsPage from "./pages/admin/dashboard/bookings/Payments";
 
 // Modal.setAppElement("#appElement");
 
@@ -165,6 +166,14 @@ function App() {
 
             {/* /admin/dashboard/bookings/* */}
             <Route path="bookings">
+              <Route
+                path="payments"
+                element={
+                  <AdminProtectedRoute>
+                    <AdminDashboardPaymentsPage />
+                  </AdminProtectedRoute>
+                }
+              />
               <Route
                 path="add-booking"
                 element={

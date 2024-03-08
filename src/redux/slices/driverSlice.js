@@ -205,6 +205,20 @@ export const fetchAssignedJobs = createAsyncThunk(
   }
 );
 
+// FUNCTION: Fetch a booking by its booking reference
+export const fetchBookingByReference = createAsyncThunk(
+  "driver/booking/getOneByReference",
+  async (bookingReference) => {
+    console.log("HI");
+    return fetch(
+      `http://localhost:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      {}
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BOOKING REFERENCE ERROR:", err));
+  }
+);
+
 export const driverSlice = createSlice({
   name: "driver",
   initialState: {
@@ -227,6 +241,10 @@ export const driverSlice = createSlice({
     hasClickedSendCode: false,
     isResendOtpLoading: false,
     hasResetPassword: false,
+
+    // These states handle the driver bookings
+    isGetBookingByReferenceLoading: null,
+    bookingFetchedByReference: null,
   },
   reducers: {
     setDriver: (state, action) => {
@@ -448,7 +466,7 @@ export const driverSlice = createSlice({
           "FETCH DRIVER'S ASSIGNED JOBS ACTION.PAYLOAD",
           action.payload
         );
-        if (action.payload?.status == 201) {
+        if (action.payload?.status == 200) {
           state.assignedBookings = action.payload?.bookings;
           state.isLoading = false;
         } else {
@@ -458,6 +476,21 @@ export const driverSlice = createSlice({
       })
       .addCase(fetchAssignedJobs.rejected, (state) => {
         state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchBookingByReference AsyncThunk states
+      .addCase(fetchBookingByReference.pending, (state) => {
+        state.isGetBookingByReferenceLoading = true;
+      })
+      .addCase(fetchBookingByReference.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD GET BOOKING BY REFERENCE", action.payload);
+        state.isGetBookingByReferenceLoading = false;
+        if (action.payload?.status == 200) {
+          state.bookingFetchedByReference = action.payload?.booking;
+        }
+      })
+      .addCase(fetchBookingByReference.rejected, (state) => {
+        state.isGetBookingByReferenceLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
       });

@@ -1434,6 +1434,39 @@ export const calculateTotal = createAsyncThunk(
   }
 );
 
+// FUNCTION: Fetch all payments
+export const fetchPayments = createAsyncThunk(
+  "admin/payments/getAll",
+  async (token) => {
+    console.log("HI");
+    return fetch(`http://localhost:3001/api/v1/payments`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH PAYMENTS ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch payment
+export const fetchPayment = createAsyncThunk(
+  "admin/payments/getOne",
+  async (payload) => {
+    console.log("HI");
+    return fetch(
+      `http://localhost:3001/api/v1/payments/${payload?.paymentId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH PAYMENT ERROR:", err));
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -1516,6 +1549,10 @@ export const adminSlice = createSlice({
     bookingTotal: null,
     bookingDistance: null,
     tripDuration: null,
+
+    // Payment states
+    payments: null,
+    currentPayment: null,
   },
   reducers: {
     setAdmin: (state, action) => {
@@ -2535,6 +2572,32 @@ export const adminSlice = createSlice({
         state.message =
           "An error occured while we processed your request. Please try again.";
         toast.error("Failed to update booking");
+      }) // fetchPayments AsyncThunk states
+      .addCase(fetchPayments.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPayments.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH PAYMENTS", action.payload);
+        state.isLoading = false;
+        state.payments = action.payload?.payments;
+      })
+      .addCase(fetchPayments.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchPayment AsyncThunk states
+      .addCase(fetchPayment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPayment.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH PAYMENTS", action.payload);
+        state.isLoading = false;
+        state.currentPayment = action.payload?.payment;
+      })
+      .addCase(fetchPayment.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
       });
   },
 });

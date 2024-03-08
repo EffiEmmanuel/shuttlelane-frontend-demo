@@ -256,6 +256,8 @@ function DriverSignupForm(props) {
   const [carName, setCarName] = useState();
   const [carModel, setCarModel] = useState();
   const [carYear, setCarYear] = useState();
+  const [carColor, setCarColor] = useState();
+  const [carPlateNumber, setCarPlateNumber] = useState();
 
   // Object to pass to prop
   const stepThreeStates = {
@@ -267,6 +269,10 @@ function DriverSignupForm(props) {
     setCarModel,
     carYear,
     setCarYear,
+    carColor,
+    setCarColor,
+    carPlateNumber,
+    setCarPlateNumber,
   };
 
   // STEP 4
@@ -346,6 +352,8 @@ function DriverSignupForm(props) {
       carName,
       carModel,
       carYear,
+      carColor,
+      carPlateNumber,
       emergencyFirstName,
       emergencyLastName,
       emergencyAddress,
