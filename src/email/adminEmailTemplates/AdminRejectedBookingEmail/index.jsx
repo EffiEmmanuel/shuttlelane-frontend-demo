@@ -5,7 +5,6 @@ const AdminRejectedBookingEmailTemplate = ({
   pickupDate,
   pickupTime,
   pickupLocation,
-  dropoffLocation,
   passengerName,
   passengerMobile,
 }) => {
@@ -48,9 +47,6 @@ const AdminRejectedBookingEmailTemplate = ({
           </li>
           <li>
             <strong>Pickup Time:</strong> {pickupTime}
-          </li>
-          <li>
-            <strong>Dropoff Location:</strong> {dropoffLocation}
           </li>
           <li>
             <strong>Passenger Name:</strong> {passengerName}

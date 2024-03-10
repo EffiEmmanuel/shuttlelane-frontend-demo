@@ -219,6 +219,155 @@ export const fetchBookingByReference = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function handles accepting a booking
+export const acceptBooking = createAsyncThunk(
+  "driver/bookings/acceptJob",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/booking/accept/${payload?.driverId}/${payload?.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => {
+        console.log("HELLO 6");
+        return res.json();
+      })
+      .catch((err) => console.log("ACCEPT JOB ERROR:", err));
+  }
+);
+
+// FUNCTION: This function handles accepting a booking
+export const declineBooking = createAsyncThunk(
+  "driver/bookings/declineJob",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/booking/decline/${payload?.driverId}/${payload?.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => {
+        console.log("HELLO 6");
+        return res.json();
+      })
+      .catch((err) => console.log("DECLINE JOB ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch a driver's earnings
+export const fetchDriverEarnings = createAsyncThunk(
+  "driver/earnings/getAll",
+  async (driverId) => {
+    console.log("HI");
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/earnings/${driverId}`,
+      {}
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH DRIVER EARNINGS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function fetches the driver's assigned jobs
+export const fetchUpcomingJobs = createAsyncThunk(
+  "driver/bookings/getUpcomingBookings",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/bookings/upcoming/${payload?.driverId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH DRIVER'S UPCOMING BOOKINGS ERROR:", err)
+      );
+  }
+);
+
+// FUNCTION: This function starts a job
+export const startBooking = createAsyncThunk(
+  "driver/bookings/start",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/booking/start/${payload?.driverId}/${payload?.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("START BOOKING ERROR:", err));
+  }
+);
+
+// FUNCTION: This function ends a job
+export const endBooking = createAsyncThunk(
+  "driver/bookings/end",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/booking/end/${payload?.driverId}/${payload?.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("END BOOKING ERROR:", err));
+  }
+);
+
+// FUNCTION: This function fetches the driver's completed jobs
+export const fetchCompletedJobs = createAsyncThunk(
+  "driver/bookings/getCompletedBookings",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/bookings/completed/${payload?.driverId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH DRIVER'S COMPLETED BOOKINGS ERROR:", err)
+      );
+  }
+);
+
+// FUNCTION: This function fetches the driver's ongoing jobs
+export const fetchOngoingJobs = createAsyncThunk(
+  "driver/bookings/getOngoingBookings",
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/drivers/bookings/ongoing/${payload?.driverId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH DRIVER'S ONGOING BOOKINGS ERROR:", err)
+      );
+  }
+);
+
 export const driverSlice = createSlice({
   name: "driver",
   initialState: {
@@ -232,6 +381,8 @@ export const driverSlice = createSlice({
     numberOfBookings: null,
     upcomingBookings: null,
     assignedBookings: null,
+    ongoingBookings: null,
+    completedBookings: null,
 
     // This state tracks when the driver has been created, in order to redirect to the verification page
     hasSignedUp: false,
@@ -245,6 +396,10 @@ export const driverSlice = createSlice({
     // These states handle the driver bookings
     isGetBookingByReferenceLoading: null,
     bookingFetchedByReference: null,
+
+    // These states handle driver earnings
+    expectedEarnings: null,
+    earnings: null,
   },
   reducers: {
     setDriver: (state, action) => {
@@ -491,6 +646,171 @@ export const driverSlice = createSlice({
       })
       .addCase(fetchBookingByReference.rejected, (state) => {
         state.isGetBookingByReferenceLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // acceptBooking AsyncThunk states
+      .addCase(acceptBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(acceptBooking.fulfilled, (state, action) => {
+        console.log("ACCEPT BOOKING ACTION.PAYLOAD", action.payload);
+        state.message = action.payload?.message;
+        state.isLoading = false;
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.assignedBookings = action.payload?.assignedBookings;
+          state.upcomingBookings = action.payload?.upcomingBookings;
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(acceptBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // declineBooking AsyncThunk states
+      .addCase(declineBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(declineBooking.fulfilled, (state, action) => {
+        console.log("DECLINE BOOKING ACTION.PAYLOAD", action.payload);
+        state.message = action.payload?.message;
+        state.isLoading = false;
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.assignedBookings = action.payload?.assignedBookings;
+          state.upcomingBookings = action.payload?.upcomingBookings;
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(declineBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchDriverEarnings AsyncThunk states
+      .addCase(fetchDriverEarnings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchDriverEarnings.fulfilled, (state, action) => {
+        console.log("FETCH DRIVER EARNINGS ACTION.PAYLOAD", action.payload);
+        state.message = action.payload?.message;
+        state.isLoading = false;
+        if (action.payload?.status == 200) {
+          state.earnings = action.payload?.earnings;
+          state.expectedEarnings = action.payload?.expectedEarnings;
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(fetchDriverEarnings.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchUpcomingJobs AsyncThunk states
+      .addCase(fetchUpcomingJobs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUpcomingJobs.fulfilled, (state, action) => {
+        console.log(
+          "FETCH DRIVER'S UPCOMING JOBS ACTION.PAYLOAD",
+          action.payload
+        );
+        if (action.payload?.status == 200) {
+          state.upcomingBookings = action.payload?.bookings;
+          state.isLoading = false;
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(fetchUpcomingJobs.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // startBooking AsyncThunk states
+      .addCase(startBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(startBooking.fulfilled, (state, action) => {
+        console.log("START BOOKING ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 200) {
+          state.assignedBookings = action.payload?.assignedBookings;
+          state.upcomingBookings = action.payload?.upcomingBookings;
+          state.ongoingBookings = action.payload?.ongoingBookings;
+          state.isLoading = false;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(startBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // endBooking AsyncThunk states
+      .addCase(endBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(endBooking.fulfilled, (state, action) => {
+        console.log("START BOOKING ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 200) {
+          state.assignedBookings = action.payload?.assignedBookings;
+          state.upcomingBookings = action.payload?.upcomingBookings;
+          state.ongoingBookings = action.payload?.ongoingBookings;
+          state.completedBookings = action.payload?.completedBookings;
+          state.isLoading = false;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(endBooking.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchOngoingJobs AsyncThunk states
+      .addCase(fetchOngoingJobs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchOngoingJobs.fulfilled, (state, action) => {
+        console.log(
+          "FETCH DRIVER'S ONGOING JOBS ACTION.PAYLOAD",
+          action.payload
+        );
+        if (action.payload?.status == 200) {
+          state.ongoingBookings = action.payload?.bookings;
+          state.isLoading = false;
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(fetchOngoingJobs.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchCompletedJobs AsyncThunk states
+      .addCase(fetchCompletedJobs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCompletedJobs.fulfilled, (state, action) => {
+        console.log(
+          "FETCH DRIVER'S UPCOMING JOBS ACTION.PAYLOAD",
+          action.payload
+        );
+        if (action.payload?.status == 200) {
+          state.completedBookings = action.payload?.bookings;
+          state.isLoading = false;
+        } else {
+          toast.error(action.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(fetchCompletedJobs.rejected, (state) => {
+        state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
       });

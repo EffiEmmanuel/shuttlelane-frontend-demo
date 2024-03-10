@@ -27,6 +27,7 @@ import { FaXmark } from "react-icons/fa6";
 import Modal from "react-modal";
 import AirportTransferForm from "../../../../forms/HomePage/AirportTransferForm";
 import UpdateAirportBookingForm from "../../../../forms/BookingSummary/UpdateAirportBookingForm";
+import GoogleMapsWithDirections from "../../GoogleMapsWithDirection";
 
 export default function AirportTransferBookingSummary() {
   // Fetch states from redux slice
@@ -689,12 +690,12 @@ export default function AirportTransferBookingSummary() {
             <div className="flex items-center justify-between">
               <p className="text-xl font-semibold">Route</p>
               <span className="text-xs">
-                {bookingDistance}les, {tripDuration}
+                {bookingDistance} miles, {tripDuration}
               </span>
             </div>
             <div className="mt-5">
               <div className="w-full max-h-[250px] h-[250px] min-h-[250px] overflow-hidden">
-                <iframe
+                {/* <iframe
                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7928.243562265941!2d3.3680206!3d6.5062651!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8c448e2f97c3%3A0xc95f24c00955aecc!2sShuttlelane!5e0!3m2!1sen!2sng!4v1698936776561!5m2!1sen!2sng"
                   width="100%"
                   height="100%"
@@ -702,7 +703,11 @@ export default function AirportTransferBookingSummary() {
                   allowfullscreen=""
                   loading="lazy"
                   referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+                ></iframe> */}
+                <GoogleMapsWithDirections
+                  pickupAddress={bookingDetails?.pickupAddress}
+                  dropoffAddress={bookingDetails?.dropoffAddress}
+                />
               </div>
             </div>
           </div>

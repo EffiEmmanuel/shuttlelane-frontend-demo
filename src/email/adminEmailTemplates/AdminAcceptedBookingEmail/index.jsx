@@ -7,7 +7,6 @@ const AdminAcceptedBookingEmailTemplate = ({
   pickupLocation,
   driverName,
   driverMobile,
-  dropoffLocation,
   passengerName,
   passengerMobile,
 }) => {
@@ -50,9 +49,6 @@ const AdminAcceptedBookingEmailTemplate = ({
           </li>
           <li>
             <strong>Pickup Time:</strong> {pickupTime}
-          </li>
-          <li>
-            <strong>Dropoff Location:</strong> {dropoffLocation}
           </li>
           <li>
             <strong>Passenger Name:</strong> {passengerName}

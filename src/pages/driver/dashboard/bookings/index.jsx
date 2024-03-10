@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPassport, FaUser } from "react-icons/fa";
 import {
@@ -15,12 +15,22 @@ import { LuCopy } from "react-icons/lu";
 import { AiFillDelete, AiOutlineCheckCircle } from "react-icons/ai";
 import DriverDashboardNavbar from "../../../../components/ui/Driver/DriverDashboardNavbar";
 import DriverTopBar from "../../../../components/ui/Driver/DriverTopBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BsArrowRight } from "react-icons/bs";
 import { PiChat } from "react-icons/pi";
+import { fetchCompletedJobs } from "../../../../redux/slices/driverSlice";
+import GoogleMapsWithDirections from "../../../../components/ui/GoogleMapsWithDirection";
 
 function DriverDashboardBookingPage() {
-  const { isLoading, driverBookings } = useSelector((store) => store.driver);
+  // Redux setup
+  const { isLoading, token, driver, completedBookings } = useSelector(
+    (store) => store.driver
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCompletedJobs({ token, driverId: driver?._id }));
+  }, [token]);
 
   return (
     <div className="">
@@ -46,15 +56,16 @@ function DriverDashboardBookingPage() {
 
                   <div className="h-auto w-full rounded-lg allRoundBoxShadow overflow-hidden mt-4">
                     <div className="flex items-center justify-center h-[220px] min-h-[220px] max-h-[220px] w-full rounded-tr-lg rounded-tl-lg">
-                      <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7928.243562265941!2d3.3680206!3d6.5062651!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8c448e2f97c3%3A0xc95f24c00955aecc!2sShuttlelane!5e0!3m2!1sen!2sng!4v1698936776561!5m2!1sen!2sng"
-                        width="100%"
-                        height="100%"
-                        //   style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                      ></iframe>
+                      {completedBookings?.length > 0 && (
+                        <GoogleMapsWithDirections
+                          pickupAddress={
+                            completedBookings[0]?.booking?.pickupAddress
+                          }
+                          dropoffAddress={
+                            completedBookings[0]?.booking?.dropoffAddress
+                          }
+                        />
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between p-4">
@@ -124,7 +135,7 @@ function DriverDashboardBookingPage() {
                         </p>
                       </div>
 
-                      {driverBookings?.map((booking) => (
+                      {completedBookings?.map((booking) => (
                         <div className="flex lg:w-auto w-max justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
                           <p className="w-[180px] lg:w-[16.6%] text-xs flex items-center gap-x-2">
                             <span>AT36578</span>
@@ -186,7 +197,7 @@ function DriverDashboardBookingPage() {
                           </div>
                         </div>
                       ))}
-                      {driverBookings?.length < 1 && (
+                      {completedBookings?.length < 1 && (
                         <div className="flex justify-center items-center w-full">
                           <p className="text-sm">
                             There are no bookings for now.

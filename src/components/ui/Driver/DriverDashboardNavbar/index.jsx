@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaMap, FaPassport, FaUsers } from "react-icons/fa";
+import { FaCreditCard, FaMap, FaPassport, FaUsers } from "react-icons/fa";
 import { IoCarSport, IoPeopleOutline } from "react-icons/io5";
 import {
   MdAccountCircle,
@@ -32,7 +32,13 @@ import { Slide } from "react-awesome-reveal";
 
 // Images
 import shuttlelaneSLogo from "../../../../assets/logos/icon.png";
-import { FaGavel, FaHandHoldingDollar, FaPerson } from "react-icons/fa6";
+import {
+  FaGavel,
+  FaHandHoldingDollar,
+  FaMoneyCheckDollar,
+  FaPerson,
+  FaSackDollar,
+} from "react-icons/fa6";
 
 function DriverDashboardNavbar(props) {
   const [isBookingMenuOpen, setIsBookingMenuOpen] = useState(false);
@@ -76,6 +82,20 @@ function DriverDashboardNavbar(props) {
             size={15}
             className={`${
               props?.link == "bookings" ? "text-white" : "text-gray-400"
+            }`}
+          />
+        </Link>
+        <Link
+          to="/driver/dashboard/earnings"
+          className={`h-11 w-11 flex justify-center items-center rounded-lg ${
+            props?.link == "earnings" &&
+            "bg-shuttlelaneGold shadow-[#ffe788ae] shadow-md"
+          }`}
+        >
+          <FaSackDollar
+            size={15}
+            className={`${
+              props?.link == "earnings" ? "text-white" : "text-gray-400"
             }`}
           />
         </Link>

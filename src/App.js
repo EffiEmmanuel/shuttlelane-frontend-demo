@@ -53,6 +53,7 @@ import TrackBookingPage from "./pages/booking/track-booking";
 import AdminDashboardAdminAccountsPage from "./pages/admin/dashboard/users/AdminPage";
 import AdminCompleteSignupPage from "./pages/admin/AdminCompleteSignupPage";
 import AdminDashboardPaymentsPage from "./pages/admin/dashboard/bookings/Payments";
+import DriverDashboardEarningsPage from "./pages/driver/dashboard/earnings";
 
 // Modal.setAppElement("#appElement");
 
@@ -118,6 +119,14 @@ function App() {
               element={
                 <DriverProtectedRoute>
                   <DriverDashboardHomePage />
+                </DriverProtectedRoute>
+              }
+            />
+            <Route
+              path="earnings"
+              element={
+                <DriverProtectedRoute>
+                  <DriverDashboardEarningsPage />
                 </DriverProtectedRoute>
               }
             />

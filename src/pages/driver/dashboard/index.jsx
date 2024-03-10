@@ -28,8 +28,12 @@ import { IoSearchCircleOutline, IoSearchOutline } from "react-icons/io5";
 import { ImSearch, ImSpinner2 } from "react-icons/im";
 import { RiSearch2Line } from "react-icons/ri";
 import {
+  acceptBooking,
+  declineBooking,
   fetchAssignedJobs,
   fetchBookingByReference,
+  fetchUpcomingJobs,
+  startBooking,
 } from "../../../redux/slices/driverSlice";
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import Modal from "react-modal";
@@ -38,6 +42,8 @@ import moment from "moment";
 // Images
 import driverHomeGraphics from "../../../assets/images/driver/driver_home_graphics.svg";
 import congratsAsset from "../../../assets/images/driver/congrats.svg";
+import { ToastContainer } from "react-toastify";
+import SwipeButton from "../../../components/ui/SwipeButton";
 
 function DriverDashboardHomePage() {
   const {
@@ -58,6 +64,7 @@ function DriverDashboardHomePage() {
   useEffect(() => {
     console.log("DRIVER TOKEN:", token);
     dispatch(fetchAssignedJobs({ token, driverId: driver?._id }));
+    dispatch(fetchUpcomingJobs({ token, driverId: driver?._id }));
   }, [token]);
 
   // Modal functionalities
@@ -72,9 +79,49 @@ function DriverDashboardHomePage() {
       dispatch(fetchBookingByReference(currentBooking?.bookingReference));
   }, [currentBooking]);
 
+  // FUNCTION: Handles accepting a booking
+  async function handleAcceptBooking() {
+    dispatch(
+      acceptBooking({
+        token,
+        driverId: driver?._id,
+        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
+      })
+    );
+    setIsAssignedBookingDetailsModalOpen(false);
+  }
+
+  // FUNCTION: Handles accepting a booking
+  async function handleDeclineBooking() {
+    dispatch(
+      declineBooking({
+        token,
+        driverId: driver?._id,
+        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
+      })
+    );
+    setIsAssignedBookingDetailsModalOpen(false);
+  }
+
+  // FUNCTION: Handles starting a booking
+  async function handleStartBooking() {
+    dispatch(
+      startBooking({
+        token,
+        driverId: driver?._id,
+        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
+      })
+    );
+
+    setTimeout(() => {
+      setIsAssignedBookingDetailsModalOpen(false);
+    }, 1500);
+  }
+
   return (
     <div className="">
-      {/* Booking Details Modal */}
+      <ToastContainer />
+      {/* Assigned Booking Details Modal */}
       <Modal
         isOpen={isAssignedBookingDetailsModalOpen}
         onRequestClose={() => setIsAssignedBookingDetailsModalOpen(false)}
@@ -119,7 +166,7 @@ function DriverDashboardHomePage() {
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {bookingFetchedByReference?.bookingCurrency?.symbol}
+                          ₦
                           {Intl.NumberFormat("en-US", {}).format(
                             bookingFetchedByReference?.bookingRate
                           )}
@@ -233,37 +280,50 @@ function DriverDashboardHomePage() {
                       </div>
 
                       {/* Driver Details */}
-                      <div className="mt-5">
-                        <h2 className="text-xl text-center font-semibold">
-                          Accept Or Decline Job?
-                        </h2>
+                      {!bookingFetchedByReference?.hasDriverAccepted && (
+                        <div className="mt-5">
+                          <h2 className="text-xl text-center font-semibold">
+                            Accept Or Decline Job?
+                          </h2>
 
-                        <div className="mt-4 w-full flex flex-row items-center justify-center gap-x-7">
-                          <button className="h-14 w-14 rounded-full bg-red-500 flex items-center justify-center">
-                            <FaXmark size={20} className="text-white" />
-                          </button>
-                          <button className="h-14 w-14 rounded-full bg-green-500 flex items-center justify-center">
-                            <FaCheck size={20} className="text-white" />
-                          </button>
+                          <div className="mt-4 w-full flex flex-row items-center justify-center gap-x-7">
+                            <button
+                              onClick={() => handleDeclineBooking()}
+                              className="h-14 w-14 rounded-full bg-red-500 flex items-center justify-center"
+                            >
+                              <FaXmark size={20} className="text-white" />
+                            </button>
+                            <button
+                              onClick={() => handleAcceptBooking()}
+                              className="h-14 w-14 rounded-full bg-green-500 flex items-center justify-center"
+                            >
+                              <FaCheck size={20} className="text-white" />
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      )}
+
+                      {/* Swipe to start booking */}
+                      {bookingFetchedByReference?.bookingStatus ==
+                        "Scheduled" && (
+                        <div className="mt-5">
+                          {!isLoading && (
+                            <SwipeButton
+                              onSwipe={() => handleStartBooking()}
+                              buttonText="Start Booking"
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {isLoading && (
+                            <ImSpinner2
+                              size={24}
+                              className="text-shuttlelanePurple animate-spin"
+                            />
+                          )}
+                        </div>
+                      )}
                     </div>
-                    {isLoading && (
-                      <ImSpinner2
-                        size={24}
-                        className="text-shuttlelanePurple animate-spin"
-                      />
-                    )}
-                    {/* {!bookingFetchedByReference && (
-            <div className="w-full flex flex-col items-center justify-center">
-              <img
-                src={emptyImage}
-                className="max-w-lg object-contain"
-                alt="Sorry, there are no blog posts for now."
-              />
-              <p className="text-sm">Sorry, there are no blog posts for now.</p>
-            </div>
-          )} */}
                   </div>
                 )}
                 {bookingFetchedByReference?.bookingType === "Car" && (
@@ -1174,53 +1234,57 @@ function DriverDashboardHomePage() {
                       </div>
 
                       {/* Assigned Jobs */}
-                      <div className="mt-11 w-full">
-                        <p className="font-medium">
-                          Assigned Jobs ({assignedBookings?.length})
-                        </p>
-                        <div className="flex flex-col gap-y-3 mt-5">
-                          {assignedBookings?.map((booking) => (
-                            <div className="flex h-28 p-3 justify-between items-center allRoundBoxShadow bg-white rounded-lg w-full">
-                              <div className="flex flex-row items-center gap-x-1">
-                                <img
-                                  src={congratsAsset}
-                                  alt=""
-                                  className="object-contain"
-                                />
+                      {assignedBookings?.length > 0 && (
+                        <div className="mt-11 w-full">
+                          <p className="font-medium">
+                            Assigned Jobs ({assignedBookings?.length})
+                          </p>
+                          <div className="flex flex-col gap-y-3 mt-5">
+                            {assignedBookings?.map((booking) => (
+                              <div className="flex h-28 p-3 justify-between items-center allRoundBoxShadow bg-white rounded-lg w-full">
+                                <div className="flex flex-row items-center gap-x-1">
+                                  <img
+                                    src={congratsAsset}
+                                    alt=""
+                                    className="object-contain"
+                                  />
 
-                                <div className="flex flex-col">
-                                  <p className="font-semibold">
-                                    New Job Alert!
-                                  </p>
-                                  <small className="max-w-sm">
-                                    Hello {driver?.firstName}, you have been
-                                    assigned to a new booking with pickup
-                                    location at{" "}
-                                    {booking?.booking?.pickupAddress}
-                                  </small>
+                                  <div className="flex flex-col">
+                                    <p className="font-semibold">
+                                      New Job Alert!
+                                    </p>
+                                    <small className="max-w-sm">
+                                      Hello {driver?.firstName}, you have been
+                                      assigned to a new booking with pickup
+                                      location at{" "}
+                                      {booking?.booking?.pickupAddress}
+                                    </small>
+                                  </div>
+                                </div>
+
+                                {/* CTA */}
+                                <div className="">
+                                  <button
+                                    onClick={(e) => {
+                                      setCurrentBooking(booking);
+                                      setIsAssignedBookingDetailsModalOpen(
+                                        true
+                                      );
+                                    }}
+                                    type="button"
+                                    className="bg-shuttlelaneBlack rounded-full h-10 w-10 flex items-center justify-center"
+                                  >
+                                    <BsArrowRight
+                                      size={18}
+                                      className="text-white"
+                                    />
+                                  </button>
                                 </div>
                               </div>
-
-                              {/* CTA */}
-                              <div className="">
-                                <button
-                                  onClick={(e) => {
-                                    setCurrentBooking(booking);
-                                    setIsAssignedBookingDetailsModalOpen(true);
-                                  }}
-                                  type="button"
-                                  className="bg-shuttlelaneBlack rounded-full h-10 w-10 flex items-center justify-center"
-                                >
-                                  <BsArrowRight
-                                    size={18}
-                                    className="text-white"
-                                  />
-                                </button>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Recent Bookings */}
                       <div className="mt-11 w-full">
@@ -1244,80 +1308,46 @@ function DriverDashboardHomePage() {
                                 Passenger
                               </p>
                               <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                Pickup Date
-                              </p>
-                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
                                 Pickup Location
                               </p>
                               <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                Dropoff Location
+                                Pickup Date
                               </p>
                               <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                Time
+                                Pickup Time
+                              </p>
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                Booking Type
                               </p>
                             </div>
 
                             {upcomingBookings?.map((booking) => (
-                              <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                              <div
+                                onClick={(e) => {
+                                  setCurrentBooking(booking);
+                                  setIsAssignedBookingDetailsModalOpen(true);
+                                }}
+                                className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
+                              >
                                 <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
                                   {booking?.user?.firstName ??
                                     booking?.firstName}{" "}
-                                  {booking?.user?.firstName ??
-                                    booking?.firstName}
+                                  {booking?.user?.lastName ?? booking?.lastName}
                                 </p>
                                 <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                  {booking?.pickupDate}
+                                  {booking?.booking?.pickupAddress}
+                                </p>
+                                <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                  {moment(booking?.pickupDate).format(
+                                    "MMM DD, YYYY"
+                                  )}
+                                </p>
+                                <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                  {moment(booking?.pickupTime).format("H:MM A")}
                                 </p>
                                 <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
                                   {booking?.bookingType}
                                 </p>
-
-                                <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
-                                  <div
-                                    className={`h-2 w-2 ${
-                                      booking?.paymentId?.status === "Failed"
-                                        ? "bg-red-500"
-                                        : booking?.paymentId?.status ===
-                                          "Pending"
-                                        ? "bg-yellow-500"
-                                        : "bg-green-500"
-                                    } rounded-full`}
-                                  ></div>
-                                  <span
-                                    className={`text-xs ${
-                                      booking?.paymentId?.status === "Failed"
-                                        ? "tet-red-500"
-                                        : booking?.paymentId?.status ===
-                                          "Pending"
-                                        ? "tet-yellow-500"
-                                        : "tet-green-500"
-                                    }`}
-                                  >
-                                    {booking?.paymentId?.status === "Failed"
-                                      ? "Failed"
-                                      : booking?.paymentId?.status === "Pending"
-                                      ? "Pending"
-                                      : "Successful"}
-                                  </span>
-                                </div>
-
-                                <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-3">
-                                  <button
-                                    onClick={() => {}}
-                                    className="h-7 w-28 p-2 text-white bg-shuttlelaneGold rounded-lg text-xs"
-                                  >
-                                    Assign driver
-                                  </button>
-                                  <Link
-                                    to="/"
-                                    className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
-                                  >
-                                    <HiOutlineExternalLink
-                                      size={13}
-                                      className="text-shuttlelaneBlack"
-                                    />
-                                  </Link>
-                                </div>
                               </div>
                             ))}
 
