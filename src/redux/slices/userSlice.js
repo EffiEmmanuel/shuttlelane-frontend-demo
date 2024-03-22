@@ -294,9 +294,11 @@ export const createBooking = createAsyncThunk(
           vehicleClass: payload?.bookingDetails?.vehicleClass?._id,
           city: payload?.bookingDetails?.selectedCity?.cityName,
           pickupAddress: payload?.bookingDetails?.pickupLocation,
+          pickupCoordinates: payload?.bookingDetails?.pickupCoordinates,
           pickupDate: payload?.bookingDetails?.pickupDate,
           pickupTime: payload?.bookingDetails?.pickupTime,
           dropoffAddress: payload?.bookingDetails?.dropoffLocation,
+          dropoffCoordinates: payload?.bookingDetails?.dropoffCoordinates,
           returnDate: payload?.bookingDetails?.returnDate ?? null,
           returnTime: payload?.bookingDetails?.returnTime ?? null,
           hasPriorityPass: payload?.bookingDetails?.hasPriorityPass,
@@ -316,6 +318,7 @@ export const createBooking = createAsyncThunk(
           bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
           bookingTotal: payload?.bookingDetails?.bookingTotal,
           pickupAddress: payload?.bookingDetails?.pickupAddress,
+          pickupCoordinates: payload?.bookingDetails?.pickupCoordinates,
           pickupDate: payload?.bookingDetails?.pickupDate,
           pickupTime: payload?.bookingDetails?.pickupTime,
           days: payload?.bookingDetails?.days,
@@ -337,6 +340,7 @@ export const createBooking = createAsyncThunk(
           bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
           bookingTotal: payload?.bookingDetails?.bookingTotal,
           pickupLocation: payload?.bookingDetails?.pickupLocation,
+          pickupCoordinates: payload?.bookingDetails?.pickupCoordinates,
           pickupDate: payload?.bookingDetails?.pickupDate,
           pickupTime: payload?.bookingDetails?.pickupTime,
           passengers: payload?.bookingDetails?.passengers,
@@ -426,7 +430,7 @@ export const sendEnquiryEmail = createAsyncThunk(
 
 // FUNCTION: This function fetches a city
 export const fetchCity = createAsyncThunk(
-  "admin/cities/getOne",
+  "user/cities/getOne",
   async (payload) => {
     console.log("PAYLOAD:", payload);
     // Get user country
@@ -504,6 +508,12 @@ export const userSlice = createSlice({
 
     // This state handles the "track booking" page
     bookingFetchedByReference: null,
+
+    // Google maps api states
+    googleMaps: {
+      apiKey: "", // Initial API key
+      libraries: [], // Initial libraries
+    },
   },
   reducers: {
     setBookingDetails: (state, action) => {
@@ -521,6 +531,13 @@ export const userSlice = createSlice({
       console.log("SUM:", sum);
       console.log("VEHICLE CLASS:", action.payload);
       state.totalInNaira = Number(sum);
+    },
+
+    setGoogleMapsApiKey: (state, action) => {
+      state.googleMaps.apiKey = action.payload;
+    },
+    setGoogleMapsLibraries: (state, action) => {
+      state.googleMaps.libraries = action.payload;
     },
   },
 
@@ -723,5 +740,10 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setBookingDetails, calculateBookingTotal } = userSlice.actions;
+export const {
+  setBookingDetails,
+  calculateBookingTotal,
+  setGoogleMapsApiKey,
+  setGoogleMapsLibraries,
+} = userSlice.actions;
 export default userSlice.reducer;

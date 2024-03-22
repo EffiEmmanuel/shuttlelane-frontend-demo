@@ -62,7 +62,7 @@ function NavBar(props) {
             </li>
             <li className="w-full">
               <Link
-                to=""
+                to="/booking/track-booking"
                 className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
               >
                 Track booking
@@ -171,7 +171,7 @@ function NavBar(props) {
 
               <li>
                 <Link
-                  to=""
+                  to="/booking/track-booking"
                   className={`text-sm hover:no-underline hover:text-gray-200 transition-colors ${
                     y > 5 || props?.isPurpleLogo
                       ? "text-shuttlelaneBlack"

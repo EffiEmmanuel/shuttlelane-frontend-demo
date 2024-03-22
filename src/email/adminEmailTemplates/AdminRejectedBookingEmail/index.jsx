@@ -7,6 +7,9 @@ const AdminRejectedBookingEmailTemplate = ({
   pickupLocation,
   passengerName,
   passengerMobile,
+  driverName,
+  vendorName,
+  isVendor,
 }) => {
   return (
     <div
@@ -33,7 +36,8 @@ const AdminRejectedBookingEmailTemplate = ({
         <p style={{ color: "#333", marginBottom: "20px" }}>Dear Admin,</p>
         <p style={{ color: "#333", marginBottom: "20px" }}>
           We regret to inform you that the booking with the following details
-          has been rejected and needs to be reassigned to another driver:
+          has been rejected by {isVendor ? vendorName : driverName} and needs to
+          be reassigned to another driver or vendor:
         </p>
         <ul style={{ color: "#333", marginBottom: "20px" }}>
           <li>

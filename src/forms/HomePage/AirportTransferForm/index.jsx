@@ -84,8 +84,8 @@ function AirportTransferForm() {
   const navigate = useNavigate();
   function handleBookNow(e) {
     e.preventDefault();
-    console.log("PD:", pickupDate);
-    console.log("PT:", pickupTime);
+    console.log("PL:", pickupLocation);
+    console.log("DL:", dropoffLocation);
     if (
       isRoundTrip &&
       (!pickupLocationInput ||
@@ -117,9 +117,17 @@ function AirportTransferForm() {
           bookingDetails: {
             isRoundTrip,
             pickupLocation: pickupLocationInput,
+            pickupCoordinates: {
+              lat: pickupLocation?.latitude,
+              lng: pickupLocation?.longitude,
+            },
             pickupDate,
             pickupTime,
             dropoffLocation: dropoffLocationInput,
+            dropoffCoordinates: {
+              lat: dropoffLocation?.latitude,
+              lng: dropoffLocation?.longitude,
+            },
             returnDate,
             returnTime,
             selectedCity,

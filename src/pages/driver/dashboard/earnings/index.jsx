@@ -14,7 +14,7 @@ function DriverDashboardEarningsPage() {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchDriverEarnings(token));
+      dispatch(fetchDriverEarnings({ driverId: driver?._id, token }));
     }
   }, [token]);
 
@@ -22,7 +22,7 @@ function DriverDashboardEarningsPage() {
     <div className="">
       <ToastContainer />
       {/* Navbar here */}
-      <DriverDashboardNavbar link="security" />
+      <DriverDashboardNavbar link="earnings" />
 
       {/* Main content goes here */}
       <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">

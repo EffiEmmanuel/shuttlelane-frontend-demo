@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,6 +37,7 @@ import ConfirmBookingPage from "./pages/booking/confirm-booking";
 import {
   AdminProtectedRoute,
   DriverProtectedRoute,
+  VendorProtectedRoute,
 } from "./components/security/ProtectedRoute";
 import Modal from "react-modal";
 import AdminDashboardExchangeRatesPage from "./pages/admin/dashboard/rates/ExchangeRates";
@@ -54,7 +55,15 @@ import AdminDashboardAdminAccountsPage from "./pages/admin/dashboard/users/Admin
 import AdminCompleteSignupPage from "./pages/admin/AdminCompleteSignupPage";
 import AdminDashboardPaymentsPage from "./pages/admin/dashboard/bookings/Payments";
 import DriverDashboardEarningsPage from "./pages/driver/dashboard/earnings";
-
+import { useDispatch } from "react-redux";
+import VendorSignupPage from "./pages/vendor/SignupPage";
+import VendorLoginPage from "./pages/vendor/LoginPage";
+import VendorDashboardHomePage from "./pages/vendor/dashboard";
+import VendorDashboardBookingPage from "./pages/vendor/dashboard/bookings";
+import VendorDashboardEarningsPage from "./pages/vendor/dashboard/earnings";
+import VendorDashboardAccountPage from "./pages/vendor/dashboard/account";
+import VendorDashboardSecurityPage from "./pages/vendor/dashboard/security/ResetPasswordPage";
+import VendorDashboardManageDriversPage from "./pages/vendor/dashboard/bookings/ManageDrivers";
 // Modal.setAppElement("#appElement");
 
 function App() {
@@ -106,6 +115,77 @@ function App() {
             path="drive-for-shuttlelane"
             element={<DriveForShuttlelanePage />}
           />
+          <Route path="fleet-management" element={<VendorSignupPage />} />
+        </Route>
+
+        {/* Vendor Routes */}
+        <Route path="/vendor">
+          <Route path="signup" element={<VendorSignupPage />} />
+          <Route path="login" element={<VendorLoginPage />} />
+
+          <Route path="dashboard">
+            <Route
+              path=""
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardHomePage />
+                </VendorProtectedRoute>
+              }
+            />
+            <Route
+              path="earnings"
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardEarningsPage />
+                </VendorProtectedRoute>
+              }
+            />
+
+            {/* Dropdown menu */}
+            <Route
+              path="completed-bookings"
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardBookingPage />
+                </VendorProtectedRoute>
+              }
+            />
+            <Route
+              path="manage-drivers"
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardManageDriversPage />
+                </VendorProtectedRoute>
+              }
+            />
+            <Route
+              path="manage-fleet"
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardBookingPage />
+                </VendorProtectedRoute>
+              }
+            />
+
+            {/* END Dropdown menu */}
+
+            <Route
+              path="account"
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardAccountPage />
+                </VendorProtectedRoute>
+              }
+            />
+            <Route
+              path="security"
+              element={
+                <VendorProtectedRoute>
+                  <VendorDashboardSecurityPage />
+                </VendorProtectedRoute>
+              }
+            />
+          </Route>
         </Route>
 
         {/* Driver Routes */}

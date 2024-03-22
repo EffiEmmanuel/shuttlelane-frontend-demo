@@ -6,7 +6,10 @@ const AdminRejectedBookingEmailTemplate = _ref => {
     pickupTime,
     pickupLocation,
     passengerName,
-    passengerMobile
+    passengerMobile,
+    driverName,
+    vendorName,
+    isVendor
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -38,7 +41,7 @@ const AdminRejectedBookingEmailTemplate = _ref => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "We regret to inform you that the booking with the following details has been rejected and needs to be reassigned to another driver:"), /*#__PURE__*/React.createElement("ul", {
+  }, "We regret to inform you that the booking with the following details has been rejected by ", isVendor ? vendorName : driverName, " and needs to be reassigned to another driver or vendor:"), /*#__PURE__*/React.createElement("ul", {
     style: {
       color: "#333",
       marginBottom: "20px"

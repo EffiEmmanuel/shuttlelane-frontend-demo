@@ -200,6 +200,41 @@ export const fetchVendors = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function fetches approved vendors
+export const fetchApprovedVendors = createAsyncThunk(
+  "admin/vendors/getAllApproved",
+  async (token) => {
+    return fetch(`http://localhost:3001/api/v1/admin/vendors/approved`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH APPROVED VENDORS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function approves a vendor account
+export const approveVendorAccount = createAsyncThunk(
+  "admin/vendors/approveAccount",
+  async (payload) => {
+    console.log("PAYLOAD FROM AsyncThunk:", payload);
+    return fetch(
+      `http://localhost:3001/api/v1/admin/vendors/${payload?.vendorId}/account/approve`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("APPROVE VENDOR ACCOUNT ERROR (ADMIN):", err)
+      );
+  }
+);
+
 // FUNCTION: This function deletes a vendor by Id
 export const deleteVendorById = createAsyncThunk(
   "admin/vendors/deleteOne",
@@ -1507,6 +1542,7 @@ export const adminSlice = createSlice({
     // The following states are for vendor management
     currentVendor: null,
     vendors: null,
+    approvedVendors: null,
     vendorData: null,
 
     // The following states are for enquiry management
@@ -1781,6 +1817,38 @@ export const adminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchVendors.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Approved Vendors AsyncThunk states
+      .addCase(fetchApprovedVendors.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchApprovedVendors.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD VENDORS", action.payload);
+        state.approvedVendors = action.payload?.vendors;
+        // state.driverData = action.payload?.data;
+        state.isLoading = false;
+      })
+      .addCase(fetchApprovedVendors.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Approve vendor account AsyncThunk states
+      .addCase(approveVendorAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(approveVendorAccount.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD APPROVE DRIVER ACCOUNT", action.payload);
+        if (action.payload?.status == 201) {
+          state.vendors = action.payload?.vendors;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(approveVendorAccount.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

@@ -250,6 +250,14 @@ html {
   /* background-position: 0 -150px; */
 }
 
+/* Vendor Signup */
+.vendorSignupBg {
+  background-image: url(./assets/images/vendor/vendorSignup.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 0 -150px; */
+}
+
 .formWidthFull {
   width: 100%;
   transition: width 1s;

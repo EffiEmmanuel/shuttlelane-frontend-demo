@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { RiArrowRightDoubleLine } from "react-icons/ri";
 
-const SwipeButton = ({ onSwipe, buttonText, isLoading }) => {
+const SwipeButton = ({ onSwipe, buttonText, buttonBg, isLoading }) => {
   const [startX, setStartX] = useState(null);
   const [isSwiping, setIsSwiping] = useState(false);
   const [arrowOffset, setArrowOffset] = useState(0);
@@ -82,7 +82,7 @@ const SwipeButton = ({ onSwipe, buttonText, isLoading }) => {
         setArrowOffset(0); // Reset arrow offset on touch cancel
       }}
       disabled={isLoading}
-      className="relative bg-green-400 text-white font-bold py-3 px-4 rounded-lg w-full animate-pulse border-none"
+      className={`relative ${buttonBg} text-white font-bold py-3 px-4 rounded-lg w-full animate-pulse border-none`}
       style={{ paddingLeft: "40px" }} // Adjust padding to accommodate the arrow
     >
       {!isLoading && (

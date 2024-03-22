@@ -264,11 +264,15 @@ export const declineBooking = createAsyncThunk(
 // FUNCTION: Fetch a driver's earnings
 export const fetchDriverEarnings = createAsyncThunk(
   "driver/earnings/getAll",
-  async (driverId) => {
+  async (payload) => {
     console.log("HI");
     return fetch(
-      `http://localhost:3001/api/v1/drivers/earnings/${driverId}`,
-      {}
+      `http://localhost:3001/api/v1/drivers/earnings/${payload?.driverId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH DRIVER EARNINGS ERROR:", err));
@@ -734,7 +738,7 @@ export const driverSlice = createSlice({
       })
       .addCase(startBooking.fulfilled, (state, action) => {
         console.log("START BOOKING ACTION.PAYLOAD", action.payload);
-        if (action.payload?.status == 200) {
+        if (action.payload?.status == 201) {
           state.assignedBookings = action.payload?.assignedBookings;
           state.upcomingBookings = action.payload?.upcomingBookings;
           state.ongoingBookings = action.payload?.ongoingBookings;
@@ -755,7 +759,7 @@ export const driverSlice = createSlice({
       })
       .addCase(endBooking.fulfilled, (state, action) => {
         console.log("START BOOKING ACTION.PAYLOAD", action.payload);
-        if (action.payload?.status == 200) {
+        if (action.payload?.status == 201) {
           state.assignedBookings = action.payload?.assignedBookings;
           state.upcomingBookings = action.payload?.upcomingBookings;
           state.ongoingBookings = action.payload?.ongoingBookings;

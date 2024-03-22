@@ -5,10 +5,13 @@ const AdminAcceptedBookingEmailTemplate = ({
   pickupDate,
   pickupTime,
   pickupLocation,
+  vendorName,
+  vendorMobile,
   driverName,
   driverMobile,
   passengerName,
   passengerMobile,
+  isVendor,
 }) => {
   return (
     <div
@@ -56,6 +59,16 @@ const AdminAcceptedBookingEmailTemplate = ({
           <li>
             <strong>Passenger Contact:</strong> {passengerMobile}
           </li>
+          {isVendor && (
+            <>
+              <li>
+                <strong>Vendor:</strong> {vendorName}
+              </li>
+              <li>
+                <strong>Vendor Mobile:</strong> {vendorMobile}
+              </li>
+            </>
+          )}
           <li>
             <strong>Driver Name:</strong> {driverName}
           </li>

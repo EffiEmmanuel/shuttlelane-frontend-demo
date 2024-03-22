@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useMemo } from "react";
 import { setDriver, setDriverToken } from "../../../redux/slices/driverSlice";
+import { setVendor, setVendorToken } from "../../../redux/slices/vendorSlice";
 
 export function AdminProtectedRoute({ children }) {
   const navigate = useNavigate();
@@ -111,12 +112,55 @@ export function DriverProtectedRoute({ children }) {
 }
 
 export function VendorProtectedRoute({ children }) {
-  // Check if vendor is logged in
-  const isVendorLoggedIn = localStorage.getItem("vendorToken");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  if (!isVendorLoggedIn) {
-    return <Navigate to="/vendor/login" replace />;
-  } else {
-    return children;
+  const vendorToken = localStorage.getItem("vendorToken");
+
+  async function verifyToken() {
+    try {
+      const res = await axios.post(
+        `http://localhost:3001/api/v1/auth/verify-token`,
+        JSON.stringify({
+          token: JSON.parse(vendorToken),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.data?.status === 200) {
+        const vendor = JSON.parse(localStorage.getItem("vendor"));
+        dispatch(setVendor(vendor));
+        dispatch(setVendorToken(vendorToken));
+      } else {
+        navigate("/vendor/login");
+        toast.error(
+          "Session expired. Please log in to continue to your dashboard"
+        );
+      }
+    } catch (err) {
+      console.log("VERIFY ERROR:", err);
+      if (err?.response?.data?.status === 403) {
+        navigate("/vendor/login");
+        toast.error(
+          "Session expired. Please log in to continue to your dashboard"
+        );
+      }
+    }
   }
+
+  const isVendorLoggedIn = useMemo(() => {
+    if (vendorToken) {
+      verifyToken();
+      return true; // Assume vendor is logged in; actual status will be updated after token verification
+    }
+    return false;
+  }, [vendorToken]);
+
+  return (
+    <>{isVendorLoggedIn ? children : <Navigate to="/vendor/login" replace />}</>
+  );
 }

@@ -7,16 +7,19 @@ import { BrowserRouter } from "react-router-dom";
 import { ScrollToTop } from "./components/functionality/ScrollTop";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import GoogleMapsProvider from "./components/ui/GoogleMapsProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
-      <ScrollToTop />
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
+    <GoogleMapsProvider>
+      <React.StrictMode>
+        <ScrollToTop />
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>
+    </GoogleMapsProvider>
   </BrowserRouter>
 );
 

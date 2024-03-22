@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPassport, FaUser } from "react-icons/fa";
 import {
+  MdAirplanemodeActive,
   MdArrowRight,
   MdHourglassFull,
   MdLocationPin,
@@ -30,8 +31,10 @@ import { RiSearch2Line } from "react-icons/ri";
 import {
   acceptBooking,
   declineBooking,
+  endBooking,
   fetchAssignedJobs,
   fetchBookingByReference,
+  fetchOngoingJobs,
   fetchUpcomingJobs,
   startBooking,
 } from "../../../redux/slices/driverSlice";
@@ -44,6 +47,7 @@ import driverHomeGraphics from "../../../assets/images/driver/driver_home_graphi
 import congratsAsset from "../../../assets/images/driver/congrats.svg";
 import { ToastContainer } from "react-toastify";
 import SwipeButton from "../../../components/ui/SwipeButton";
+import GoogleMapsWithDirections from "../../../components/ui/GoogleMapsWithDirection";
 
 function DriverDashboardHomePage() {
   const {
@@ -52,6 +56,7 @@ function DriverDashboardHomePage() {
     driver,
     upcomingBookings,
     assignedBookings,
+    ongoingBookings,
     isGetBookingByReferenceLoading,
     bookingFetchedByReference,
   } = useSelector((store) => store.driver);
@@ -65,6 +70,7 @@ function DriverDashboardHomePage() {
     console.log("DRIVER TOKEN:", token);
     dispatch(fetchAssignedJobs({ token, driverId: driver?._id }));
     dispatch(fetchUpcomingJobs({ token, driverId: driver?._id }));
+    dispatch(fetchOngoingJobs({ token, driverId: driver?._id }));
   }, [token]);
 
   // Modal functionalities
@@ -73,11 +79,17 @@ function DriverDashboardHomePage() {
     setIsAssignedBookingDetailsModalOpen,
   ] = useState(false);
   const [currentBooking, setCurrentBooking] = useState();
-  // Fetch approced driver accounts
+
+  // Fetch clicked booking (Booking opened in the modal)
   useEffect(() => {
     if (currentBooking)
       dispatch(fetchBookingByReference(currentBooking?.bookingReference));
   }, [currentBooking]);
+
+  // Fetch clicked booking (Booking opened in the modal)
+  useEffect(() => {
+    console.log("ONGOING BOOKING:", ongoingBookings);
+  }, [ongoingBookings]);
 
   // FUNCTION: Handles accepting a booking
   async function handleAcceptBooking() {
@@ -107,6 +119,21 @@ function DriverDashboardHomePage() {
   async function handleStartBooking() {
     dispatch(
       startBooking({
+        token,
+        driverId: driver?._id,
+        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
+      })
+    );
+
+    setTimeout(() => {
+      setIsAssignedBookingDetailsModalOpen(false);
+    }, 1500);
+  }
+
+  // FUNCTION: Handles ending a booking
+  async function handleEndBooking() {
+    dispatch(
+      endBooking({
         token,
         driverId: driver?._id,
         bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
@@ -311,6 +338,29 @@ function DriverDashboardHomePage() {
                             <SwipeButton
                               onSwipe={() => handleStartBooking()}
                               buttonText="Start Booking"
+                              buttonBg="bg-green-400"
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {isLoading && (
+                            <ImSpinner2
+                              size={24}
+                              className="text-shuttlelanePurple animate-spin"
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {/* Swipe to end booking */}
+                      {bookingFetchedByReference?.bookingStatus ==
+                        "Ongoing" && (
+                        <div className="mt-5">
+                          {!isLoading && (
+                            <SwipeButton
+                              onSwipe={() => handleEndBooking()}
+                              buttonText="End Booking"
+                              buttonBg="bg-red-400"
                               isLoading={isLoading}
                             />
                           )}
@@ -1232,6 +1282,89 @@ function DriverDashboardHomePage() {
                           className="w-full object-contain"
                         />
                       </div>
+
+                      {ongoingBookings?.length > 0 && (
+                        <>
+                          <div className="mt-11">
+                            <div className="flex items-center gap-x-2">
+                              <p className="font-medium">Ongoing Job</p>
+                              <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
+                            </div>
+
+                            <div className="h-auto w-full rounded-lg allRoundBoxShadow overflow-hidden mt-4">
+                              <div className="flex items-center justify-center h-[220px] min-h-[220px] max-h-[220px] w-full rounded-tr-lg rounded-tl-lg">
+                                <GoogleMapsWithDirections
+                                  pickupAddress={
+                                    ongoingBookings[0]?.booking?.pickupAddress
+                                  }
+                                  dropoffAddress={
+                                    ongoingBookings[0]?.booking?.dropoffAddress
+                                  }
+                                  pickupCoordinates={
+                                    ongoingBookings[0]?.booking
+                                      ?.pickupCoordinates
+                                  }
+                                  dropoffCoordinates={
+                                    ongoingBookings[0]?.booking
+                                      ?.dropoffCoordinates
+                                  }
+                                />
+                              </div>
+
+                              <div className="flex items-center justify-between p-4">
+                                <div className="flex items-center gap-x-2">
+                                  <div className="h-14 w-14 rounded-lg bg-white shadow-lg flex items-center justify-center">
+                                    <MdAirplanemodeActive
+                                      size={20}
+                                      className=""
+                                    />
+                                  </div>
+
+                                  <div className="flex flex-col gap-y-1">
+                                    <small className="font-semibold">
+                                      {
+                                        ongoingBookings[0]?.booking
+                                          ?.pickupAddress
+                                      }
+                                    </small>
+                                    <small className="">
+                                      {moment(
+                                        ongoingBookings[0]?.booking?.pickupDate
+                                      ).format("DD MM, YYYY")}{" "}
+                                      .{" "}
+                                      {moment(
+                                        ongoingBookings[0]?.booking?.pickupTime
+                                      ).format("H:MM A")}
+                                    </small>
+                                    <small className="text-green-500">
+                                      {ongoingBookings[0]?.bookingStatus}
+                                    </small>
+                                  </div>
+                                </div>
+
+                                {/* CTA */}
+                                <div className="">
+                                  <button
+                                    onClick={() => {
+                                      setCurrentBooking(ongoingBookings[0]);
+                                      setIsAssignedBookingDetailsModalOpen(
+                                        true
+                                      );
+                                    }}
+                                    type="button"
+                                    className="bg-shuttlelaneBlack rounded-full h-10 w-10 flex items-center justify-center"
+                                  >
+                                    <BsArrowRight
+                                      size={18}
+                                      className="text-white"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
 
                       {/* Assigned Jobs */}
                       {assignedBookings?.length > 0 && (

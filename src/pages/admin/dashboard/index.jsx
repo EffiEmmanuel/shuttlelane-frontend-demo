@@ -25,6 +25,8 @@ import {
   fetchApprovedDrivers,
   fetchBookingByReference,
   fetchVendors,
+  fetchApprovedVendors,
+  approveVendorAccount,
 } from "../../../redux/slices/adminSlice";
 import { Modal as RsuiteModal, Button } from "rsuite";
 import Modal from "react-modal";
@@ -46,6 +48,7 @@ function AdminDashboardHomePage() {
     drivers,
     approvedDrivers,
     vendors,
+    approvedVendors,
     upcomingBookings,
     unassignedBookings,
     bookingFetchedByReference,
@@ -199,15 +202,27 @@ function AdminDashboardHomePage() {
   const [bookingRate, setBookingRate] = useState();
   async function handleAssignToBooking(e) {
     e.preventDefault();
-    dispatch(
-      assignToJob({
-        token,
-        userType: isDriver ? "Driver" : "Vendor",
-        userId: driverSelected?.value,
-        bookingRate: bookingRate,
-        bookingId: currentBooking?._id,
-      })
-    );
+    if (isDriver === true) {
+      dispatch(
+        assignToJob({
+          token,
+          userType: "Driver",
+          userId: driverSelected?.value,
+          bookingRate: bookingRate,
+          bookingId: currentBooking?._id,
+        })
+      );
+    } else {
+      dispatch(
+        assignToJob({
+          token,
+          userType: "Vendor",
+          userId: vendorSelected?.value,
+          bookingRate: bookingRate,
+          bookingId: currentBooking?._id,
+        })
+      );
+    }
 
     // Close modal
     setIsAssignDriverModalOpen(false);
@@ -229,15 +244,35 @@ function AdminDashboardHomePage() {
     setIsAssignDriverModalOpen(false);
   }
 
-  // Fetch approced driver accounts
+  // Fetch approved vendor accounts
   useEffect(() => {
     if (token) {
       dispatch(fetchApprovedDrivers(token));
+      dispatch(fetchApprovedVendors(token));
       dispatch(fetchVendors(token));
     }
   }, [token]);
 
-  // Fetch approced driver accounts
+  // Vendor details modal
+  const [isVendorDetailsModalOpen, setIsVendorDetailsModalOpen] =
+    useState(false);
+  const [currentVendor, setCurrentVendor] = useState();
+
+  // Assign Driver Modal States
+  const [isAssignVendorModalOpen, setIsAssignVendorModalOpen] = useState(false);
+  const [isVendor, setIsVendor] = useState({ value: true, label: "Vendor" });
+  async function handleApproveVendorAccount() {
+    dispatch(
+      approveVendorAccount({
+        vendorId: currentVendor?._id,
+        token: token,
+      })
+    );
+
+    setIsAssignVendorModalOpen(false);
+  }
+
+  // Fetch booking by reference
   useEffect(() => {
     if (currentBooking)
       dispatch(fetchBookingByReference(currentBooking?.bookingReference));
@@ -342,53 +377,82 @@ function AdminDashboardHomePage() {
                   Select {isDriver?.value === true ? "Driver" : "Vendor"}
                 </label>
                 <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-full text-shuttlelaneBlack text-sm relative">
-                    <Select
-                      value={
-                        isDriver?.value === true
-                          ? driverSelected
-                          : vendorSelected
-                      }
-                      onChange={(value) => {
-                        if (isDriver) {
-                          console.log("DRIVER SELECTED:", value);
+                  {isDriver?.value === true && (
+                    <div className="w-full text-shuttlelaneBlack text-sm relative">
+                      <Select
+                        value={driverSelected}
+                        onChange={(value) => {
                           setDriverSelected(value);
-                        } else {
+                        }}
+                        options={driversData}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderColor: state.isFocused
+                              ? "transparent"
+                              : "transparent",
+                            borderWidth: state.isFocused ? "0" : "0",
+                            backgroundColor: "transparent",
+                            position: "relative",
+                          }),
+
+                          placeholder: (baseStyles, state) => ({
+                            ...baseStyles,
+                            // fontSize: ".75rem",
+                          }),
+
+                          menuList: (baseStyles, state) => ({
+                            ...baseStyles,
+                            // fontSize: ".75rem",
+                          }),
+
+                          input: (baseStyles, state) => ({
+                            ...baseStyles,
+                            // fontSize: ".75rem",
+                          }),
+                        }}
+                        placeholder="Select Driver"
+                      />
+                    </div>
+                  )}
+                  {isDriver?.value === false && (
+                    <div className="w-full text-shuttlelaneBlack text-sm relative">
+                      <Select
+                        value={vendorSelected}
+                        onChange={(value) => {
                           setVendorSelected(value);
-                        }
-                      }}
-                      options={isDriver ? driversData : vendorsData}
-                      styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderColor: state.isFocused
-                            ? "transparent"
-                            : "transparent",
-                          borderWidth: state.isFocused ? "0" : "0",
-                          backgroundColor: "transparent",
-                          position: "relative",
-                        }),
+                        }}
+                        options={vendorsData}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderColor: state.isFocused
+                              ? "transparent"
+                              : "transparent",
+                            borderWidth: state.isFocused ? "0" : "0",
+                            backgroundColor: "transparent",
+                            position: "relative",
+                          }),
 
-                        placeholder: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
+                          placeholder: (baseStyles, state) => ({
+                            ...baseStyles,
+                            // fontSize: ".75rem",
+                          }),
 
-                        menuList: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
+                          menuList: (baseStyles, state) => ({
+                            ...baseStyles,
+                            // fontSize: ".75rem",
+                          }),
 
-                        input: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
-                      }}
-                      placeholder={`Select ${
-                        isDriver?.value === true ? "Driver" : "Vendor"
-                      }`}
-                    />
-                  </div>
+                          input: (baseStyles, state) => ({
+                            ...baseStyles,
+                            // fontSize: ".75rem",
+                          }),
+                        }}
+                        placeholder="Select Vendor"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -1606,25 +1670,6 @@ function AdminDashboardHomePage() {
 
             <div className="flex flex-col">
               <p className="font-semibold text-shuttlelaneBlack">
-                Emergency Contact
-              </p>
-              <small className="text-sm text-gray-400">
-                Full Name: {currentDriver?.emergencyFirstName}{" "}
-                {currentDriver?.emergencyLastName}
-              </small>
-              <small className="text-sm text-gray-400">
-                Address: {currentDriver?.emergencyAddress}
-              </small>
-              <small className="text-sm text-gray-400 mt-1">
-                Phone Number: {currentDriver?.emergencyMobile}
-              </small>
-              <small className="text-sm text-gray-400 mt-1">
-                Relationship: {currentDriver?.emergencyRelationship}
-              </small>
-            </div>
-
-            <div className="flex flex-col">
-              <p className="font-semibold text-shuttlelaneBlack">
                 Additional Information
               </p>
               <small className="text-sm text-gray-400">
@@ -1657,7 +1702,7 @@ function AdminDashboardHomePage() {
                       </>
                     )}
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => {
                       // setCurrentBooking(booking);
                       setIsAssignDriverModalOpen(true);
@@ -1672,7 +1717,155 @@ function AdminDashboardHomePage() {
                         <FaXmark size={20} />
                       </>
                     )}
+                  </button> */}
+                </div>
+              )}
+            </div>
+            {/*  */}
+          </div>
+        </div>
+      </Modal>
+
+      {/* Vendor Details Modal */}
+      <Modal
+        isOpen={isVendorDetailsModalOpen}
+        onRequestClose={() => setIsVendorDetailsModalOpen(false)}
+        className="flex h-full min-h-screen justify-center items-center lg:px-40 px-7"
+      >
+        <div className="bg-white shadow-lg rounded-lg text-shuttlelaneBlack w-full min-h-[80%] max-h-[80%] h-[80%] lg:w-[60%] p-7 px-10 overflow-y-scroll shuttlelaneScrollbar">
+          <div className="flex items-center justify-between">
+            <div className="">
+              <h4 className="font-semibold">Vendor's Details</h4>
+              <small>Below are {currentVendor?.companyName}'s details</small>
+            </div>
+
+            <FaXmark
+              size={20}
+              onClick={() => setIsVendorDetailsModalOpen(false)}
+              className="cursor-pointer"
+            />
+          </div>
+
+          {/* <Placeholder.Paragraph /> */}
+          <div className="h-full mt-10 flex flex-col gap-y-5 pb-20">
+            <div className="flex items-center gap-x-2">
+              <div className="h-16 w-16 rounded-full overflow-hidden">
+                <img
+                  src={currentVendor?.image ?? profilePicPlaceholder}
+                  alt="Vendor's full name"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <p className="font-semibold text-shuttlelaneBlack">
+                  {currentVendor?.companyName}
+                </p>
+                <small className="text-sm text-gray-400">
+                  Email Address: {currentVendor?.companyEmail}
+                </small>
+                <small className="text-sm text-gray-400 mt-1">
+                  Mobile: {currentVendor?.contactMobile}
+                </small>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="font-semibold text-shuttlelaneBlack">
+                Company Information
+              </p>
+              <small className="text-sm text-gray-400">
+                Company Name: {currentVendor?.companyName}
+              </small>
+              <small className="text-sm text-gray-400">
+                Email Address: {currentVendor?.companyEmail}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Opening Hours:{" "}
+                {currentVendor?.isOpen24Hours
+                  ? "Opens 24 hours"
+                  : moment(currentVendor?.openingHours)?.format("HH:MM A")}
+              </small>
+              {!currentVendor?.isOpen24Hours && (
+                <small className="text-sm text-gray-400 mt-1">
+                  Closing Hours:{" "}
+                  {moment(currentVendor?.openingHours)?.format("HH:MM A")}
+                </small>
+              )}
+              <small className="text-sm text-gray-400 mt-1">
+                Address: {currentVendor?.address}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                City: {currentVendor?.city}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Country: {currentVendor?.country}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Operating Cities:{" "}
+                {currentVendor?.operatingCities?.map(
+                  (city) => `${city?.cityName}. `
+                )}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Fleet Type:{" "}
+                {currentVendor?.fleetType?.map((fleetType) => `${fleetType}. `)}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Fleet Size: {currentVendor?.fleetSize}
+              </small>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="font-semibold text-shuttlelaneBlack">
+                Contact Information
+              </p>
+              <small className="text-sm text-gray-400">
+                Full Name: {currentVendor?.contactName}
+              </small>
+              <small className="text-sm text-gray-400">
+                Email Address: {currentVendor?.contactEmail}
+              </small>
+              <small className="text-sm text-gray-400">
+                Mobile: {currentVendor?.contactMobile}
+              </small>
+            </div>
+
+            {/* APPROVE ACCOUNT */}
+            <div className="pb-5">
+              {!currentDriver?.isAccountApproved && (
+                <div className="flex flex-col gap-y-2 lg:flex-row gap-x-3 items-center">
+                  <button
+                    onClick={() => {
+                      handleApproveVendorAccount();
+                    }}
+                    className="h-10 flex flex-row gap-x-1 items-center justify-center w-full lg:w-44 p-2 text-white bg-green-500 rounded-lg text-xs"
+                  >
+                    {isLoading ? (
+                      <ImSpinner2 size={16} className="text-white" />
+                    ) : (
+                      <>
+                        <span className="text-xs">Approve account</span>
+                        <MdCheck size={20} />
+                      </>
+                    )}
                   </button>
+                  {/* <button
+                    onClick={() => {
+                      // setCurrentBooking(booking);
+                      setIsAssignDriverModalOpen(true);
+                    }}
+                    className="h-10 w-full lg:w-44 flex flex-row gap-x-1 items-center justify-center p-2 text-white bg-red-500 rounded-lg text-xs"
+                  >
+                    {isLoading ? (
+                      <ImSpinner2 size={16} className="text-white" />
+                    ) : (
+                      <>
+                        <span className="text-xs">Reject application</span>
+                        <FaXmark size={20} />
+                      </>
+                    )}
+                  </button> */}
                 </div>
               )}
             </div>
@@ -2142,11 +2335,19 @@ function AdminDashboardHomePage() {
                         )}
 
                         {vendors?.map((vendor) => (
-                          <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                          <div
+                            onClick={() => {
+                              setCurrentVendor(vendor);
+                              setIsVendorDetailsModalOpen(true);
+                            }}
+                            className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
+                          >
                             <p className="w-[50%] text-xs">
                               {vendor?.companyName}
                             </p>
-                            <p className="w-[50%] text-xs">{vendor?.email}</p>
+                            <p className="w-[50%] text-xs">
+                              {vendor?.companyEmail}
+                            </p>
                           </div>
                         ))}
 
