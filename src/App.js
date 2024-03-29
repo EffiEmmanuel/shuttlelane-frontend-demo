@@ -34,6 +34,7 @@ import AdminDashboardEnquiriesPage from "./pages/admin/dashboard/broadcasts/Enqu
 import AdminDashboardPushNotificationsPage from "./pages/admin/dashboard/broadcasts/PushNotificationsPage";
 import AdminDashboardBulkEmailPage from "./pages/admin/dashboard/broadcasts/BulkEmailPage";
 import ConfirmBookingPage from "./pages/booking/confirm-booking";
+import PaymentStatus from "./pages/booking/payment-status";
 import {
   AdminProtectedRoute,
   DriverProtectedRoute,
@@ -64,6 +65,8 @@ import VendorDashboardEarningsPage from "./pages/vendor/dashboard/earnings";
 import VendorDashboardAccountPage from "./pages/vendor/dashboard/account";
 import VendorDashboardSecurityPage from "./pages/vendor/dashboard/security/ResetPasswordPage";
 import VendorDashboardManageDriversPage from "./pages/vendor/dashboard/bookings/ManageDrivers";
+import VendorDashboardManageFleetPage from "./pages/vendor/dashboard/bookings/ManageFleet";
+
 // Modal.setAppElement("#appElement");
 
 function App() {
@@ -79,6 +82,8 @@ function App() {
           <Route path="confirm-booking" element={<ConfirmBookingPage />} />
           {/* Track Booking Route */}
           <Route path="track-booking" element={<TrackBookingPage />} />
+          {/* Payment Status Route */}
+          <Route path="payment-status" element={<PaymentStatus />} />
         </Route>
 
         {/* Company Routes */}
@@ -162,7 +167,7 @@ function App() {
               path="manage-fleet"
               element={
                 <VendorProtectedRoute>
-                  <VendorDashboardBookingPage />
+                  <VendorDashboardManageFleetPage />
                 </VendorProtectedRoute>
               }
             />

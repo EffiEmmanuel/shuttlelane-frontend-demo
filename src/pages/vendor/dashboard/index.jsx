@@ -32,7 +32,7 @@ import moment from "moment";
 // Images
 import vendorHomeGraphics from "../../../assets/images/vendor/vendor_home_graphics.svg";
 import congratsAsset from "../../../assets/images/driver/congrats.svg";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import SwipeButton from "../../../components/ui/SwipeButton";
 import GoogleMapsWithDirections from "../../../components/ui/GoogleMapsWithDirection";
 import VendorDashboardNavbar from "../../../components/ui/Vendor/VendorDashboardNavbar";
@@ -45,8 +45,11 @@ import {
   fetchOngoingJobs,
   fetchUpcomingJobs,
   fetchVendorAssignedJobs,
+  fetchVendorDrivers,
+  fetchVendorFleet,
   startBooking,
 } from "../../../redux/slices/vendorSlice";
+import Select from "react-select";
 
 function VendorDashboardHomePage() {
   const {
@@ -58,6 +61,8 @@ function VendorDashboardHomePage() {
     ongoingBookings,
     isGetBookingByReferenceLoading,
     bookingFetchedByReference,
+    vendorDrivers,
+    vendorFleet,
   } = useSelector((store) => store.vendor);
 
   const dispatch = useDispatch();
@@ -94,11 +99,17 @@ function VendorDashboardHomePage() {
 
   // FUNCTION: Handles accepting a booking
   async function handleAcceptBooking() {
+    if (!assignedDriver || !assignedCar) {
+      toast.error("You must assign both a car and a driver");
+      return;
+    }
     dispatch(
       acceptBooking({
         token,
         vendorId: vendor?._id,
         bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
+        driverId: assignedDriver?.value,
+        fleetId: assignedCar?.value,
       })
     );
     setIsAssignedBookingDetailsModalOpen(false);
@@ -146,9 +157,42 @@ function VendorDashboardHomePage() {
     }, 1500);
   }
 
+  // accept job states
+  const [assignedCar, setAssignedCar] = useState();
+  const [assignedDriver, setAssignedDriver] = useState();
+
   useEffect(() => {
-    console.log("VENDOR FROM DASHBOARD:", vendor);
-  }, [vendor]);
+    dispatch(fetchVendorDrivers(token));
+    dispatch(fetchVendorFleet(token));
+  }, [token]);
+
+  // Format cars
+  const [carOptions, setCarOptions] = useState();
+  useEffect(() => {
+    let updatedCarData = [];
+    vendorFleet?.forEach((car) => {
+      updatedCarData.push({
+        value: car?._id,
+        label: `${car?.carName} ${car?.carModel} (${car?.carType})`,
+      });
+    });
+
+    setCarOptions(updatedCarData);
+  }, [vendorFleet]);
+
+  // Format drivers
+  const [driverOptions, setDriverOptions] = useState();
+  useEffect(() => {
+    let updatedDriverData = [];
+    vendorDrivers?.forEach((driver) => {
+      updatedDriverData.push({
+        value: driver?._id,
+        label: `${driver?.firstName} ${driver?.lastName}`,
+      });
+    });
+
+    setDriverOptions(updatedDriverData);
+  }, [vendorDrivers]);
 
   return (
     <div className="">
@@ -309,12 +353,102 @@ function VendorDashboardHomePage() {
                           </span>
                         </div>
                       </div>
-                      // Add driver and car details form here
+
                       {/* Driver Details */}
-                      {(!bookingFetchedByReference?.hasDriverAccepted ||
-                        !bookingFetchedByReference?.hasVendorAccepted) && (
+                      {bookingFetchedByReference?.bookingStatus ===
+                        "Awaiting response" && (
                         <div className="mt-5">
-                          <h2 className="text-xl text-center font-semibold">
+                          <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
+                            {/* Assign Car */}
+                            <div className="flex flex-col gap-y-1 w-full">
+                              <label htmlFor="car" className="text-sm">
+                                Assign a car
+                              </label>
+                              <Select
+                                value={assignedCar}
+                                onChange={(value) => {
+                                  setAssignedCar(value);
+                                }}
+                                options={carOptions}
+                                styles={{
+                                  control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    borderColor: state.isFocused
+                                      ? "transparent"
+                                      : "transparent",
+                                    borderWidth: state.isFocused ? "0" : "0",
+                                    backgroundColor: "transparent",
+                                    position: "relative",
+                                    zIndex: 80,
+                                    width: "100%",
+                                    height: "100%",
+                                  }),
+
+                                  placeholder: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    // fontSize: ".75rem",
+                                  }),
+
+                                  menuList: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    // fontSize: ".75rem",
+                                  }),
+
+                                  input: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    // fontSize: ".75rem",
+                                  }),
+                                }}
+                                placeholder="Assign a car"
+                                className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+                              />
+                            </div>
+                            {/* Assign Driver */}
+                            <div className="flex flex-col gap-y-1 w-full">
+                              <label htmlFor="car" className="text-sm">
+                                Assign a driver
+                              </label>
+                              <Select
+                                value={assignedDriver}
+                                onChange={(value) => {
+                                  setAssignedDriver(value);
+                                }}
+                                options={driverOptions}
+                                styles={{
+                                  control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    borderColor: state.isFocused
+                                      ? "transparent"
+                                      : "transparent",
+                                    borderWidth: state.isFocused ? "0" : "0",
+                                    backgroundColor: "transparent",
+                                    position: "relative",
+                                    zIndex: 80,
+                                    width: "100%",
+                                    height: "100%",
+                                  }),
+
+                                  placeholder: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    // fontSize: ".75rem",
+                                  }),
+
+                                  menuList: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    // fontSize: ".75rem",
+                                  }),
+
+                                  input: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    // fontSize: ".75rem",
+                                  }),
+                                }}
+                                placeholder="Assign a driver"
+                                className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+                              />
+                            </div>
+                          </div>
+                          <h2 className="text-xl text-center font-semibold mt-4">
                             Accept Or Decline Job?
                           </h2>
 
@@ -1428,13 +1562,16 @@ function VendorDashboardHomePage() {
                           <div className="flex items-baseline justify-between">
                             <div className="flex items-center gap-x-2">
                               <p className="font-medium">
-                                Recent Bookings - {upcomingBookings?.length}
+                                Scheduled Bookings - {upcomingBookings?.length}
                               </p>
                               <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                             </div>
-                            <p className="text-xs underline offset-7">
+                            <Link
+                              to="/vendor/dashboard/bookings"
+                              className="text-xs underline offset-7"
+                            >
                               See All
-                            </p>
+                            </Link>
                           </div>
 
                           <div className="overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">

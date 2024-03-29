@@ -16,6 +16,9 @@ function DriverDashboardAccountPage() {
   const { token, isLoading, driver } = useSelector((store) => store.driver);
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   // Page options
   const [isContactInformation, setIsContactInformation] = useState(true);
   const [isPersonalDetails, setIsPersonalDetails] = useState(false);
@@ -32,13 +35,20 @@ function DriverDashboardAccountPage() {
     <div className="">
       <ToastContainer />
       {/* Navbar here */}
-      <DriverDashboardNavbar link="account" />
+      <DriverDashboardNavbar
+        link="account"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">
-        <div className="px-7 py-5 relative">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+        <div className="px-7 py-5 relative z-0">
           {/* Top bar */}
-          <DriverTopBar />
+          <DriverTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
@@ -46,9 +56,9 @@ function DriverDashboardAccountPage() {
               <div className="flex items-center gap-x-2">
                 <div className="h-24 w-24 rounded-full overflow-hidden">
                   <img
-                    src={profilePicPlaceholder}
-                    alt="Driver's full name"
-                    className="w-full h-full object-cover"
+                    src={driver?.image}
+                    alt={`${driver?.firstName} ${driver?.lastName}`}
+                    className="h-full w-full object-cover"
                   />
                 </div>
 

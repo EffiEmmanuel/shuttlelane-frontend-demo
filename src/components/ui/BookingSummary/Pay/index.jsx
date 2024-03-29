@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // Images
 import paypal from "../../../../assets/logos/paypal.png";
 import flutterwave from "../../../../assets/logos/flutterwave.png";
@@ -10,15 +10,33 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Flutterwave payment
 import { closePaymentModal, useFlutterwave } from "flutterwave-react-v3";
-import { createBooking } from "../../../../redux/slices/userSlice";
+// Stripe payment
+import { loadStripe } from "@stripe/stripe-js";
+
+import {
+  createBooking,
+  fetchBookingByReference,
+  setBookingId,
+  setPaymentStatus,
+  setPaymentGateway,
+} from "../../../../redux/slices/userSlice";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import PayPal from "./PayPal";
+import { PaystackButton } from "react-paystack";
+import PaystackPop from "@paystack/inline-js";
+import { useNavigate } from "react-router-dom";
 
 export default function Pay(props) {
+  const navigate = useNavigate();
   // Button states
   const [isFlutterwave, setIsFlutterwave] = useState(false);
   const [isPaystack, setIsPaystack] = useState(false);
   const [isPaypal, setIsPaypal] = useState(false);
   const [isStripe, setIsStripe] = useState(false);
+
+  // PayPal button ref
+  const paypalRef = useRef();
 
   // Fetch states from redux slice
   const {
@@ -28,10 +46,10 @@ export default function Pay(props) {
     userCurrency,
     bookingTotal,
     createBookingStatusCode,
+    justCreatedBooking,
   } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
-  // FLWPUBK-4e040f92b25e6e3615d680449918aeb5-X
   const [flutterwaveConfig, setFlutterwaveConfig] = useState();
   const handleFlutterPayment = useFlutterwave({
     public_key: process.env.REACT_APP_FLUTTERWAVE_KEY,
@@ -40,20 +58,154 @@ export default function Pay(props) {
     currency: "NGN",
     payment_options: "card,mobilemoney,ussd",
     customer: {
-      email: "user@gmail.com",
-      phone_number: "07029558155",
-      name: "john doe",
+      email: `${justCreatedBooking?.user?.email ?? justCreatedBooking?.email}`,
+      phone_number: `${
+        justCreatedBooking?.user?.mobile ?? justCreatedBooking?.mobile
+      }`,
+      name: `${
+        justCreatedBooking?.user?.firstName ?? justCreatedBooking?.firstName
+      } ${justCreatedBooking?.user?.lastName ?? justCreatedBooking?.lastName}`,
     },
     meta: { counsumer_id: "7898", consumer_mac: "kjs9s8ss7dd" },
     customizations: {
-      title: "my Payment Title",
-      description: "Payment for items in cart",
-      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+      title: "Shuttlelane Limited",
+      description: `Payment for ${justCreatedBooking?.bookingType}`,
+      logo: "https://res.cloudinary.com/shuttlelane/image/upload/v1711736954/jlkxdbklxpilwtriq14h.png",
     },
   });
 
-  async function handleFlutterwavePayment() {
+  // Stripe payment handler
+  async function handleStripePayment() {
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+
+    console.log("JUST CREATED 2 BOOKING:::::", justCreatedBooking);
+
+    const category = `${
+      justCreatedBooking?.bookingReference?.split("-")[0] == "AT"
+        ? "Airport Transfer Booking"
+        : justCreatedBooking?.bookingReference?.split("-")[0] == "CR"
+        ? "Car Rental Booking"
+        : justCreatedBooking?.bookingReference?.split("-")[0] == "PP"
+        ? "Priority Pass Booking"
+        : "Visa On Arrival Booking"
+    }`;
+
+    console.log("CATEGORY:", category);
+
+    const cart = [
+      {
+        id: justCreatedBooking?.bookingReference,
+        category: category,
+        image:
+          justCreatedBooking?.bookingReference?.split("-")[0] == "AT"
+            ? "https://res.cloudinary.com/shuttlelane/image/upload/v1711374305/oaze6ojhup0jxi7yuqng.svg"
+            : justCreatedBooking?.bookingReference?.split("-")[0] == "CR"
+            ? "https://res.cloudinary.com/shuttlelane/image/upload/v1711374637/gxcuakga3gznyrl7zdtd.svg"
+            : justCreatedBooking?.bookingReference?.split("-")[0] == "PP"
+            ? "https://res.cloudinary.com/shuttlelane/image/upload/v1711374598/dtopiaszjxldz365b8pq.svg"
+            : "https://res.cloudinary.com/shuttlelane/image/upload/v1711374666/flaflpn6dai40jyupfop.svg",
+
+        name: category,
+        price: Number(props?.bookingTotal),
+        quantity: 1,
+      },
+    ];
+
+    console.log("CART:", cart);
+
+    const body = {
+      products: cart,
+      bookingId: justCreatedBooking?.bookingReference,
+    };
+    console.log("PRODIUSTS:", body);
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    await axios
+      .post("http://localhost:3001/api/v1/payments/stripe/create-intent", body)
+      .then((res) => {
+        console.log("RESPONSE FROM FRONTEND:", res.data);
+        const result = stripe
+          .redirectToCheckout({
+            sessionId: res.data?.id,
+          })
+          .then((res) => {
+            dispatch(setPaymentStatus("Successful"));
+            dispatch(setPaymentGateway("Stripe"));
+            dispatch(setBookingId(justCreatedBooking?._id));
+            console.log("HELLO FROM THE ON SUCCESS FUNCTION");
+            navigate(
+              `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success`
+            );
+          })
+          .catch((error) => {
+            dispatch(setPaymentStatus("Failed"));
+            dispatch(setPaymentGateway("Stripe"));
+            dispatch(setBookingId(justCreatedBooking?._id));
+            console.log("HELLO FROM THE ON FAILED FUNCTION");
+            navigate(
+              `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed`
+            );
+          });
+      })
+      .catch((error) => {
+        console.log("ERROR FROM FRONTEND:", error);
+        dispatch(setPaymentStatus("Failed"));
+        dispatch(setPaymentGateway("Stripe"));
+        dispatch(setBookingId(justCreatedBooking?._id));
+        console.log("HELLO FROM THE ON FAILED FUNCTION");
+        navigate(
+          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed`
+        );
+      });
+  }
+
+  // Paypal payment states
+  const [isPayPalActive, setIsPaypalActive] = useState(false);
+
+  // PayStack payment states
+  const [isPayStackActive, setIsPayStackActive] = useState(false);
+
+  async function payWithPayStack() {
+    const payStack = new PaystackPop();
+    console.log("HIIIIII");
+    payStack.newTransaction({
+      key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+      amount: Number(justCreatedBooking?.bookingTotal) * 100,
+      email: justCreatedBooking?.email,
+      firstName: `${
+        justCreatedBooking?.firstName ?? justCreatedBooking?.user?.firstName
+      }`,
+      lastName: `${
+        justCreatedBooking?.lastName ?? justCreatedBooking?.user?.lastName
+      }`,
+      phone: justCreatedBooking?.mobile ?? justCreatedBooking?.user?.mobile,
+      onSuccess: (transaction) => {
+        dispatch(setPaymentStatus("Successful"));
+        dispatch(setPaymentGateway("PayStack"));
+        dispatch(setBookingId(justCreatedBooking?._id));
+        console.log("HELLO FROM THE ON SUCCESS FUNCTION");
+        navigate(
+          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success`
+        );
+      },
+      onClose: () => {
+        dispatch(setPaymentStatus("Failed"));
+        dispatch(setPaymentGateway("PayStack"));
+        dispatch(setBookingId(justCreatedBooking?._id));
+        navigate(
+          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed`
+        );
+      },
+    });
+  }
+
+  async function handlePayment() {
     console.log("the user currency:", userCurrency);
+    console.log("booking total:", bookingTotal);
+    console.log("booking type:", bookingType);
     // First of all create the booking then, proceed to make payment
     if (bookingType !== "Visa") {
       dispatch(
@@ -90,6 +242,14 @@ export default function Pay(props) {
     console.log("USER CURRENCT OVER HERE IS:", userCurrency);
   }, [userCurrency]);
 
+  // BUSINESS ACCOUNT
+  // sb-paec8675677@business.example.com
+  // 1Q.=hVbe
+
+  // PERSONAL ACCOUNT
+  // sb-cemwy668215@personal.example.com
+  // GVF3z.bi
+
   useEffect(() => {
     if (createBookingStatusCode == 201) {
       // Handle Payment
@@ -105,16 +265,22 @@ export default function Pay(props) {
           },
         });
       } else if (isPaystack) {
+        payWithPayStack();
+        console.log("JUST CREATED BOOKING:", justCreatedBooking);
       } else if (isPaypal) {
+        setIsPaypalActive(true);
       } else if (isStripe) {
+        handleStripePayment();
       } else {
         toast.error("Please select a valid payment option");
       }
     }
-  }, [createBookingStatusCode]);
+  }, [createBookingStatusCode, justCreatedBooking]);
 
   return (
     <div className="bg-white p-7 mt-4 relative">
+      {/* Render PayPal Component Here */}
+
       <ToastContainer />
       {props?.isPaymentDisabled && (
         <div className="flex text-shuttlelaneBlack flex-col gap-y-1 items-center justify-center p-3 absolute w-full h-full bg-white bg-opacity-20 backdrop-blur-sm top-0 left-0 z-10">
@@ -182,44 +348,8 @@ export default function Pay(props) {
                 />
               </button>
             </>
-          ) : (
+          ) : userCurrency?.currencyLabel == "Dollars" ? (
             <>
-              {/* <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isFlutterwave && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(true);
-                  setIsPaystack(false);
-                  setIsPaypal(false);
-                  setIsStripe(false);
-                }}
-              >
-                <img
-                  src={flutterwave}
-                  alt=""
-                  className="object-contain lg:w-[140px] w-[140px]"
-                />
-              </button> */}
-
-              {/* <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isPaystack && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(false);
-                  setIsPaystack(true);
-                  setIsPaypal(false);
-                  setIsStripe(false);
-                }}
-              >
-                <img
-                  src={"https://www.cdnlogo.com/logos/p/27/paystack.svg"}
-                  alt=""
-                  className="object-contain lg:w-[140px] w-[140px]"
-                />
-              </button> */}
-
               <button
                 className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
                   isPaypal && "border-shuttlelanePurple border-[2px]"
@@ -253,6 +383,64 @@ export default function Pay(props) {
                   src={stripe}
                   alt=""
                   className="object-contain lg:w-[80px] w-[80px]"
+                />
+              </button>
+            </>
+          ) : userCurrency?.currencyLabel == "Pounds" ? (
+            <>
+              <button
+                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                  isStripe && "border-shuttlelanePurple border-[2px]"
+                }`}
+                onClick={(e) => {
+                  setIsFlutterwave(false);
+                  setIsPaystack(false);
+                  setIsPaypal(false);
+                  setIsStripe(true);
+                }}
+              >
+                <img
+                  src={stripe}
+                  alt=""
+                  className="object-contain lg:w-[80px] w-[80px]"
+                />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                  isStripe && "border-shuttlelanePurple border-[2px]"
+                }`}
+                onClick={(e) => {
+                  setIsFlutterwave(false);
+                  setIsPaystack(false);
+                  setIsPaypal(false);
+                  setIsStripe(true);
+                }}
+              >
+                <img
+                  src={stripe}
+                  alt=""
+                  className="object-contain lg:w-[80px] w-[80px]"
+                />
+              </button>
+
+              <button
+                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                  isFlutterwave && "border-shuttlelanePurple border-[2px]"
+                }`}
+                onClick={(e) => {
+                  setIsFlutterwave(true);
+                  setIsPaystack(false);
+                  setIsPaypal(false);
+                  setIsStripe(false);
+                }}
+              >
+                <img
+                  src={flutterwave}
+                  alt=""
+                  className="object-contain lg:w-[140px] w-[140px]"
                 />
               </button>
             </>
@@ -300,16 +488,26 @@ export default function Pay(props) {
 
       <div className="flex justify-center mt-10">
         {(isFlutterwave || isPaystack || isPaypal || isStripe) && (
-          <button
-            onClick={(e) => handleFlutterwavePayment(e)}
-            className={`bg-green-500 lg:w-[40%] w-full text-white animate-pulse text-sm rounded-md p-2 flex justify-center items-center`}
-          >
-            {isLoading ? (
-              <ImSpinner2 size={20} className="text-white animate-spin" />
-            ) : (
-              <span>Book Now</span>
+          <>
+            {!isPayPalActive && (
+              <button
+                onClick={(e) => handlePayment(e)}
+                className={`bg-green-500 lg:w-[40%] w-full text-white animate-pulse text-sm rounded-md p-2 flex justify-center items-center`}
+              >
+                {isLoading ? (
+                  <ImSpinner2 size={20} className="text-white animate-spin" />
+                ) : (
+                  <span>Book Now</span>
+                )}
+              </button>
             )}
-          </button>
+            {isPayPalActive && (
+              <PayPal
+                justCreatedBooking={justCreatedBooking}
+                bookingTotal={bookingTotal}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

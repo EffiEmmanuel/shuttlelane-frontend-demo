@@ -1,7 +1,12 @@
 import React from "react";
+import BookingDetails from "../../reusable/BookingDetails";
 const AdminBookingEndedEmailTemplate = _ref => {
   let {
-    bookingReference
+    bookingReference,
+    isVendor,
+    vendor,
+    driver,
+    bookingRate
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -38,7 +43,21 @@ const AdminBookingEndedEmailTemplate = _ref => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "Please review the trip details and ensure all necessary follow-up actions are taken."), /*#__PURE__*/React.createElement("p", {
+  }, "Please review the trip details and ensure all necessary follow-up actions are taken. Find below, ", isVendor ? "Vendor's" : "Driver's", " ", "account details:"), isVendor ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BookingDetails, {
+    details: {
+      "AMOUNT TO SEND:": bookingRate,
+      "BANK NAME:": vendor === null || vendor === void 0 ? void 0 : vendor.bank,
+      "ACCOUNT NAME:": vendor === null || vendor === void 0 ? void 0 : vendor.accountName,
+      "ACCOUNT NUMBER:": vendor === null || vendor === void 0 ? void 0 : vendor.accountNumber
+    }
+  })) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BookingDetails, {
+    details: {
+      "AMOUNT TO SEND:": bookingRate,
+      "BANK NAME:": driver === null || driver === void 0 ? void 0 : driver.bank,
+      "ACCOUNT NAME:": driver === null || driver === void 0 ? void 0 : driver.accountName,
+      "ACCOUNT NUMBER:": driver === null || driver === void 0 ? void 0 : driver.accountNumber
+    }
+  })), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#333"
     }

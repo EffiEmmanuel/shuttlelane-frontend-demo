@@ -12,6 +12,9 @@ function VendorDashboardEarningsPage() {
   );
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   useEffect(() => {
     if (token) {
       dispatch(fetchVendorEarnings({ vendorId: vendor?._id, token }));
@@ -22,13 +25,20 @@ function VendorDashboardEarningsPage() {
     <div className="">
       <ToastContainer />
       {/* Navbar here */}
-      <VendorDashboardNavbar link="earnings" />
+      <VendorDashboardNavbar
+        link="earnings"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-white text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <VendorTopBar />
+          <VendorTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">

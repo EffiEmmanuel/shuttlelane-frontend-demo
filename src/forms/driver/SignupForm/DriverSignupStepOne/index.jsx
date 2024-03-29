@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { validateFields } from "../../../../util";
 import { updateDriver } from "../../../../redux/slices/driverSlice";
 import { ToastContainer, toast } from "react-toastify";
+import { MdOutlineAddAPhoto } from "react-icons/md";
+import { FaXmark } from "react-icons/fa6";
 
 function DriverSignupStepOne({
   isStepOne,
@@ -69,6 +71,7 @@ function DriverSignupStepOne({
     console.log("HELLO");
     e.preventDefault();
     const areFieldsEmpty = validateFields([
+      stepOneStates?.image,
       stepOneStates?.firstName,
       stepOneStates?.middleName,
       stepOneStates?.lastName,
@@ -106,6 +109,24 @@ function DriverSignupStepOne({
     }
   }
 
+  // Handle image
+  const [renderImage, setRenderImage] = useState(null);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    console.log("FILE:", file);
+    stepOneStates?.setImage(file);
+
+    reader.onloadend = () => {
+      setRenderImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div
       className={`${!isUpdateDriverAccount && "px-10 pt-10"}`}
@@ -123,6 +144,47 @@ function DriverSignupStepOne({
 
       {/* FORM */}
       <form className="text-shuttlelaneBlack mt-10 flex flex-col gap-y-5">
+        {/* Image */}
+        <div className="w-full flex flex-col">
+          <label htmlFor="profilePicture" className="text-sm">
+            Profile Picture
+          </label>
+          <div className="w-full relative border-dashed border-[1px] border-gray-300 rounded-lg h-24 flex flex-col items-center justify-center overflow-hidden">
+            <>
+              <MdOutlineAddAPhoto size={24} className="text-gray-300" />
+              <small className="text-gray-300 text-center">
+                Click to Insert Profile Picture
+              </small>
+              <input
+                className="absolute top-0 bg-transparent w-full h-full opacity-0 cursor-pointer"
+                type="file"
+                name="image"
+                id="image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </>
+
+            {renderImage && stepOneStates?.image && (
+              <div className="absolute w-full h-full top-0 flex justify-center items-center">
+                <FaXmark
+                  onClick={() => {
+                    setRenderImage(null);
+                    stepOneStates?.setImage(null);
+                  }}
+                  size={16}
+                  className="absolute top-3 right-3 cursor-pointer"
+                />
+                <img
+                  src={renderImage}
+                  alt="Uploaded"
+                  className="object-cover h-full w-full z-10"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* First Name */}
         <div className="flex flex-col gap-y-1">
           <label htmlFor="firstName" className="text-sm">

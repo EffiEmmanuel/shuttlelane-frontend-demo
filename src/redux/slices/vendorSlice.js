@@ -488,23 +488,26 @@ export const createVendorCar = createAsyncThunk(
         carYear: payload?.carYear,
         carColor: payload?.carColor,
         carPlateNumber: payload?.carPlateNumber,
+        vendor: payload?.vendor,
       }),
     })
       .then((res) => res.json())
-      .catch((err) => console.log("CREATE VEHICLE CLASS ERROR:", err));
+      .catch((err) => console.log("CREATE VENDOR CAR / FLEET ERROR:", err));
   }
 );
 
 // FUNCTION: This function fetches all vendor drivers
 export const fetchVendorDrivers = createAsyncThunk(
   "vendor/drivers/getAll",
-  async (token) => {
-    console.log("token:", token);
-    return fetch(`http://localhost:3001/api/v1/vendors/drivers`, {
-      headers: {
-        token: `Bearer ${JSON.parse(token)}`,
-      },
-    })
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/vendors/drivers?vendorId=${payload?.vendorId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH VENDOR DRIVERS ERROR:", err));
   }
@@ -513,14 +516,110 @@ export const fetchVendorDrivers = createAsyncThunk(
 // FUNCTION: This function fetches all vendor fleet
 export const fetchVendorFleet = createAsyncThunk(
   "vendor/fleet/getAll",
-  async (token) => {
-    return fetch(`http://localhost:3001/api/v1/vendors/fleet`, {
-      headers: {
-        token: `Bearer ${JSON.parse(token)}`,
-      },
-    })
+  async (payload) => {
+    return fetch(
+      `http://localhost:3001/api/v1/vendors/fleet?vendorId=${payload?.vendorId}`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH VENDOR FLEET ERROR:", err));
+  }
+);
+
+// FUNCTION: This function updates a vendor driver
+export const updateVendorDriver = createAsyncThunk(
+  "vendor/drivers/updateOne",
+  async (payload) => {
+    console.log("HELLO 5:", payload);
+
+    return fetch(
+      `http://localhost:3001/api/v1/vendors/drivers/${payload?.driverId}/${payload?.values?.vendor}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+        body: JSON.stringify(payload?.values),
+      }
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        console.log("UPDATE VENDOR DRIVER ERROR:", error);
+      });
+  }
+);
+
+// FUNCTION: This function updates a vendor fleet
+export const updateVendorFleet = createAsyncThunk(
+  "vendor/fleet/updateOne",
+  async (payload) => {
+    console.log("HELLO 5:", payload?.values);
+    console.log("HELLO 6:", payload);
+
+    return fetch(
+      `http://localhost:3001/api/v1/vendors/fleet/update/${payload?.fleetId}/${payload?.values?.vendor}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+        body: JSON.stringify(payload?.values),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE VENDOR FLEET ERROR:", err));
+  }
+);
+
+// FUNCTION: This function deletes a vendor driver
+export const deleteVendorDriver = createAsyncThunk(
+  "vendor/drivers/deleteOne",
+  async (payload) => {
+    console.log("HELLO 5:", payload);
+
+    return fetch(
+      `http://localhost:3001/api/v1/vendors/drivers/${payload?.values?.vendor}/${payload?.driverId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        console.log("DELETE VENDOR DRIVER ERROR:", error);
+      });
+  }
+);
+
+// FUNCTION: This function deletes a vendor fleet
+export const deleteVendorFleet = createAsyncThunk(
+  "vendor/fleet/deleteOne",
+  async (payload) => {
+    console.log("HELLO 5:", payload);
+
+    return fetch(
+      `http://localhost:3001/api/v1/vendors/fleet/${payload?.vendorId}/${payload?.fleetId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        console.log("DELETE VENDOR FLEET ERROR:", error);
+      });
   }
 );
 
@@ -601,12 +700,9 @@ export const vendorSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(signupVendor.fulfilled, (state, action) => {
-        if (action.payload?.status == 200) {
+        if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
         } else {
-          //   toast.error(
-          //     `Sign up successful. However, we encountred an issue sending you an OTP. Please check your internet connection and try again`
-          //   );
           toast.error(action.payload?.message);
         }
         state.vendor = action.payload?.vendor;
@@ -1072,6 +1168,78 @@ export const vendorSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchVendorFleet.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // updateVendorFleet AsyncThunk states
+      .addCase(updateVendorFleet.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateVendorFleet.fulfilled, (state, action) => {
+        console.log("FETCH VENDOR FLEET ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 201) {
+          state.vendorFleet = action.payload?.vendorFleet;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateVendorFleet.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // deleteVendorFleet AsyncThunk states
+      .addCase(deleteVendorFleet.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteVendorFleet.fulfilled, (state, action) => {
+        console.log("DELETE VENDOR FLEET ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 201) {
+          state.vendorFleet = action.payload?.vendorFleet;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteVendorFleet.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // updateVendorDriver AsyncThunk states
+      .addCase(updateVendorDriver.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateVendorDriver.fulfilled, (state, action) => {
+        console.log("UPDATE VENDOR DRIVER ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 201) {
+          state.vendorDrivers = action.payload?.vendorDrivers;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateVendorDriver.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // deleteVendorDriver AsyncThunk states
+      .addCase(deleteVendorDriver.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteVendorDriver.fulfilled, (state, action) => {
+        console.log("DELETE VENDOR DRIVER ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 201) {
+          state.vendorDrivers = action.payload?.vendorDrivers;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteVendorDriver.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

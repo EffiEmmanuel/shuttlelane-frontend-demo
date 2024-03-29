@@ -133,6 +133,10 @@ function PriorityPassForm() {
           bookingType: "Priority",
           bookingDetails: {
             pickupLocation: pickupLocationInput,
+            pickupCoordinates: {
+              lat: pickupLocation?.latitude,
+              lng: pickupLocation?.longitude,
+            },
             pickupDate,
             pickupTime,
             days,

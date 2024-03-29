@@ -373,6 +373,75 @@ function DriverDashboardHomePage() {
                           )}
                         </div>
                       )}
+
+                      {/* Car Details */}
+                      <div className="mt-5">
+                        <h2 className="text-xl font-semibold">Car Details</h2>
+                        {bookingFetchedByReference?.assignedDriver ? (
+                          <div className="flex flex-col gap-y-1">
+                            <span className="text-sm font-semibold">
+                              Type:{" "}
+                              <span className="text-sm font-normal">
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carType ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carType}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Name:{" "}
+                              <span className="text-sm font-normal">
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carName ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carName}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Model:{" "}
+                              <span className="text-sm font-normal">
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carModel ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carModel}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Year:{" "}
+                              <span className="text-sm font-normal">
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carYear ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carYear}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Plate Number:{" "}
+                              <span className="text-sm font-normal">
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carPlateNumber ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carPlateNumber}
+                              </span>{" "}
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Color:{" "}
+                              <span className="text-sm font-normal">
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carColor ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carColor}
+                              </span>{" "}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="w-full">
+                            <i>
+                              A car has not yet been assigned to this booking
+                            </i>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -384,10 +453,6 @@ function DriverDashboardHomePage() {
                         Car Rental Booking
                       </span>
                       <div className="flex items-center gap-x-1">
-                        <span className="text-sm">
-                          {bookingFetchedByReference?.booking?.days} days
-                        </span>
-                        <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(
                             bookingFetchedByReference?.booking?.pickupDate
@@ -402,9 +467,9 @@ function DriverDashboardHomePage() {
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {bookingFetchedByReference?.bookingCurrency?.symbol}
+                          ₦
                           {Intl.NumberFormat("en-US", {}).format(
-                            bookingFetchedByReference?.bookingTotal
+                            bookingFetchedByReference?.bookingRate
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
@@ -492,71 +557,73 @@ function DriverDashboardHomePage() {
                           </span>
                         </div>
                       </div>
-
                       {/* Driver Details */}
-                      <div className="mt-5">
-                        <h2 className="text-xl font-semibold">
-                          Driver Details
-                        </h2>
+                      {!bookingFetchedByReference?.hasDriverAccepted && (
+                        <div className="mt-5">
+                          <h2 className="text-xl text-center font-semibold">
+                            Accept Or Decline Job?
+                          </h2>
 
-                        {bookingFetchedByReference?.assignedDriver ? (
-                          <div className="flex flex-col gap-y-1">
-                            <div className="flex items-center gap-x-2">
-                              <div className="h-16 w-16 rounded-full overflow-hidden">
-                                <img
-                                  src={
-                                    bookingFetchedByReference?.assignedDriver
-                                      ?.image
-                                  }
-                                  alt={`${bookingFetchedByReference?.assignedDriver?.firstName} ${bookingFetchedByReference?.assignedDriver?.lastName}`}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
+                          <div className="mt-4 w-full flex flex-row items-center justify-center gap-x-7">
+                            <button
+                              onClick={() => handleDeclineBooking()}
+                              className="h-14 w-14 rounded-full bg-red-500 flex items-center justify-center"
+                            >
+                              <FaXmark size={20} className="text-white" />
+                            </button>
+                            <button
+                              onClick={() => handleAcceptBooking()}
+                              className="h-14 w-14 rounded-full bg-green-500 flex items-center justify-center"
+                            >
+                              <FaCheck size={20} className="text-white" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
 
-                              <div className="flex flex-col">
-                                <span className="text-sm font-semibold">
-                                  Full Name:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.firstName
-                                    }{" "}
-                                    $
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.lastName
-                                    }
-                                  </span>{" "}
-                                </span>
-                                <span className="text-sm font-semibold">
-                                  Email Address:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.email
-                                    }
-                                  </span>{" "}
-                                </span>
-                                <span className="text-sm font-semibold">
-                                  Phone Number:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.mobile
-                                    }
-                                  </span>{" "}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-full">
-                            <i>
-                              A driver has not yet been assigned to this booking
-                            </i>
-                          </div>
-                        )}
-                      </div>
+                      {/* Swipe to start booking */}
+                      {bookingFetchedByReference?.bookingStatus ==
+                        "Scheduled" && (
+                        <div className="mt-5">
+                          {!isLoading && (
+                            <SwipeButton
+                              onSwipe={() => handleStartBooking()}
+                              buttonText="Start Booking"
+                              buttonBg="bg-green-400"
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {isLoading && (
+                            <ImSpinner2
+                              size={24}
+                              className="text-shuttlelanePurple animate-spin"
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {/* Swipe to end booking */}
+                      {bookingFetchedByReference?.bookingStatus ==
+                        "Ongoing" && (
+                        <div className="mt-5">
+                          {!isLoading && (
+                            <SwipeButton
+                              onSwipe={() => handleEndBooking()}
+                              buttonText="End Booking"
+                              buttonBg="bg-red-400"
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {isLoading && (
+                            <ImSpinner2
+                              size={24}
+                              className="text-shuttlelanePurple animate-spin"
+                            />
+                          )}
+                        </div>
+                      )}
                     </div>
                     {isLoading && (
                       <ImSpinner2
@@ -711,69 +778,72 @@ function DriverDashboardHomePage() {
                       </div>
 
                       {/* Driver Details */}
-                      <div className="mt-5">
-                        <h2 className="text-xl font-semibold">
-                          Driver Details
-                        </h2>
+                      {!bookingFetchedByReference?.hasDriverAccepted && (
+                        <div className="mt-5">
+                          <h2 className="text-xl text-center font-semibold">
+                            Accept Or Decline Job?
+                          </h2>
 
-                        {bookingFetchedByReference?.assignedDriver ? (
-                          <div className="flex flex-col gap-y-1">
-                            <div className="flex items-center gap-x-2">
-                              <div className="h-16 w-16 rounded-full overflow-hidden">
-                                <img
-                                  src={
-                                    bookingFetchedByReference?.assignedDriver
-                                      ?.image
-                                  }
-                                  alt={`${bookingFetchedByReference?.assignedDriver?.firstName} ${bookingFetchedByReference?.assignedDriver?.lastName}`}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
+                          <div className="mt-4 w-full flex flex-row items-center justify-center gap-x-7">
+                            <button
+                              onClick={() => handleDeclineBooking()}
+                              className="h-14 w-14 rounded-full bg-red-500 flex items-center justify-center"
+                            >
+                              <FaXmark size={20} className="text-white" />
+                            </button>
+                            <button
+                              onClick={() => handleAcceptBooking()}
+                              className="h-14 w-14 rounded-full bg-green-500 flex items-center justify-center"
+                            >
+                              <FaCheck size={20} className="text-white" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
 
-                              <div className="flex flex-col">
-                                <span className="text-sm font-semibold">
-                                  Full Name:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.firstName
-                                    }{" "}
-                                    $
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.lastName
-                                    }
-                                  </span>{" "}
-                                </span>
-                                <span className="text-sm font-semibold">
-                                  Email Address:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.email
-                                    }
-                                  </span>{" "}
-                                </span>
-                                <span className="text-sm font-semibold">
-                                  Phone Number:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.mobile
-                                    }
-                                  </span>{" "}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-full">
-                            <i>
-                              A driver has not yet been assigned to this booking
-                            </i>
-                          </div>
-                        )}
-                      </div>
+                      {/* Swipe to start booking */}
+                      {bookingFetchedByReference?.bookingStatus ==
+                        "Scheduled" && (
+                        <div className="mt-5">
+                          {!isLoading && (
+                            <SwipeButton
+                              onSwipe={() => handleStartBooking()}
+                              buttonText="Start Booking"
+                              buttonBg="bg-green-400"
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {isLoading && (
+                            <ImSpinner2
+                              size={24}
+                              className="text-shuttlelanePurple animate-spin"
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {/* Swipe to end booking */}
+                      {bookingFetchedByReference?.bookingStatus ==
+                        "Ongoing" && (
+                        <div className="mt-5">
+                          {!isLoading && (
+                            <SwipeButton
+                              onSwipe={() => handleEndBooking()}
+                              buttonText="End Booking"
+                              buttonBg="bg-red-400"
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {isLoading && (
+                            <ImSpinner2
+                              size={24}
+                              className="text-shuttlelanePurple animate-spin"
+                            />
+                          )}
+                        </div>
+                      )}
 
                       {/* Car Details */}
                       <div className="mt-5">
@@ -783,55 +853,55 @@ function DriverDashboardHomePage() {
                             <span className="text-sm font-semibold">
                               Type:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.carType
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carType ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carType}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Name:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.carName
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carName ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Model:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.carModel
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carModel ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carModel}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Year:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.carYear
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carYear ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carYear}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Plate Number:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.carPlateNumber
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carPlateNumber ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carPlateNumber}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Color:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.carColor
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carColor ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carColor}
                               </span>{" "}
                             </span>
                           </div>
@@ -1293,22 +1363,43 @@ function DriverDashboardHomePage() {
 
                             <div className="h-auto w-full rounded-lg allRoundBoxShadow overflow-hidden mt-4">
                               <div className="flex items-center justify-center h-[220px] min-h-[220px] max-h-[220px] w-full rounded-tr-lg rounded-tl-lg">
-                                <GoogleMapsWithDirections
-                                  pickupAddress={
-                                    ongoingBookings[0]?.booking?.pickupAddress
-                                  }
-                                  dropoffAddress={
-                                    ongoingBookings[0]?.booking?.dropoffAddress
-                                  }
-                                  pickupCoordinates={
-                                    ongoingBookings[0]?.booking
-                                      ?.pickupCoordinates
-                                  }
-                                  dropoffCoordinates={
-                                    ongoingBookings[0]?.booking
-                                      ?.dropoffCoordinates
-                                  }
-                                />
+                                {ongoingBookings[0]?.bookingType ==
+                                "Airport" ? (
+                                  <GoogleMapsWithDirections
+                                    pickupAddress={
+                                      ongoingBookings[0]?.booking?.pickupAddress
+                                    }
+                                    dropoffAddress={
+                                      ongoingBookings[0]?.booking
+                                        ?.dropoffAddress
+                                    }
+                                    pickupCoordinates={
+                                      ongoingBookings[0]?.booking
+                                        ?.pickupCoordinates
+                                    }
+                                    dropoffCoordinates={
+                                      ongoingBookings[0]?.booking
+                                        ?.dropoffCoordinates
+                                    }
+                                  />
+                                ) : (
+                                  <GoogleMapsWithDirections
+                                    pickupAddress={
+                                      ongoingBookings[0]?.booking?.pickupAddress
+                                    }
+                                    dropoffAddress={
+                                      ongoingBookings[0]?.booking?.pickupAddress
+                                    }
+                                    pickupCoordinates={
+                                      ongoingBookings[0]?.booking
+                                        ?.pickupCoordinates
+                                    }
+                                    dropoffCoordinates={
+                                      ongoingBookings[0]?.booking
+                                        ?.pickupCoordinates
+                                    }
+                                  />
+                                )}
                               </div>
 
                               <div className="flex items-center justify-between p-4">

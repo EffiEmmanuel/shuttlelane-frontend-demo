@@ -123,6 +123,10 @@ function CarRentalForm() {
           bookingType: "Car",
           bookingDetails: {
             pickupAddress: pickupLocationInput,
+            pickupCoordinates: {
+              lat: pickupLocation?.latitude,
+              lng: pickupLocation?.longitude,
+            },
             pickupDate,
             pickupTime,
             days,

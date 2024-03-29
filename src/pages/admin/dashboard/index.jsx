@@ -202,7 +202,7 @@ function AdminDashboardHomePage() {
   const [bookingRate, setBookingRate] = useState();
   async function handleAssignToBooking(e) {
     e.preventDefault();
-    if (isDriver === true) {
+    if (isDriver?.value === true) {
       dispatch(
         assignToJob({
           token,
@@ -466,9 +466,7 @@ function AdminDashboardHomePage() {
                       htmlFor="bookingRate"
                       className="text-sm inline-block p-3 bg-gray-200 h-11 rounded-tl-lg rounded-bl-lg"
                     >
-                      {currentBooking?.bookingCurrency?.symbol
-                        ? currentBooking?.bookingCurrency?.symbol
-                        : "₦"}
+                      ₦
                     </label>
                     <input
                       type="number"
@@ -657,13 +655,13 @@ function AdminDashboardHomePage() {
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver ? (
+                        {currentBooking?.assignedDriver || currentBooking?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
-                                  src={currentBooking?.assignedDriver?.image}
-                                  alt={`${currentBooking?.assignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName}`}
+                                  src={currentBooking?.assignedDriver?.image ?? currentBooking?.vendorAssignedDriver?.image}
+                                  alt={`${currentBooking?.assignedDriver?.firstName ?? currentBooking?.vendorAssignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName ?? currentBooking?.vendorAssignedDriver?.lastName}`}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
@@ -672,20 +670,20 @@ function AdminDashboardHomePage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.firstName}{" "}
-                                    ${currentBooking?.assignedDriver?.lastName}
+                                    {currentBooking?.assignedDriver?.firstName ?? currentBooking?.vendorAssignedDriver?.firstName}{" "}
+                                    ${currentBooking?.assignedDriver?.lastName ?? currentBooking?.vendorAssignedDriver?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email}
+                                    {currentBooking?.assignedDriver?.email ?? currentBooking?.vendorAssignedDriver?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile}
+                                    {currentBooking?.assignedDriver?.mobile ?? currentBooking?.vendorAssignedDriver?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -700,45 +698,53 @@ function AdminDashboardHomePage() {
                         )}
                       </div>
 
-                      {/* Car Details */}
-                      <div className="mt-5">
+                     {/* Car Details */}
+                     <div className="mt-5">
                         <h2 className="text-xl font-semibold">Car Details</h2>
-                        {currentBooking?.assignedDriver ? (
+                        {currentBooking?.assignedDriver ||
+                        currentBooking?.assignedCar ? (
                           <div className="flex flex-col gap-y-1">
                             <span className="text-sm font-semibold">
                               Type:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carType}
+                                {currentBooking?.assignedDriver?.carType ??
+                                  currentBooking?.assignedCar?.carType}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Name:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carName}
+                                {currentBooking?.assignedDriver?.carName ??
+                                  currentBooking?.assignedCar?.carName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Model:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carModel}
+                                {currentBooking?.assignedDriver?.carModel ??
+                                  currentBooking?.assignedCar?.carModel}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Year:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carYear}
+                                {currentBooking?.assignedDriver?.carYear ??
+                                  currentBooking?.assignedCar?.carYear}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Plate Number:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carPlateNumber}
+                                {currentBooking?.assignedDriver
+                                  ?.carPlateNumber ??
+                                  currentBooking?.assignedCar?.carPlateNumber}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Color:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carColor}
+                                {currentBooking?.assignedDriver?.carColor ??
+                                  currentBooking?.assignedCar?.carColor}
                               </span>{" "}
                             </span>
                           </div>
@@ -882,20 +888,31 @@ function AdminDashboardHomePage() {
                           </span>
                         </div>
                       </div>
-
-                      {/* Driver Details */}
+{/* Driver Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver ? (
+                        {currentBooking?.assignedDriver ||
+                        currentBooking?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
-                                  src={currentBooking?.assignedDriver?.image}
-                                  alt={`${currentBooking?.assignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName}`}
+                                  src={
+                                    currentBooking?.assignedDriver?.image ??
+                                    currentBooking?.vendorAssignedDriver?.image
+                                  }
+                                  alt={`${
+                                    currentBooking?.assignedDriver?.firstName ??
+                                    currentBooking?.vendorAssignedDriver
+                                      ?.firstName
+                                  } ${
+                                    currentBooking?.assignedDriver?.lastName ??
+                                    currentBooking?.vendorAssignedDriver
+                                      ?.lastName
+                                  }`}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
@@ -904,20 +921,30 @@ function AdminDashboardHomePage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.firstName}{" "}
-                                    ${currentBooking?.assignedDriver?.lastName}
+                                    {currentBooking?.assignedDriver
+                                      ?.firstName ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.firstName}{" "}
+                                    $
+                                    {currentBooking?.assignedDriver?.lastName ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email}
+                                    {currentBooking?.assignedDriver?.email ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile}
+                                    {currentBooking?.assignedDriver?.mobile ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -1079,20 +1106,31 @@ function AdminDashboardHomePage() {
                           </span>
                         </div>
                       </div>
-
-                      {/* Driver Details */}
+{/* Driver Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver ? (
+                        {currentBooking?.assignedDriver ||
+                        currentBooking?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
-                                  src={currentBooking?.assignedDriver?.image}
-                                  alt={`${currentBooking?.assignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName}`}
+                                  src={
+                                    currentBooking?.assignedDriver?.image ??
+                                    currentBooking?.vendorAssignedDriver?.image
+                                  }
+                                  alt={`${
+                                    currentBooking?.assignedDriver?.firstName ??
+                                    currentBooking?.vendorAssignedDriver
+                                      ?.firstName
+                                  } ${
+                                    currentBooking?.assignedDriver?.lastName ??
+                                    currentBooking?.vendorAssignedDriver
+                                      ?.lastName
+                                  }`}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
@@ -1101,20 +1139,30 @@ function AdminDashboardHomePage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.firstName}{" "}
-                                    ${currentBooking?.assignedDriver?.lastName}
+                                    {currentBooking?.assignedDriver
+                                      ?.firstName ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.firstName}{" "}
+                                    $
+                                    {currentBooking?.assignedDriver?.lastName ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email}
+                                    {currentBooking?.assignedDriver?.email ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile}
+                                    {currentBooking?.assignedDriver?.mobile ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -1132,42 +1180,50 @@ function AdminDashboardHomePage() {
                       {/* Car Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">Car Details</h2>
-                        {currentBooking?.assignedDriver ? (
+                        {currentBooking?.assignedDriver ||
+                        currentBooking?.assignedCar ? (
                           <div className="flex flex-col gap-y-1">
                             <span className="text-sm font-semibold">
                               Type:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carType}
+                                {currentBooking?.assignedDriver?.carType ??
+                                  currentBooking?.assignedCar?.carType}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Name:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carName}
+                                {currentBooking?.assignedDriver?.carName ??
+                                  currentBooking?.assignedCar?.carName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Model:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carModel}
+                                {currentBooking?.assignedDriver?.carModel ??
+                                  currentBooking?.assignedCar?.carModel}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Year:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carYear}
+                                {currentBooking?.assignedDriver?.carYear ??
+                                  currentBooking?.assignedCar?.carYear}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Plate Number:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carPlateNumber}
+                                {currentBooking?.assignedDriver
+                                  ?.carPlateNumber ??
+                                  currentBooking?.assignedCar?.carPlateNumber}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Color:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carColor}
+                                {currentBooking?.assignedDriver?.carColor ??
+                                  currentBooking?.assignedCar?.carColor}
                               </span>{" "}
                             </span>
                           </div>
@@ -1629,6 +1685,15 @@ function AdminDashboardHomePage() {
                 NIN: {currentDriver?.nin}
               </small>
               <small className="text-sm text-gray-400 mt-1">
+                Bank Name: {currentDriver?.bank}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Account Number: {currentDriver?.accountNumber}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Account Name: {currentDriver?.accountName}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
                 Driver's License Number: {currentDriver?.driversLicense}
               </small>
             </div>
@@ -1813,6 +1878,15 @@ function AdminDashboardHomePage() {
               </small>
               <small className="text-sm text-gray-400 mt-1">
                 Fleet Size: {currentVendor?.fleetSize}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Bank Name: {currentVendor?.bank}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Account Number: {currentVendor?.accountNumber}
+              </small>
+              <small className="text-sm text-gray-400 mt-1">
+                Account Name: {currentVendor?.accountName}
               </small>
             </div>
 
@@ -1999,27 +2073,30 @@ function AdminDashboardHomePage() {
                                   <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
                                     <div
                                       className={`h-2 w-2 ${
-                                        booking?.paymentId?.status === "Failed"
+                                        booking?.paymentId?.paymentStatus ===
+                                        "Failed"
                                           ? "bg-red-500"
-                                          : booking?.paymentId?.status ===
-                                            "Successful"
+                                          : booking?.paymentId
+                                              ?.paymentStatus === "Successful"
                                           ? "bg-green-500"
                                           : "bg-yellow-500"
                                       } rounded-full`}
                                     ></div>
                                     <span
                                       className={`text-xs ${
-                                        booking?.paymentId?.status === "Failed"
+                                        booking?.paymentId?.paymentStatus ===
+                                        "Failed"
                                           ? "text-red-500"
-                                          : booking?.paymentId?.status ===
-                                            "Successful"
+                                          : booking?.paymentId
+                                              ?.paymentStatus === "Successful"
                                           ? "text-green-500"
                                           : "text-yellow-500"
                                       }`}
                                     >
-                                      {booking?.paymentId?.status === "Failed"
+                                      {booking?.paymentId?.paymentStatus ===
+                                      "Failed"
                                         ? "Failed"
-                                        : booking?.paymentId?.status ===
+                                        : booking?.paymentId?.paymentStatus ===
                                           "Successful"
                                         ? "Successful"
                                         : "Pending"}
@@ -2194,11 +2271,16 @@ function AdminDashboardHomePage() {
                             </p>
                             <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                           </div>
-                          <p className="text-xs underline offset-7">See All</p>
+                          <Link
+                            to="/admin/dashboard/users/manage-users"
+                            className="text-xs underline offset-7"
+                          >
+                            See All
+                          </Link>
                         </div>
 
                         {/* Searchbar */}
-                        <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                        {/* <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                           <BiSearch
                             size={16}
                             className="text-gray-400 rotate-90"
@@ -2208,7 +2290,7 @@ function AdminDashboardHomePage() {
                             placeholder="Search"
                             className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                           />
-                        </div>
+                        </div> */}
 
                         {/* Table header */}
                         <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
@@ -2245,11 +2327,16 @@ function AdminDashboardHomePage() {
                             </p>
                             <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                           </div>
-                          <p className="text-xs underline offset-7">See All</p>
+                          <Link
+                            to="/admin/dashboard/users/manage-drivers"
+                            className="text-xs underline offset-7"
+                          >
+                            See All
+                          </Link>
                         </div>
 
                         {/* Searchbar */}
-                        <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                        {/* <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                           <BiSearch
                             size={16}
                             className="text-gray-400 rotate-90"
@@ -2259,7 +2346,7 @@ function AdminDashboardHomePage() {
                             placeholder="Search"
                             className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                           />
-                        </div>
+                        </div> */}
 
                         {/* Table header */}
                         <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
@@ -2308,11 +2395,16 @@ function AdminDashboardHomePage() {
                             </p>
                             <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                           </div>
-                          <p className="text-xs underline offset-7">See All</p>
+                          <Link
+                            to="/admin/dashboard/users/manage-vendors"
+                            className="text-xs underline offset-7"
+                          >
+                            See All
+                          </Link>
                         </div>
 
                         {/* Searchbar */}
-                        {!isLoading && vendors && (
+                        {/* {!isLoading && vendors && (
                           <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                             <BiSearch
                               size={16}
@@ -2324,7 +2416,7 @@ function AdminDashboardHomePage() {
                               className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                             />
                           </div>
-                        )}
+                        )} */}
 
                         {/* Table header */}
                         {!isLoading && vendors && (

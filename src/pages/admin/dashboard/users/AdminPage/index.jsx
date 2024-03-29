@@ -20,6 +20,9 @@ import { FaXmark } from "react-icons/fa6";
 import Select from "react-select";
 
 function AdminDashboardAdminAccountsPage() {
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   const {
     isLoading,
     admin,
@@ -296,13 +299,21 @@ function AdminDashboardAdminAccountsPage() {
       </Modal>
 
       {/* Navbar here */}
-      <AdminDashboardNavbar link="users" sublink="manage-admin-accounts" />
+      <AdminDashboardNavbar
+        link="users"
+        sublink="manage-admin-accounts"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">

@@ -17,6 +17,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner2 } from "react-icons/im";
 
 function AdminDashboardVendorsPage() {
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   const dispatch = useDispatch();
   const { isLoading, vendors, vendorData, token, admin } = useSelector(
     (store) => store.admin
@@ -123,13 +126,21 @@ function AdminDashboardVendorsPage() {
   return (
     <div className="">
       {/* Navbar here */}
-      <AdminDashboardNavbar link="users" sublink="manage-vendors" />
+      <AdminDashboardNavbar
+        link="users"
+        sublink="manage-vendors"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
@@ -165,14 +176,14 @@ function AdminDashboardVendorsPage() {
                 {/* Venors */}
                 <div className="w-full">
                   {/* Searchbar */}
-                  <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
+                  {/* <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                     <BiSearch size={16} className="text-gray-400 rotate-90" />
                     <input
                       type="search"
                       placeholder="Search"
                       className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">

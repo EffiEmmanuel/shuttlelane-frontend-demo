@@ -1,6 +1,13 @@
 import React from "react";
+import BookingDetails from "../../reusable/BookingDetails";
 
-const AdminBookingEndedEmailTemplate = ({ bookingReference }) => {
+const AdminBookingEndedEmailTemplate = ({
+  bookingReference,
+  isVendor,
+  vendor,
+  driver,
+  bookingRate,
+}) => {
   return (
     <div
       style={{
@@ -30,8 +37,34 @@ const AdminBookingEndedEmailTemplate = ({ bookingReference }) => {
         </p>
         <p style={{ color: "#333", marginBottom: "20px" }}>
           Please review the trip details and ensure all necessary follow-up
-          actions are taken.
+          actions are taken. Find below, {isVendor ? "Vendor's" : "Driver's"}{" "}
+          account details:
         </p>
+
+        {isVendor ? (
+          <>
+            <BookingDetails
+              details={{
+                "AMOUNT TO SEND:": bookingRate,
+                "BANK NAME:": vendor?.bank,
+                "ACCOUNT NAME:": vendor?.accountName,
+                "ACCOUNT NUMBER:": vendor?.accountNumber,
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <BookingDetails
+              details={{
+                "AMOUNT TO SEND:": bookingRate,
+                "BANK NAME:": driver?.bank,
+                "ACCOUNT NAME:": driver?.accountName,
+                "ACCOUNT NUMBER:": driver?.accountNumber,
+              }}
+            />
+          </>
+        )}
+
         <p style={{ color: "#333" }}>Best regards,</p>
         <p style={{ color: "#333", marginBottom: "20px" }}>
           The ShuttleLane Team

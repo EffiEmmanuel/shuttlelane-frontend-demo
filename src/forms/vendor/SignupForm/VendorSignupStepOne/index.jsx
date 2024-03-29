@@ -193,35 +193,6 @@ function VendorSignupStepOne({
           />
         </div>
 
-        {/* Opening Hours */}
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="alternateMobile" className="text-sm">
-            Opening Hours
-          </label>
-
-          <DatePicker
-            format="H:mm"
-            hideSeconds={true}
-            locale={enGB}
-            value={stepOneStates?.openingHours}
-            onChange={(time) => {
-              console.log("DATE:", time);
-              stepOneStates?.setOpeningHours(time);
-            }}
-            appearance="subtle"
-            placeholder="Opening Hours"
-            style={{
-              backgroundColor: "transparent",
-              display: "flex",
-              alignItems: "center",
-              position: "relative",
-              outline: "none",
-              color: "black",
-            }}
-            className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-        </div>
-
         {/* Open 24 hours */}
         <div className="flex flex-row items-center gap-x-1">
           <input
@@ -236,12 +207,43 @@ function VendorSignupStepOne({
             }}
           />
           <label htmlFor="open24Hours" className="text-sm">
-            Open 24 Hours
+            Opens 24 Hours
           </label>
         </div>
 
+        {/* Opening Hours */}
+        {stepOneStates?.isOpen24Hours == false && (
+          <div className="flex flex-col gap-y-1">
+            <label htmlFor="alternateMobile" className="text-sm">
+              Opening Hours
+            </label>
+
+            <DatePicker
+              format="H:mm"
+              hideSeconds={true}
+              locale={enGB}
+              value={stepOneStates?.openingHours}
+              onChange={(time) => {
+                console.log("DATE:", time);
+                stepOneStates?.setOpeningHours(time);
+              }}
+              appearance="subtle"
+              placeholder="Opening Hours"
+              style={{
+                backgroundColor: "transparent",
+                display: "flex",
+                alignItems: "center",
+                position: "relative",
+                outline: "none",
+                color: "black",
+              }}
+              className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            />
+          </div>
+        )}
+
         {/* Closing Hours */}
-        {stepOneStates?.isOpen24Hours == true && (
+        {stepOneStates?.isOpen24Hours == false && (
           <div className="flex flex-col gap-y-1">
             <label htmlFor="closingHours" className="text-sm">
               Closing Hours

@@ -21,11 +21,9 @@ function VendorTopBar(props) {
 
       <div className="flex items-center gap-x-2">
         <div className="h-9 w-9 rounded-full bg-shuttlelanePurple flex justify-center items-center overflow-hidden">
-          <img
-            src={profilePicPlaceholder}
-            alt="Tunde Ojobaro"
-            className="h-full w-full object-cover"
-          />
+          <span className="text-white">
+            {vendor?.companyName?.split("")[0]}
+          </span>
         </div>
 
         <div className="inline-block lg:hidden">

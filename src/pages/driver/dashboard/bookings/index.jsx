@@ -46,6 +46,9 @@ function DriverDashboardBookingPage() {
   } = useSelector((store) => store.driver);
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   useEffect(() => {
     dispatch(fetchCompletedJobs({ token, driverId: driver?._id }));
   }, [token]);
@@ -1202,13 +1205,20 @@ function DriverDashboardBookingPage() {
       </Modal>
 
       {/* Navbar here */}
-      <DriverDashboardNavbar link="bookings" />
+      <DriverDashboardNavbar
+        link="bookings"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <DriverTopBar />
+          <DriverTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">

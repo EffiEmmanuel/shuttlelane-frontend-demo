@@ -17,6 +17,9 @@ function VendorDashboardAccountPage() {
   const { token, isLoading, vendor } = useSelector((store) => store.vendor);
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   // Page options
   const [isCompanyInformation, setIsCompanyInformation] = useState(true);
   const [isContactDetails, setIsContactDetails] = useState(false);
@@ -33,24 +36,29 @@ function VendorDashboardAccountPage() {
     <div className="">
       <ToastContainer />
       {/* Navbar here */}
-      <VendorDashboardNavbar link="account" />
+      <VendorDashboardNavbar
+        link="account"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-white text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <VendorTopBar />
+          <VendorTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
             <div className="w-full">
               <div className="flex items-center gap-x-2">
-                <div className="h-24 w-24 rounded-full overflow-hidden">
-                  <img
-                    src={profilePicPlaceholder}
-                    alt="Vendor's full name"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="h-24 w-24 rounded-full bg-shuttlelanePurple flex justify-center items-center overflow-hidden">
+                  <h1 className="text-white">
+                    {vendor?.companyName?.split("")[0]}
+                  </h1>
                 </div>
 
                 <div className="flex flex-col">
@@ -120,7 +128,7 @@ function VendorDashboardAccountPage() {
                     >
                       Contact Details
                     </span>
-
+                    {/* 
                     {!vendor?.phoneVerification ? (
                       <span
                         onClick={() => {
@@ -140,7 +148,7 @@ function VendorDashboardAccountPage() {
                         <span className="text-xs">Verify Phone Number</span>
                         <FaCircleExclamation size={14} />
                       </span>
-                    ) : null}
+                    ) : null} */}
                   </div>
                 </div>
               </div>

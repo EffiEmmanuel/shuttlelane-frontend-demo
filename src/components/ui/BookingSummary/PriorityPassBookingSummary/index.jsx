@@ -36,6 +36,7 @@ import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
 import { AiOutlinePlus } from "react-icons/ai";
+import GoogleMapsWithDirections from "../../GoogleMapsWithDirection";
 
 export default function PriorityPassBookingSummary() {
   // Fetch states from redux slice
@@ -593,6 +594,7 @@ export default function PriorityPassBookingSummary() {
             email={email}
             flightNumber={flightNumber}
             airline={airline}
+            bookingTotal={bookingTotal}
           />
         </div>
         <div className="lg:w-[35%] w-full mt-10 lg:mt-0">
@@ -746,15 +748,12 @@ export default function PriorityPassBookingSummary() {
           <div className="bg-white p-7 mt-10">
             <div className="mt-5">
               <div className="w-full max-h-[163px] h-[163px] min-h-[163px] overflow-hidden">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7928.243562265941!2d3.3680206!3d6.5062651!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8c448e2f97c3%3A0xc95f24c00955aecc!2sShuttlelane!5e0!3m2!1sen!2sng!4v1698936776561!5m2!1sen!2sng"
-                  width="100%"
-                  height="100%"
-                  //   style="border:0;"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+                <GoogleMapsWithDirections
+                  pickupAddress={bookingDetails?.pickupAddress}
+                  pickupCoordinates={bookingDetails?.pickupCoordinates}
+                  dropoffAddress={bookingDetails?.pickupAddress}
+                  dropoffCoordinates={bookingDetails?.pickupCoordinates}
+                />
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaCheck, FaPassport, FaUser } from "react-icons/fa";
+import { FaCheck, FaPassport, FaTrash, FaUser } from "react-icons/fa";
 import {
   MdAirplanemodeActive,
   MdLocationPin,
@@ -26,11 +26,13 @@ import {
   acceptBooking,
   createVendorDriver,
   declineBooking,
+  deleteVendorDriver,
   endBooking,
   fetchBookingByReference,
   fetchCompletedJobs,
   fetchVendorDrivers,
   startBooking,
+  updateVendorDriver,
 } from "../../../../../redux/slices/vendorSlice";
 import GoogleMapsWithDirections from "../../../../../components/ui/GoogleMapsWithDirection";
 import moment from "moment";
@@ -42,6 +44,7 @@ import VendorDashboardNavbar from "../../../../../components/ui/Vendor/VendorDas
 import VendorTopBar from "../../../../../components/ui/Vendor/VendorTopBar";
 import PhoneInput from "react-phone-input-2";
 import { ToastContainer, toast } from "react-toastify";
+import { Modal as RsuiteModal, Button } from "rsuite";
 
 function VendorDashboardManageDriversPage() {
   // Redux setup
@@ -55,77 +58,22 @@ function VendorDashboardManageDriversPage() {
   } = useSelector((store) => store.vendor);
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   useEffect(() => {
-    dispatch(fetchVendorDrivers(token));
+    dispatch(fetchVendorDrivers({ token, vendorId: vendor?._id }));
   }, [token]);
 
   // Modal functionalities
   const [isDriverDetailsModalOpened, setIsDriverDetailsModalOpened] =
     useState(false);
-  const [currentBooking, stCurrentDriver] = useState();
+  const [isUpdateDriverDetailsModalOpen, setIsUpdateDriverDetailsModalOpen] =
+    useState(false);
+  const [currentDriver, setCurrentDriver] = useState();
 
   // Create Driver Modal states
   const [isCreateDriverModalOpen, setIsCreateDriverModalOpen] = useState(false);
-
-  // Fetch clicked booking (Booking opened in the modal)
-  useEffect(() => {
-    if (currentBooking)
-      dispatch(fetchBookingByReference(currentBooking?.bookingReference));
-  }, [currentBooking]);
-
-  // FUNCTION: Handles accepting a booking
-  async function handleAcceptBooking() {
-    dispatch(
-      acceptBooking({
-        token,
-        vendorId: vendor?._id,
-        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
-      })
-    );
-    setIsDriverDetailsModalOpened(false);
-  }
-
-  // FUNCTION: Handles accepting a booking
-  async function handleDeclineBooking() {
-    dispatch(
-      declineBooking({
-        token,
-        vendorId: vendor?._id,
-        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
-      })
-    );
-    setIsDriverDetailsModalOpened(false);
-  }
-
-  // FUNCTION: Handles starting a booking
-  async function handleStartBooking() {
-    dispatch(
-      startBooking({
-        token,
-        vendorId: vendor?._id,
-        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
-      })
-    );
-
-    setTimeout(() => {
-      setIsDriverDetailsModalOpened(false);
-    }, 1500);
-  }
-
-  // FUNCTION: Handles ending a booking
-  async function handleEndBooking() {
-    dispatch(
-      endBooking({
-        token,
-        vendorId: vendor?._id,
-        bookingId: bookingFetchedByReference?._id ?? currentBooking?._id,
-      })
-    );
-
-    setTimeout(() => {
-      setIsDriverDetailsModalOpened(false);
-    }, 1500);
-  }
 
   // Create driver form fields
   const [image, setImage] = useState();
@@ -154,9 +102,9 @@ function VendorDashboardManageDriversPage() {
 
   async function handleCreateVendorDriver(e) {
     e.preventDefault();
-    if(!image || !firstName || !lastName || !mobile || !email) {
-        toast.error('Please fill in the missing fields!')
-        return
+    if (!image || !firstName || !lastName || !mobile || !email) {
+      toast.error("Please fill in the missing fields!");
+      return;
     }
     dispatch(
       createVendorDriver({
@@ -173,9 +121,110 @@ function VendorDashboardManageDriversPage() {
     setIsCreateDriverModalOpen(false);
   }
 
+  // Update driver modal states
+  const [updatedImage, setUpdatedImage] = useState();
+  const [updatedFirstName, setUpdatedFirstName] = useState();
+  const [updatedLastName, setUpdatedLastName] = useState();
+  const [updatedEmail, setUpdatedEmail] = useState();
+  const [updatedMobile, setUpdatedMobile] = useState();
+
+  async function handleUpdateVendorDriver(e) {
+    e.preventDefault();
+    if (
+      !updatedImage ||
+      !updatedFirstName ||
+      !updatedLastName ||
+      !updatedEmail ||
+      !updatedMobile
+    ) {
+      toast.error("Please fill in the missing fields");
+      return;
+    }
+
+    dispatch(
+      updateVendorDriver({
+        driverId: currentDriver?._id,
+        token,
+        values: {
+          image: updatedImage,
+          firstName: updatedFirstName,
+          lastName: updatedLastName,
+          mobile: updatedMobile,
+          email: updatedEmail,
+          vendor: vendor?._id,
+        },
+      })
+    );
+
+    setIsUpdateDriverDetailsModalOpen(false);
+  }
+
+  useEffect(() => {
+    if (isUpdateDriverDetailsModalOpen == true) {
+      setUpdatedImage(currentDriver?.image);
+      setRenderImage(currentDriver?.image);
+      setUpdatedFirstName(currentDriver?.firstName);
+      setUpdatedLastName(currentDriver?.lastName);
+      setUpdatedEmail(currentDriver?.email);
+      setUpdatedMobile(currentDriver?.mobile);
+    }
+  }, [isUpdateDriverDetailsModalOpen]);
+
+  // Delete driver states
+  const [isDeleteDriverDialogOpen, setIsDeleteDriverDialogOpen] =
+    useState(false);
+
+  async function handleDeleteVendorDriver() {
+    dispatch(
+      deleteVendorDriver({
+        driverId: currentDriver?._id,
+        token,
+        values: {
+          image: updatedImage,
+          firstName: updatedFirstName,
+          lastName: updatedLastName?.value,
+          email: updatedEmail,
+          mobile: updatedMobile,
+          vendor: vendor?._id,
+        },
+      })
+    );
+
+    setIsDeleteDriverDialogOpen(false);
+  }
+
   return (
     <div className="">
       <ToastContainer />
+
+      {/* Delete Booking dialog */}
+      <RsuiteModal
+        backdrop="static"
+        role="alertdialog"
+        open={isDeleteDriverDialogOpen}
+        onClose={() => setIsDeleteDriverDialogOpen(false)}
+        size="xs"
+      >
+        <RsuiteModal.Body>
+          {/* <RemindIcon style={{ color: '#ffb300', fontSize: 24 }} /> */}
+          This booking will be permanently deleted from the database. This
+          action is irreversible. Are you sure you want to proceed ?
+        </RsuiteModal.Body>
+        <RsuiteModal.Footer>
+          <Button
+            onClick={() => handleDeleteVendorDriver()}
+            appearance="primary"
+          >
+            Ok
+          </Button>
+          <Button
+            onClick={() => setIsDeleteDriverDialogOpen(false)}
+            appearance="subtle"
+          >
+            Cancel
+          </Button>
+        </RsuiteModal.Footer>
+      </RsuiteModal>
 
       {/* Create Driver Modal */}
       <Modal
@@ -314,21 +363,168 @@ function VendorDashboardManageDriversPage() {
         </div>
       </Modal>
 
+      {/* Update Driver Details Modal */}
+      <Modal
+        isOpen={isUpdateDriverDetailsModalOpen}
+        onRequestClose={() => setIsUpdateDriverDetailsModalOpen(false)}
+        className="flex h-full min-h-screen justify-center items-center lg:px-24 px-7"
+      >
+        <div className="overflow-y-scroll shuttlelaneScrollbar max-h-[90%] bg-white shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10">
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold">Update Driver</h4>
+
+            <FaXmark
+              size={20}
+              onClick={() => setIsUpdateDriverDetailsModalOpen(false)}
+              className="cursor-pointer"
+            />
+          </div>
+
+          <form className="w-full mt-5">
+            <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
+              {/* Image */}
+              <div className="w-full flex flex-col">
+                <label htmlFor="username" className="text-sm">
+                  Profile Picture
+                </label>
+                <div className="w-full relative border-dashed border-[1px] border-gray-300 rounded-lg h-24 flex flex-col items-center justify-center overflow-hidden">
+                  <>
+                    <MdOutlineAddAPhoto size={24} className="text-gray-300" />
+                    <small className="text-gray-300 text-center">
+                      Click to Insert Profile Picture
+                    </small>
+                    <input
+                      className="absolute top-0 bg-transparent w-full h-full opacity-0 cursor-pointer"
+                      type="file"
+                      name="image"
+                      id="image"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                  </>
+
+                  {renderImage && updatedImage && (
+                    <div className="absolute w-full h-full top-0 flex justify-center items-center">
+                      <div className="p-1 bg-white flex items-center justify-center h-5 w-5 rounded-full absolute top-3 right-3 cursor-pointer text-black">
+                        <FaXmark
+                          onClick={() => {
+                            setRenderImage(null);
+                            setUpdatedImage(null);
+                          }}
+                          size={16}
+                          className=""
+                        />
+                      </div>
+                      <img
+                        src={renderImage}
+                        alt="Uploaded"
+                        className="object-cover h-full w-full z-10"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+              {/* First Name */}
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="updatedFirstName" className="text-sm">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="John"
+                  name="updatedFirstName"
+                  value={updatedFirstName}
+                  onChange={(e) => setUpdatedFirstName(e.target.value)}
+                  className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                />
+              </div>
+
+              {/* Last Name */}
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="updatedLastName" className="text-sm">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Doe"
+                  name="updatedLastName"
+                  value={updatedLastName}
+                  onChange={(e) => setUpdatedLastName(e.target.value)}
+                  className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="updatedEmail" className="text-sm">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  placeholder="abc@example.com"
+                  name="updatedEmail"
+                  value={updatedEmail}
+                  onChange={(e) => setUpdatedEmail(e.target.value)}
+                  className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                />
+              </div>
+
+              {/* Mobile */}
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="updatedContactMobile" className="text-sm">
+                  Phone Number
+                </label>
+                <PhoneInput
+                  country={"us"}
+                  searchPlaceholder="Search"
+                  placeholder="---- --- ----"
+                  value={updatedMobile}
+                  onChange={(value) => setUpdatedMobile(`+${value}`)}
+                  containerClass="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                  inputClass="border-none h-full"
+                  buttonClass="bg-transparent"
+                />
+              </div>
+
+              <button
+                type="submit"
+                onClick={(e) => handleUpdateVendorDriver(e)}
+                className="w-full flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-lg"
+              >
+                {isLoading ? (
+                  <ImSpinner2 size={21} className="animate-spin" />
+                ) : (
+                  "Create Account"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+
       {/* Navbar here */}
-      <VendorDashboardNavbar link="bookings" sublink="manage-drivers" />
+      <VendorDashboardNavbar
+        link="bookings"
+        sublink="manage-drivers"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <VendorTopBar />
+          <VendorTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
             <div className="flex xl:flex-row flex-col gap-x-5 gap-y-5">
               {/* Booking Summary - Total number of bookings */}
               <div className="w-full xl:w-[70%]">
-                {/* Recent Bookings */}
+                {/* Drivers */}
                 <div className="mt-11 w-full">
                   <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
@@ -354,74 +550,116 @@ function VendorDashboardManageDriversPage() {
                     <div className="overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
                       {/* Table header */}
                       <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
                           Profile Picture
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
                           Full Name
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
                           Email
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
                           Phone Number
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
                           Date Registered
+                        </p>
+                        <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
+                          Actions
                         </p>
                       </div>
 
                       {isLoading && (
                         <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
                           <ImSpinner2
-                            size={16}
+                            size={18}
                             className="text-shuttlelanePurple animate-spin"
                           />
                         </div>
                       )}
 
-                      {vendorDrivers?.map((driver) => (
-                        <div
-                          onClick={(e) => {
-                            // stCurrentDriver(driver);
-                            // setIsDriverDetailsModalOpened(true);
-                          }}
-                          className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
-                        >
-                          <p
-                            className={`min-w-[200px] w-[200px] lg:w-[20%] text-xs ${
-                              isLoading && "text-gray-400"
-                            }`}
-                          >
-                            <img
-                              src={`${driver?.image}`}
-                              alt={`${driver?.firstName} ${driver?.lastName}`}
-                              className="h-[40px] max-h[40px] min-h-[40px] object-contain"
-                            />
-                          </p>
+                      {!isLoading && (
+                        <>
+                          {vendorDrivers?.map((driver) => (
+                            <div className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                              <p
+                                onClick={(e) => {
+                                  setCurrentDriver(driver);
+                                  setIsUpdateDriverDetailsModalOpen(true);
+                                }}
+                                className={`min-w-[200px] w-[200px] lg:w-[16.6%] text-xs ${
+                                  isLoading && "text-gray-400"
+                                }`}
+                              >
+                                <img
+                                  src={`${driver?.image}`}
+                                  alt={`${driver?.firstName} ${driver?.lastName}`}
+                                  className="h-[40px] max-h[40px] min-h-[40px] object-contain"
+                                />
+                              </p>
 
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {driver?.firstName} {driver?.lastName}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {driver?.email}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {driver?.mobile}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {moment(driver?.createdAt).format("MMM DD, YYYY")}
-                          </p>
-                        </div>
-                      ))}
-
-                      {(vendorDrivers?.length < 1 || !vendorDrivers) && (
-                        <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
-                          <p className="w-full text-xs text-center">
-                            You have not added any driver just yet...
-                          </p>
-                        </div>
+                              <p
+                                onClick={(e) => {
+                                  setCurrentDriver(driver);
+                                  setIsUpdateDriverDetailsModalOpen(true);
+                                }}
+                                className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs"
+                              >
+                                {driver?.firstName} {driver?.lastName}
+                              </p>
+                              <p
+                                onClick={(e) => {
+                                  setCurrentDriver(driver);
+                                  setIsUpdateDriverDetailsModalOpen(true);
+                                }}
+                                className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs"
+                              >
+                                {driver?.email}
+                              </p>
+                              <p
+                                onClick={(e) => {
+                                  setCurrentDriver(driver);
+                                  setIsUpdateDriverDetailsModalOpen(true);
+                                }}
+                                className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs"
+                              >
+                                {driver?.mobile}
+                              </p>
+                              <p
+                                onClick={(e) => {
+                                  setCurrentDriver(driver);
+                                  setIsUpdateDriverDetailsModalOpen(true);
+                                }}
+                                className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs"
+                              >
+                                {moment(driver?.createdAt).format(
+                                  "MMM DD, YYYY"
+                                )}
+                              </p>
+                              <p className="min-w-[200px] w-[200px] lg:w-[16.6%] text-xs">
+                                <FaTrash
+                                  onClick={() => {
+                                    setCurrentDriver(driver);
+                                    setIsDeleteDriverDialogOpen(true);
+                                  }}
+                                  size={13}
+                                  className="text-red-400 cursor-pointer"
+                                />
+                              </p>
+                            </div>
+                          ))}
+                        </>
                       )}
+
+                      {(vendorDrivers?.length < 1 || !vendorDrivers) &&
+                        !isLoading && (
+                          <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
+                            <p className="w-full text-xs text-center">
+                              You have not added any driver just yet...
+                            </p>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>

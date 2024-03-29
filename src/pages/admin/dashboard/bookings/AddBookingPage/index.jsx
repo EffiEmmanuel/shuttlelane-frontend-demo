@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPassport, FaUser } from "react-icons/fa";
 import { MdLuggage, MdOutlineFlightTakeoff } from "react-icons/md";
@@ -11,16 +11,26 @@ import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import AdminAddBookingForm from "../../../../../forms/admin/AdminAddBookingForm";
 
 function AdminDashboardAddBookingPage() {
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   return (
     <div className="">
       {/* Navbar here */}
-      <AdminDashboardNavbar link="bookings" sublink="add-booking" />
+      <AdminDashboardNavbar
+        link="bookings"
+        sublink="add-booking"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">
-        <div className="px-7 py-5 relative">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+        <div className="px-7 py-5 relative z-0">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">

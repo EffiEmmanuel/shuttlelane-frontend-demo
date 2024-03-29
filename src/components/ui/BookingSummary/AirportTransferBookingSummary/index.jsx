@@ -421,6 +421,7 @@ export default function AirportTransferBookingSummary() {
             email={email}
             flightNumber={flightNumber}
             airline={airline}
+            bookingTotal={bookingTotal}
           />
         </div>
         <div className="lg:w-[35%] w-full mt-10 lg:mt-0">

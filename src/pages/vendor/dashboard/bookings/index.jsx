@@ -48,6 +48,9 @@ function VendorDashboardBookingPage() {
   } = useSelector((store) => store.vendor);
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   useEffect(() => {
     dispatch(fetchCompletedJobs({ token, vendorId: vendor?._id }));
   }, [token]);
@@ -278,74 +281,6 @@ function VendorDashboardBookingPage() {
                           </span>
                         </div>
                       </div>
-
-                      {/* Driver Details */}
-                      {!bookingFetchedByReference?.hasDriverAccepted && (
-                        <div className="mt-5">
-                          <h2 className="text-xl text-center font-semibold">
-                            Accept Or Decline Job?
-                          </h2>
-
-                          <div className="mt-4 w-full flex flex-row items-center justify-center gap-x-7">
-                            <button
-                              onClick={() => handleDeclineBooking()}
-                              className="h-14 w-14 rounded-full bg-red-500 flex items-center justify-center"
-                            >
-                              <FaXmark size={20} className="text-white" />
-                            </button>
-                            <button
-                              onClick={() => handleAcceptBooking()}
-                              className="h-14 w-14 rounded-full bg-green-500 flex items-center justify-center"
-                            >
-                              <FaCheck size={20} className="text-white" />
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Swipe to start booking */}
-                      {bookingFetchedByReference?.bookingStatus ==
-                        "Scheduled" && (
-                        <div className="mt-5">
-                          {!isLoading && (
-                            <SwipeButton
-                              onSwipe={() => handleStartBooking()}
-                              buttonText="Start Booking"
-                              buttonBg="bg-green-400"
-                              isLoading={isLoading}
-                            />
-                          )}
-
-                          {isLoading && (
-                            <ImSpinner2
-                              size={24}
-                              className="text-shuttlelanePurple animate-spin"
-                            />
-                          )}
-                        </div>
-                      )}
-
-                      {/* Swipe to end booking */}
-                      {bookingFetchedByReference?.bookingStatus ==
-                        "Ongoing" && (
-                        <div className="mt-5">
-                          {!isLoading && (
-                            <SwipeButton
-                              onSwipe={() => handleEndBooking()}
-                              buttonText="End Booking"
-                              buttonBg="bg-red-400"
-                              isLoading={isLoading}
-                            />
-                          )}
-
-                          {isLoading && (
-                            <ImSpinner2
-                              size={24}
-                              className="text-shuttlelanePurple animate-spin"
-                            />
-                          )}
-                        </div>
-                      )}
                     </div>
                   </div>
                 )}
@@ -1204,13 +1139,21 @@ function VendorDashboardBookingPage() {
       </Modal>
 
       {/* Navbar here */}
-      <VendorDashboardNavbar link="bookings" sublink="completed-bookings" />
+      <VendorDashboardNavbar
+        link="bookings"
+        sublink="completed-bookings"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <VendorTopBar />
+          <VendorTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
@@ -1230,17 +1173,20 @@ function VendorDashboardBookingPage() {
                           <div className="flex items-center justify-center h-[220px] min-h-[220px] max-h-[220px] w-full rounded-tr-lg rounded-tl-lg">
                             <GoogleMapsWithDirections
                               pickupAddress={
-                                completedBookings[0]?.booking?.pickupAddress
+                                completedBookings[completedBookings?.length - 1]
+                                  ?.booking?.pickupAddress
                               }
                               pickupCoordinates={
-                                completedBookings[0]?.booking?.pickupCoordinates
+                                completedBookings[completedBookings?.length - 1]
+                                  ?.booking?.pickupCoordinates
                               }
                               dropoffAddress={
-                                completedBookings[0]?.booking?.dropoffAddress
+                                completedBookings[completedBookings?.length - 1]
+                                  ?.booking?.dropoffAddress
                               }
                               dropoffCoordinates={
-                                completedBookings[0]?.booking
-                                  ?.dropoffCoordinates
+                                completedBookings[completedBookings?.length - 1]
+                                  ?.booking?.dropoffCoordinates
                               }
                             />
                           </div>
@@ -1253,19 +1199,31 @@ function VendorDashboardBookingPage() {
 
                               <div className="flex flex-col gap-y-1">
                                 <small className="font-semibold">
-                                  {completedBookings[0]?.booking?.pickupAddress}
+                                  {
+                                    completedBookings[
+                                      completedBookings?.length - 1
+                                    ]?.booking?.pickupAddress
+                                  }
                                 </small>
                                 <small className="">
                                   {moment(
-                                    completedBookings[0]?.booking?.pickupDate
+                                    completedBookings[
+                                      completedBookings?.length - 1
+                                    ]?.booking?.pickupDate
                                   ).format("DD MM, YYYY")}{" "}
                                   .{" "}
                                   {moment(
-                                    completedBookings[0]?.booking?.pickupTime
+                                    completedBookings[
+                                      completedBookings?.length - 1
+                                    ]?.booking?.pickupTime
                                   ).format("H:MM A")}
                                 </small>
                                 <small className="text-green-500">
-                                  {completedBookings[0]?.bookingStatus}
+                                  {
+                                    completedBookings[
+                                      completedBookings?.length - 1
+                                    ]?.bookingStatus
+                                  }
                                 </small>
                               </div>
                             </div>
@@ -1274,7 +1232,11 @@ function VendorDashboardBookingPage() {
                             <div className="">
                               <button
                                 onClick={() => {
-                                  setCurrentBooking(completedBookings[0]);
+                                  setCurrentBooking(
+                                    completedBookings[
+                                      completedBookings?.length - 1
+                                    ]
+                                  );
                                   setIsAssignedBookingDetailsModalOpen(true);
                                 }}
                                 type="button"
@@ -1324,41 +1286,56 @@ function VendorDashboardBookingPage() {
                         </p>
                       </div>
 
-                      {completedBookings?.map((booking) => (
-                        <div
-                          onClick={(e) => {
-                            setCurrentBooking(booking);
-                            setIsAssignedBookingDetailsModalOpen(true);
-                          }}
-                          className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
-                        >
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {booking?.user?.firstName ?? booking?.firstName}{" "}
-                            {booking?.user?.lastName ?? booking?.lastName}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {booking?.booking?.pickupAddress}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {moment(booking?.pickupDate).format("MMM DD, YYYY")}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {moment(booking?.pickupTime).format("H:MM A")}
-                          </p>
-                          <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                            {booking?.bookingType}
-                          </p>
-                        </div>
-                      ))}
-
-                      {(completedBookings?.length < 1 ||
-                        !completedBookings) && (
+                      {isLoading && (
                         <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
-                          <p className="w-full text-xs text-center">
-                            You have not completed any bookings just yet...
-                          </p>
+                          <ImSpinner2
+                            size={18}
+                            className="text-shuttlelanePurple animate-spin"
+                          />
                         </div>
                       )}
+
+                      {!isLoading && (
+                        <>
+                          {completedBookings?.map((booking) => (
+                            <div
+                              onClick={(e) => {
+                                setCurrentBooking(booking);
+                                setIsAssignedBookingDetailsModalOpen(true);
+                              }}
+                              className="cursor-pointer flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
+                            >
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                {booking?.user?.firstName ?? booking?.firstName}{" "}
+                                {booking?.user?.lastName ?? booking?.lastName}
+                              </p>
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                {booking?.booking?.pickupAddress}
+                              </p>
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                {moment(booking?.pickupDate).format(
+                                  "MMM DD, YYYY"
+                                )}
+                              </p>
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                {moment(booking?.pickupTime).format("H:MM A")}
+                              </p>
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                                {booking?.bookingType}
+                              </p>
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {(completedBookings?.length < 1 || !completedBookings) &&
+                        !isLoading && (
+                          <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
+                            <p className="w-full text-xs text-center">
+                              You have not completed any bookings just yet...
+                            </p>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>

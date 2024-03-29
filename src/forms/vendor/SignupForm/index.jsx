@@ -46,7 +46,6 @@ function VendorSignupForm(props) {
         !country ||
         !address ||
         !operatingCities ||
-        !openingHours ||
         !fleetSize ||
         !fleetType
       ) {
@@ -191,6 +190,9 @@ function VendorSignupForm(props) {
   const [contactName, setContactName] = useState();
   const [contactEmail, setContactEmail] = useState();
   const [contactMobile, setContactMobile] = useState();
+  const [bank, setBank] = useState();
+  const [accountNumber, setAccountNumber] = useState();
+  const [accountName, setAccountName] = useState();
 
   // Object to pass to prop
   const stepTwoStates = {
@@ -200,6 +202,12 @@ function VendorSignupForm(props) {
     setContactEmail,
     contactMobile,
     setContactMobile,
+    bank,
+    setBank,
+    accountNumber,
+    setAccountNumber,
+    accountName,
+    setAccountName,
   };
 
   // STEP 3
@@ -251,6 +259,9 @@ function VendorSignupForm(props) {
       contactName,
       contactEmail,
       contactMobile,
+      bank,
+      accountName,
+      accountNumber,
     };
 
     dispatch(signupVendor({ values: { ...values } }));
@@ -299,6 +310,9 @@ function VendorSignupForm(props) {
       }
       setCitySelected(vendor?.city);
       setCompanyEmail(vendor?.companyEmail);
+      setBank(vendor?.bank);
+      setAccountName(vendor?.accountName);
+      setAccountNumber(vendor?.accountNumber);
       setAddress(vendor?.address);
       setCountry(vendor?.country);
       // Loop through operating cities

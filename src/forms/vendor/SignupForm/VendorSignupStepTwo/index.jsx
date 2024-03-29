@@ -185,11 +185,64 @@ function VendorSignupStepTwo({
           />
         </div>
 
+        {/* Bank Name */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="bank" className="text-sm">
+            Bank Name
+          </label>
+          <input
+            type="text"
+            name="bank"
+            value={stepTwoStates?.bank}
+            onChange={(e) => {
+              stepTwoStates?.setBank(e.target.value);
+            }}
+            placeholder="UBA - United Bank for Africa"
+            name="bank"
+            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+          />
+        </div>
+
+        {/* Account Number */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="accountNumber" className="text-sm">
+            Account Number
+          </label>
+          <input
+            type="tel"
+            name="accountNumber"
+            value={stepTwoStates?.accountNumber}
+            onChange={(e) => {
+              stepTwoStates?.setAccountNumber(e.target.value);
+            }}
+            placeholder="***********"
+            name="accountNumber"
+            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+          />
+        </div>
+
+        {/* Account Name */}
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="accountName" className="text-sm">
+            Account Name
+          </label>
+          <input
+            type="text"
+            name="accountName"
+            value={stepTwoStates?.accountName}
+            onChange={(e) => {
+              stepTwoStates?.setAccountName(e.target.value);
+            }}
+            placeholder="John Chidera Akube"
+            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+          />
+        </div>
+
         {isUpdateVendorAccount && (
           <button
             //   type="submit"
             onClick={(e) => handleUpdateVendor(e)}
-            className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelaneGold flex items-center justify-center text-white border-gray-400 rounded-lg"
+            className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg"
           >
             {isLoading ? (
               <ImSpinner2 size={21} className="text-white animate-spin" />

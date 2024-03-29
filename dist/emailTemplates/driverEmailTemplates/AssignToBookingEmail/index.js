@@ -31,7 +31,7 @@ const AssignToBookingEmailTemplate = _ref => {
     },
     className: "footer"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "http://localhost:3000/driver/accept-booking?driverId=".concat(driverId),
+    href: "http://localhost:3000/driver/dashboard",
     style: {
       display: "inline-block",
       padding: "10px 20px",
@@ -46,23 +46,7 @@ const AssignToBookingEmailTemplate = _ref => {
       textDecoration: "none"
     },
     className: "action-button accept-button"
-  }, "Accept"), /*#__PURE__*/React.createElement("a", {
-    href: "http://localhost:3000/driver/accept-booking?driverId=".concat(driverId),
-    style: {
-      display: "inline-block",
-      padding: "10px 20px",
-      margin: "0 10px",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      fontSize: "16px",
-      transition: "background-color 0.3s",
-      backgroundColor: "#dc3545",
-      color: "#fff",
-      textDecoration: "none"
-    },
-    className: "action-button decline-button"
-  }, "Decline"), /*#__PURE__*/React.createElement("p", {
+  }, "Log in"), /*#__PURE__*/React.createElement("p", {
     style: {
       textAlign: "center",
       color: "#333"

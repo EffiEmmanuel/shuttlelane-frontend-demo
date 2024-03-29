@@ -202,7 +202,7 @@ function AdminDashboardNavbar(props) {
                   <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                 )}
               </Link>
-              <Link
+              {/* <Link
                 to="/admin/dashboard/bookings/payments"
                 className={`flex items-center gap-x-2 text-xs ${
                   props?.sublink === "payments"
@@ -221,7 +221,7 @@ function AdminDashboardNavbar(props) {
                 {props?.sublink === "payments" && (
                   <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                 )}
-              </Link>
+              </Link> */}
             </div>
           )}
         </div>

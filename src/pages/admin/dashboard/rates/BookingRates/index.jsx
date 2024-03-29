@@ -35,6 +35,9 @@ import AdminCarRates from "../../../../../components/ui/Admin/Dashboard/rates/Ca
 import AdminPriorityPassRates from "../../../../../components/ui/Admin/Dashboard/rates/PriorityPassRates";
 
 function AdminDashboardBookingRatesPage() {
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   const { token, isLoading, currencies, ratePerMile } = useSelector(
     (store) => store.admin
   );
@@ -104,13 +107,21 @@ function AdminDashboardBookingRatesPage() {
     <div className="">
       <ToastContainer />
       {/* Navbar here */}
-      <AdminDashboardNavbar link="rates" sublink="booking-rates" />
+      <AdminDashboardNavbar
+        link="rates"
+        sublink="booking-rates"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-white text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">

@@ -24,6 +24,9 @@ function AdminDashboardPaymentsPage() {
   const { isLoading, token, payments } = useSelector((store) => store.admin);
   const dispatch = useDispatch();
 
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   // Chart Setup
   //   const [userDataByMonth, setUserDataByMonth] = useState();
   //   const state = {
@@ -102,13 +105,21 @@ function AdminDashboardPaymentsPage() {
       <ToastContainer />
 
       {/* Navbar here */}
-      <AdminDashboardNavbar link="booking" sublink="payments" />
+      <AdminDashboardNavbar
+        link="booking"
+        sublink="payments"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
-        <div className="px-7 py-5 relative">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+        <div className="px-7 py-5 relative z-0">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
@@ -177,7 +188,8 @@ function AdminDashboardPaymentsPage() {
                             isLoading && "text-gray-400"
                           }`}
                         >
-                          {payment?.firstName} {payment?.lastName}
+                          {payment?.user?.firstName ?? payment?.firstName}{" "}
+                          {payment?.user?.lastName ?? payment?.lastName}
                         </p>
                         <p
                           className={`w-200px lg:w-[20%] text-xs ${
@@ -194,13 +206,32 @@ function AdminDashboardPaymentsPage() {
                         >
                           {payment?.gateway}
                         </p>
-                        <p
-                          className={`w-200px lg:w-[20%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {payment?.paymentStatus}
-                        </p>
+                        <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
+                          <div
+                            className={`h-2 w-2 ${
+                              payment?.paymentStatus === "Failed"
+                                ? "bg-red-500"
+                                : payment?.paymentStatus === "Successful"
+                                ? "bg-green-500"
+                                : "bg-yellow-500"
+                            } rounded-full`}
+                          ></div>
+                          <span
+                            className={`text-xs ${
+                              payment?.paymentStatus === "Failed"
+                                ? "text-red-500"
+                                : payment?.paymentStatus === "Successful"
+                                ? "text-green-500"
+                                : "text-yellow-500"
+                            }`}
+                          >
+                            {payment?.paymentStatus === "Failed"
+                              ? "Failed"
+                              : payment?.paymentStatus === "Successful"
+                              ? "Successful"
+                              : "Pending"}
+                          </span>
+                        </div>
                       </div>
                     ))}
 

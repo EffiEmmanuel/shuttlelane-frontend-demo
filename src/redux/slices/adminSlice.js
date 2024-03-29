@@ -1502,6 +1502,21 @@ export const fetchPayment = createAsyncThunk(
   }
 );
 
+// FUNCTION: Fetch all bookings
+export const fetchAllBookings = createAsyncThunk(
+  "admin/bookings/getAll",
+  async (token) => {
+    console.log("HI");
+    return fetch(`http://localhost:3001/api/v1/admin/bookings`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BOOKINGS ERROR:", err));
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -1589,6 +1604,12 @@ export const adminSlice = createSlice({
     // Payment states
     payments: null,
     currentPayment: null,
+
+    // Booking states
+    airportTransferBookings: null,
+    carRentalBookings: null,
+    priorityPassBookings: null,
+    visaOnArrivalBookings: null,
   },
   reducers: {
     setAdmin: (state, action) => {
@@ -2663,6 +2684,22 @@ export const adminSlice = createSlice({
         state.currentPayment = action.payload?.payment;
       })
       .addCase(fetchPayment.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchAllBookings AsyncThunk states
+      .addCase(fetchAllBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllBookings.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD FETCH PAYMENTS", action.payload);
+        state.isLoading = false;
+        state.airportTransferBookings = action.payload?.airportTransferBookings;
+        state.carRentalBookings = action.payload?.carRentalBookings;
+        state.priorityPassBookings = action.payload?.priorityPassBookings;
+        state.visaOnArrivalBookings = action.payload?.visaOnArrivalBookings;
+      })
+      .addCase(fetchAllBookings.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

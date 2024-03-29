@@ -13,6 +13,9 @@ import { ImSpinner2 } from "react-icons/im";
 import { ToastContainer } from "react-toastify";
 
 function AdminDashboardUsersPage() {
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   const { isLoading, users, currentUser, userData, token, admin } = useSelector(
     (store) => store.admin
   );
@@ -122,13 +125,21 @@ function AdminDashboardUsersPage() {
       <ToastContainer />
 
       {/* Navbar here */}
-      <AdminDashboardNavbar link="users" sublink="manage-users" />
+      <AdminDashboardNavbar
+        link="users"
+        sublink="manage-users"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-[#fff] text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-[#fff] text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">

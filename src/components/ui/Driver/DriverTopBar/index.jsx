@@ -24,8 +24,8 @@ function DriverTopBar(props) {
       <div className="flex items-center gap-x-2">
         <div className="h-9 w-9 rounded-full bg-shuttlelaneGold flex justify-center items-center overflow-hidden">
           <img
-            src={profilePicPlaceholder}
-            alt="Tunde Ojobaro"
+            src={driver?.image}
+            alt={`${driver?.firstName} ${driver?.lastName}`}
             className="h-full w-full object-cover"
           />
         </div>

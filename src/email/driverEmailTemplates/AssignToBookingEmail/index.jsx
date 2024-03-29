@@ -33,7 +33,7 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
         className="footer"
       >
         <a
-          href={`http://localhost:3000/driver/accept-booking?driverId=${driverId}`}
+          href={`http://localhost:3000/driver/dashboard`}
           style={{
             display: "inline-block",
             padding: "10px 20px",
@@ -49,26 +49,7 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
           }}
           className="action-button accept-button"
         >
-          Accept
-        </a>
-        <a
-          href={`http://localhost:3000/driver/accept-booking?driverId=${driverId}`}
-          style={{
-            display: "inline-block",
-            padding: "10px 20px",
-            margin: "0 10px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            fontSize: "16px",
-            transition: "background-color 0.3s",
-            backgroundColor: "#dc3545",
-            color: "#fff",
-            textDecoration: "none",
-          }}
-          className="action-button decline-button"
-        >
-          Decline
+          Log in
         </a>
         <p style={{ textAlign: "center", color: "#333" }}>
           Thank you for your service

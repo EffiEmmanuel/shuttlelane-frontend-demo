@@ -192,6 +192,7 @@ function DriverSignupForm(props) {
 
   // Form Fields
   // STEP 1
+  const [image, setImage] = useState();
   const [firstName, setFirstName] = useState();
   const [middleName, setMiddleName] = useState();
   const [lastName, setLastName] = useState();
@@ -203,6 +204,8 @@ function DriverSignupForm(props) {
 
   // Object to pass to prop
   const stepOneStates = {
+    image,
+    setImage,
     firstName,
     setFirstName,
     middleName,
@@ -229,6 +232,9 @@ function DriverSignupForm(props) {
   const [maritalStatus, setMaritalStatus] = useState();
   const [bvn, setBvn] = useState();
   const [nin, setNin] = useState();
+  const [bank, setBank] = useState();
+  const [accountNumber, setAccountNumber] = useState();
+  const [accountName, setAccountName] = useState();
   const [driverLicense, setDriverLicense] = useState();
 
   // Object to pass to prop
@@ -247,6 +253,12 @@ function DriverSignupForm(props) {
     setBvn,
     nin,
     setNin,
+    bank,
+    setBank,
+    accountNumber,
+    setAccountNumber,
+    accountName,
+    setAccountName,
     driverLicense,
     setDriverLicense,
   };
@@ -332,6 +344,7 @@ function DriverSignupForm(props) {
   const dispatch = useDispatch();
   async function handleSignupDriver() {
     const values = {
+      image,
       firstName,
       middleName,
       lastName,
@@ -347,6 +360,9 @@ function DriverSignupForm(props) {
       maritalStatus: maritalStatus?.value,
       bvn,
       nin,
+      bank,
+      accountNumber,
+      accountName,
       driverLicense,
       carType: carType?.value,
       carName,

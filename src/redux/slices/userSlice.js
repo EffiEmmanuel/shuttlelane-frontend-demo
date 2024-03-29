@@ -428,6 +428,17 @@ export const sendEnquiryEmail = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function creates a stripe payment intent
+export const createStripePaymentIntent = createAsyncThunk(
+  "user/cities/getOne",
+  async (payload) => {
+    console.log("PAYLOAD:", payload);
+    return fetch(`http://localhost:3001/api/v1/stripe/create-intent`)
+      .then((res) => res.json())
+      .catch((err) => console.log("CREATE STRIPE PAYMENT INTENT ERROR:", err));
+  }
+);
+
 // FUNCTION: This function fetches a city
 export const fetchCity = createAsyncThunk(
   "user/cities/getOne",
@@ -450,6 +461,25 @@ export const fetchCity = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function creates a payment (Shuttlelane Payment)
+export const createShuttlelanePayment = createAsyncThunk(
+  "user/payments/createOne",
+  async (payload) => {
+    console.log("PAYLOAD:", payload);
+    return fetch(`http://localhost:3001/api/v1/users/payments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("CREATE SHUTTLELANE PAYMENT INTENT ERROR:", err)
+      );
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -468,6 +498,9 @@ export const userSlice = createSlice({
     // These states holds the booking details from the homepage so as to avoid url injection
     bookingType: "",
     bookingDetails: null,
+
+    // This state holds the just created booking (Primarily used in payment ids)
+    justCreatedBooking: null,
 
     // This state holds the user's base currency based on the location
     userCurrency: null,
@@ -514,6 +547,11 @@ export const userSlice = createSlice({
       apiKey: "", // Initial API key
       libraries: [], // Initial libraries
     },
+
+    // These states are for the payment status page
+    bookingId: null,
+    paymentStatus: "",
+    paymentGateway: "",
   },
   reducers: {
     setBookingDetails: (state, action) => {
@@ -538,6 +576,18 @@ export const userSlice = createSlice({
     },
     setGoogleMapsLibraries: (state, action) => {
       state.googleMaps.libraries = action.payload;
+    },
+
+    // THESE REDUCERS ARE FOR THE PAYMENT STATUS PAGE
+    // OPTED FOR REDUX STATES INSTEAD OF URL SEARCH PARAMS FOR SECURITY PURPOSES
+    setPaymentStatus: (state, action) => {
+      state.paymentStatus = action.payload;
+    },
+    setBookingId: (state, action) => {
+      state.bookingId = action.payload;
+    },
+    setPaymentGateway: (state, action) => {
+      state.paymentGateway = action.payload;
     },
   },
 
@@ -647,6 +697,7 @@ export const userSlice = createSlice({
         console.log("ACTION.PAYLOAD", action.payload);
         state.isLoading = false;
         if (action.payload?.status == 201) {
+          state.justCreatedBooking = action.payload?.booking;
           state.createBookingStatusCode = action.payload?.status;
           toast.success(
             "Booking successfully created, redirecting to your chosen payment portal"
@@ -736,6 +787,18 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
+      }) // Create Shuttlelane Payment AsyncThunk states
+      .addCase(createShuttlelanePayment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createShuttlelanePayment.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD", action.payload);
+        state.isLoading = false;
+      })
+      .addCase(createShuttlelanePayment.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
       });
   },
 });
@@ -745,5 +808,8 @@ export const {
   calculateBookingTotal,
   setGoogleMapsApiKey,
   setGoogleMapsLibraries,
+  setBookingId,
+  setPaymentStatus,
+  setPaymentGateway,
 } = userSlice.actions;
 export default userSlice.reducer;

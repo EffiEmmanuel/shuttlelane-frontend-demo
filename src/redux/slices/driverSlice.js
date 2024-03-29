@@ -8,18 +8,77 @@ import { isValidJSON } from "../../util";
 export const signupDriver = createAsyncThunk(
   "driver/signup",
   async (payload) => {
-    console.log("PAYLOAD:", payload);
-    return fetch(`http://localhost:3001/api/v1/auth/driver/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...payload?.values,
-      }),
-    })
-      .then((res) => res.json())
-      .catch((err) => console.log("SIGNUP DRIVER ERROR:", err));
+    console.log("payload.image:::", payload?.values?.image);
+
+    // UPLOAD IMAGE TO CLOUDINARY FIRST
+    const formData = new FormData();
+    formData.append("file", payload?.values?.image);
+    formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("upload successful");
+        const data = await response.json();
+        return fetch(`http://localhost:3001/api/v1/auth/driver/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: data.secure_url,
+            firstName: payload?.values?.firstName,
+            middleName: payload?.values?.middleName,
+            lastName: payload?.values?.lastName,
+            email: payload?.values?.email,
+            gender: payload?.values?.gender,
+            mobile: payload?.values?.mobile,
+            alternateMobile: payload?.values?.alternateMobile,
+            education: payload?.values?.education,
+            dateOfBirth: payload?.values?.dateOfBirth,
+            address: payload?.values?.address,
+            city: payload?.values?.city,
+            state: payload?.values?.state,
+            maritalStatus: payload?.values?.maritalStatus,
+            bvn: payload?.values?.bvn,
+            nin: payload?.values?.nin,
+            bank: payload?.values?.bank,
+            accountNumber: payload?.values?.accountNumber,
+            accountName: payload?.values?.accountName,
+            driverLicense: payload?.values?.driverLicense,
+            carType: payload?.values?.carType,
+            carName: payload?.values?.carName,
+            carModel: payload?.values?.carModel,
+            carYear: payload?.values?.carYear,
+            carColor: payload?.values?.carColor,
+            carPlateNumber: payload?.values?.carPlateNumber,
+            emergencyFirstName: payload?.values?.emergencyFirstName,
+            emergencyLastName: payload?.values?.emergencyLastName,
+            emergencyAddress: payload?.values?.emergencyAddress,
+            emergencyMobile: payload?.values?.emergencyMobile,
+            emergencyRelationship: payload?.values?.emergencyRelationship,
+            isDrivingForHailingPlatforms:
+              payload?.values?.isDrivingForHailingPlatforms,
+            otherHailingPlatforms: payload?.values?.otherHailingPlatforms,
+            password: payload?.values?.password,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((err) => console.log("SIGNUP DRIVER ERROR:", err));
+      } else {
+        // Handle error
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   }
 );
 

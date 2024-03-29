@@ -22,6 +22,9 @@ import empty from "../../../../assets/images/empty.png";
 import { FaTrash } from "react-icons/fa";
 
 function AdminDashboardBlogPage() {
+  // Mobile navbar handler
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
   const { token, admin, isLoading, currencies, ratePerMile, blogPosts } =
     useSelector((store) => store.admin);
   const dispatch = useDispatch();
@@ -374,13 +377,20 @@ function AdminDashboardBlogPage() {
 
       <ToastContainer />
       {/* Navbar here */}
-      <AdminDashboardNavbar link="blog" />
+      <AdminDashboardNavbar
+        link="blog"
+        isNavbarOpen={isNavbarOpen}
+        setIsNavbarOpen={setIsNavbarOpen}
+      />
 
       {/* Main content goes here */}
-      <div className="w-full min-h-screen pl-[6%] bg-white text-shuttlelaneBlack">
+      <div className="w-full min-h-screen lg:pl-[6%] bg-white text-shuttlelaneBlack">
         <div className="px-7 py-5 relative">
           {/* Top bar */}
-          <AdminTopBar />
+          <AdminTopBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
+          />
 
           {/* Main content */}
           <div className="mt-24 pt-2">
