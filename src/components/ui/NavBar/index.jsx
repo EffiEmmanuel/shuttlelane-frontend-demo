@@ -11,6 +11,7 @@ import ShuttlelaneLogoColored from "../../../assets/logos/logo.png";
 import { Fade } from "react-awesome-reveal";
 import { useWindowScroll } from "@uidotdev/usehooks";
 import { BiLogoGmail, BiSolidPhone } from "react-icons/bi";
+import DropdownItem from "../DropdownItem";
 
 function NavBar(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +22,7 @@ function NavBar(props) {
 
   return (
     <div className="relative z-[30]">
-      <div className={`rec ${navClass} bg-[#E6C061]`}></div>
+      <div className={`rec ${navClass} bg-shuttlelanePurple`}></div>
       <div className={`rec2 ${navClass2}`}>
         <nav className="lg:hidden relative z-[40] w-full min-h-screen flex flex-col gap-y-12 items-start bg-white py-4 px-8 pl-14 drop-shadow-sm">
           <div className="flex justify-end w-full relative top-4 -right-5">
@@ -35,35 +36,116 @@ function NavBar(props) {
             />
           </div>
 
-          <ul className="flex flex-col w-full gap-y-7">
+          <ul className="flex flex-col w-full gap-y-4">
             <li className="w-full">
-              <Link
-                to="/company/about-us"
-                className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
-              >
-                About Us
-              </Link>
+              <DropdownItem
+                dropdownTitle="About Us"
+                dropdownList={
+                  <>
+                    <Link
+                      to="/company/about-shuttlelane"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      About Shuttlelane
+                    </Link>
+                    <Link
+                      to="/company/who-we-are"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Who We Are
+                    </Link>
+                    <Link
+                      to="/company/partnership"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Partnership
+                    </Link>
+                    <Link
+                      to="/company/blog"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Blog
+                    </Link>
+                  </>
+                }
+              />
             </li>
             <li className="w-full">
-              <Link
-                to=""
-                className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
-              >
-                Services
-              </Link>
+              <DropdownItem
+                dropdownTitle="Services"
+                dropdownList={
+                  <>
+                    <Link
+                      to="/services/airport-transfer"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Airport Transfer
+                    </Link>
+                    <Link
+                      to="/services/car-rental"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Car Rental
+                    </Link>
+                    <Link
+                      to="/services/priority-pass"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Priority Pass
+                    </Link>
+                    <Link
+                      to="/services/visa-on-arrival"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Visa On Arrival
+                    </Link>
+                    <Link
+                      to="/services/shuttlelane-concierge"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Shuttlelane Concierge
+                    </Link>
+                    <Link
+                      to="/services/corporate-travel"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Corporate Travel
+                    </Link>
+                    <Link
+                      to="/services/wedding-services"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Wedding Services
+                    </Link>
+                  </>
+                }
+              />
             </li>
             <li className="w-full">
-              <Link
-                to=""
-                className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
-              >
-                Become a partner
-              </Link>
+              <DropdownItem
+                dropdownTitle="Become A Partner"
+                dropdownList={
+                  <>
+                    <Link
+                      to="/services/airport-transfer"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Drive For Shuttlelane
+                    </Link>
+                    <Link
+                      to="/services/fleet-management"
+                      className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
+                    >
+                      Fleet Management
+                    </Link>
+                  </>
+                }
+              />
             </li>
             <li className="w-full">
               <Link
                 to="/booking/track-booking"
-                className="text-xl w-full py-3 px-5 inline-block transition-all hover:text-2xl"
+                className="text-xl w-full py-3 inline-block transition-all hover:text-2xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
               >
                 Track booking
               </Link>

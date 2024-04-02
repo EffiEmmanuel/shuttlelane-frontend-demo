@@ -69,7 +69,7 @@ export default function Pay(props) {
     meta: { counsumer_id: "7898", consumer_mac: "kjs9s8ss7dd" },
     customizations: {
       title: "Shuttlelane Limited",
-      description: `Payment for ${justCreatedBooking?.bookingType}`,
+      description: `Payment for ${justCreatedBooking?.bookingType} Booking`,
       logo: "https://res.cloudinary.com/shuttlelane/image/upload/v1711736954/jlkxdbklxpilwtriq14h.png",
     },
   });
