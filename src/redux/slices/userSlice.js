@@ -13,7 +13,7 @@ export const fetchCities = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `shuttlelane-backend-demo.up.railway.app:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
@@ -35,7 +35,7 @@ export const fetchVehicleClasses = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `shuttlelane-backend-demo.up.railway.app:3001/api/v1/vehicle-classes?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/vehicle-classes?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
@@ -57,7 +57,7 @@ export const fetchCars = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `shuttlelane-backend-demo.up.railway.app:3001/api/v1/cars?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/cars?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH CARS ERROR:", err));
@@ -84,7 +84,7 @@ export const fetchPasses = createAsyncThunk(
       });
 
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/passes?userCountry=${userCountry?.data?.country_name}`
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/passes?userCountry=${userCountry?.data?.country_name}`
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH PASS TYPES ERROR:", err));
@@ -175,7 +175,7 @@ export const calculateTotal = createAsyncThunk(
 
     console.log("sending data");
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
       {
         method: "POST",
         headers: {
@@ -194,7 +194,7 @@ export const fetchVisaOnArrivalRates = createAsyncThunk(
   "user/voaRates/getAll",
   async (payload) => {
     return fetch(
-      "shuttlelane-backend-demo.up.railway.app:3001/api/v1/users/voaRatesWithNigerianVisa"
+      "https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/users/voaRatesWithNigerianVisa"
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH VOA RATES ERROR:", err));
@@ -362,7 +362,7 @@ export const createBooking = createAsyncThunk(
     console.log("VALS:", values);
 
     return fetch(
-      "shuttlelane-backend-demo.up.railway.app:3001/api/v1/booking",
+      "https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/booking",
       {
         method: "POST",
         headers: {
@@ -382,7 +382,7 @@ export const fetchAllBlogPosts = createAsyncThunk(
   async () => {
     console.log("HI");
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/blog-posts`,
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/blog-posts`,
       {}
     )
       .then((res) => res.json())
@@ -396,7 +396,7 @@ export const fetchBlogPost = createAsyncThunk(
   async (slug) => {
     console.log("HI");
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/blog-posts/${slug}`,
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/blog-posts/${slug}`,
       {}
     )
       .then((res) => res.json())
@@ -410,7 +410,7 @@ export const fetchBookingByReference = createAsyncThunk(
   async (bookingReference) => {
     console.log("HI");
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
       {}
     )
       .then((res) => res.json())
@@ -424,7 +424,7 @@ export const sendEnquiryEmail = createAsyncThunk(
   async (payload) => {
     console.log("HI");
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/users/enquiries/sendMessage`,
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/users/enquiries/sendMessage`,
       {
         method: "POST",
         headers: {
@@ -448,7 +448,7 @@ export const createStripePaymentIntent = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD:", payload);
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/stripe/create-intent`
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/stripe/create-intent`
     )
       .then((res) => res.json())
       .catch((err) => console.log("CREATE STRIPE PAYMENT INTENT ERROR:", err));
@@ -465,7 +465,7 @@ export const fetchCity = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `shuttlelane-backend-demo.up.railway.app:3001/api/v1/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH CITIES ERROR:", err));
@@ -483,7 +483,7 @@ export const createShuttlelanePayment = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD:", payload);
     return fetch(
-      `shuttlelane-backend-demo.up.railway.app:3001/api/v1/users/payments`,
+      `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/users/payments`,
       {
         method: "POST",
         headers: {
