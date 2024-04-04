@@ -11,9 +11,11 @@ export const fetchCities = createAsyncThunk(
     // Get user country
     const userCountry = await axios.get("https://ipapi.co/json");
 
+    console.log("USER COUNTRY:", userCountry);
+
     if (userCountry?.data?.country_name) {
       return fetch(
-        `https://shuttlelane-backend-demo.up.railway.app:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
