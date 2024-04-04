@@ -28,7 +28,7 @@ export const signupDriver = createAsyncThunk(
         console.log("upload successful");
         const data = await response.json();
         return fetch(
-          `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/driver/signup`,
+          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/driver/signup`,
           {
             method: "POST",
             headers: {
@@ -90,7 +90,7 @@ export const loginDriver = createAsyncThunk(
   "driver/loginAdmin",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/driver/login`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/driver/login`,
       {
         method: "POST",
         headers: {
@@ -114,7 +114,7 @@ export const fetchStatistics = createAsyncThunk(
     console.log("TOKEN FROM FETCH::", token);
     const adminToken = localStorage.getItem("adminToken");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/driver/statistics`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/driver/statistics`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -132,7 +132,7 @@ export const resendOTP = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD.DRIVER:", payload?.driver);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/verification/resend-otp`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/verification/resend-otp`,
       {
         method: "POST",
         headers: {
@@ -153,7 +153,7 @@ export const verifyOTP = createAsyncThunk(
   "driver/verification/verifyOTP",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/verification/verify-otp`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/verification/verify-otp`,
       {
         method: "POST",
         headers: {
@@ -186,7 +186,7 @@ export const updateDriver = createAsyncThunk(
       console.log("IS VALID JSON 2:::", isValidJSON(token));
 
       const response = await fetch(
-        `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/update-driver/${payload?.driverId}`,
+        `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/update-driver/${payload?.driverId}`,
         {
           method: "PATCH",
           headers: {
@@ -214,7 +214,7 @@ export const updateDriver = createAsyncThunk(
       throw error;
     }
     // return fetch(
-    //   `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/update-driver/${payload?.driverId}`,
+    //   `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/update-driver/${payload?.driverId}`,
     //   {
     //     method: "PATCH",
     //     headers: {
@@ -245,7 +245,7 @@ export const resetDriverPassword = createAsyncThunk(
     console.log("IS VALID JSON 2:::", isValidJSON(token));
 
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/reset-password/${payload?.values?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/reset-password/${payload?.values?.driverId}`,
       {
         method: "PATCH",
         headers: {
@@ -265,7 +265,7 @@ export const fetchAssignedJobs = createAsyncThunk(
   "driver/bookings/getAssignedBookings",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/assigned/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/bookings/assigned/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -285,7 +285,7 @@ export const fetchBookingByReference = createAsyncThunk(
   async (bookingReference) => {
     console.log("HI");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
       {}
     )
       .then((res) => res.json())
@@ -298,7 +298,7 @@ export const acceptBooking = createAsyncThunk(
   "driver/bookings/acceptJob",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/accept/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/booking/accept/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -319,7 +319,7 @@ export const declineBooking = createAsyncThunk(
   "driver/bookings/declineJob",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/decline/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/booking/decline/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -341,7 +341,7 @@ export const fetchDriverEarnings = createAsyncThunk(
   async (payload) => {
     console.log("HI");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/earnings/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/earnings/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -358,7 +358,7 @@ export const fetchUpcomingJobs = createAsyncThunk(
   "driver/bookings/getUpcomingBookings",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/upcoming/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/bookings/upcoming/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -377,7 +377,7 @@ export const startBooking = createAsyncThunk(
   "driver/bookings/start",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/start/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/booking/start/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -395,7 +395,7 @@ export const endBooking = createAsyncThunk(
   "driver/bookings/end",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/end/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/booking/end/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -413,7 +413,7 @@ export const fetchCompletedJobs = createAsyncThunk(
   "driver/bookings/getCompletedBookings",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/completed/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/bookings/completed/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -432,7 +432,7 @@ export const fetchOngoingJobs = createAsyncThunk(
   "driver/bookings/getOngoingBookings",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/ongoing/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/drivers/bookings/ongoing/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
