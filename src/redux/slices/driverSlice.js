@@ -27,49 +27,52 @@ export const signupDriver = createAsyncThunk(
       if (response.ok) {
         console.log("upload successful");
         const data = await response.json();
-        return fetch(`http://localhost:3001/api/v1/auth/driver/signup`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            image: data.secure_url,
-            firstName: payload?.values?.firstName,
-            middleName: payload?.values?.middleName,
-            lastName: payload?.values?.lastName,
-            email: payload?.values?.email,
-            gender: payload?.values?.gender,
-            mobile: payload?.values?.mobile,
-            alternateMobile: payload?.values?.alternateMobile,
-            education: payload?.values?.education,
-            dateOfBirth: payload?.values?.dateOfBirth,
-            address: payload?.values?.address,
-            city: payload?.values?.city,
-            state: payload?.values?.state,
-            maritalStatus: payload?.values?.maritalStatus,
-            bvn: payload?.values?.bvn,
-            nin: payload?.values?.nin,
-            bank: payload?.values?.bank,
-            accountNumber: payload?.values?.accountNumber,
-            accountName: payload?.values?.accountName,
-            driverLicense: payload?.values?.driverLicense,
-            carType: payload?.values?.carType,
-            carName: payload?.values?.carName,
-            carModel: payload?.values?.carModel,
-            carYear: payload?.values?.carYear,
-            carColor: payload?.values?.carColor,
-            carPlateNumber: payload?.values?.carPlateNumber,
-            emergencyFirstName: payload?.values?.emergencyFirstName,
-            emergencyLastName: payload?.values?.emergencyLastName,
-            emergencyAddress: payload?.values?.emergencyAddress,
-            emergencyMobile: payload?.values?.emergencyMobile,
-            emergencyRelationship: payload?.values?.emergencyRelationship,
-            isDrivingForHailingPlatforms:
-              payload?.values?.isDrivingForHailingPlatforms,
-            otherHailingPlatforms: payload?.values?.otherHailingPlatforms,
-            password: payload?.values?.password,
-          }),
-        })
+        return fetch(
+          `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/driver/signup`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              image: data.secure_url,
+              firstName: payload?.values?.firstName,
+              middleName: payload?.values?.middleName,
+              lastName: payload?.values?.lastName,
+              email: payload?.values?.email,
+              gender: payload?.values?.gender,
+              mobile: payload?.values?.mobile,
+              alternateMobile: payload?.values?.alternateMobile,
+              education: payload?.values?.education,
+              dateOfBirth: payload?.values?.dateOfBirth,
+              address: payload?.values?.address,
+              city: payload?.values?.city,
+              state: payload?.values?.state,
+              maritalStatus: payload?.values?.maritalStatus,
+              bvn: payload?.values?.bvn,
+              nin: payload?.values?.nin,
+              bank: payload?.values?.bank,
+              accountNumber: payload?.values?.accountNumber,
+              accountName: payload?.values?.accountName,
+              driverLicense: payload?.values?.driverLicense,
+              carType: payload?.values?.carType,
+              carName: payload?.values?.carName,
+              carModel: payload?.values?.carModel,
+              carYear: payload?.values?.carYear,
+              carColor: payload?.values?.carColor,
+              carPlateNumber: payload?.values?.carPlateNumber,
+              emergencyFirstName: payload?.values?.emergencyFirstName,
+              emergencyLastName: payload?.values?.emergencyLastName,
+              emergencyAddress: payload?.values?.emergencyAddress,
+              emergencyMobile: payload?.values?.emergencyMobile,
+              emergencyRelationship: payload?.values?.emergencyRelationship,
+              isDrivingForHailingPlatforms:
+                payload?.values?.isDrivingForHailingPlatforms,
+              otherHailingPlatforms: payload?.values?.otherHailingPlatforms,
+              password: payload?.values?.password,
+            }),
+          }
+        )
           .then((res) => res.json())
           .catch((err) => console.log("SIGNUP DRIVER ERROR:", err));
       } else {
@@ -86,16 +89,19 @@ export const signupDriver = createAsyncThunk(
 export const loginDriver = createAsyncThunk(
   "driver/loginAdmin",
   async (payload) => {
-    return fetch(`http://localhost:3001/api/v1/auth/driver/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: payload?.email,
-        password: payload?.password,
-      }),
-    })
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/driver/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: payload?.email,
+          password: payload?.password,
+        }),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("LOGIN DRIVER ERROR:", err));
   }
@@ -107,11 +113,14 @@ export const fetchStatistics = createAsyncThunk(
   async (token) => {
     console.log("TOKEN FROM FETCH::", token);
     const adminToken = localStorage.getItem("adminToken");
-    return fetch(`http://localhost:3001/api/v1/driver/statistics`, {
-      headers: {
-        token: `Bearer ${JSON.parse(token)}`,
-      },
-    })
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/driver/statistics`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH STATS ERROR:", err));
   }
@@ -122,15 +131,18 @@ export const resendOTP = createAsyncThunk(
   "driver/verification/resendOTP",
   async (payload) => {
     console.log("PAYLOAD.DRIVER:", payload?.driver);
-    return fetch(`http://localhost:3001/api/v1/auth/verification/resend-otp`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: payload?.driver,
-      }),
-    })
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/verification/resend-otp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: payload?.driver,
+        }),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("RESEND OTP ERROR:", err));
   }
@@ -140,17 +152,20 @@ export const resendOTP = createAsyncThunk(
 export const verifyOTP = createAsyncThunk(
   "driver/verification/verifyOTP",
   async (payload) => {
-    return fetch(`http://localhost:3001/api/v1/auth/verification/verify-otp`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: payload?.driver,
-        code: payload?.code,
-        userType: "driver",
-      }),
-    })
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/auth/verification/verify-otp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: payload?.driver,
+          code: payload?.code,
+          userType: "driver",
+        }),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("VERIFY OTP ERROR:", err));
   }
@@ -171,7 +186,7 @@ export const updateDriver = createAsyncThunk(
       console.log("IS VALID JSON 2:::", isValidJSON(token));
 
       const response = await fetch(
-        `http://localhost:3001/api/v1/drivers/update-driver/${payload?.driverId}`,
+        `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/update-driver/${payload?.driverId}`,
         {
           method: "PATCH",
           headers: {
@@ -199,7 +214,7 @@ export const updateDriver = createAsyncThunk(
       throw error;
     }
     // return fetch(
-    //   `http://localhost:3001/api/v1/drivers/update-driver/${payload?.driverId}`,
+    //   `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/update-driver/${payload?.driverId}`,
     //   {
     //     method: "PATCH",
     //     headers: {
@@ -230,7 +245,7 @@ export const resetDriverPassword = createAsyncThunk(
     console.log("IS VALID JSON 2:::", isValidJSON(token));
 
     return fetch(
-      `http://localhost:3001/api/v1/drivers/reset-password/${payload?.values?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/reset-password/${payload?.values?.driverId}`,
       {
         method: "PATCH",
         headers: {
@@ -250,7 +265,7 @@ export const fetchAssignedJobs = createAsyncThunk(
   "driver/bookings/getAssignedBookings",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/bookings/assigned/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/assigned/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -270,7 +285,7 @@ export const fetchBookingByReference = createAsyncThunk(
   async (bookingReference) => {
     console.log("HI");
     return fetch(
-      `http://localhost:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/booking/get-booking-by-reference/${bookingReference}`,
       {}
     )
       .then((res) => res.json())
@@ -283,7 +298,7 @@ export const acceptBooking = createAsyncThunk(
   "driver/bookings/acceptJob",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/booking/accept/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/accept/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -304,7 +319,7 @@ export const declineBooking = createAsyncThunk(
   "driver/bookings/declineJob",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/booking/decline/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/decline/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -326,7 +341,7 @@ export const fetchDriverEarnings = createAsyncThunk(
   async (payload) => {
     console.log("HI");
     return fetch(
-      `http://localhost:3001/api/v1/drivers/earnings/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/earnings/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -343,7 +358,7 @@ export const fetchUpcomingJobs = createAsyncThunk(
   "driver/bookings/getUpcomingBookings",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/bookings/upcoming/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/upcoming/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -362,7 +377,7 @@ export const startBooking = createAsyncThunk(
   "driver/bookings/start",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/booking/start/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/start/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -380,7 +395,7 @@ export const endBooking = createAsyncThunk(
   "driver/bookings/end",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/booking/end/${payload?.driverId}/${payload?.bookingId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/booking/end/${payload?.driverId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -398,7 +413,7 @@ export const fetchCompletedJobs = createAsyncThunk(
   "driver/bookings/getCompletedBookings",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/bookings/completed/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/completed/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -417,7 +432,7 @@ export const fetchOngoingJobs = createAsyncThunk(
   "driver/bookings/getOngoingBookings",
   async (payload) => {
     return fetch(
-      `http://localhost:3001/api/v1/drivers/bookings/ongoing/${payload?.driverId}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/drivers/bookings/ongoing/${payload?.driverId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,

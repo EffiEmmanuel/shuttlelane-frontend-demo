@@ -13,7 +13,7 @@ export const fetchCities = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `http://localhost:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.onrender.com/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
@@ -35,7 +35,7 @@ export const fetchVehicleClasses = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `http://localhost:3001/api/v1/vehicle-classes?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.onrender.com/api/v1/vehicle-classes?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
@@ -57,7 +57,7 @@ export const fetchCars = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `http://localhost:3001/api/v1/cars?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.onrender.com/api/v1/cars?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH CARS ERROR:", err));
@@ -84,7 +84,7 @@ export const fetchPasses = createAsyncThunk(
       });
 
     return fetch(
-      `http://localhost:3001/api/v1/passes?userCountry=${userCountry?.data?.country_name}`
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/passes?userCountry=${userCountry?.data?.country_name}`
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH PASS TYPES ERROR:", err));
@@ -175,7 +175,7 @@ export const calculateTotal = createAsyncThunk(
 
     console.log("sending data");
     return fetch(
-      `http://localhost:3001/api/v1/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
       {
         method: "POST",
         headers: {
@@ -193,7 +193,9 @@ export const calculateTotal = createAsyncThunk(
 export const fetchVisaOnArrivalRates = createAsyncThunk(
   "user/voaRates/getAll",
   async (payload) => {
-    return fetch("http://localhost:3001/api/v1/users/voaRatesWithNigerianVisa")
+    return fetch(
+      "https://shuttlelane-backend-demo.onrender.com/api/v1/users/voaRatesWithNigerianVisa"
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH VOA RATES ERROR:", err));
   }
@@ -359,13 +361,16 @@ export const createBooking = createAsyncThunk(
 
     console.log("VALS:", values);
 
-    return fetch("http://localhost:3001/api/v1/booking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
+    return fetch(
+      "https://shuttlelane-backend-demo.onrender.com/api/v1/booking",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("CREATE BOOKING ERROR:", err));
   }
@@ -376,7 +381,10 @@ export const fetchAllBlogPosts = createAsyncThunk(
   "user/blog/getPosts",
   async () => {
     console.log("HI");
-    return fetch(`http://localhost:3001/api/v1/blog-posts`, {})
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/blog-posts`,
+      {}
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH BLOG POSTS ERROR:", err));
   }
@@ -387,7 +395,10 @@ export const fetchBlogPost = createAsyncThunk(
   "user/blog/getOne",
   async (slug) => {
     console.log("HI");
-    return fetch(`http://localhost:3001/api/v1/blog-posts/${slug}`, {})
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/blog-posts/${slug}`,
+      {}
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH BLOG POST ERROR:", err));
   }
@@ -399,7 +410,7 @@ export const fetchBookingByReference = createAsyncThunk(
   async (bookingReference) => {
     console.log("HI");
     return fetch(
-      `http://localhost:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/booking/get-booking-by-reference/${bookingReference}`,
       {}
     )
       .then((res) => res.json())
@@ -412,17 +423,20 @@ export const sendEnquiryEmail = createAsyncThunk(
   "user/enquiries/sendMessage",
   async (payload) => {
     console.log("HI");
-    return fetch(`http://localhost:3001/api/v1/users/enquiries/sendMessage`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fullName: payload?.fullName,
-        email: payload?.email,
-        message: payload?.message,
-      }),
-    })
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/users/enquiries/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: payload?.fullName,
+          email: payload?.email,
+          message: payload?.message,
+        }),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("SEND ENQUIRY EMAIL ERROR:", err));
   }
@@ -433,7 +447,9 @@ export const createStripePaymentIntent = createAsyncThunk(
   "user/cities/getOne",
   async (payload) => {
     console.log("PAYLOAD:", payload);
-    return fetch(`http://localhost:3001/api/v1/stripe/create-intent`)
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/stripe/create-intent`
+    )
       .then((res) => res.json())
       .catch((err) => console.log("CREATE STRIPE PAYMENT INTENT ERROR:", err));
   }
@@ -449,7 +465,7 @@ export const fetchCity = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `http://localhost:3001/api/v1/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
+        `https://shuttlelane-backend-demo.onrender.com/api/v1/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH CITIES ERROR:", err));
@@ -466,13 +482,16 @@ export const createShuttlelanePayment = createAsyncThunk(
   "user/payments/createOne",
   async (payload) => {
     console.log("PAYLOAD:", payload);
-    return fetch(`http://localhost:3001/api/v1/users/payments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
+    return fetch(
+      `https://shuttlelane-backend-demo.onrender.com/api/v1/users/payments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    )
       .then((res) => res.json())
       .catch((err) =>
         console.log("CREATE SHUTTLELANE PAYMENT INTENT ERROR:", err)
