@@ -15,11 +15,22 @@ export const fetchCities = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       console.log("HELLO BEFORE API CALL");
-      return await fetch(
-        `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
-      )
-        .then((res) => res.json())
-        .catch((err) => console.log("FETCH CITIES ERROR:", err));
+      return axios
+        .get(
+          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => res.data)
+        .catch((error) => console.log("FETCH CITIES ERROR:", error));
+      //   return fetch(
+      //     `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
+      //   )
+      //     .then((res) => res.json())
+      //     .catch((err) => console.log("FETCH CITIES ERROR:", err));
     } else {
       toast.error(
         "Slow network detected. Please ensure you have internet access. Refresh page if this page does not load correctly."
