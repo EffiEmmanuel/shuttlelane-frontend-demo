@@ -205,7 +205,7 @@ export default function AirportTransferBookingSummary() {
             >
               <div className="flex flex-col">
                 <div className="flex items-center gap-x-2">
-                  <span className="text-xl font-semibold">
+                  <span className="text-xl font-semibold text-left">
                     1. Vehicle Information
                   </span>
 
@@ -216,7 +216,7 @@ export default function AirportTransferBookingSummary() {
                     }`}
                   />
                 </div>
-                <p className="text-sm -mt-1">
+                <p className="text-sm -mt-1 text-left">
                   Please select your preffered vehicle class before proceeding
                   to the next step
                 </p>

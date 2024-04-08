@@ -53,7 +53,7 @@ export default function InfoSlide() {
           </div>
         </div>
       </div>
-      <div className="bg-shuttlelanePurple p-7 w-full h-auto flex-col lg:hidden justify-between">
+      <div className="bg-shuttlelanePurple p-7 w-full h-auto lg:hidden">
         <Slide
           transitionDuration={500}
           arrows={false}
