@@ -35,6 +35,7 @@ import SwipeButton from "../../../../components/ui/SwipeButton";
 import { ImSpinner2 } from "react-icons/im";
 import VendorDashboardNavbar from "../../../../components/ui/Vendor/VendorDashboardNavbar";
 import VendorTopBar from "../../../../components/ui/Vendor/VendorTopBar";
+import { Helmet } from "react-helmet";
 
 function VendorDashboardBookingPage() {
   // Redux setup
@@ -124,6 +125,10 @@ function VendorDashboardBookingPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Completed Bookings - Shuttlelane Portal Vendor Dashboard</title>
+      </Helmet>
+
       {/* Assigned Booking Details Modal */}
       <Modal
         isOpen={isAssignedBookingDetailsModalOpen}

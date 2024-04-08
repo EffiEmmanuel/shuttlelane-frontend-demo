@@ -9,11 +9,16 @@ import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BiMenu } from "react-icons/bi";
 import FAQs from "../../../components/ui/FAQSection/FAQs";
+import { Helmet } from "react-helmet";
 
 function FAQsPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Frequently Asked Questions (FAQs) | Shuttlelane</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

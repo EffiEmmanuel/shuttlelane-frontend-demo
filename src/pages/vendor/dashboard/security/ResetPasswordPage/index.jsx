@@ -2,14 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import { MdQuestionMark } from "react-icons/md";
-import { FaCircleExclamation } from "react-icons/fa6";
-import DriverDashboardNavbar from "../../../../../components/ui/Driver/DriverDashboardNavbar";
-import DriverTopBar from "../../../../../components/ui/Driver/DriverTopBar";
-import DriverResetPasswordForm from "../../../../../forms/vendor/ResetPasswordForm";
 import VendorDashboardNavbar from "../../../../../components/ui/Vendor/VendorDashboardNavbar";
 import VendorTopBar from "../../../../../components/ui/Vendor/VendorTopBar";
 import VendorResetPasswordForm from "../../../../../forms/vendor/ResetPasswordForm";
+import { Helmet } from "react-helmet";
 
 function VendorDashboardSecurityPage() {
   const { token, isLoading, vendor } = useSelector((store) => store.vendor);
@@ -32,6 +28,12 @@ function VendorDashboardSecurityPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Vendor Security - Reset Password | Shuttlelane Portal Vendor Dashboard
+        </title>
+      </Helmet>
+
       <ToastContainer />
       {/* Navbar here */}
 

@@ -3,6 +3,7 @@ import AdminDashboardNavbar from "../../../../../components/ui/Admin/AdminDashbo
 import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import AdminPushNotificationsForm from "../../../../../forms/admin/AdminPushNotificationsForm";
 import AdminBulkEmailForm from "../../../../../forms/admin/BulkEmailForm";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardBulkEmailPage() {
   // Mobile navbar handler
@@ -10,6 +11,10 @@ function AdminDashboardBulkEmailPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Send Bulk Email | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="broadcasts"

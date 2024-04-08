@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import Modal from "react-modal";
 import { FaXmark } from "react-icons/fa6";
 import Select from "react-select";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardAdminAccountsPage() {
   // Mobile navbar handler
@@ -156,6 +157,12 @@ function AdminDashboardAdminAccountsPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Manage Admin Accounts | Shuttlelane Portal Admin Dashboard
+        </title>
+      </Helmet>
+
       <ToastContainer />
 
       <Modal

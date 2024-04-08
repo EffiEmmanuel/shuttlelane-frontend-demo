@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { Fade } from "react-reveal";
 import Footer from "../../../components/ui/Footer";
+import { Helmet } from "react-helmet";
 
 // Images
 import circleAsset from "../../../assets/images/circle-asset.svg";
@@ -57,6 +58,9 @@ function VisaOnArrivalPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Shuttlelane: Visa On Arrival Services</title>
+      </Helmet>
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

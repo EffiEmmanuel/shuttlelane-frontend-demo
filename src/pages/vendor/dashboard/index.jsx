@@ -28,6 +28,7 @@ import { RiSearch2Line } from "react-icons/ri";
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import Modal from "react-modal";
 import moment from "moment";
+import { Helmet } from "react-helmet";
 
 // Images
 import vendorHomeGraphics from "../../../assets/images/vendor/vendor_home_graphics.svg";
@@ -196,6 +197,12 @@ function VendorDashboardHomePage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Vendor Dashboard - Overview | Shuttlelane Portal Vendor Dashboard
+        </title>
+      </Helmet>
+
       <ToastContainer />
       {/* Assigned Booking Details Modal */}
       <Modal

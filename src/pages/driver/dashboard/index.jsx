@@ -41,13 +41,14 @@ import {
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import Modal from "react-modal";
 import moment from "moment";
+import { ToastContainer } from "react-toastify";
+import SwipeButton from "../../../components/ui/SwipeButton";
+import GoogleMapsWithDirections from "../../../components/ui/GoogleMapsWithDirection";
+import { Helmet } from "react-helmet";
 
 // Images
 import driverHomeGraphics from "../../../assets/images/driver/driver_home_graphics.svg";
 import congratsAsset from "../../../assets/images/driver/congrats.svg";
-import { ToastContainer } from "react-toastify";
-import SwipeButton from "../../../components/ui/SwipeButton";
-import GoogleMapsWithDirections from "../../../components/ui/GoogleMapsWithDirection";
 
 function DriverDashboardHomePage() {
   const {
@@ -147,6 +148,12 @@ function DriverDashboardHomePage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Driver Dashboard - Overview | Shuttlelane Portal Driver Dashboard
+        </title>
+      </Helmet>
+
       <ToastContainer />
       {/* Assigned Booking Details Modal */}
       <Modal

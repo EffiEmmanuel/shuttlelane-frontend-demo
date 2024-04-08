@@ -1,6 +1,7 @@
 import React from "react";
 import VendorSignupForm from "../../../forms/vendor/SignupForm";
 import NavBar from "../../../components/ui/NavBar";
+import { Helmet } from "react-helmet";
 
 // Images
 import ShuttlelaneLogoWhite from "../../../assets/logos/shuttlelane-white.png";
@@ -8,6 +9,12 @@ import ShuttlelaneLogoWhite from "../../../assets/logos/shuttlelane-white.png";
 function VendorSignupPage() {
   return (
     <div className="flex min-h-screen">
+      <Helmet>
+        <title>
+          Join Shuttlelane as a Vendor: Expand Your Reach and Grow Your Business
+        </title>
+      </Helmet>
+
       <div className="lg:w-[50vw] h-screen overflow-hidden vendorSignupBg fixed z-[40] lg:flex justify-center items-center hidden">
         <div className="flex flex-col gapy-y-10">
           <h1 className="text-[17rem] spaceGroteskText text-white opacity-5">

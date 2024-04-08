@@ -40,6 +40,7 @@ import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BsPersonCheck } from "react-icons/bs";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
+import { Helmet } from "react-helmet";
 
 function AboutPage() {
   const howItWorksRef = useRef(null);
@@ -48,6 +49,10 @@ function AboutPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>About Us | Shuttlelane</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

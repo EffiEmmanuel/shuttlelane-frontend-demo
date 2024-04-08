@@ -46,11 +46,12 @@ import { FaRegHandshake } from "react-icons/fa";
 import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import { Fade } from "react-awesome-reveal";
 import Carousel from "re-carousel";
+import { Parallax, ParallaxProvider } from "react-scroll-parallax";
+import { Helmet } from "react-helmet";
 
 // Images
 import personalConcierge from "../../../assets/images/concierge/personal-concierge.jpg";
 import corporateConcierge from "../../../assets/images/concierge/corporate-concierge.jpg";
-import { Parallax, ParallaxProvider } from "react-scroll-parallax";
 
 function ConciergePage() {
   const howItWorksRef = useRef(null);
@@ -60,6 +61,10 @@ function ConciergePage() {
   return (
     <ParallaxProvider>
       <div className="relative bg-white" data-scroll-section>
+        <Helmet>
+          <title>Shuttlelane: Concierge Services</title>
+        </Helmet>
+
         {/* FLOATING MENU */}
         {isMenuHidden && (
           <Fade duration={300}>

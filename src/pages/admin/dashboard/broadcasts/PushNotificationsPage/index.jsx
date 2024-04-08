@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AdminDashboardNavbar from "../../../../../components/ui/Admin/AdminDashboardNavbar";
 import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import AdminPushNotificationsForm from "../../../../../forms/admin/AdminPushNotificationsForm";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardPushNotificationsPage() {
   // Mobile navbar handler
@@ -9,6 +10,12 @@ function AdminDashboardPushNotificationsPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Send Push Notiications | Shuttlelane Portal Admin Dashboard
+        </title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="broadcasts"

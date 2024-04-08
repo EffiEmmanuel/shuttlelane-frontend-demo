@@ -26,6 +26,7 @@ import { Modal as RsuiteModal, Button } from "rsuite";
 import Modal from "react-modal";
 import { FaXmark } from "react-icons/fa6";
 import { ImSpinner2 } from "react-icons/im";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardCarRentalPage() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -162,6 +163,10 @@ function AdminDashboardCarRentalPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Car Rental Bookings | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Delete Booking dialog */}
       <RsuiteModal
         backdrop="static"

@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import VendorDashboardNavbar from "../../../../components/ui/Vendor/VendorDashboardNavbar";
 import VendorTopBar from "../../../../components/ui/Vendor/VendorTopBar";
 import { fetchVendorEarnings } from "../../../../redux/slices/vendorSlice";
+import { Helmet } from "react-helmet";
 
 function VendorDashboardEarningsPage() {
   const { token, isLoading, vendor, earnings, expectedEarnings } = useSelector(
@@ -23,6 +24,9 @@ function VendorDashboardEarningsPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Vendor Earnings - Shuttlelane Portal Vendor Dashboard</title>
+      </Helmet>
       <ToastContainer />
       {/* Navbar here */}
       <VendorDashboardNavbar

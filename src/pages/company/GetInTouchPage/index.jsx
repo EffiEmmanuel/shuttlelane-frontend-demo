@@ -12,6 +12,7 @@ import { BiMenu } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { sendEnquiryEmail } from "../../../redux/slices/userSlice";
 import { ToastContainer } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 function GetInTouchPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
@@ -45,6 +46,10 @@ function GetInTouchPage() {
 
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Get in Touch | Shuttlelane</title>
+      </Helmet>
+
       <ToastContainer />
       {/* FLOATING MENU */}
       {isMenuHidden && (

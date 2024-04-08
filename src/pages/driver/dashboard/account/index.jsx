@@ -11,6 +11,7 @@ import DriverSignupStepOne from "../../../../forms/driver/SignupForm/DriverSignu
 import DriverSignupForm from "../../../../forms/driver/SignupForm";
 import { MdQuestionMark } from "react-icons/md";
 import { FaCircleExclamation } from "react-icons/fa6";
+import { Helmet } from "react-helmet";
 
 function DriverDashboardAccountPage() {
   const { token, isLoading, driver } = useSelector((store) => store.driver);
@@ -33,6 +34,10 @@ function DriverDashboardAccountPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Driver Account - Shuttlelane Portal Driver Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
       {/* Navbar here */}
       <DriverDashboardNavbar

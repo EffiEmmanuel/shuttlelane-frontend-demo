@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useRef, useState } from "react";
 import AdminLoginForm from "../../../forms/admin/AdminLoginForm";
+import { Helmet } from "react-helmet";
 
 // Images
 import arrowAsset from "../../../assets/images/arrow-asset.svg";
@@ -12,6 +13,10 @@ import AdminCompleteSignupForm from "../../../forms/admin/AdminCompleteSignupFor
 function AdminCompleteSignupPage(props) {
   return (
     <div className="flex min-h-screen">
+      <Helmet>
+        <title>Complete Admin Account Sign Up | Shuttlelane</title>
+      </Helmet>
+
       <div className="lg:w-[50vw] overflow-hidden h-screen bg-shuttlelanePurple fixed z-[40] lg:flex flex-col justify-center items-center hidden">
         <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
           <img

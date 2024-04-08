@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import DriverDashboardNavbar from "../../../../components/ui/Driver/DriverDashboardNavbar";
 import DriverTopBar from "../../../../components/ui/Driver/DriverTopBar";
 import { fetchDriverEarnings } from "../../../../redux/slices/driverSlice";
+import { Helmet } from "react-helmet";
 
 function DriverDashboardEarningsPage() {
   const { token, isLoading, driver, earnings, expectedEarnings } = useSelector(
@@ -23,6 +24,10 @@ function DriverDashboardEarningsPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Driver Earnings - Shuttlelane Portal Driver Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
       {/* Navbar here */}
       <DriverDashboardNavbar

@@ -15,6 +15,7 @@ import {
 } from "../../../../../redux/slices/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner2 } from "react-icons/im";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardVendorsPage() {
   // Mobile navbar handler
@@ -125,6 +126,10 @@ function AdminDashboardVendorsPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Vendors | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="users"

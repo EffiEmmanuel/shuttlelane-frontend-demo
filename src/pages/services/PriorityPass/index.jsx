@@ -16,6 +16,7 @@ import Footer from "../../../components/ui/Footer";
 import HorizontalScroll from "react-scroll-horizontal";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
+import { Helmet } from "react-helmet";
 
 // Images
 import carRental from "../../../assets/images/carRental.svg";
@@ -40,6 +41,10 @@ function PriorityPassPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Shuttlelane: Priority Pass Services</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

@@ -16,6 +16,7 @@ import { FaTrashCan, FaXmark } from "react-icons/fa6";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Helmet } from "react-helmet";
 
 // Images
 import empty from "../../../../assets/images/empty.png";
@@ -136,6 +137,10 @@ function AdminDashboardBlogPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Blogs | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Add Post Modal */}
       <Modal
         isOpen={isAddNewPostModalOpen}

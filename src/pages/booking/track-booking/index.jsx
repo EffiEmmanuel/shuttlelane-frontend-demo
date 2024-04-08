@@ -27,6 +27,7 @@ import {
 import TimeAgo from "timeago-react";
 import { ImSpinner2 } from "react-icons/im";
 import moment from "moment";
+import { Helmet } from "react-helmet";
 
 // Images
 import emptyImage from "../../../assets/images/empty.png";
@@ -64,6 +65,10 @@ function TrackBookingPage() {
 
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Track Booking | Shuttlelane</title>
+      </Helmet>
+
       <ToastContainer />
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

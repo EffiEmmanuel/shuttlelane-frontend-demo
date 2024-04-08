@@ -19,6 +19,7 @@ import {
   markEnquiryAsRead,
   markEnquiryAsUnread,
 } from "../../../../../redux/slices/adminSlice";
+import { Helmet } from "react-helmet";
 
 // Images
 import empty from "../../../../../assets/images/empty.png";
@@ -38,6 +39,10 @@ function AdminDashboardEnquiriesPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Enquiries | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="broadcasts"

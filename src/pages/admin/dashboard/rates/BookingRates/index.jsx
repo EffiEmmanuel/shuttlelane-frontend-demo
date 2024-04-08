@@ -33,6 +33,7 @@ import AdminVisaOnArrivalRate from "../../../../../components/ui/Admin/Dashboard
 import AdminVehicleClassesRate from "../../../../../components/ui/Admin/Dashboard/rates/VehicleClasses";
 import AdminCarRates from "../../../../../components/ui/Admin/Dashboard/rates/CarRates";
 import AdminPriorityPassRates from "../../../../../components/ui/Admin/Dashboard/rates/PriorityPassRates";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardBookingRatesPage() {
   // Mobile navbar handler
@@ -105,6 +106,10 @@ function AdminDashboardBookingRatesPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Booking Rates | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
       {/* Navbar here */}
       <AdminDashboardNavbar

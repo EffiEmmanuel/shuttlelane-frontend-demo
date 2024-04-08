@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ImSpinner2 } from "react-icons/im";
 import { createShuttlelanePayment } from "../../../redux/slices/userSlice";
+import { Helmet } from "react-helmet";
 
 export default function PaymentStatus() {
   const { isLoading, paymentStatus, paymentGateway, bookingId } = useSelector(
@@ -25,6 +26,10 @@ export default function PaymentStatus() {
 
   return (
     <div className="min-h-screen w-full flex flex-row items-center justify-center bg-white text-white">
+      <Helmet>
+        <title>Payment {paymentStatus} | Shuttlelane</title>
+      </Helmet>
+
       {paymentStatus === "Successful" && !isLoading && (
         <div className="h-64 w-54 p-8 bg-green-500 rounded-lg flex flex-col items-center justify-center text-center">
           <div className="flex flex-col items-center gap-y-1">

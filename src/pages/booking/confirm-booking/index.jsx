@@ -11,6 +11,7 @@ import CarRentalBookingSummary from "../../../components/ui/BookingSummary/CarRe
 import PriorityPassBookingSummary from "../../../components/ui/BookingSummary/PriorityPassBookingSummary";
 import VisaOnArrivalBookingSummary from "../../../components/ui/BookingSummary/VisaOnArrivalBooking";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 function ConfirmBookingPage() {
   // Fetch states from redux slice
@@ -27,6 +28,10 @@ function ConfirmBookingPage() {
 
   return (
     <div className="relative bg-white text-shuttlelaneBlack">
+      <Helmet>
+        <title>Confirm {bookingType} Booking Details | Shuttlelane</title>
+      </Helmet>
+
       <ToastContainer />
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

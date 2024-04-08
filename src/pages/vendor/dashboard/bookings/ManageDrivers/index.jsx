@@ -45,6 +45,7 @@ import VendorTopBar from "../../../../../components/ui/Vendor/VendorTopBar";
 import PhoneInput from "react-phone-input-2";
 import { ToastContainer, toast } from "react-toastify";
 import { Modal as RsuiteModal, Button } from "rsuite";
+import { Helmet } from "react-helmet";
 
 function VendorDashboardManageDriversPage() {
   // Redux setup
@@ -195,6 +196,10 @@ function VendorDashboardManageDriversPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Drivers - Shuttlelane Portal Vendor Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
 
       {/* Delete Booking dialog */}

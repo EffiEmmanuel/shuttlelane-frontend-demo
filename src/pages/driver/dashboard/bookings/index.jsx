@@ -33,6 +33,7 @@ import Modal from "react-modal";
 import { FaXmark } from "react-icons/fa6";
 import SwipeButton from "../../../../components/ui/SwipeButton";
 import { ImSpinner2 } from "react-icons/im";
+import { Helmet } from "react-helmet";
 
 function DriverDashboardBookingPage() {
   // Redux setup
@@ -122,6 +123,10 @@ function DriverDashboardBookingPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Completed Bookings - Shuttlelane Portal Driver Dashboard</title>
+      </Helmet>
+
       {/* Assigned Booking Details Modal */}
       <Modal
         isOpen={isAssignedBookingDetailsModalOpen}

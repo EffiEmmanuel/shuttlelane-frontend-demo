@@ -11,6 +11,7 @@ import {
   fetchDrivers,
 } from "../../../../../redux/slices/adminSlice";
 import { ImSpinner2 } from "react-icons/im";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardDriversPage() {
   // Mobile navbar handler
@@ -121,6 +122,10 @@ function AdminDashboardDriversPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Drivers | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="users"

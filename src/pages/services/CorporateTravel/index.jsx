@@ -29,6 +29,7 @@ import {
   BiSolidPhone,
 } from "react-icons/bi";
 import { FiArrowDown } from "react-icons/fi";
+import { Helmet } from "react-helmet";
 
 function CorporateTravelPage() {
   const howItWorksRef = useRef(null);
@@ -37,6 +38,10 @@ function CorporateTravelPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Shuttlelane: Corporate Travel Services</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

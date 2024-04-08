@@ -26,6 +26,7 @@ import { Modal as RsuiteModal, Button } from "rsuite";
 import Modal from "react-modal";
 import { FaXmark } from "react-icons/fa6";
 import { ImSpinner2 } from "react-icons/im";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardPriorityPassPage() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -163,6 +164,12 @@ function AdminDashboardPriorityPassPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Priority Pass Bookings | Shuttlelane Portal Admin Dashboard
+        </title>
+      </Helmet>
+
       {/* Delete Booking dialog */}
       <RsuiteModal
         backdrop="static"

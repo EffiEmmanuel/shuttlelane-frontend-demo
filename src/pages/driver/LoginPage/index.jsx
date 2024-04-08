@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useRef, useState } from "react";
 // import AdminLoginForm from "../../../forms/admin/AdminLoginForm";
+import { Helmet } from "react-helmet";
 
 // Images
 import arrowAsset from "../../../assets/images/arrow-asset.svg";
@@ -10,6 +11,10 @@ import DriverLoginForm from "../../../forms/driver/LoginForm";
 function DriverLoginPage(props) {
   return (
     <div className="flex min-h-screen">
+      <Helmet>
+        <title>Driver Login: Access Your Shuttlelane Account</title>
+      </Helmet>
+
       <div className="lg:w-[50vw] overflow-hidden h-screen driverSignupBg fixed z-[40] lg:flex flex-col justify-center items-center hidden">
         <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
           <img

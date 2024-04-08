@@ -26,6 +26,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { FaXmark } from "react-icons/fa6";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardExchangeRatesPage() {
   // Mobile navbar handler
@@ -165,6 +166,10 @@ function AdminDashboardExchangeRatesPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Exchange Rates | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
       {/* Modify Rates Modal */}
       <Modal

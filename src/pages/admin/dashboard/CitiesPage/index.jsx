@@ -10,6 +10,7 @@ import { BiSearch } from "react-icons/bi";
 import AdminTopBar from "../../../../components/ui/Admin/AdminTopBar";
 import AdminAddBookingForm from "../../../../forms/admin/AdminAddBookingForm";
 import AdminCitiesForm from "../../../../forms/admin/AdminCitiesForm";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardCitiesPage() {
   // Mobile navbar handler
@@ -17,6 +18,10 @@ function AdminDashboardCitiesPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Cities | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="cities"

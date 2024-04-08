@@ -10,6 +10,7 @@ import { FaCircleExclamation } from "react-icons/fa6";
 import VendorDashboardNavbar from "../../../../components/ui/Vendor/VendorDashboardNavbar";
 import VendorTopBar from "../../../../components/ui/Vendor/VendorTopBar";
 import moment from "moment";
+import { Helmet } from "react-helmet";
 
 // Images
 
@@ -34,6 +35,10 @@ function VendorDashboardAccountPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Vendor Account - Shuttlelane Portal Vendor Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
       {/* Navbar here */}
       <VendorDashboardNavbar

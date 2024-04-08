@@ -1,59 +1,14 @@
 // @ts-nocheck
 import React, { useRef, useState } from "react";
 import NavBar from "../../../components/ui/NavBar";
-import Typewriter from "typewriter-effect";
-import {
-  MdArrowRightAlt,
-  MdOutlineLuggage,
-  MdOutlineMarkUnreadChatAlt,
-  MdOutlineModeOfTravel,
-  MdOutlinePayments,
-  MdSpeed,
-} from "react-icons/md";
-import {
-  AiFillPhone,
-  AiOutlineCheckCircle,
-  AiOutlineClose,
-  AiOutlineCreditCard,
-  AiOutlineSafety,
-  AiOutlineStar,
-} from "react-icons/ai";
-import { toast } from "react-toastify";
+import { MdOutlinePayments } from "react-icons/md";
+import { AiOutlineCreditCard } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { Fade } from "react-reveal";
 import Footer from "../../../components/ui/Footer";
-
-// Images
-import circleAsset from "../../../assets/images/circle-asset.svg";
-import arrowAsset from "../../../assets/images/arrow-asset.svg";
-import paypal from "../../../assets/logos/paypal.svg";
-import stripe from "../../../assets/logos/stripe.svg";
-import flutterwave from "../../../assets/logos/flutterwave.png";
-import aboutsvg from "../../../assets/images/aboutsvg.svg";
-import {
-  BiCheckShield,
-  BiLogoGmail,
-  BiLogoWhatsapp,
-  BiMenu,
-  BiSolidArrowFromTop,
-  BiSolidPhone,
-  BiTimer,
-} from "react-icons/bi";
-import { FiArrowDown } from "react-icons/fi";
-import { GrStatusGood, GrUserManager } from "react-icons/gr";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
-import {
-  BsHourglassSplit,
-  BsPersonCheck,
-  BsShieldFillCheck,
-  BsStarFill,
-} from "react-icons/bs";
-import { HiOutlineCheckBadge } from "react-icons/hi2";
-import { FaRegHandshake } from "react-icons/fa";
-
-// Images
-import earnGood from "../../../assets/images/becomeAPartner.png";
+import { Helmet } from "react-helmet";
 
 function DriveForShuttlelanePage() {
   const howItWorksRef = useRef(null);
@@ -62,6 +17,12 @@ function DriveForShuttlelanePage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>
+          Drive for Shuttlelane: Join Our Team of Professional Drivers
+        </title>
+      </Helmet>
+
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />
       </div>

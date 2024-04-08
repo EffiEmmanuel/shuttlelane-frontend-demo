@@ -9,11 +9,16 @@ import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BiArrowBack, BiMenu } from "react-icons/bi";
 import FAQs from "../../../components/ui/FAQSection/FAQs";
+import { Helmet } from "react-helmet";
 
 function TermsOfUsePage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Terms of Service | Shuttlelane</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

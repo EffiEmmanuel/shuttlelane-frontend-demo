@@ -11,6 +11,7 @@ import {
 } from "../../../../../redux/slices/adminSlice";
 import { ImSpinner2 } from "react-icons/im";
 import { ToastContainer } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardUsersPage() {
   // Mobile navbar handler
@@ -122,6 +123,10 @@ function AdminDashboardUsersPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Users | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
 
       {/* Navbar here */}

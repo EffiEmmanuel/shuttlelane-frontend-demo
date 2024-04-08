@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { Fade } from "react-reveal";
 import Footer from "../../../components/ui/Footer";
+import { Helmet } from "react-helmet";
 
 // Images
 import circleAsset from "../../../assets/images/circle-asset.svg";
@@ -38,6 +39,10 @@ function WhoWeArePage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Who We Are | Shuttlelane</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

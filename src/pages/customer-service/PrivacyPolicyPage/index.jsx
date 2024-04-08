@@ -1,19 +1,19 @@
 // @ts-nocheck
 import React, { useRef, useState } from "react";
-import NavBar from "../../../components/ui/NavBar";
 import { AiOutlineClose } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { Fade } from "react-reveal";
-import Footer from "../../../components/ui/Footer";
-import PaymentPartners from "../../../components/ui/PaymentPartners";
-import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BiArrowBack, BiMenu } from "react-icons/bi";
-import FAQs from "../../../components/ui/FAQSection/FAQs";
+import { Helmet } from "react-helmet";
 
 function PrivacyPolicyPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Privacy Policy | Shuttlelane</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

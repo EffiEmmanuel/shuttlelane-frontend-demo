@@ -29,6 +29,7 @@ import VisaOnArrivalForm from "../../forms/HomePage/VisaOnArrivalForm";
 import WhatsappIcon from "../../components/ui/WhatsappIcon";
 import FleetSlide from "../../components/ui/FleetSlide";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 // Images
 import circleAsset from "../../assets/images/circle-asset.svg";
@@ -122,6 +123,14 @@ function HomePage() {
 
   return (
     <div className="relative bg-white">
+      {/* Use Helmet to set the title */}
+      <Helmet>
+        <title>
+          Shuttlelane: Airport Transfer, Car Rental, Priority Pass & Visa On
+          Arrival Booking
+        </title>
+      </Helmet>
+
       <ToastContainer />
       <div className="fixed w-full z-20">
         <NavBar />

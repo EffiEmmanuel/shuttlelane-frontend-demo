@@ -9,12 +9,17 @@ import Chart from "react-apexcharts";
 import { BiSearch } from "react-icons/bi";
 import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import AdminAddBookingForm from "../../../../../forms/admin/AdminAddBookingForm";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardAddBookingPage() {
   // Mobile navbar handler
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   return (
     <div className="">
+      <Helmet>
+        <title>Create Booking | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       {/* Navbar here */}
       <AdminDashboardNavbar
         link="bookings"

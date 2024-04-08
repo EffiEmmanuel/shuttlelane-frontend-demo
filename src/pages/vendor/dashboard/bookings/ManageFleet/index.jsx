@@ -44,6 +44,7 @@ import PhoneInput from "react-phone-input-2";
 import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import { Modal as RsuiteModal, Button } from "rsuite";
+import { Helmet } from "react-helmet";
 
 function VendorDashboardManageFleetPage() {
   // Redux setup
@@ -195,6 +196,10 @@ function VendorDashboardManageFleetPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Manage Fleet - Shuttlelane Portal Vendor Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
 
       {/* Delete Booking dialog */}

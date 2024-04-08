@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TimeAgo from "timeago-react";
 import { ImSpinner2 } from "react-icons/im";
 import { fetchBlogPost } from "../../../../redux/slices/userSlice";
+import { Helmet } from "react-helmet";
 
 // Images
 import emptyImage from "../../../../assets/images/empty.png";
@@ -40,6 +41,10 @@ function PostPage() {
 
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>{currentBlogPost?.title} | Shuttlelane Blog</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>

@@ -34,6 +34,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import { FaXmark } from "react-icons/fa6";
 // import RemindIcon from '@rsuite/icons/legacy/Remind';
+import { Helmet } from "react-helmet";
 
 // Images
 import profilePicPlaceholder from "../../../assets/images/profilePicture.png";
@@ -280,6 +281,12 @@ function AdminDashboardHomePage() {
 
   return (
     <div className="">
+        <Helmet>
+        <title>
+          Admin Dashboard - Overview | Shuttlelane Portal
+        </title>
+      </Helmet>
+
       <ToastContainer />
       {/* Delete Booking dialog */}
       <RsuiteModal

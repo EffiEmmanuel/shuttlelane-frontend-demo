@@ -19,6 +19,7 @@ import { ToastContainer } from "react-toastify";
 import Modal from "react-modal";
 import { FaXmark } from "react-icons/fa6";
 import Select from "react-select";
+import { Helmet } from "react-helmet";
 
 function AdminDashboardPaymentsPage() {
   const { isLoading, token, payments } = useSelector((store) => store.admin);
@@ -102,6 +103,10 @@ function AdminDashboardPaymentsPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Payments | Shuttlelane Portal Admin Dashboard</title>
+      </Helmet>
+
       <ToastContainer />
 
       {/* Navbar here */}

@@ -32,6 +32,7 @@
     "react-dates": "^21.8.0",
     "react-dom": "^18.2.0",
     "react-flags-select": "^2.2.3",
+    "react-helmet": "^6.1.0",
     "react-icons": "^4.11.0",
     "react-locomotive-scroll": "^0.2.2",
     "react-modal": "^3.16.1",

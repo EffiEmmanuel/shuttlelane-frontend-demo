@@ -7,6 +7,7 @@ import { FaCircleExclamation } from "react-icons/fa6";
 import DriverDashboardNavbar from "../../../../../components/ui/Driver/DriverDashboardNavbar";
 import DriverTopBar from "../../../../../components/ui/Driver/DriverTopBar";
 import DriverResetPasswordForm from "../../../../../forms/driver/ResetPasswordForm";
+import { Helmet } from "react-helmet";
 
 function DriverDashboardSecurityPage() {
   const { token, isLoading, driver } = useSelector((store) => store.driver);
@@ -29,6 +30,12 @@ function DriverDashboardSecurityPage() {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          Driver Security - Reset Password | Shuttlelane Portal Driver Dashboard
+        </title>
+      </Helmet>
+
       <ToastContainer />
       {/* Navbar here */}
       <DriverDashboardNavbar

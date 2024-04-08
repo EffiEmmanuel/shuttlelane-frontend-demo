@@ -15,6 +15,7 @@ import Footer from "../../../components/ui/Footer";
 import HorizontalScroll from "react-scroll-horizontal";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
+import { Helmet } from "react-helmet";
 
 // Images
 import fleetManagement from "../../../assets/images/fleet.jpg";
@@ -41,6 +42,10 @@ function PartnershipPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   return (
     <div className="relative bg-white">
+      <Helmet>
+        <title>Partnership | Shuttlelane</title>
+      </Helmet>
+
       {/* FLOATING MENU */}
       {isMenuHidden && (
         <Fade duration={300}>
