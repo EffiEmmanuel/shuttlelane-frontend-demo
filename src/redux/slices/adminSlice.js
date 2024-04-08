@@ -1585,6 +1585,7 @@ export const adminSlice = createSlice({
     drivers: null,
     upcomingBookings: null,
     unassignedBookings: null,
+    bookingData: null,
 
     // The following states are for the "cities" page
     currentCity: null, // The current selected city per time
@@ -1731,6 +1732,7 @@ export const adminSlice = createSlice({
         state.users = action.payload?.users;
         state.drivers = action.payload?.drivers;
         state.upcomingBookings = action.payload?.upcomingBookings;
+        state.bookingData = action.payload?.bookingData;
       })
       .addCase(fetchStatistics.rejected, (state) => {
         state.isLoading = false;

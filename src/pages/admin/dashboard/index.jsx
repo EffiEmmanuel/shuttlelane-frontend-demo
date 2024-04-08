@@ -54,6 +54,7 @@ function AdminDashboardHomePage() {
     unassignedBookings,
     bookingFetchedByReference,
     isGetBookingByReferenceLoading,
+    bookingData,
   } = useSelector((store) => store.admin);
 
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ function AdminDashboardHomePage() {
   // Mobile navbar handler
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   // Chart Setup
+  const [bookingDataByMonth, setBookingDataByMonth] = useState();
   const state = {
     options: {
       chart: {
@@ -74,10 +76,10 @@ function AdminDashboardHomePage() {
         enabled: false,
       },
       stroke: {
-        colors: ["#E2B442", "#262471"],
+        colors: ["#262471", "#262471"],
       },
       fill: {
-        colors: ["#E2B442", "#262471"],
+        colors: ["#262471", "#262471"],
         pattern: {
           style: "circles",
           strokeWidth: 1,
@@ -122,10 +124,7 @@ function AdminDashboardHomePage() {
     series: [
       {
         name: "",
-        data: [
-          3000, 50000, 25000, 45000, 60000, 30000, 40000, 51000, 135000, 33000,
-          200000, 400000,
-        ],
+        data: bookingDataByMonth,
       },
     ],
   };
@@ -135,6 +134,26 @@ function AdminDashboardHomePage() {
     dispatch(adminFetchUpcomingBookings(token));
     dispatch(adminFetchBookingsAwaitingAssignment(token));
   }, [token]);
+
+  // Configure bookingDataByMonth
+  useEffect(() => {
+    function prepareBookingDataByMonth() {
+      let preparedData = [];
+      for (let i = 1; i <= 12; i++) {
+        bookingData?.forEach((data) => {
+          if (data?._id?.month == i) {
+            preparedData.push(data?.count);
+          } else {
+            preparedData.push(0);
+          }
+        });
+      }
+      setBookingDataByMonth(preparedData);
+      console.log("PREAPRED DATA:", preparedData);
+    }
+
+    prepareBookingDataByMonth();
+  }, [token, bookingData]);
 
   // DELETE BOOKING DIALOG STATES
   const [currentBooking, setCurrentBooking] = useState();
@@ -281,10 +300,8 @@ function AdminDashboardHomePage() {
 
   return (
     <div className="">
-        <Helmet>
-        <title>
-          Admin Dashboard - Overview | Shuttlelane Portal
-        </title>
+      <Helmet>
+        <title>Admin Dashboard - Overview | Shuttlelane Portal</title>
       </Helmet>
 
       <ToastContainer />
@@ -662,13 +679,25 @@ function AdminDashboardHomePage() {
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver || currentBooking?.vendorAssignedDriver ? (
+                        {currentBooking?.assignedDriver ||
+                        currentBooking?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
-                                  src={currentBooking?.assignedDriver?.image ?? currentBooking?.vendorAssignedDriver?.image}
-                                  alt={`${currentBooking?.assignedDriver?.firstName ?? currentBooking?.vendorAssignedDriver?.firstName} ${currentBooking?.assignedDriver?.lastName ?? currentBooking?.vendorAssignedDriver?.lastName}`}
+                                  src={
+                                    currentBooking?.assignedDriver?.image ??
+                                    currentBooking?.vendorAssignedDriver?.image
+                                  }
+                                  alt={`${
+                                    currentBooking?.assignedDriver?.firstName ??
+                                    currentBooking?.vendorAssignedDriver
+                                      ?.firstName
+                                  } ${
+                                    currentBooking?.assignedDriver?.lastName ??
+                                    currentBooking?.vendorAssignedDriver
+                                      ?.lastName
+                                  }`}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
@@ -677,20 +706,30 @@ function AdminDashboardHomePage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.firstName ?? currentBooking?.vendorAssignedDriver?.firstName}{" "}
-                                    ${currentBooking?.assignedDriver?.lastName ?? currentBooking?.vendorAssignedDriver?.lastName}
+                                    {currentBooking?.assignedDriver
+                                      ?.firstName ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.firstName}{" "}
+                                    $
+                                    {currentBooking?.assignedDriver?.lastName ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email ?? currentBooking?.vendorAssignedDriver?.email}
+                                    {currentBooking?.assignedDriver?.email ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile ?? currentBooking?.vendorAssignedDriver?.mobile}
+                                    {currentBooking?.assignedDriver?.mobile ??
+                                      currentBooking?.vendorAssignedDriver
+                                        ?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -705,8 +744,8 @@ function AdminDashboardHomePage() {
                         )}
                       </div>
 
-                     {/* Car Details */}
-                     <div className="mt-5">
+                      {/* Car Details */}
+                      <div className="mt-5">
                         <h2 className="text-xl font-semibold">Car Details</h2>
                         {currentBooking?.assignedDriver ||
                         currentBooking?.assignedCar ? (
@@ -895,7 +934,7 @@ function AdminDashboardHomePage() {
                           </span>
                         </div>
                       </div>
-{/* Driver Details */}
+                      {/* Driver Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">
                           Driver Details
@@ -1113,7 +1152,7 @@ function AdminDashboardHomePage() {
                           </span>
                         </div>
                       </div>
-{/* Driver Details */}
+                      {/* Driver Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">
                           Driver Details
@@ -1985,7 +2024,7 @@ function AdminDashboardHomePage() {
                       <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
-                            <p className="font-medium">Total Revenue</p>
+                            <p className="font-medium">Booking Statistics</p>
                             <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                           </div>
                           {/* <p className="text-sm underline offset-7">2023</p> */}
