@@ -9,18 +9,15 @@ export const signupVendor = createAsyncThunk(
   "vendor/signup",
   async (payload) => {
     console.log("PAYLOAD:", payload);
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/vendor/signup`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...payload?.values,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/vendor/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...payload?.values,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("SIGNUP VENDOR ERROR:", err));
   }
@@ -30,19 +27,16 @@ export const signupVendor = createAsyncThunk(
 export const loginVendor = createAsyncThunk(
   "vendor/loginAdmin",
   async (payload) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/vendor/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: payload?.email,
-          password: payload?.password,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/vendor/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: payload?.email,
+        password: payload?.password,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("LOGIN VENDOR ERROR:", err));
   }
@@ -54,14 +48,11 @@ export const fetchStatistics = createAsyncThunk(
   async (token) => {
     console.log("TOKEN FROM FETCH::", token);
     const adminToken = localStorage.getItem("adminToken");
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendor/statistics`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/vendor/statistics`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH STATS ERROR:", err));
   }
@@ -73,7 +64,7 @@ export const resendOTP = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD.VENDOR:", payload?.vendor);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/verification/resend-otp`,
+      `${process.env.REACT_APP_API_BASE_URL}/auth/verification/resend-otp`,
       {
         method: "POST",
         headers: {
@@ -94,7 +85,7 @@ export const verifyOTP = createAsyncThunk(
   "vendor/verification/verifyOTP",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/verification/verify-otp`,
+      `${process.env.REACT_APP_API_BASE_URL}/auth/verification/verify-otp`,
       {
         method: "POST",
         headers: {
@@ -127,7 +118,7 @@ export const updateVendor = createAsyncThunk(
       console.log("IS VALID JSON 2:::", isValidJSON(token));
 
       const response = await fetch(
-        `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/update-vendor/${payload?.vendorId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/vendors/update-vendor/${payload?.vendorId}`,
         {
           method: "PATCH",
           headers: {
@@ -155,7 +146,7 @@ export const updateVendor = createAsyncThunk(
       throw error;
     }
     // return fetch(
-    //   `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/update-vendor/${payload?.vendorId}`,
+    //   `${process.env.REACT_APP_API_BASE_URL}/vendors/update-vendor/${payload?.vendorId}`,
     //   {
     //     method: "PATCH",
     //     headers: {
@@ -186,7 +177,7 @@ export const resetVendorPassword = createAsyncThunk(
     console.log("IS VALID JSON 2:::", isValidJSON(token));
 
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/reset-password/${payload?.values?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/reset-password/${payload?.values?.vendorId}`,
       {
         method: "PATCH",
         headers: {
@@ -207,7 +198,7 @@ export const fetchVendorAssignedJobs = createAsyncThunk(
   async (payload) => {
     console.log("IN VENDOR ASSIGNED");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/bookings/assigned/${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/bookings/assigned/${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -227,7 +218,7 @@ export const fetchBookingByReference = createAsyncThunk(
   async (bookingReference) => {
     console.log("HI");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      `${process.env.REACT_APP_API_BASE_URL}/booking/get-booking-by-reference/${bookingReference}`,
       {}
     )
       .then((res) => res.json())
@@ -240,7 +231,7 @@ export const acceptBooking = createAsyncThunk(
   "vendor/bookings/acceptJob",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/booking/accept/${payload?.vendorId}/${payload?.bookingId}/${payload?.fleetId}/${payload?.driverId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/booking/accept/${payload?.vendorId}/${payload?.bookingId}/${payload?.fleetId}/${payload?.driverId}`,
       {
         method: "PATCH",
         headers: {
@@ -261,7 +252,7 @@ export const declineBooking = createAsyncThunk(
   "vendor/bookings/declineJob",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/booking/decline/${payload?.vendorId}/${payload?.bookingId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/booking/decline/${payload?.vendorId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -283,7 +274,7 @@ export const fetchVendorEarnings = createAsyncThunk(
   async (payload) => {
     console.log("HI");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/earnings/${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/earnings/${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -301,7 +292,7 @@ export const fetchUpcomingJobs = createAsyncThunk(
   async (payload) => {
     console.log("IN VENDOR UPCOMING");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/bookings/upcoming/${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/bookings/upcoming/${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -320,7 +311,7 @@ export const startBooking = createAsyncThunk(
   "vendor/bookings/start",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/booking/start/${payload?.vendorId}/${payload?.bookingId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/booking/start/${payload?.vendorId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -338,7 +329,7 @@ export const endBooking = createAsyncThunk(
   "vendor/bookings/end",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/booking/end/${payload?.vendorId}/${payload?.bookingId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/booking/end/${payload?.vendorId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -357,7 +348,7 @@ export const fetchCompletedJobs = createAsyncThunk(
   async (payload) => {
     console.log("COMPLETED ASYNCTHUNK:", payload?.token);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/bookings/completed/${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/bookings/completed/${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -378,7 +369,7 @@ export const fetchOngoingJobs = createAsyncThunk(
     console.log("IN VENDOR ONGOING TOKEN:", payload?.token);
     console.log("IN VENDOR ONGOING VENDOR ID:", payload?.vendorId);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/bookings/ongoing/${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/bookings/ongoing/${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -402,7 +393,7 @@ export const fetchCity = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
+        `${process.env.REACT_APP_API_BASE_URL}/admin/cities/${payload?.cityId}?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH CITIES ERROR:", err));
@@ -424,7 +415,7 @@ export const fetchCities = createAsyncThunk(
 
     if (userCountry?.data?.country_name) {
       return fetch(
-        `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/cities?userCountry=${userCountry?.data?.country_name}`
+        `${process.env.REACT_APP_API_BASE_URL}/cities?userCountry=${userCountry?.data?.country_name}`
       )
         .then((res) => res.json())
         .catch((err) => console.log("FETCH VEHICLE CLASSES ERROR:", err));
@@ -459,24 +450,21 @@ export const createVendorDriver = createAsyncThunk(
       if (response.ok) {
         console.log("upload successful");
         const data = await response.json();
-        return fetch(
-          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/drivers`,
-          {
-            method: "POST",
-            headers: {
-              token: `Bearer ${JSON.parse(payload?.token)}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              image: data.secure_url,
-              firstName: payload?.firstName,
-              lastName: payload?.lastName,
-              mobile: payload?.mobile,
-              email: payload?.email,
-              vendor: payload?.vendorId,
-            }),
-          }
-        )
+        return fetch(`${process.env.REACT_APP_API_BASE_URL}/vendors/drivers`, {
+          method: "POST",
+          headers: {
+            token: `Bearer ${JSON.parse(payload?.token)}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: data.secure_url,
+            firstName: payload?.firstName,
+            lastName: payload?.lastName,
+            mobile: payload?.mobile,
+            email: payload?.email,
+            vendor: payload?.vendorId,
+          }),
+        })
           .then((res) => res.json())
           .catch((err) => console.log("CREATE VEHICLE CLASS ERROR:", err));
       } else {
@@ -493,25 +481,22 @@ export const createVendorDriver = createAsyncThunk(
 export const createVendorCar = createAsyncThunk(
   "vendor/fleet/createOne",
   async (payload) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/fleet`,
-      {
-        method: "POST",
-        headers: {
-          token: `Bearer ${JSON.parse(payload?.token)}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          carName: payload?.carName,
-          carModel: payload?.carModel,
-          carType: payload?.carType,
-          carYear: payload?.carYear,
-          carColor: payload?.carColor,
-          carPlateNumber: payload?.carPlateNumber,
-          vendor: payload?.vendor,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/vendors/fleet`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        carName: payload?.carName,
+        carModel: payload?.carModel,
+        carType: payload?.carType,
+        carYear: payload?.carYear,
+        carColor: payload?.carColor,
+        carPlateNumber: payload?.carPlateNumber,
+        vendor: payload?.vendor,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE VENDOR CAR / FLEET ERROR:", err));
   }
@@ -522,7 +507,7 @@ export const fetchVendorDrivers = createAsyncThunk(
   "vendor/drivers/getAll",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/drivers?vendorId=${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/drivers?vendorId=${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -539,7 +524,7 @@ export const fetchVendorFleet = createAsyncThunk(
   "vendor/fleet/getAll",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/fleet?vendorId=${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/fleet?vendorId=${payload?.vendorId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -558,7 +543,7 @@ export const updateVendorDriver = createAsyncThunk(
     console.log("HELLO 5:", payload);
 
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/drivers/${payload?.driverId}/${payload?.values?.vendor}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/drivers/${payload?.driverId}/${payload?.values?.vendor}`,
       {
         method: "PATCH",
         headers: {
@@ -583,7 +568,7 @@ export const updateVendorFleet = createAsyncThunk(
     console.log("HELLO 6:", payload);
 
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/fleet/update/${payload?.fleetId}/${payload?.values?.vendor}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/fleet/update/${payload?.fleetId}/${payload?.values?.vendor}`,
       {
         method: "PATCH",
         headers: {
@@ -605,7 +590,7 @@ export const deleteVendorDriver = createAsyncThunk(
     console.log("HELLO 5:", payload);
 
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/drivers/${payload?.values?.vendor}/${payload?.driverId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/drivers/${payload?.values?.vendor}/${payload?.driverId}`,
       {
         method: "DELETE",
         headers: {
@@ -628,7 +613,7 @@ export const deleteVendorFleet = createAsyncThunk(
     console.log("HELLO 5:", payload);
 
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vendors/fleet/${payload?.vendorId}/${payload?.fleetId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/vendors/fleet/${payload?.vendorId}/${payload?.fleetId}`,
       {
         method: "DELETE",
         headers: {

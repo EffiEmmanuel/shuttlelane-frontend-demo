@@ -58,7 +58,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build --legacy-peer-deps",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:email-templates": "babel src/email/ --out-dir dist/emailTemplates"

@@ -26,16 +26,19 @@ import CustomerReviews from "../../components/ui/CustomerReviews";
 import PaymentPartners from "../../components/ui/PaymentPartners";
 import { ToastContainer, toast } from "react-toastify";
 import VisaOnArrivalForm from "../../forms/HomePage/VisaOnArrivalForm";
+import WhatsappIcon from "../../components/ui/WhatsappIcon";
+import FleetSlide from "../../components/ui/FleetSlide";
+import { Link } from "react-router-dom";
 
 // Images
 import circleAsset from "../../assets/images/circle-asset.svg";
 import arrowAsset from "../../assets/images/arrow-asset.svg";
-import FleetSlide from "../../components/ui/FleetSlide";
 import google from "../../assets/logos/google.svg";
 import tripAdvisor from "../../assets/logos/tripAdvisor.svg";
 import trustpilot from "../../assets/logos/trustpilot.svg";
 import appstoreDownload from "../../assets/logos/downloadAppstore.svg";
 import playstoreDownload from "../../assets/logos/downloadPlaystore.svg";
+import whatsappLogo from "../../assets/logos/whatsapp-icon.png";
 
 function HomePage() {
   // SERVICE STATES
@@ -123,6 +126,10 @@ function HomePage() {
       <div className="fixed w-full z-20">
         <NavBar />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon />
+
       {/* Hero Section */}
       <div className="h-[80vh] lg:min-h-screen heroBg relative text-white pt-32 pb-52 lg:pb-10 lg:px-24 px-7">
         <div className="h-full w-full">
@@ -403,22 +410,39 @@ function HomePage() {
 
           <div className="mt-10">
             <CustomerReviews />
-            <div className="flex flex-row justify-center items-center gap-10">
-              <img
-                src={trustpilot}
-                alt=""
-                className="object-contain lg:w-[130px] w-[100px]"
-              />
-              <img
-                src={google}
-                alt=""
-                className="object-contain lg:w-[45px] w-[25px]"
-              />
-              <img
-                src={tripAdvisor}
-                alt=""
-                className="object-contain lg:w-[130px] w-[100px]"
-              />
+            <div className="flex flex-row justify-center items-center gap-10 relative z-20">
+              <Link
+                to="https://www.trustpilot.com/review/shuttlelane.com"
+                target="_blank"
+              >
+                <img
+                  src={trustpilot}
+                  alt=""
+                  className="object-contain lg:w-[130px] w-[100px]"
+                />
+              </Link>
+
+              <Link
+                to="https://www.google.com/search?q=shuttlelane+google+reviews&oq=shuttlelane+google+reviews&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCTM4ODc2ajBqNKgCALACAQ&sourceid=chrome&ie=UTF-8#lrd=0x103b8c448e2f97c3:0xc95f24c00955aecc,1,,,,"
+                target="_blank"
+              >
+                <img
+                  src={google}
+                  alt=""
+                  className="object-contain lg:w-[45px] w-[25px]"
+                />
+              </Link>
+
+              <Link
+                to="https://www.tripadvisor.co.uk/ShowUserReviews-g304026-d17527097-r740298121-Shuttlelane-Lagos_Lagos_State.html"
+                target="_blank"
+              >
+                <img
+                  src={tripAdvisor}
+                  alt=""
+                  className="object-contain lg:w-[130px] w-[100px]"
+                />
+              </Link>
             </div>
           </div>
         </div>

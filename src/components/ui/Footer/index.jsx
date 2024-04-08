@@ -110,6 +110,14 @@ function Footer() {
                     Priority Pass
                   </Link>
                 </li>
+                <li className="mt-3 font-light">
+                  <Link
+                    className="text-white visited:text-white visited:no-underline hover:no-underline hover:text-gray-200"
+                    to={"/"}
+                  >
+                    Visa On Arrival
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -138,18 +146,23 @@ function Footer() {
       <div className="lg:px-14 px-4 flex lg:justify-between lg:flex-row">
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-3">
-            <AiFillInstagram size={20} className="text-gray-300" />
-            <FaXTwitter size={20} className="text-gray-300" />
-            <FaFacebook size={20} className="text-gray-300" />
-            <RiWhatsappFill size={20} className="text-gray-300" />
+            <Link
+              to="https://www.instagram.com/shuttlelane/?hl=en"
+              target="_blank"
+            >
+              <AiFillInstagram size={20} className="text-gray-300" />
+            </Link>
+            <Link to="https://twitter.com/shuttlelane?lang=en" target="_blank">
+              <FaXTwitter size={20} className="text-gray-300" />
+            </Link>
+            <Link to="https://wa.link/9patdd" target="_blank">
+              <RiWhatsappFill size={20} className="text-gray-300" />
+            </Link>
           </div>
 
           <div className="flex flex-col w-full">
             <p className="text-xs w-full">
               All rights Reserved. © 2023 Shuttlelane Limited.
-            </p>
-            <p className="text-xs w-full">
-              Designed & Developed by Gethsemane Tech
             </p>
           </div>
         </div>

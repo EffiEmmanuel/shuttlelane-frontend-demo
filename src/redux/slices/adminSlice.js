@@ -7,19 +7,16 @@ import { toast } from "react-toastify";
 export const loginAdmin = createAsyncThunk(
   "admin/loginAdmin",
   async (payload) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/admin/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: payload?.username,
-          password: payload?.password,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/admin/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: payload?.username,
+        password: payload?.password,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("LOGIN ADMIN ERROR:", err));
   }
@@ -31,14 +28,11 @@ export const fetchStatistics = createAsyncThunk(
   async (token) => {
     console.log("TOKEN FROM FETCH::", token);
     const adminToken = localStorage.getItem("adminToken");
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/statistics`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/statistics`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH STATS ERROR:", err));
   }
@@ -48,19 +42,16 @@ export const fetchStatistics = createAsyncThunk(
 export const createCity = createAsyncThunk(
   "admin/cities/create",
   async (payload) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cities`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          token: `Bearer ${JSON.parse(payload?.token)}`,
-        },
-        body: JSON.stringify({
-          cityName: payload?.cityName,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/cities`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+      },
+      body: JSON.stringify({
+        cityName: payload?.cityName,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE CITY ERROR:", err));
   }
@@ -70,14 +61,11 @@ export const createCity = createAsyncThunk(
 export const fetchCities = createAsyncThunk(
   "admin/cities/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cities`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/cities`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH CITIES ERROR:", err));
   }
@@ -88,7 +76,7 @@ export const addAirportToCity = createAsyncThunk(
   "admin/cities/addAirport",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cities/add-airport`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cities/add-airport`,
       {
         method: "POST",
         headers: {
@@ -111,7 +99,7 @@ export const fetchCity = createAsyncThunk(
   "admin/cities/getOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cities/${payload?.cityId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cities/${payload?.cityId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -127,14 +115,11 @@ export const fetchCity = createAsyncThunk(
 export const fetchUsers = createAsyncThunk(
   "admin/users/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/users`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/users`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH USERS ERROR:", err));
   }
@@ -145,7 +130,7 @@ export const deleteUserById = createAsyncThunk(
   "admin/users/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/users/delete/${payload?.userId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/users/delete/${payload?.userId}`,
       {
         method: "DELETE",
         headers: {
@@ -162,14 +147,11 @@ export const deleteUserById = createAsyncThunk(
 export const fetchDrivers = createAsyncThunk(
   "admin/drivers/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/drivers`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/drivers`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH DRIVERS ERROR:", err));
   }
@@ -180,7 +162,7 @@ export const fetchApprovedDrivers = createAsyncThunk(
   "admin/drivers/getAllApproved",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/drivers/approved`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/approved`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -197,7 +179,7 @@ export const deleteDriverById = createAsyncThunk(
   "admin/drivers/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/drivers/delete/${payload?.driverId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/delete/${payload?.driverId}`,
       {
         method: "DELETE",
         headers: {
@@ -214,14 +196,11 @@ export const deleteDriverById = createAsyncThunk(
 export const fetchVendors = createAsyncThunk(
   "admin/vendors/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vendors`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/vendors`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH VENDORS ERROR:", err));
   }
@@ -232,7 +211,7 @@ export const fetchApprovedVendors = createAsyncThunk(
   "admin/vendors/getAllApproved",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vendors/approved`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/approved`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -250,7 +229,7 @@ export const approveVendorAccount = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD FROM AsyncThunk:", payload);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vendors/${payload?.vendorId}/account/approve`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/${payload?.vendorId}/account/approve`,
       {
         method: "PATCH",
         headers: {
@@ -270,7 +249,7 @@ export const deleteVendorById = createAsyncThunk(
   "admin/vendors/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vendors/delete/${payload?.vendorId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/delete/${payload?.vendorId}`,
       {
         method: "DELETE",
         headers: {
@@ -287,14 +266,11 @@ export const deleteVendorById = createAsyncThunk(
 export const fetchEnquiries = createAsyncThunk(
   "admin/enquiries/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/enquiries`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/enquiries`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH ENQUIRIES ERROR:", err));
   }
@@ -305,7 +281,7 @@ export const deleteEnquiryById = createAsyncThunk(
   "admin/enquiries/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/enquiries/delete/${payload?.enquiryId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/enquiries/delete/${payload?.enquiryId}`,
       {
         method: "DELETE",
         headers: {
@@ -323,7 +299,7 @@ export const markEnquiryAsRead = createAsyncThunk(
   "admin/enquiries/markAsRead",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/enquiries/${payload?.enquiryId}/mark-as-read`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/enquiries/${payload?.enquiryId}/mark-as-read`,
       {
         method: "PATCH",
         headers: {
@@ -341,7 +317,7 @@ export const markEnquiryAsUnread = createAsyncThunk(
   "admin/enquiries/markAsUnread",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/enquiries/${payload?.enquiryId}/mark-as-unread`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/enquiries/${payload?.enquiryId}/mark-as-unread`,
       {
         method: "PATCH",
         headers: {
@@ -360,7 +336,7 @@ export const sendBulkEmail = createAsyncThunk(
   "admin/broadcasts/bulkEmail",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/broadcasts/bulk-email`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/broadcasts/bulk-email`,
       {
         method: "POST",
         headers: {
@@ -384,14 +360,11 @@ export const sendBulkEmail = createAsyncThunk(
 export const fetchCurrencies = createAsyncThunk(
   "admin/currencies/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/currencies`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/currencies`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH CURRENCIES ERROR:", err));
   }
@@ -401,7 +374,7 @@ export const createNewCurrency = createAsyncThunk(
   "admin/currencies/createNew",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/currencies/create-new`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/currencies/create-new`,
       {
         method: "POST",
         headers: {
@@ -428,7 +401,7 @@ export const updateCurrency = createAsyncThunk(
   "admin/currencies/updateOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/currencies/${payload?._id}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/currencies/${payload?._id}`,
       {
         method: "PUT",
         headers: {
@@ -454,7 +427,7 @@ export const deleteCurrency = createAsyncThunk(
   "admin/currencies/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/currencies/${payload?._id}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/currencies/${payload?._id}`,
       {
         method: "DELETE",
         headers: {
@@ -474,7 +447,7 @@ export const fetchRatePerMile = createAsyncThunk(
   "admin/rate-per-mile/get",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking/rate-per-mile`,
+      `${process.env.REACT_APP_API_BASE_URL}/booking/rate-per-mile`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -489,20 +462,17 @@ export const fetchRatePerMile = createAsyncThunk(
 export const setRatePerMile = createAsyncThunk(
   "admin/rate-per-mile/set",
   async (payload) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/rate-per-mile`,
-      {
-        method: "POST",
-        headers: {
-          token: `Bearer ${JSON.parse(payload?.token)}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rate: payload?.rate,
-          mile: payload?.mile,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/rate-per-mile`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        rate: payload?.rate,
+        mile: payload?.mile,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("SET RATE PER MILE ERROR:", err));
   }
@@ -514,7 +484,7 @@ export const fetchVisaOnArrivalRates = createAsyncThunk(
   "admin/visa-on-arrival-rates/getAll",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/visa-on-arrival-rates`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -530,7 +500,7 @@ export const createVisaOnArrivalRate = createAsyncThunk(
   "admin/visa-on-arrival-rates/create-new",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/visa-on-arrival-rates`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates`,
       {
         method: "POST",
         headers: {
@@ -555,7 +525,7 @@ export const updateVisaOnArrivalRate = createAsyncThunk(
   "admin/visa-on-arrival-rates/updateOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/visa-on-arrival-rates/${payload?._id}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates/${payload?._id}`,
       {
         method: "PUT",
         headers: {
@@ -579,7 +549,7 @@ export const deleteVisaOnArrivalRate = createAsyncThunk(
   "admin/visa-on-arrival-rates/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/visa-on-arrival-rates/${payload?._id}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates/${payload?._id}`,
       {
         method: "DELETE",
         headers: {
@@ -599,7 +569,7 @@ export const fetchVisaOnArrivalBaseRates = createAsyncThunk(
   "admin/visa-on-arrival-rates/base/getAll",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/visa-on-arrival-rates/base`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates/base`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -618,7 +588,7 @@ export const setVisaOnArrivalBaseFees = createAsyncThunk(
   "admin/visa-on-arrival-rates/base",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/visa-on-arrival-rates/base`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates/base`,
       {
         method: "POST",
         headers: {
@@ -644,7 +614,7 @@ export const fetchVehicleClasses = createAsyncThunk(
   "admin/vehicle-classes/getAll",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/vehicle-classes?isAdminRequest=true`,
+      `${process.env.REACT_APP_API_BASE_URL}/vehicle-classes?isAdminRequest=true`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -681,7 +651,7 @@ export const createVehicleClasses = createAsyncThunk(
         console.log("upload successful");
         const data = await response.json();
         return fetch(
-          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vehicle-classes`,
+          `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes`,
           {
             method: "POST",
             headers: {
@@ -718,7 +688,7 @@ export const updateVehicleClass = createAsyncThunk(
       // If the image was not updated, no need to upload anything to cloudinary
       case "string":
         return fetch(
-          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vehicle-classes/${payload?.vehicleClassId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}`,
           {
             method: "PUT",
             headers: {
@@ -757,7 +727,7 @@ export const updateVehicleClass = createAsyncThunk(
             console.log("upload successful");
             const data = await response.json();
             return fetch(
-              `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vehicle-classes/${payload?.vehicleClassId}`,
+              `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}`,
               {
                 method: "PUT",
                 headers: {
@@ -791,7 +761,7 @@ export const deleteVehicleClass = createAsyncThunk(
   "admin/vehicle-classes/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/vehicle-classes/${payload?.vehicleClassId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}`,
       {
         method: "DELETE",
         headers: {
@@ -810,14 +780,11 @@ export const deleteVehicleClass = createAsyncThunk(
 export const fetchCars = createAsyncThunk(
   "admin/cars/getAll",
   async (token) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/cars`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/cars`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH CARS ERROR:", err));
   }
@@ -828,20 +795,17 @@ export const createCar = createAsyncThunk(
   async (payload) => {
     console.log("payload.image:::", payload.image);
 
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cars`,
-      {
-        method: "POST",
-        headers: {
-          token: `Bearer ${JSON.parse(payload?.token)}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: payload?.name,
-          price: payload?.price,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/cars`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: payload?.name,
+        price: payload?.price,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE CAR ERROR:", err));
   }
@@ -851,7 +815,7 @@ export const updateCar = createAsyncThunk(
   "admin/cars/updateOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cars/${payload?.carId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cars/${payload?.carId}`,
       {
         method: "PUT",
         headers: {
@@ -873,7 +837,7 @@ export const deleteCar = createAsyncThunk(
   "admin/car/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/cars/${payload?.carId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cars/${payload?.carId}`,
       {
         method: "DELETE",
         headers: {
@@ -893,7 +857,7 @@ export const fetchPasses = createAsyncThunk(
   "admin/passes/getAll",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/passes?isAdminRequest=true`,
+      `${process.env.REACT_APP_API_BASE_URL}/passes?isAdminRequest=true`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -910,20 +874,17 @@ export const createPass = createAsyncThunk(
   async (payload) => {
     console.log("payload.image:::", payload.image);
 
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/passes`,
-      {
-        method: "POST",
-        headers: {
-          token: `Bearer ${JSON.parse(payload?.token)}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: payload?.name,
-          price: payload?.price,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/passes`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: payload?.name,
+        price: payload?.price,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE PASS ERROR:", err));
   }
@@ -933,7 +894,7 @@ export const updatePass = createAsyncThunk(
   "admin/passes/updateOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/passes/${payload?.passId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/passes/${payload?.passId}`,
       {
         method: "PUT",
         headers: {
@@ -955,7 +916,7 @@ export const deletePass = createAsyncThunk(
   "admin/passes/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/passes/${payload?.passId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/passes/${payload?.passId}`,
       {
         method: "DELETE",
         headers: {
@@ -974,10 +935,7 @@ export const deletePass = createAsyncThunk(
 export const fetchBlogPosts = createAsyncThunk(
   "admin/blog/getPosts",
   async () => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/blog-posts`,
-      {}
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/blog-posts`, {})
       .then((res) => res.json())
       .catch((err) => console.log("FETCH BLOG POSTS ERROR:", err));
   }
@@ -1006,22 +964,19 @@ export const createBlogPost = createAsyncThunk(
         console.log("upload successful");
         const data = await response.json();
         // SAVE BLOG POST TO THE DATABASE
-        return fetch(
-          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/blog-posts`,
-          {
-            method: "POST",
-            headers: {
-              token: `Bearer ${JSON.parse(payload?.token)}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              image: data.secure_url,
-              title: payload?.title,
-              content: payload?.content,
-              author: payload?.author,
-            }),
-          }
-        )
+        return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/blog-posts`, {
+          method: "POST",
+          headers: {
+            token: `Bearer ${JSON.parse(payload?.token)}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: data.secure_url,
+            title: payload?.title,
+            content: payload?.content,
+            author: payload?.author,
+          }),
+        })
           .then((res) => res.json())
           .catch((err) => console.log("CREATE VEHICLE CLASS ERROR:", err));
       } else {
@@ -1041,7 +996,7 @@ export const updateBlogPost = createAsyncThunk(
       // If the image was not updated, no need to upload anything to cloudinary
       case "string":
         return fetch(
-          `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/blog-posts/${payload?.blogPostId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/admin/blog-posts/${payload?.blogPostId}`,
           {
             method: "PUT",
             headers: {
@@ -1078,7 +1033,7 @@ export const updateBlogPost = createAsyncThunk(
             console.log("upload successful");
             const data = await response.json();
             return fetch(
-              `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/blog-posts/${payload?.blogPostId}`,
+              `${process.env.REACT_APP_API_BASE_URL}/admin/blog-posts/${payload?.blogPostId}`,
               {
                 method: "PUT",
                 headers: {
@@ -1110,7 +1065,7 @@ export const deleteBlogPost = createAsyncThunk(
   "admin/blog/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/blog-posts/${payload?.blogPostId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/blog-posts/${payload?.blogPostId}`,
       {
         method: "DELETE",
         headers: {
@@ -1130,7 +1085,7 @@ export const adminFetchUpcomingBookings = createAsyncThunk(
   "admin/bookings/upcoming",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/bookings/upcoming`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/upcoming`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -1148,7 +1103,7 @@ export const adminFetchBookingsAwaitingAssignment = createAsyncThunk(
   "admin/bookings/unassigned",
   async (token) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/bookings/unassigned`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/unassigned`,
       {
         headers: {
           token: `Bearer ${JSON.parse(token)}`,
@@ -1166,7 +1121,7 @@ export const deleteBooking = createAsyncThunk(
   "admin/bookings/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking/delete-booking/${payload?._id}`,
+      `${process.env.REACT_APP_API_BASE_URL}/booking/delete-booking/${payload?._id}`,
       {
         method: "DELETE",
         headers: {
@@ -1185,7 +1140,7 @@ export const assignToJob = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD FROM AsyncThunk:", payload);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/assign-to-booking/${payload?.userType}/${payload?.userId}/${payload?.bookingId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/assign-to-booking/${payload?.userType}/${payload?.userId}/${payload?.bookingId}`,
       {
         method: "PATCH",
         headers: {
@@ -1207,7 +1162,7 @@ export const approveDriverAccount = createAsyncThunk(
   async (payload) => {
     console.log("PAYLOAD FROM AsyncThunk:", payload);
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/drivers/${payload?.driverId}/account/approve`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/${payload?.driverId}/account/approve`,
       {
         method: "PATCH",
         headers: {
@@ -1228,7 +1183,7 @@ export const fetchBookingByReference = createAsyncThunk(
   async (bookingReference) => {
     console.log("HI");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking/get-booking-by-reference/${bookingReference}`,
+      `${process.env.REACT_APP_API_BASE_URL}/booking/get-booking-by-reference/${bookingReference}`,
       {}
     )
       .then((res) => res.json())
@@ -1240,23 +1195,20 @@ export const fetchBookingByReference = createAsyncThunk(
 export const createAdminAccount = createAsyncThunk(
   "admin/accounts/createNew",
   async (payload) => {
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/auth/admin/signup`,
-      {
-        method: "POST",
-        headers: {
-          token: `Bearer ${JSON.parse(payload?.token)}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: payload?.firstName,
-          lastName: payload?.lastName,
-          email: payload?.email,
-          username: payload?.username,
-          role: payload?.role,
-        }),
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/admin/signup`, {
+      method: "POST",
+      headers: {
+        token: `Bearer ${JSON.parse(payload?.token)}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: payload?.firstName,
+        lastName: payload?.lastName,
+        email: payload?.email,
+        username: payload?.username,
+        role: payload?.role,
+      }),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE NEW ADMIN ACCOUNT ERROR:", err));
   }
@@ -1267,14 +1219,11 @@ export const fetchAdminAccounts = createAsyncThunk(
   "admin/accounts/getAll",
   async (token) => {
     console.log("HI");
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH ADMIN ACCOUNTS ERROR:", err));
   }
@@ -1285,7 +1234,7 @@ export const deleteAdminAccount = createAsyncThunk(
   "admin/accounts/deleteOne",
   async (payload) => {
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/${payload?.adminId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/${payload?.adminId}`,
       {
         method: "DELETE",
         headers: {
@@ -1554,7 +1503,7 @@ export const calculateTotal = createAsyncThunk(
 
     console.log("sending data");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
+      `${process.env.REACT_APP_API_BASE_URL}/booking/calculate-total?userCountry=${userCountry.data?.country_name}`,
       {
         method: "POST",
         headers: {
@@ -1573,14 +1522,11 @@ export const fetchPayments = createAsyncThunk(
   "admin/payments/getAll",
   async (token) => {
     console.log("HI");
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/payments`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/payments`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH PAYMENTS ERROR:", err));
   }
@@ -1592,7 +1538,7 @@ export const fetchPayment = createAsyncThunk(
   async (payload) => {
     console.log("HI");
     return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/payments/${payload?.paymentId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/payments/${payload?.paymentId}`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -1609,14 +1555,11 @@ export const fetchAllBookings = createAsyncThunk(
   "admin/bookings/getAll",
   async (token) => {
     console.log("HI");
-    return fetch(
-      `https://shuttlelane-backend-demo.onrender.com:3001/api/v1/admin/bookings`,
-      {
-        headers: {
-          token: `Bearer ${JSON.parse(token)}`,
-        },
-      }
-    )
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/bookings`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
       .then((res) => res.json())
       .catch((err) => console.log("FETCH BOOKINGS ERROR:", err));
   }

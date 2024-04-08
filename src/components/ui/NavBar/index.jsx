@@ -12,6 +12,8 @@ import { Fade } from "react-awesome-reveal";
 import { useWindowScroll } from "@uidotdev/usehooks";
 import { BiLogoGmail, BiSolidPhone } from "react-icons/bi";
 import DropdownItem from "../DropdownItem";
+import { Slide } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
 
 function NavBar(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -162,7 +164,7 @@ function NavBar(props) {
               y > 5 || props?.isPurpleLogo ? "block" : "hidden"
             }`}
           >
-            <div className="flex flex-row gap-x-4 px-7 lg:px-24 items-center">
+            <div className="hidden lg:flex flex-row gap-x-4 px-7 lg:px-24 items-center">
               <div className="flex items-center gap-x-1">
                 <BiLogoGmail size={14} className="text-red-400" />
                 <Link
@@ -192,6 +194,45 @@ function NavBar(props) {
                   +234 903 000 9108
                 </Link>
               </div>
+            </div>
+
+            <div className="lg:hidden">
+              <Slide
+                transitionDuration={500}
+                arrows={true}
+                pauseOnHover={true}
+                duration={3000}
+              >
+                <div className="flex items-center gap-x-1 w-full justify-center">
+                  <BiLogoGmail size={14} className="text-red-400" />
+                  <Link
+                    to="mailto:@info@shuttlelane.com"
+                    className="font-light text-xs lg:text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
+                  >
+                    info@shuttlelane.com
+                  </Link>
+                </div>
+
+                <div className="flex items-center gap-x-1 w-full justify-center">
+                  <BiSolidPhone size={14} className="text-blue-600" />
+                  <Link
+                    to="tel:+2349030009452"
+                    className="font-light text-xs lg:text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
+                  >
+                    +234 903 000 9452
+                  </Link>
+                </div>
+
+                <div className="flex items-center gap-x-1 w-full justify-center">
+                  <IoLogoWhatsapp size={14} className="text-green-600" />
+                  <Link
+                    to="tel:+2349030009108"
+                    className="font-light text-xs lg:text-sm text-shuttlelaneBlack hover:no-underline hover:text-shuttlelaneBlack"
+                  >
+                    +234 903 000 9108
+                  </Link>
+                </div>
+              </Slide>
             </div>
           </div>
           <nav

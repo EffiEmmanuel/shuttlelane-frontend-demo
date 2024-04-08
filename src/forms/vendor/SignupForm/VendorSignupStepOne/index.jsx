@@ -17,6 +17,8 @@ import ReactSelectOption from "../../../../components/ui/Form/ReactSelectOption"
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
+import { Link } from "react-router-dom";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 function VendorSignupStepOne({
   isStepOne,
@@ -163,14 +165,16 @@ function VendorSignupStepOne({
     >
       <ToastContainer />
       {!isUpdateVendorAccount && (
-        <>
-          <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
-            Create an account
-          </h2>
-          <p className="text-sm">
-            Sign up as a vendor to start driving for Shuttlelane
-          </p>
-        </>
+        <div className="flex flex-row items-center justify-between">
+          <div>
+            <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
+              Create an account
+            </h2>
+            <p className="text-sm">
+              Sign up as a vendor to start driving for Shuttlelane
+            </p>
+          </div>
+        </div>
       )}
 
       {/* FORM */}

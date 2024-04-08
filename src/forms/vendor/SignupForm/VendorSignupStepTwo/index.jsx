@@ -10,6 +10,8 @@ import { validateFields } from "../../../../util";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { Link } from "react-router-dom";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 function VendorSignupStepTwo({
   isStepTwo,
@@ -116,20 +118,16 @@ function VendorSignupStepTwo({
       ref={scrollTopRef}
     >
       {!isUpdateVendorAccount && (
-        <>
-          <div className="flex justify-between items-center">
+        <div className="flex flex-row items-center justify-between">
+          <div>
             <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
               Contact Details
             </h2>
-
-            {/* <button className="h-5 w-16 text-sm flex items-center justify-center border-[.3px] border-shuttlelaneBlack rounded-full p-2">
-          Skip
-        </button> */}
+            <p className="text-sm">
+              Sign up as a vendor to start driving for Shuttlelane
+            </p>
           </div>
-          <p className="text-sm">
-            Sign up as a vendor to start driving for Shuttlelane
-          </p>
-        </>
+        </div>
       )}
 
       {/* FORM */}

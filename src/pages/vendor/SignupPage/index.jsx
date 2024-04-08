@@ -1,8 +1,9 @@
 import React from "react";
+import VendorSignupForm from "../../../forms/vendor/SignupForm";
+import NavBar from "../../../components/ui/NavBar";
 
 // Images
 import ShuttlelaneLogoWhite from "../../../assets/logos/shuttlelane-white.png";
-import VendorSignupForm from "../../../forms/vendor/SignupForm";
 
 function VendorSignupPage() {
   return (

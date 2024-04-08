@@ -232,10 +232,10 @@ function PriorityPassPage() {
                     </p>
                   </div>
                   <p className="text-md text-white">
-                    This pass covers fast-tracking immigration clearance only.
-                    Relax and enjoy the environment away from the airport
-                    crowds, while we take off the stress hook of immigration
-                    clearance.
+                    Premium Pass covers both fast-tracking immigration and
+                    customs clearance. Find peace, explore, enjoy, and enrich
+                    your airport experience, while we take care of both
+                    immigration and customs clearance.
                   </p>
                 </div>
               </div>
@@ -244,12 +244,19 @@ function PriorityPassPage() {
         </div>
 
         {/* </Fade> */}
-        <div className="flex justify-center w-full py-20">
+        <div className="w-full flex md:flex-row flex-col items-center justify-center gap-x-4 gap-y-3 py-20">
+          <Link
+            to="/company/get-in-touch"
+            className="h-12 p-3 bg-transparent hover:text-shuttlelaneBlack border-[.5px] border-white transition-all hover:bg-shuttlelaneLightPurple visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+          >
+            Make Enquiry
+          </Link>
+
           <Link
             to="/"
-            className="h-12 p-3 bg-transparent hover:text-white border-[.5px] border-shuttlelanePurple transition-all hover:bg-shuttlelanePurple visited:text-shuttlelanePurple hover:no-underline visited:no-underline text-shuttlelanePurple rounded-lg text-sm w-full lg:w-32 inline-block flex justify-center items-center "
+            className="flex justify-center items-center gap-x-2 h-12 p-3 bg-shuttlelaneLightPurple hover:text-white border-[.5px] hover:border-white transition-all hover:bg-transparent visited:text-shuttlelaneBlack hover:no-underline visited:no-underline text-shuttlelaneBlack rounded-lg text-sm w-44 inline-block flex justify-center items-center "
           >
-            Book Now
+            <span>Book Now</span>
           </Link>
         </div>
       </div>

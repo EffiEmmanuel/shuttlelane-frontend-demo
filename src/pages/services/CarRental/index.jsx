@@ -179,12 +179,19 @@ function CarRentalPage() {
                   </p>
                 </div>
 
-                <div className="w-full flex justify-center mt-5">
+                <div className="w-full flex md:flex-row flex-col items-center justify-center gap-x-4 gap-y-3 mt-5">
+                  <Link
+                    to="/company/get-in-touch"
+                    className="h-12 p-3 bg-transparent hover:text-shuttlelaneBlack border-[.5px] border-white transition-all hover:bg-shuttlelaneLightPurple visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+                  >
+                    Make Enquiry
+                  </Link>
+
                   <Link
                     to="/"
-                    className="h-12 p-3 bg-transparent hover:text-white border-[.5px] border-shuttlelanePurple transition-all hover:bg-shuttlelanePurple visited:text-shuttlelanePurple hover:no-underline visited:no-underline text-shuttlelanePurple rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+                    className="flex justify-center items-center gap-x-2 h-12 p-3 bg-shuttlelaneLightPurple hover:text-white border-[.5px] hover:border-white transition-all hover:bg-transparent visited:text-shuttlelaneBlack hover:no-underline visited:no-underline text-shuttlelaneBlack rounded-lg text-sm w-44 inline-block flex justify-center items-center "
                   >
-                    Book Now
+                    <span>Book Now</span>
                   </Link>
                 </div>
               </div>
