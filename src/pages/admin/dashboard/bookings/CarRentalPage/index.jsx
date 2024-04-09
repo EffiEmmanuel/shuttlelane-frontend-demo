@@ -1329,7 +1329,7 @@ function AdminDashboardCarRentalPage() {
               {/* Booking Summary - Total number of bookings */}
               <div className="w-full">
                 <div className="w-full">
-                  <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">
@@ -1481,7 +1481,7 @@ function AdminDashboardCarRentalPage() {
               <div className="w-full">
                 <div className="mt-11 w-full">
                   {/* Searchbar */}
-                  {/* <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
+                  {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                     <BiSearch size={16} className="text-gray-400 rotate-90" />
                     <input
                       type="search"
@@ -1490,7 +1490,7 @@ function AdminDashboardCarRentalPage() {
                     />
                   </div> */}
 
-                  <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">

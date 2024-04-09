@@ -412,7 +412,7 @@ function AdminDashboardBlogPage() {
                   {/* Add car button */}
                   <button
                     onClick={() => setIsAddNewPostModalOpen(true)}
-                    className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+                    className="w-auto border-dashed border-[1px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
                   >
                     <AiOutlinePlus size={16} />
                     <span className="text-xs">New Post</span>

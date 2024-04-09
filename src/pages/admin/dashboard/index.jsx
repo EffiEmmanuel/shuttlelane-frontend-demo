@@ -2021,7 +2021,7 @@ function AdminDashboardHomePage() {
 
                     {/* Bar Chart */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">Booking Statistics</p>
@@ -2045,7 +2045,7 @@ function AdminDashboardHomePage() {
 
                     {/* Unassigned Bookings */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2190,7 +2190,7 @@ function AdminDashboardHomePage() {
 
                     {/* Upcoming Bookings */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2309,7 +2309,7 @@ function AdminDashboardHomePage() {
                   <div className="xl:w-[30%] w-full">
                     {/* Users */}
                     <div className="w-full">
-                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2326,7 +2326,7 @@ function AdminDashboardHomePage() {
                         </div>
 
                         {/* Searchbar */}
-                        {/* <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                        {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                           <BiSearch
                             size={16}
                             className="text-gray-400 rotate-90"
@@ -2365,7 +2365,7 @@ function AdminDashboardHomePage() {
 
                     {/* Drivers */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2382,7 +2382,7 @@ function AdminDashboardHomePage() {
                         </div>
 
                         {/* Searchbar */}
-                        {/* <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                        {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                           <BiSearch
                             size={16}
                             className="text-gray-400 rotate-90"
@@ -2433,7 +2433,7 @@ function AdminDashboardHomePage() {
 
                     {/* Vendors */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2451,7 +2451,7 @@ function AdminDashboardHomePage() {
 
                         {/* Searchbar */}
                         {/* {!isLoading && vendors && (
-                          <div className="flex items-center gap-x-3 border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                          <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                             <BiSearch
                               size={16}
                               className="text-gray-400 rotate-90"

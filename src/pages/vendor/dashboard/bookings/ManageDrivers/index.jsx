@@ -531,7 +531,7 @@ function VendorDashboardManageDriversPage() {
               <div className="w-full xl:w-[70%]">
                 {/* Drivers */}
                 <div className="mt-11 w-full">
-                  <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">
@@ -545,7 +545,7 @@ function VendorDashboardManageDriversPage() {
                         onClick={() => {
                           setIsCreateDriverModalOpen(true);
                         }}
-                        className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+                        className="w-auto border-dashed border-[1px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
                       >
                         <AiOutlinePlus size={16} />
                         <span className="text-xs">Create driver</span>
@@ -671,7 +671,7 @@ function VendorDashboardManageDriversPage() {
               </div>
 
               <div className="w-full xl:w-[30%] mt-10">
-                <div className="w-full rounded-lg border-[.3px] p-4 border-gray-100 h-auto">
+                <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-4 border-gray-100 h-auto">
                   <div className="flex items-center gap-x-2">
                     <p className="font-semibold text-lg">How Can We Help?</p>
                   </div>
@@ -757,7 +757,7 @@ function VendorDashboardManageDriversPage() {
                   </div>
                 </div>
 
-                <div className="mt-10 w-full rounded-lg border-[.3px] p-4 border-gray-100 h-auto">
+                <div className="mt-10 w-full rounded-lg border-[1px] lg:border-[.3px] p-4 border-gray-100 h-auto">
                   <div className="flex items-center gap-x-1">
                     <HiOutlineSupport size={20} />
                     <p className="font-semibold text-lg">Contact and Support</p>

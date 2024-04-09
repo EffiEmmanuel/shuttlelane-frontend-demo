@@ -1519,7 +1519,7 @@ function DriverDashboardHomePage() {
 
                       {/* Recent Bookings */}
                       <div className="mt-11 w-full">
-                        <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
+                        <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                           <div className="flex items-baseline justify-between">
                             <div className="flex items-center gap-x-2">
                               <p className="font-medium">
@@ -1597,7 +1597,7 @@ function DriverDashboardHomePage() {
                     <div className="xl:w-[30%] w-full">
                       {/* Users */}
                       <div className="w-full">
-                        <div className="w-full rounded-lg border-[.3px] p-4 border-gray-100 h-auto">
+                        <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-4 border-gray-100 h-auto">
                           <div className="flex items-center gap-x-2">
                             <p className="font-semibold text-lg">
                               How Can We Help?
