@@ -31,6 +31,7 @@ import {
 import { FiArrowDown } from "react-icons/fi";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function WhoWeArePage() {
   const howItWorksRef = useRef(null);
@@ -120,6 +121,9 @@ function WhoWeArePage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

@@ -199,7 +199,6 @@ function NavBar(props) {
             <div className="lg:hidden">
               <Slide
                 transitionDuration={500}
-                arrows={true}
                 pauseOnHover={true}
                 duration={3000}
               >

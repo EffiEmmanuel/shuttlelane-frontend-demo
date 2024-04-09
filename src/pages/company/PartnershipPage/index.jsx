@@ -34,6 +34,7 @@ import {
   BiSolidPhone,
 } from "react-icons/bi";
 import { FiArrowDown } from "react-icons/fi";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function PartnershipPage() {
   const howItWorksRef = useRef(null);
@@ -123,6 +124,9 @@ function PartnershipPage() {
         />
       </div>
 
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
+
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />
       </div>
@@ -210,27 +214,6 @@ function PartnershipPage() {
             <div className="bg-white flex flex-col items-center shadow-lg rounded-lg overflow-hidden bg-opacity-90 text-shuttlelaneBlack h-[300px] md:w-[280px] w-full">
               <div className="w-full h-[60%]">
                 <img
-                  src={hotelManagement}
-                  alt="Hotel Management"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="py-4 px-6 flex flex-col gap-y-2">
-                <p className="text-lg font-semibold">Hotel Management</p>
-                <Link
-                  to="/hotel/signup"
-                  className="h-12 p-3 bg-shuttlelanePurple hover:text-shuttlelanePurple hover:border-[.5px] hover:border-shuttlelanePurple transition-all hover:bg-transparent visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-full inline-block flex justify-center items-center "
-                >
-                  Sign Up
-                </Link>
-              </div>
-            </div>
-          </Fade>
-          <Fade duration={500}>
-            <div className="bg-white flex flex-col items-center shadow-lg rounded-lg overflow-hidden bg-opacity-90 text-shuttlelaneBlack h-[300px] md:w-[280px] w-full">
-              <div className="w-full h-[60%]">
-                <img
                   src={fleetManagement}
                   alt="Fleet Management"
                   className="w-full h-full object-cover"
@@ -240,7 +223,7 @@ function PartnershipPage() {
               <div className="py-4 px-6 flex flex-col gap-y-2">
                 <p className="text-lg font-semibold">Fleet Management</p>
                 <Link
-                  to="/driver/signup"
+                  to="/vendor/signup"
                   className="h-12 p-3 bg-shuttlelanePurple hover:text-shuttlelanePurple hover:border-[.5px] hover:border-shuttlelanePurple transition-all hover:bg-transparent visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-full inline-block flex justify-center items-center "
                 >
                   Sign Up

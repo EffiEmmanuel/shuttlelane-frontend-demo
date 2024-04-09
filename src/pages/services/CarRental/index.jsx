@@ -30,6 +30,7 @@ import {
   BiSolidPhone,
 } from "react-icons/bi";
 import { FiArrowDown } from "react-icons/fi";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function CarRentalPage() {
   const howItWorksRef = useRef(null);
@@ -142,6 +143,9 @@ function CarRentalPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

@@ -52,6 +52,7 @@ import { Helmet } from "react-helmet";
 // Images
 import personalConcierge from "../../../assets/images/concierge/personal-concierge.jpg";
 import corporateConcierge from "../../../assets/images/concierge/corporate-concierge.jpg";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function ConciergePage() {
   const howItWorksRef = useRef(null);
@@ -165,6 +166,9 @@ function ConciergePage() {
             }`}
           />
         </div>
+
+        {/* Floating whatsapp icon */}
+        <WhatsappIcon pageHasFloatingIcon={true} />
 
         {/* Navbar */}
         <div className="fixed w-full z-20">

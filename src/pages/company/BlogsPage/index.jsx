@@ -41,6 +41,7 @@ import { ImSpinner2 } from "react-icons/im";
 
 // Images
 import emptyImage from "../../../assets/images/empty.png";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function BlogsPage() {
   const howItWorksRef = useRef(null);
@@ -141,6 +142,9 @@ function BlogsPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

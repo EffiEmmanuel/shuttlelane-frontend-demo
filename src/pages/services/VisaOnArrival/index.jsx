@@ -50,6 +50,7 @@ import {
 } from "react-icons/bs";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
 import { FaRegHandshake } from "react-icons/fa";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function VisaOnArrivalPage() {
   const howItWorksRef = useRef(null);
@@ -161,6 +162,9 @@ function VisaOnArrivalPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />

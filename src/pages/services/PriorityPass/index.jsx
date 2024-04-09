@@ -33,6 +33,7 @@ import {
 } from "react-icons/bi";
 import { FiArrowDown } from "react-icons/fi";
 import { FaPassport } from "react-icons/fa";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function PriorityPassPage() {
   const priorityPassRef = useRef(null);
@@ -145,6 +146,9 @@ function PriorityPassPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

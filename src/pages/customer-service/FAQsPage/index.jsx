@@ -10,6 +10,7 @@ import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BiMenu } from "react-icons/bi";
 import FAQs from "../../../components/ui/FAQSection/FAQs";
 import { Helmet } from "react-helmet";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function FAQsPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
@@ -95,6 +96,9 @@ function FAQsPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

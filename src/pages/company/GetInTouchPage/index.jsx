@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendEnquiryEmail } from "../../../redux/slices/userSlice";
 import { ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function GetInTouchPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
@@ -127,6 +128,9 @@ function GetInTouchPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

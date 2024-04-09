@@ -10,6 +10,7 @@ import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BiArrowBack, BiMenu } from "react-icons/bi";
 import FAQs from "../../../components/ui/FAQSection/FAQs";
 import { Helmet } from "react-helmet";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function TermsOfUsePage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
@@ -95,6 +96,9 @@ function TermsOfUsePage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       {/* Back to homepage button */}
       <div className="bg-white h-32 w-full px-7 py-14 lg:px-24">

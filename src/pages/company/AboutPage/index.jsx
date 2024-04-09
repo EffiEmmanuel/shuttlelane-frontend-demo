@@ -41,6 +41,7 @@ import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { BsPersonCheck } from "react-icons/bs";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
 import { Helmet } from "react-helmet";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function AboutPage() {
   const howItWorksRef = useRef(null);
@@ -145,6 +146,9 @@ function AboutPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />

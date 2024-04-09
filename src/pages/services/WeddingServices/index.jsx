@@ -30,6 +30,7 @@ import {
 } from "react-icons/bi";
 import { FiArrowDown } from "react-icons/fi";
 import { Helmet } from "react-helmet";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function WeddingServicesPage() {
   const howItWorksRef = useRef(null);
@@ -142,6 +143,9 @@ function WeddingServicesPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />

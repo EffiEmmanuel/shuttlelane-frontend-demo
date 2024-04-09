@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Fade } from "react-reveal";
 import { BiArrowBack, BiMenu } from "react-icons/bi";
 import { Helmet } from "react-helmet";
+import WhatsappIcon from "../../../components/ui/WhatsappIcon";
 
 function PrivacyPolicyPage() {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
@@ -90,6 +91,9 @@ function PrivacyPolicyPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       {/* Back to homepage button */}
       <div className="bg-white h-32 w-full px-7 py-14 lg:px-24">

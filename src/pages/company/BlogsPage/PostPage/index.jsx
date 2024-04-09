@@ -18,6 +18,7 @@ import { Helmet } from "react-helmet";
 // Images
 import emptyImage from "../../../../assets/images/empty.png";
 import HTMLRenderer from "../../../../components/functionality/HTMLRenderer";
+import WhatsappIcon from "../../../../components/ui/WhatsappIcon";
 
 function PostPage() {
   const howItWorksRef = useRef(null);
@@ -122,6 +123,9 @@ function PostPage() {
           }`}
         />
       </div>
+
+      {/* Floating whatsapp icon */}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

@@ -10,9 +10,13 @@ export default function WhatsappIcon(props) {
   return (
     <div
       className={`fixed ${
-        y > 5 && !props?.pageHasFloatingIcon ? "flex" : props?.pageHasFloatingIcon ? 'flex' : "hidden"
+        y > 5 && !props?.pageHasFloatingIcon
+          ? "flex"
+          : props?.pageHasFloatingIcon
+          ? "flex"
+          : "hidden"
       } p-5 justify-center items-center z-[80] ${
-        props?.pageHasFloatingIcon ? "bottom-14" : "bottom-7"
+        props?.pageHasFloatingIcon ? "bottom-16" : "bottom-7"
       } right-7 h-auto lg:px-16`}
     >
       <Link to="https://wa.link/9patdd" target="_blank">
