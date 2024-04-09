@@ -123,7 +123,7 @@ function WhoWeArePage() {
       </div>
 
       {/* Floating whatsapp icon */}
-      {!isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
+      {isMenuHidden === true && <WhatsappIcon pageHasFloatingIcon={true} />}
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />

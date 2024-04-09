@@ -98,7 +98,7 @@ function TermsOfUsePage() {
       </div>
 
       {/* Floating whatsapp icon */}
-      {!isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
+      {isMenuHidden === true && <WhatsappIcon pageHasFloatingIcon={true} />}
 
       {/* Back to homepage button */}
       <div className="bg-white h-32 w-full px-7 py-14 lg:px-24">
