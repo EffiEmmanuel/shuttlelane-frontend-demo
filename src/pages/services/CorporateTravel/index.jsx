@@ -145,7 +145,7 @@ function CorporateTravelPage() {
       </div>
 
       {/* Floating whatsapp icon */}
-      <WhatsappIcon pageHasFloatingIcon={true} />
+      {isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />

@@ -43,28 +43,13 @@ const BookingSuccessfulEmail = ({ bookingReference }) => {
               color: "#333",
               textDecoration: "underline",
             }}
-            href={`https://localhost:3000/track-booking?bookingReference=${bookingReference}`}
+            href={`https://www.shuttlelane.com/track-booking?bookingReference=${bookingReference}`}
           >
             this link on our website
           </a>
           .
         </p>
-        <a
-          href="PAYMENT_URL_HERE"
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#4CAF50",
-            color: "#fff",
-            textDecoration: "none",
-            borderRadius: "5px",
-            textAlign: "center",
-            marginBottom: "20px",
-          }}
-        >
-          Make Payment
-        </a>
+
         <p style={{ color: "#333", marginBottom: "10px" }}>
           Thank you for choosing our service!
         </p>

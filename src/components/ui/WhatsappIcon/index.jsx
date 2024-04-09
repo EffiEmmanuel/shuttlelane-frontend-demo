@@ -16,14 +16,14 @@ export default function WhatsappIcon(props) {
           ? "flex"
           : "hidden"
       } p-5 justify-center items-center z-[80] ${
-        props?.pageHasFloatingIcon ? "bottom-16" : "bottom-7"
-      } right-7 h-auto lg:px-16`}
+        props?.pageHasFloatingIcon ? "bottom-24" : "bottom-7"
+      } right-10 h-auto`}
     >
       <Link to="https://wa.link/9patdd" target="_blank">
         <img
           src={whatsappLogo}
           alt="Send Shuttlelane a message on Whatsapp"
-          className="max-w-[40px] w-[40px] min-w-[40px] object-contain"
+          className="max-w-[43px] w-[43px] min-w-[43px] object-contain"
         />
       </Link>
     </div>

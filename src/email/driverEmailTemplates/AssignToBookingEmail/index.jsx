@@ -33,7 +33,7 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
         className="footer"
       >
         <a
-          href={`http://localhost:3000/driver/dashboard`}
+          href={`https://www.shuttlelane.com/driver/dashboard`}
           style={{
             display: "inline-block",
             padding: "10px 20px",
@@ -43,8 +43,8 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
             cursor: "pointer",
             fontSize: "16px",
             transition: "background-color 0.3s",
-            backgroundColor: "#28a745",
-            color: "#fff",
+            backgroundColor: "#E2B442",
+            color: "#181818",
             textDecoration: "none",
           }}
           className="action-button accept-button"

@@ -21,7 +21,7 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
         details={booking}
         endNote="We are pleased to inform you that you have been assigned to this new
         booking. Please arrive on time and ensure a smooth transfer for our
-        valued customer."
+        valued customer. Log in to accept or decline booking."
       />
 
       <div
@@ -33,7 +33,7 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
         className="footer"
       >
         <a
-          href={`http://localhost:3000/driver/accept-booking?driverId=${driverId}`}
+          href={`https://www.shuttlelane.com/driver/login`}
           style={{
             display: "inline-block",
             padding: "10px 20px",
@@ -43,33 +43,15 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
             cursor: "pointer",
             fontSize: "16px",
             transition: "background-color 0.3s",
-            backgroundColor: "#28a745",
+            backgroundColor: "#262471",
             color: "#fff",
             textDecoration: "none",
           }}
           className="action-button accept-button"
         >
-          Accept
+          Log in
         </a>
-        <a
-          href={`http://localhost:3000/driver/accept-booking?driverId=${driverId}`}
-          style={{
-            display: "inline-block",
-            padding: "10px 20px",
-            margin: "0 10px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            fontSize: "16px",
-            transition: "background-color 0.3s",
-            backgroundColor: "#dc3545",
-            color: "#fff",
-            textDecoration: "none",
-          }}
-          className="action-button decline-button"
-        >
-          Decline
-        </a>
+
         <p style={{ textAlign: "center", color: "#333" }}>
           Thank you for your service
         </p>

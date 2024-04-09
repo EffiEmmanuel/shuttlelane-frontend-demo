@@ -18,7 +18,7 @@ export function AdminProtectedRoute({ children }) {
   async function verifyToken() {
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/v1/auth/verify-token`,
+        `https://www.shuttlelane.com/api/v1/auth/verify-token`,
         JSON.stringify({
           token: JSON.parse(adminToken),
         }),
@@ -66,7 +66,7 @@ export function DriverProtectedRoute({ children }) {
   async function verifyToken() {
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/v1/auth/verify-token`,
+        `https://www.shuttlelane.com/api/v1/auth/verify-token`,
         JSON.stringify({
           token: JSON.parse(driverToken),
         }),
@@ -120,7 +120,7 @@ export function VendorProtectedRoute({ children }) {
   async function verifyToken() {
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/v1/auth/verify-token`,
+        `https://www.shuttlelane.com/api/v1/auth/verify-token`,
         JSON.stringify({
           token: JSON.parse(vendorToken),
         }),

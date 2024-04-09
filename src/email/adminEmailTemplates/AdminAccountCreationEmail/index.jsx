@@ -53,7 +53,7 @@ const AdminAccountCreationEmailTemplate = ({
           Complete your account creation by clicking the button below:
         </p>
         <a
-          href={`http://localhost:3000/admin/complete-signup?adminId=${_id}`}
+          href={`https://www.shuttlelane.com/admin/complete-signup?adminId=${_id}`}
           style={{
             display: "inline-block",
             padding: "10px 20px",
@@ -63,7 +63,7 @@ const AdminAccountCreationEmailTemplate = ({
             cursor: "pointer",
             fontSize: "16px",
             transition: "background-color 0.3s",
-            backgroundColor: "#28a745",
+            backgroundColor: "#262471",
             color: "#fff",
             textDecoration: "none",
           }}
