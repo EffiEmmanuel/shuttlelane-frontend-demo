@@ -16,5 +16,8 @@ git add .
 # commit build files
 git commit -m "INIT V1.0"
 
+# switch to main branch
+git branch -M main
+
 # push build files
 git push -u origin main
