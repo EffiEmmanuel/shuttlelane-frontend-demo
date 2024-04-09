@@ -341,15 +341,17 @@ function AdminDashboardAdminAccountsPage() {
                     </div>
 
                     {/* create admin button */}
-                    <button
-                      onClick={() => {
-                        setIsCreateAdminModalOpen(true);
-                      }}
-                      className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
-                    >
-                      <AiOutlinePlus size={16} />
-                      <span className="text-xs">Create admin account</span>
-                    </button>
+                    {admin?.role !== "Blogger" && (
+                      <button
+                        onClick={() => {
+                          setIsCreateAdminModalOpen(true);
+                        }}
+                        className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+                      >
+                        <AiOutlinePlus size={16} />
+                        <span className="text-xs">Create admin account</span>
+                      </button>
+                    )}
                   </div>
 
                   <div className="w-full rounded-lg border-[.3px] p-3 border-gray-100 h-auto">
