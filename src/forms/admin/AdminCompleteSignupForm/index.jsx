@@ -76,7 +76,7 @@ function AdminCompleteSignupForm() {
         console.log("upload successful");
         const data = await response.json();
         return fetch(
-          `http://localhost:3001/api/v1/auth/admin/signup/complete-signup/${adminId}`,
+          `https://www.shuttlelane.com/api/v1/auth/admin/signup/complete-signup/${adminId}`,
           {
             method: "POST",
             headers: {
