@@ -103,22 +103,6 @@ function AboutPage() {
                     Get In Touch
                   </Link>
                 </li>
-                <li className="py-3 px-5">
-                  <Link
-                    to="/company/terms-of-use"
-                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
-                  >
-                    Terms Of Use
-                  </Link>
-                </li>
-                <li className="py-3 px-5">
-                  <Link
-                    to="/company/privacy-policy"
-                    className="inline-block w-full hover:no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack text-shuttlelaneBlack"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
               </ul>
             </div>
           </div>
@@ -148,7 +132,7 @@ function AboutPage() {
       </div>
 
       {/* Floating whatsapp icon */}
-      {isMenuHidden === true && <WhatsappIcon pageHasFloatingIcon={true} />}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />

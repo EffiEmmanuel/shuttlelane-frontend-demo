@@ -66,6 +66,7 @@ import VendorDashboardAccountPage from "./pages/vendor/dashboard/account";
 import VendorDashboardSecurityPage from "./pages/vendor/dashboard/security/ResetPasswordPage";
 import VendorDashboardManageDriversPage from "./pages/vendor/dashboard/bookings/ManageDrivers";
 import VendorDashboardManageFleetPage from "./pages/vendor/dashboard/bookings/ManageFleet";
+import PageNotFound from "./pages/404PageNotFound";
 
 // Modal.setAppElement("#appElement");
 
@@ -73,6 +74,9 @@ function App() {
   return (
     <div id="appElement" className="text-shuttlelaneBlack">
       <Routes>
+        {/* 404 - Page Not Found */}
+        <Route path="*" element={<PageNotFound />} />
+
         {/* Home Route */}
         <Route path="/" element={<HomePage />} />
 

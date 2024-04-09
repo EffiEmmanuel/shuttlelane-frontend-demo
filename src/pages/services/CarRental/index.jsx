@@ -145,7 +145,7 @@ function CarRentalPage() {
       </div>
 
       {/* Floating whatsapp icon */}
-      {isMenuHidden === true && <WhatsappIcon pageHasFloatingIcon={true} />}
+      <WhatsappIcon pageHasFloatingIcon={true} />
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={true} />
