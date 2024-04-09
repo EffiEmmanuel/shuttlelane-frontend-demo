@@ -168,7 +168,7 @@ function ConciergePage() {
         </div>
 
         {/* Floating whatsapp icon */}
-        {isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
+        {!isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
 
         {/* Navbar */}
         <div className="fixed w-full z-20">

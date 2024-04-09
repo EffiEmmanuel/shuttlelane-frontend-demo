@@ -148,7 +148,7 @@ function AboutPage() {
       </div>
 
       {/* Floating whatsapp icon */}
-      {isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
+      {!isMenuHidden && <WhatsappIcon pageHasFloatingIcon={true} />}
 
       <div className="fixed w-full z-20">
         <NavBar isPurpleLogo={false} />
