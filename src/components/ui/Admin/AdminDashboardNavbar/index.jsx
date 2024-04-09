@@ -589,7 +589,7 @@ function AdminDashboardNavbar(props) {
           />
         </Link>
 
-        {admin?.role !== "Blogger" && (
+        {/* {admin?.role !== "Blogger" && (
           <Link
             to="/admin/dashboard/bookingapi"
             className={`h-11 w-11 flex justify-center items-center rounded-lg ${
@@ -604,7 +604,7 @@ function AdminDashboardNavbar(props) {
               }`}
             />
           </Link>
-        )}
+        )} */}
 
         <button
           onClick={() => {
