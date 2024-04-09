@@ -201,6 +201,8 @@ function NavBar(props) {
                 transitionDuration={500}
                 pauseOnHover={true}
                 duration={3000}
+                arrows={false}
+                indicators={false}
               >
                 <div className="flex items-center gap-x-1 w-full justify-center">
                   <BiLogoGmail size={14} className="text-red-400" />

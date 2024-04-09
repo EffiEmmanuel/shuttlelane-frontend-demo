@@ -13,11 +13,11 @@ git remote add origin git@github.com:Shuttlelane-Limited/shuttlelane-frontend-bu
 # stage all the build files
 git add .
 
-# commit build files
-git commit -m "INIT V1.0"
-
 # switch to main branch
 git branch -M main
+
+# commit build files
+git commit -m "INIT V1.0"
 
 # push build files
 git push -u origin main

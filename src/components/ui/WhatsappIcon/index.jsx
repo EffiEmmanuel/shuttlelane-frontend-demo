@@ -17,7 +17,7 @@ export default function WhatsappIcon(props) {
           : "hidden"
       } p-5 justify-end items-end z-[75] ${
         props?.pageHasFloatingIcon ? "bottom-24" : "bottom-7"
-      } right-10 h-auto`}
+      } right-7 h-auto`}
     >
       <Link to="https://wa.link/9patdd" target="_blank">
         <img
