@@ -70,11 +70,12 @@ function AdminVisaOnArrivalRate() {
   const [country, setCountry] = useState();
   const [visaFee, setVisaFee] = useState();
   const [isVisaRequired, setIsVisaRequired] = useState();
+  const [isBiometricsRequired, setIsBiometricsRequired] = useState();
 
   // FUNCTION: This function handles the creation of a country / visa on arrival rate
   async function handleAddCountry(e) {
     e.preventDefault();
-    if (!country || !visaFee || !isVisaRequired) {
+    if (!country || !visaFee || !isVisaRequired || !isBiometricsRequired) {
       toast.error("Please fill in the missing fields");
       return;
     }
@@ -84,8 +85,11 @@ function AdminVisaOnArrivalRate() {
         country,
         visaFee,
         isNigerianVisaRequired: isVisaRequired?.value,
+        isBiometricsRequired: isBiometricsRequired?.value,
       })
     );
+
+    setIsAddCountryModalOpen(false);
   }
 
   // FUNCTION: This function handles the modification of the base fees
@@ -126,6 +130,8 @@ function AdminVisaOnArrivalRate() {
     currentVOARate?.visaFee
   );
   const [isVisaRequiredModified, setIsVisaRequiredModified] = useState();
+  const [isBiometricsRequiredModified, setIsBiometricsRequiredModified] =
+    useState();
   useEffect(() => {
     console.log("TF:", currentVOARate?.isNigerianVisaRequired);
     setVisaFeeModified(currentVOARate?.visaFee ?? 0);
@@ -134,12 +140,21 @@ function AdminVisaOnArrivalRate() {
       value: currentVOARate?.isNigerianVisaRequired,
       label: currentVOARate?.isNigerianVisaRequired === true ? "Yes" : "No",
     });
+    setIsBiometricsRequiredModified({
+      value: currentVOARate?.isBiometricsRequired,
+      label: currentVOARate?.isBiometricsRequired === true ? "Yes" : "No",
+    });
   }, [currentVOARate]);
 
   async function handleModifyVisaOnArrivalRate(e) {
     e.preventDefault();
 
-    if (!visaFeeModified || !countryModified || !isVisaRequiredModified) {
+    if (
+      !visaFeeModified ||
+      !countryModified ||
+      !isVisaRequiredModified ||
+      !isBiometricsRequiredModified
+    ) {
       console.log(visaFeeModified, countryModified, isVisaRequiredModified);
       toast.error("Please fill in the missing fields");
       return;
@@ -150,10 +165,13 @@ function AdminVisaOnArrivalRate() {
         _id: currentVOARate?._id,
         country: countryModified,
         isNigerianVisaRequired: isVisaRequiredModified?.value,
+        isBiometricsRequired: isBiometricsRequiredModified?.value,
         visaFee: visaFeeModified,
         voaBaseFeeId: voaBaseFees?._id,
       })
     );
+
+    setIsRateDetailModalOpen(false);
   }
   async function handleDeleteVisaOnArrivalRate(e) {
     e.preventDefault();
@@ -163,6 +181,12 @@ function AdminVisaOnArrivalRate() {
 
   // "Is Visa Required For Citizens Of This Country To Visit Nigeria?" Data
   const isVisaRequiredData = [
+    { value: false, label: "No" },
+    { value: true, label: "Yes" },
+  ];
+
+  // "Is Biometrics Required For Citizens Of This Country To Visit Nigeria?" Data
+  const isBiometricsRequiredData = [
     { value: false, label: "No" },
     { value: true, label: "Yes" },
   ];
@@ -365,7 +389,7 @@ function AdminVisaOnArrivalRate() {
                   Nigeria?
                 </label>
                 <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-full text-shuttlelaneBlack text-sm relative z-[80]">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative">
                     <Select
                       value={isVisaRequired}
                       onChange={(value) => setIsVisaRequired(value)}
@@ -379,7 +403,49 @@ function AdminVisaOnArrivalRate() {
                           borderWidth: state.isFocused ? "0" : "0",
                           backgroundColor: "transparent",
                           position: "relative",
-                          zIndex: 80,
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select Yes or No"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full flex flex-col">
+                <label htmlFor="isBiometricsRequired" className="text-sm">
+                  Is biometrics required for citizens of this country to visit
+                  Nigeria?
+                </label>
+                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative">
+                    <Select
+                      value={isBiometricsRequired}
+                      onChange={(value) => setIsBiometricsRequired(value)}
+                      options={isBiometricsRequiredData}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
                         }),
 
                         placeholder: (baseStyles, state) => ({
@@ -495,7 +561,7 @@ function AdminVisaOnArrivalRate() {
                   Nigeria?
                 </label>
                 <div className="flex items-center border-[0.3px] border-gray-400 h-[47px] px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-full text-shuttlelaneBlack text-sm relative z-[80]">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative">
                     <Select
                       value={isVisaRequiredModified}
                       onChange={(value) => setIsVisaRequiredModified(value)}
@@ -509,7 +575,54 @@ function AdminVisaOnArrivalRate() {
                           borderWidth: state.isFocused ? "0" : "0",
                           backgroundColor: "transparent",
                           position: "relative",
-                          zIndex: 80,
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select Yes or No"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full flex flex-col">
+                <label
+                  htmlFor="isBiometricsRequiredModified"
+                  className="text-sm"
+                >
+                  Is biometrics required for citizens of this country to visit
+                  Nigeria?
+                </label>
+                <div className="flex items-center border-[0.3px] border-gray-400 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative">
+                    <Select
+                      value={isBiometricsRequiredModified}
+                      onChange={(value) =>
+                        setIsBiometricsRequiredModified(value)
+                      }
+                      options={isBiometricsRequiredData}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
                         }),
 
                         placeholder: (baseStyles, state) => ({
@@ -573,7 +686,7 @@ function AdminVisaOnArrivalRate() {
         </div>
       </Modal>
 
-      <div className="flex gap-x-5 flex-wrap gap-y-3 items-end pb-3 border-b-[.5px] border-b-gray-200">
+      <div className="flex gap-x-5 flex-wrap gap-y-3 items-end pb-3 border-b-[1.3px] lg:border-b-[.5px] border-b-gray-200">
         <div className="">
           <p className="text-lg font-semibold">Visa On Arrival Rates</p>
           <small className="">
@@ -586,7 +699,7 @@ function AdminVisaOnArrivalRate() {
         {/* Modify base fees button */}
         <button
           onClick={() => setIsModifyBaseFeesModalOpen(true)}
-          className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+          className="w-auto border-dashed border-[.8px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
         >
           <FaHandHoldingDollar size={16} />
           <span className="text-xs">Modify Base Fees</span>
@@ -595,7 +708,7 @@ function AdminVisaOnArrivalRate() {
         {/* Add country button */}
         <button
           onClick={() => setIsAddCountryModalOpen(true)}
-          className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+          className="w-auto border-dashed border-[.8px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
         >
           <AiOutlinePlus size={16} />
           <span className="text-xs">Add Country</span>
@@ -688,7 +801,9 @@ function AdminVisaOnArrivalRate() {
                   isLoading && "text-gray-400"
                 }`}
               >
-                ${voaBaseFees?.biometricFee}
+                {visaOnArrivalRate?.isBiometricsRequired === true
+                  ? `$${voaBaseFees?.biometricFee}`
+                  : `N/A`}
               </p>
               <p
                 className={`w-[200px] lg:w-[14.2%] text-xs ${

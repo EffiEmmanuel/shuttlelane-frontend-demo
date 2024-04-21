@@ -542,7 +542,7 @@ function AdminDashboardHomePage() {
               <>
                 {currentBooking?.bookingType === "Airport" && (
                   <div className="flex items-center justify-center w-full pb-20">
-                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1.3px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
                       <span className="text-sm text-slate-400">
                         Airport Transfer Booking
@@ -823,7 +823,7 @@ function AdminDashboardHomePage() {
                 )}
                 {currentBooking?.bookingType === "Car" && (
                   <div className="flex items-center justify-center w-full pb-20">
-                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1.3px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
                       <span className="text-sm text-slate-400">
                         Car Rental Booking
@@ -1025,7 +1025,7 @@ function AdminDashboardHomePage() {
                 )}
                 {currentBooking?.bookingType === "Priority" && (
                   <div className="flex items-center justify-center w-full pb-20">
-                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1.3px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
                       <span className="text-sm text-slate-400">
                         Priority Pass Booking
@@ -1302,7 +1302,7 @@ function AdminDashboardHomePage() {
                 )}
                 {currentBooking?.bookingType === "Visa" && (
                   <div className="flex items-center justify-center w-full pb-20">
-                    <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
+                    <div className="w-full mt-10 lg:p-10 p-7 border-[1.3px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
                       <span className="text-sm text-slate-400">
                         Visa On Arrival Booking
@@ -2021,7 +2021,7 @@ function AdminDashboardHomePage() {
 
                     {/* Bar Chart */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">Booking Statistics</p>
@@ -2045,7 +2045,7 @@ function AdminDashboardHomePage() {
 
                     {/* Unassigned Bookings */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2190,7 +2190,7 @@ function AdminDashboardHomePage() {
 
                     {/* Upcoming Bookings */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2309,7 +2309,7 @@ function AdminDashboardHomePage() {
                   <div className="xl:w-[30%] w-full">
                     {/* Users */}
                     <div className="w-full">
-                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                      <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2326,7 +2326,7 @@ function AdminDashboardHomePage() {
                         </div>
 
                         {/* Searchbar */}
-                        {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                        {/* <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                           <BiSearch
                             size={16}
                             className="text-gray-400 rotate-90"
@@ -2365,7 +2365,7 @@ function AdminDashboardHomePage() {
 
                     {/* Drivers */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                      <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2382,7 +2382,7 @@ function AdminDashboardHomePage() {
                         </div>
 
                         {/* Searchbar */}
-                        {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                        {/* <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                           <BiSearch
                             size={16}
                             className="text-gray-400 rotate-90"
@@ -2433,7 +2433,7 @@ function AdminDashboardHomePage() {
 
                     {/* Vendors */}
                     <div className="mt-11 w-full">
-                      <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
+                      <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-[436px] max-h-[436px] overflow-y-scroll shuttlelaneScrollbar shuttlelaneScrollbarHoriz">
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
@@ -2451,7 +2451,7 @@ function AdminDashboardHomePage() {
 
                         {/* Searchbar */}
                         {/* {!isLoading && vendors && (
-                          <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
+                          <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2">
                             <BiSearch
                               size={16}
                               className="text-gray-400 rotate-90"

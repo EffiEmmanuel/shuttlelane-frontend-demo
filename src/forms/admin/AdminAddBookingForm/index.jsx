@@ -8,6 +8,8 @@ import { IoCarSportOutline } from "react-icons/io5";
 import AdminAirportTransferForm from "./AdminAirportTransferForm";
 import AdminCarRentalForm from "./AdminCarRentalForm";
 import AdminPriorityPassForm from "./AdminPriorityPassForm";
+import { FaPassport } from "react-icons/fa6";
+import AdminVisaOnArrivalForm from "./AdminVisaOnArrivalForm";
 
 function AdminAddBookingForm() {
   // Service options states
@@ -97,26 +99,24 @@ function AdminAddBookingForm() {
           <MdOutlineLuggage size={18} />
           <p className="text-sm">Priority Pass</p>
         </button>
-        {/* <button
-          //   onClick={() => toggleService("visaOnArrival")}
-          onClick={() => {
-            // toast.info("This service is under construction");
-          }}
+        <button
+          onClick={() => toggleService("visaOnArrival")}
           className={`flex items-center gap-x-[5px] h-[30px] min-w-[60px] px-5 rounded-full ${
             isVisaOnArrival
               ? "text-white bg-shuttlelanePurple border-white"
               : "text-shuttlelaneBlack bg-transparent border-shuttlelaneBlack "
           } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
         >
-          <BsAirplane size={16} />
+          <FaPassport size={16} />
           <p className="text-sm">Visa On Arrival</p>
-        </button> */}
+        </button>
       </div>
 
       <div className="lg:w-2/4 w-full">
         {isAirportTransfer && <AdminAirportTransferForm />}
         {isCarRental && <AdminCarRentalForm />}
         {isPriorityPass && <AdminPriorityPassForm />}
+        {isVisaOnArrival && <AdminVisaOnArrivalForm />}
       </div>
     </div>
   );

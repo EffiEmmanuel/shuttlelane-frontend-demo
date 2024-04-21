@@ -12,6 +12,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { BsArrowLeft } from "react-icons/bs";
 
 function VendorSignupStepTwo({
   isStepTwo,
@@ -120,6 +121,13 @@ function VendorSignupStepTwo({
       {!isUpdateVendorAccount && (
         <div className="flex flex-row items-center justify-between">
           <div>
+            <Link
+              to="/"
+              className="mb-5 flex flex-row items-center gap-x-2 text-shuttlelaneBlack hover:underline no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack"
+            >
+              <BsArrowLeft size={14} className="text-shuttlelaneBlack" />
+              <span className="text-xs">Go back to Homepage</span>
+            </Link>
             <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
               Contact Details
             </h2>

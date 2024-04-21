@@ -124,7 +124,10 @@ export default function Pay(props) {
     };
 
     await axios
-      .post("http://localhost:3001/api/v1/payments/stripe/create-intent", body)
+      .post(
+        "https://www.shuttlelane.com/api/v1/payments/stripe/create-intent",
+        body
+      )
       .then((res) => {
         console.log("RESPONSE FROM FRONTEND:", res.data);
         const result = stripe
@@ -214,7 +217,7 @@ export default function Pay(props) {
           bookingDetails: {
             ...bookingDetails,
             title: props?.selectedTitle,
-            fullName: props?.fullName,
+            fullName: `${props?.firstName} ${props?.lastName}`,
             mobile: props?.phoneNumber,
             email: props?.email,
             flightNumber: props?.flightNumber,
@@ -252,6 +255,17 @@ export default function Pay(props) {
 
   useEffect(() => {
     if (createBookingStatusCode == 201) {
+      // If it is a car rental booking, do this (Car rental bookings do not require payment)
+      if (bookingType === "Car") {
+        toast.success(
+          "Thank you for booking with Shuttlelane. A member of our team will be in touch with you soon."
+        );
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+        return;
+      }
+
       // Handle Payment
       if (isFlutterwave) {
         // Pay with flutterwave here
@@ -280,172 +294,192 @@ export default function Pay(props) {
   return (
     <div className="bg-white p-7 mt-4 relative">
       {/* Render PayPal Component Here */}
-
       <ToastContainer />
       {props?.isPaymentDisabled && (
         <div className="flex text-shuttlelaneBlack flex-col gap-y-1 items-center justify-center p-3 absolute w-full h-full bg-white bg-opacity-20 backdrop-blur-sm top-0 left-0 z-10">
           <MdOutlineLock size={24} className="text-green-500" />
-          <p className="lg:max-w-md text-center font-semibold">
-            Payment is locked. Please fill in all required fields to unlock
-            payment.
-          </p>
+          {bookingType !== "Car" ? (
+            <p className="lg:max-w-md text-center font-semibold">
+              Payment is locked. Please fill in all required fields to unlock
+              payment.
+            </p>
+          ) : (
+            <p className="lg:max-w-md text-center font-semibold">
+              Please fill in all required fields to proceed.
+            </p>
+          )}
         </div>
       )}
       <div className="flex flex-col">
-        <p className="text-xl font-semibold">Pay</p>
-        <p className="text-sm -mt-1">
-          Choose how to pay from our different payment providers
-        </p>
+        {bookingType !== "Car" ? (
+          <>
+            <p className="text-xl font-semibold">Select Payment Method</p>
+            <p className="text-sm -mt-1">
+              Choose how to pay from our different payment providers
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-xl font-semibold">Make Booking</p>
+            <p className="text-sm -mt-1">
+              A member of our team will reach out to you with further
+              instructions
+            </p>
+          </>
+        )}
       </div>
-
       {bookingType !== "Visa" ? (
-        <div
-          className={`mt-5 flex flex-row ${
-            !userCurrency ||
-            userCurrency == null ||
-            userCurrency?.currencyLabel == "Naira"
-              ? "lg:justify-center"
-              : ""
-          }  justify-center items-center gap-y-0 gap-5 flex-wrap`}
-        >
-          {!userCurrency ||
-          userCurrency == null ||
-          userCurrency?.currencyLabel == "Naira" ? (
-            <>
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isFlutterwave && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(true);
-                  setIsPaystack(false);
-                  setIsPaypal(false);
-                  setIsStripe(false);
-                }}
-              >
-                <img
-                  src={flutterwave}
-                  alt=""
-                  className="object-contain lg:w-[140px] w-[140px]"
-                />
-              </button>
+        <>
+          {bookingType !== "Car" ? (
+            <div
+              className={`mt-5 flex flex-row ${
+                !userCurrency ||
+                userCurrency == null ||
+                userCurrency?.currencyLabel == "Naira"
+                  ? "lg:justify-center"
+                  : ""
+              }  justify-center items-center gap-y-0 gap-5 flex-wrap`}
+            >
+              {!userCurrency ||
+              userCurrency == null ||
+              userCurrency?.currencyLabel == "Naira" ? (
+                <>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isFlutterwave && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(true);
+                      setIsPaystack(false);
+                      setIsPaypal(false);
+                      setIsStripe(false);
+                    }}
+                  >
+                    <img
+                      src={flutterwave}
+                      alt=""
+                      className="object-contain lg:w-[140px] w-[140px]"
+                    />
+                  </button>
 
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isPaystack && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(false);
-                  setIsPaystack(true);
-                  setIsPaypal(false);
-                  setIsStripe(false);
-                }}
-              >
-                <img
-                  src={"https://www.cdnlogo.com/logos/p/27/paystack.svg"}
-                  alt=""
-                  className="object-contain lg:w-[140px] w-[140px]"
-                />
-              </button>
-            </>
-          ) : userCurrency?.currencyLabel == "Dollars" ? (
-            <>
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isPaypal && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(false);
-                  setIsPaystack(false);
-                  setIsPaypal(true);
-                  setIsStripe(false);
-                }}
-              >
-                <img
-                  src={paypal}
-                  alt=""
-                  className="object-contain lg:w-[90px] w-[90px]"
-                />
-              </button>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isPaystack && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(false);
+                      setIsPaystack(true);
+                      setIsPaypal(false);
+                      setIsStripe(false);
+                    }}
+                  >
+                    <img
+                      src={"https://www.cdnlogo.com/logos/p/27/paystack.svg"}
+                      alt=""
+                      className="object-contain lg:w-[140px] w-[140px]"
+                    />
+                  </button>
+                </>
+              ) : userCurrency?.currencyLabel == "Dollars" ? (
+                <>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isPaypal && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(false);
+                      setIsPaystack(false);
+                      setIsPaypal(true);
+                      setIsStripe(false);
+                    }}
+                  >
+                    <img
+                      src={paypal}
+                      alt=""
+                      className="object-contain lg:w-[90px] w-[90px]"
+                    />
+                  </button>
 
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isStripe && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(false);
-                  setIsPaystack(false);
-                  setIsPaypal(false);
-                  setIsStripe(true);
-                }}
-              >
-                <img
-                  src={stripe}
-                  alt=""
-                  className="object-contain lg:w-[80px] w-[80px]"
-                />
-              </button>
-            </>
-          ) : userCurrency?.currencyLabel == "Pounds" ? (
-            <>
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isStripe && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(false);
-                  setIsPaystack(false);
-                  setIsPaypal(false);
-                  setIsStripe(true);
-                }}
-              >
-                <img
-                  src={stripe}
-                  alt=""
-                  className="object-contain lg:w-[80px] w-[80px]"
-                />
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isStripe && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(false);
-                  setIsPaystack(false);
-                  setIsPaypal(false);
-                  setIsStripe(true);
-                }}
-              >
-                <img
-                  src={stripe}
-                  alt=""
-                  className="object-contain lg:w-[80px] w-[80px]"
-                />
-              </button>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isStripe && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(false);
+                      setIsPaystack(false);
+                      setIsPaypal(false);
+                      setIsStripe(true);
+                    }}
+                  >
+                    <img
+                      src={stripe}
+                      alt=""
+                      className="object-contain lg:w-[80px] w-[80px]"
+                    />
+                  </button>
+                </>
+              ) : userCurrency?.currencyLabel == "Pounds" ? (
+                <>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isStripe && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(false);
+                      setIsPaystack(false);
+                      setIsPaypal(false);
+                      setIsStripe(true);
+                    }}
+                  >
+                    <img
+                      src={stripe}
+                      alt=""
+                      className="object-contain lg:w-[80px] w-[80px]"
+                    />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isStripe && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(false);
+                      setIsPaystack(false);
+                      setIsPaypal(false);
+                      setIsStripe(true);
+                    }}
+                  >
+                    <img
+                      src={stripe}
+                      alt=""
+                      className="object-contain lg:w-[80px] w-[80px]"
+                    />
+                  </button>
 
-              <button
-                className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                  isFlutterwave && "border-shuttlelanePurple border-[2px]"
-                }`}
-                onClick={(e) => {
-                  setIsFlutterwave(true);
-                  setIsPaystack(false);
-                  setIsPaypal(false);
-                  setIsStripe(false);
-                }}
-              >
-                <img
-                  src={flutterwave}
-                  alt=""
-                  className="object-contain lg:w-[140px] w-[140px]"
-                />
-              </button>
-            </>
-          )}
-        </div>
+                  <button
+                    className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                      isFlutterwave && "border-shuttlelanePurple border-[2px]"
+                    }`}
+                    onClick={(e) => {
+                      setIsFlutterwave(true);
+                      setIsPaystack(false);
+                      setIsPaypal(false);
+                      setIsStripe(false);
+                    }}
+                  >
+                    <img
+                      src={flutterwave}
+                      alt=""
+                      className="object-contain lg:w-[140px] w-[140px]"
+                    />
+                  </button>
+                </>
+              )}
+            </div>
+          ) : null}
+        </>
       ) : (
         <div className="mt-5 flex flex-row lg:justify-center justify-center items-center gap-y-0 gap-5 flex-wrap">
           <button
@@ -486,30 +520,45 @@ export default function Pay(props) {
         </div>
       )}
 
-      <div className="flex justify-center mt-10">
-        {(isFlutterwave || isPaystack || isPaypal || isStripe) && (
-          <>
-            {!isPayPalActive && (
-              <button
-                onClick={(e) => handlePayment(e)}
-                className={`bg-green-500 lg:w-[40%] w-full text-white animate-pulse text-sm rounded-md p-2 flex justify-center items-center`}
-              >
-                {isLoading ? (
-                  <ImSpinner2 size={20} className="text-white animate-spin" />
-                ) : (
-                  <span>Book Now</span>
-                )}
-              </button>
+      {bookingType !== "Car" ? (
+        <div className="flex justify-center mt-10">
+          {(isFlutterwave || isPaystack || isPaypal || isStripe) && (
+            <>
+              {!isPayPalActive && (
+                <button
+                  onClick={(e) => handlePayment(e)}
+                  className={`bg-green-500 lg:w-[40%] w-full text-white animate-pulse text-sm rounded-md p-2 flex justify-center items-center`}
+                >
+                  {isLoading ? (
+                    <ImSpinner2 size={20} className="text-white animate-spin" />
+                  ) : (
+                    <span>Book Now</span>
+                  )}
+                </button>
+              )}
+              {isPayPalActive && (
+                <PayPal
+                  justCreatedBooking={justCreatedBooking}
+                  bookingTotal={bookingTotal}
+                />
+              )}
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={(e) => handlePayment(e)}
+            className={`bg-green-500 lg:w-[40%] w-full text-white animate-pulse text-sm rounded-md p-2 flex justify-center items-center`}
+          >
+            {isLoading ? (
+              <ImSpinner2 size={20} className="text-white animate-spin" />
+            ) : (
+              <span>Book Now</span>
             )}
-            {isPayPalActive && (
-              <PayPal
-                justCreatedBooking={justCreatedBooking}
-                bookingTotal={bookingTotal}
-              />
-            )}
-          </>
-        )}
-      </div>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

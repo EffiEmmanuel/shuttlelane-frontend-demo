@@ -67,7 +67,8 @@ export default function CarRentalBookingSummary() {
 
   // Personal Details Form Fields
   const [selectedTitle, setSelectedTitle] = useState();
-  const [fullName, setFullName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();
   // Edit booking form fields
@@ -495,8 +496,10 @@ export default function CarRentalBookingSummary() {
             <PersonalDetailsForm
               selectedTitle={selectedTitle}
               setSelectedTitle={setSelectedTitle}
-              fullName={fullName}
-              setFullName={setFullName}
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
               phoneNumber={phoneNumber}
               setPhoneNumber={setPhoneNumber}
               email={email}
@@ -513,14 +516,16 @@ export default function CarRentalBookingSummary() {
               !bookingDetails?.pickupDate ||
               !bookingDetails?.pickupTime ||
               !selectedTitle ||
-              !fullName ||
+              !firstName ||
+              !lastName ||
               !phoneNumber ||
               !email
                 ? true
                 : false
             }
             selectedTitle={selectedTitle}
-            fullName={fullName}
+            firstName={firstName}
+            lastName={lastName}
             phoneNumber={phoneNumber}
             email={email}
             bookingTotal={bookingTotal}

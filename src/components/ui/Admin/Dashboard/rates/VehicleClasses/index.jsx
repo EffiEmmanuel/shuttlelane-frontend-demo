@@ -630,7 +630,7 @@ function AdminVehicleClassesRate() {
         </div>
       </Modal>
 
-      <div className="flex gap-x-5 flex-wrap gap-y-3 items-end pb-3 border-b-[.5px] border-b-gray-200">
+      <div className="flex gap-x-5 flex-wrap gap-y-3 items-end pb-3 border-b-[1.3px] lg:border-b-[.5px] border-b-gray-200">
         <div className="">
           <p className="text-lg font-semibold">Vehicle Classes Rates</p>
           <small className="">
@@ -643,7 +643,7 @@ function AdminVehicleClassesRate() {
         {/* Add country button */}
         <button
           onClick={() => setIsAddVehicleClassModalOpen(true)}
-          className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+          className="w-auto border-dashed border-[.8px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
         >
           <AiOutlinePlus size={16} />
           <span className="text-xs">Add Vehicle Class</span>
@@ -664,7 +664,7 @@ function AdminVehicleClassesRate() {
                   <BiSolidCity size={16} className="text-gray-500" />
                 </div>
 
-                <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[0]">
+                <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[90]">
                   <Select
                     value={selectedCity}
                     onChange={(value) => {
@@ -680,7 +680,6 @@ function AdminVehicleClassesRate() {
                         borderWidth: state.isFocused ? "0" : "0",
                         backgroundColor: "transparent",
                         position: "relative",
-                        zIndex: 0,
                       }),
 
                       placeholder: (baseStyles, state) => ({

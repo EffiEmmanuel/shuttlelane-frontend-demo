@@ -202,7 +202,7 @@ function PartnershipPage() {
               <div className="py-4 px-6 flex flex-col gap-y-2">
                 <p className="text-lg font-semibold">Drive For Shuttlelane</p>
                 <Link
-                  to="/driver/signup"
+                  to="/partnership/drive-for-shuttlelane"
                   className="h-12 p-3 bg-shuttlelanePurple hover:text-shuttlelanePurple hover:border-[.5px] hover:border-shuttlelanePurple transition-all hover:bg-transparent visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-full inline-block flex justify-center items-center "
                 >
                   Sign Up

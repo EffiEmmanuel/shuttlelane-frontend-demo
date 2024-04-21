@@ -9,8 +9,10 @@ import "react-phone-input-2/lib/style.css";
 export default function PersonalDetailsForm({
   selectedTitle,
   setSelectedTitle,
-  fullName,
-  setFullName,
+  firstName,
+  setFirstName,
+  lastName,
+  setLastName,
   phoneNumber,
   setPhoneNumber,
   email,
@@ -36,7 +38,7 @@ export default function PersonalDetailsForm({
     <form className="my-5 w-full flex flex-col gap-y-4">
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
-          <label htmlFor="fullName" className="text-xs text-gray-500">
+          <label htmlFor="title" className="text-xs text-gray-500">
             Title
           </label>
 
@@ -76,22 +78,36 @@ export default function PersonalDetailsForm({
             />
           </div>
         </div>
-
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
-          <label htmlFor="fullName" className="text-xs text-gray-500">
-            Full Name
+          <label htmlFor="firstName" className="text-xs text-gray-500">
+            First Name
           </label>
           <input
             type="text"
-            name="fullName"
-            placeholder="John Doe"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            name="firstName"
+            placeholder="John"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
           />
         </div>
       </div>
+
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
+        <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
+          <label htmlFor="lastName" className="text-xs text-gray-500">
+            Last Name
+          </label>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Doe"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+          />
+        </div>
+
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="phoneNumber" className="text-xs text-gray-500">
             Phone Number
@@ -108,7 +124,9 @@ export default function PersonalDetailsForm({
             buttonClass="bg-transparent"
           />
         </div>
+      </div>
 
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="email" className="text-xs text-gray-500">
             Email Address
@@ -122,10 +140,8 @@ export default function PersonalDetailsForm({
             className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
           />
         </div>
-      </div>
 
-      {hasFlightDetails && (
-        <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
+        {hasFlightDetails && (
           <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
             <label htmlFor="flightNumber" className="text-xs text-gray-500">
               Flight Number
@@ -140,7 +156,11 @@ export default function PersonalDetailsForm({
               className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
             />
           </div>
+        )}
+      </div>
 
+      {hasFlightDetails && (
+        <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
           <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
             <label htmlFor="airline" className="text-xs text-gray-500">
               Airline

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { validateFields } from "../../../../util";
 import { ToastContainer, toast } from "react-toastify";
 import { updateDriver } from "../../../../redux/slices/driverSlice";
+import { Link } from "react-router-dom";
+import { BsArrowLeft } from "react-icons/bs";
 
 function DriverSignupStepFive({
   isStepFive,
@@ -75,6 +77,13 @@ function DriverSignupStepFive({
       <ToastContainer />
       {!isUpdateDriverAccount && (
         <>
+          <Link
+            to="/"
+            className="mb-5 flex flex-row items-center gap-x-2 text-shuttlelaneBlack hover:underline no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack"
+          >
+            <BsArrowLeft size={14} className="text-shuttlelaneBlack" />
+            <span className="text-xs">Go back to Homepage</span>
+          </Link>
           <div className="flex justify-between items-center">
             <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
               Additional Information

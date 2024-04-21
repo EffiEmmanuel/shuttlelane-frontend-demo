@@ -42,8 +42,9 @@ import GeneralInformationForm from "../../../../forms/VisaOnArrival/GeneralInfor
 import BiodataForm from "../../../../forms/VisaOnArrival/BioDataForm";
 import TravelInformationForm from "../../../../forms/VisaOnArrival/TravelInformationForm";
 import ContactInformationForm from "../../../../forms/VisaOnArrival/ContactInformationForm";
+import { createBooking } from "../../../../redux/slices/adminSlice";
 
-export default function VisaOnArrivalBookingSummary() {
+export default function VisaOnArrivalBookingSummary(props) {
   // Fetch states from redux slice
   const {
     isLoading,
@@ -67,7 +68,6 @@ export default function VisaOnArrivalBookingSummary() {
   const [visaClass, setVisaClass] = useState();
   const [passportType, setPassportType] = useState();
   // Biodata Form Fields
-  const [passportPhotograph, setPassportPhotograph] = useState(null);
   const [title, setTitle] = useState();
   const [surname, setSurname] = useState();
   const [firstName, setFirstName] = useState();
@@ -84,7 +84,6 @@ export default function VisaOnArrivalBookingSummary() {
   const [airline, setAirline] = useState();
   const [flightNumber, setFlightNumber] = useState();
   const [countryOfDeparture, setCountryOfDeparture] = useState();
-  const [departureDate, setDepartureDate] = useState();
   const [arrivalDate, setArrivalDate] = useState();
   const [portOfEntry, setPortOfEntry] = useState();
   const [durationOfStay, setDurationOfStay] = useState(1);
@@ -186,7 +185,6 @@ export default function VisaOnArrivalBookingSummary() {
           visaClass,
           passportType,
           nationality,
-          passportPhotograph,
           title,
           surname,
           firstName,
@@ -202,7 +200,6 @@ export default function VisaOnArrivalBookingSummary() {
           airline,
           flightNumber,
           countryOfDeparture,
-          departureDate,
           arrivalDate,
           portOfEntry,
           durationOfStay,
@@ -220,7 +217,6 @@ export default function VisaOnArrivalBookingSummary() {
     visaClass,
     passportType,
     nationality,
-    passportPhotograph,
     title,
     surname,
     firstName,
@@ -235,7 +231,6 @@ export default function VisaOnArrivalBookingSummary() {
     airline,
     flightNumber,
     countryOfDeparture,
-    departureDate,
     arrivalDate,
     portOfEntry,
     durationOfStay,
@@ -248,11 +243,33 @@ export default function VisaOnArrivalBookingSummary() {
     contactPostalCode,
   ]);
 
+  // FOR ADMIN DASHBOARD
+  async function handleCreateBooking() {
+    console.log("BOOKING TOTAL:", bookingTotal);
+    console.log("BOOKING CURRENCY:", userCurrency);
+
+    dispatch(
+      createBooking({
+        bookingType: "Visa",
+        bookingDetails: {
+          ...bookingDetails,
+          bookingTotal: bookingTotal,
+        },
+      })
+    );
+  }
+
   return (
     <div className="">
       <ToastContainer />
-      <div className="mt-5 w-full flex lg:flex-row flex-col gap-x-4">
-        <div className="lg:w-[65%] w-full">
+      <div
+        className={`mt-5 w-full ${
+          !props?.isAdminForm && "flex lg:flex-row flex-col gap-x-4"
+        }`}
+      >
+        <div
+          className={`${!props?.isAdminForm ? "lg:w-[65%] w-full" : "w-full"}`}
+        >
           {/* General Information */}
           <div className="bg-white p-7 transition-all h-auto">
             <button
@@ -335,7 +352,6 @@ export default function VisaOnArrivalBookingSummary() {
                   <FaRegCheckCircle
                     size={20}
                     className={`${
-                      passportPhotograph &&
                       title &&
                       surname &&
                       firstName &&
@@ -369,8 +385,6 @@ export default function VisaOnArrivalBookingSummary() {
               } overflow-y-hidden`}
             >
               <BiodataForm
-                passportPhotograph={passportPhotograph}
-                setPassportPhotograph={setPassportPhotograph}
                 title={title}
                 setTitle={setTitle}
                 surname={surname}
@@ -404,7 +418,6 @@ export default function VisaOnArrivalBookingSummary() {
             <button
               onClick={(e) => {
                 if (
-                  !passportPhotograph ||
                   !title ||
                   !surname ||
                   !firstName ||
@@ -443,7 +456,6 @@ export default function VisaOnArrivalBookingSummary() {
                       airline &&
                       flightNumber &&
                       countryOfDeparture &&
-                      departureDate &&
                       arrivalDate &&
                       portOfEntry &&
                       durationOfStay
@@ -479,8 +491,6 @@ export default function VisaOnArrivalBookingSummary() {
                 setFlightNumber={setFlightNumber}
                 countryOfDeparture={countryOfDeparture}
                 setCountryOfDeparture={setCountryOfDeparture}
-                departureDate={departureDate}
-                setDepartureDate={setDepartureDate}
                 arrivalDate={arrivalDate}
                 setArrivalDate={setArrivalDate}
                 portOfEntry={portOfEntry}
@@ -502,7 +512,6 @@ export default function VisaOnArrivalBookingSummary() {
                   !airline ||
                   !flightNumber ||
                   !countryOfDeparture ||
-                  !departureDate ||
                   !arrivalDate ||
                   !portOfEntry ||
                   !durationOfStay
@@ -578,121 +587,142 @@ export default function VisaOnArrivalBookingSummary() {
             </div>
           </div>
 
-          <Pay
-            isPaymentDisabled={
-              !visaClass ||
-              !passportType ||
-              !nationality ||
-              !passportPhotograph ||
-              !title ||
-              !surname ||
-              !firstName ||
-              !middleName ||
-              !email ||
-              !dateOfBirth ||
-              !placeOfBirth ||
-              !gender ||
-              !maritalStatus ||
-              !passportNumber ||
-              !passportExpiryDate ||
-              !purposeOfJourney ||
-              !airline ||
-              !flightNumber ||
-              !countryOfDeparture ||
-              !departureDate ||
-              !arrivalDate ||
-              !portOfEntry ||
-              !durationOfStay ||
-              !contactName ||
-              !contactNumber ||
-              !contactAddress ||
-              !contactCity ||
-              !contactState ||
-              !contactEmail ||
-              !contactPostalCode
-                ? true
-                : false
-            }
-            isVisaOnArrival={true}
-            bookingTotal={bookingTotal}
-          />
+          {!props?.isAdminForm && (
+            <Pay
+              isPaymentDisabled={
+                !visaClass ||
+                !passportType ||
+                !nationality ||
+                !title ||
+                !surname ||
+                !firstName ||
+                !middleName ||
+                !email ||
+                !dateOfBirth ||
+                !placeOfBirth ||
+                !gender ||
+                !maritalStatus ||
+                !passportNumber ||
+                !passportExpiryDate ||
+                !purposeOfJourney ||
+                !airline ||
+                !flightNumber ||
+                !countryOfDeparture ||
+                !arrivalDate ||
+                !portOfEntry ||
+                !durationOfStay ||
+                !contactName ||
+                !contactNumber ||
+                !contactAddress ||
+                !contactCity ||
+                !contactState ||
+                !contactEmail ||
+                !contactPostalCode
+                  ? true
+                  : false
+              }
+              isVisaOnArrival={true}
+              bookingTotal={bookingTotal}
+            />
+          )}
         </div>
-        <div className="lg:w-[35%] w-full mt-10 lg:mt-0">
-          <div className="bg-white p-7 transition-all">
-            <div className="flex items-center justify-between">
-              <p className="text-xl font-semibold">Booking Summary</p>
-              <span className="text-xs">Visa On Arrival</span>
-            </div>
-            <div className="mt-10">
-              <div className="flex flex-col gap-y-2">
-                {isLoading && (
-                  <div className="flex items-center justify-center">
-                    <ImSpinner2
-                      size={24}
-                      className="text-shuttlelanePurple animate-spin"
-                    />
+        {!props?.isAdminForm && (
+          <div className="lg:w-[35%] w-full mt-10 lg:mt-0">
+            <div className="bg-white p-7 transition-all">
+              <div className="flex items-center justify-between">
+                <p className="text-xl font-semibold">Booking Summary</p>
+                <span className="text-xs">Visa On Arrival</span>
+              </div>
+              <div className="mt-10">
+                <div className="flex flex-col gap-y-2">
+                  {isLoading && (
+                    <div className="flex items-center justify-center">
+                      <ImSpinner2
+                        size={24}
+                        className="text-shuttlelanePurple animate-spin"
+                      />
+                    </div>
+                  )}
+
+                  {!isLoading && (
+                    <>
+                      <p>
+                        <span className="font-semibold">Visa Fee:</span> $
+                        {currentVisaFee}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Transaction Fee:</span>{" "}
+                        ${currentTransactionFee}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Processing Fee:</span> $
+                        {currentProcessingFee}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Biometric Fee:</span>{" "}
+                        {currentBiometricFee
+                          ? `$${currentBiometricFee}`
+                          : `N/A`}
+                      </p>
+                      <p>
+                        <span className="font-semibold">VAT (7.5%): </span> $
+                        {currentVatFee}
+                      </p>
+                    </>
+                  )}
+
+                  <div className="h-[.3px] w-full bg-gray-300"></div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-y-1">
+                      <span className="font-medium text-xs">Total price</span>
+                      <span className="text-gray-400 text-xs">
+                        Taxes & fees included
+                      </span>
+                    </div>
+
+                    <h3 className="text-shuttlelanePurple font-bold">
+                      {isLoading && (
+                        <div className="flex items-center justify-center">
+                          <ImSpinner2
+                            size={24}
+                            className="text-shuttlelanePurple animate-spin"
+                          />
+                        </div>
+                      )}
+
+                      {!isLoading && (
+                        <>
+                          $
+                          {isNaN(bookingTotal)
+                            ? "0.00"
+                            : Intl.NumberFormat("en-US", {}).format(
+                                bookingTotal
+                              )}
+                        </>
+                      )}
+                    </h3>
                   </div>
-                )}
-
-                {!isLoading && (
-                  <>
-                    <p>
-                      <span className="font-semibold">Visa Fee:</span> $
-                      {currentVisaFee}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Transaction Fee:</span> $
-                      {currentTransactionFee}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Processing Fee:</span> $
-                      {currentProcessingFee}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Biometric Fee:</span> $
-                      {currentBiometricFee}
-                    </p>
-                    <p>
-                      <span className="font-semibold">VAT (7.5%): </span> $
-                      {currentVatFee}
-                    </p>
-                  </>
-                )}
-
-                <div className="h-[.3px] w-full bg-gray-300"></div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col gap-y-1">
-                    <span className="font-medium text-xs">Total price</span>
-                    <span className="text-gray-400 text-xs">
-                      Taxes & fees included
-                    </span>
-                  </div>
-
-                  <h3 className="text-shuttlelanePurple font-bold">
-                    {isLoading && (
-                      <div className="flex items-center justify-center">
-                        <ImSpinner2
-                          size={24}
-                          className="text-shuttlelanePurple animate-spin"
-                        />
-                      </div>
-                    )}
-
-                    {!isLoading && (
-                      <>
-                        $
-                        {isNaN(bookingTotal)
-                          ? "0.00"
-                          : Intl.NumberFormat("en-US", {}).format(bookingTotal)}
-                      </>
-                    )}
-                  </h3>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {props?.isAdminForm && (
+          <div className="w-full flex flex-col gap-y-1">
+            <button
+              type="submit"
+              className="bg-shuttlelanePurple disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 disabled:cursor-not-allowed text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-auto justify-center"
+              onClick={(e) => handleCreateBooking()}
+            >
+              {!isLoading && <span className="text-sm">Create Booking</span>}
+              {isLoading && (
+                <ImSpinner2 size={20} className="animate-spin text-white" />
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

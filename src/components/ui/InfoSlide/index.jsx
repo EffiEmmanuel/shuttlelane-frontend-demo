@@ -1,5 +1,6 @@
 import React from "react";
-import { Slide } from "react-awesome-reveal";
+import { Slide } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
 import { FiThumbsUp } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
 import { TbTie } from "react-icons/tb";
@@ -19,7 +20,7 @@ export default function InfoSlide() {
             <small className="text-xs">
               4.9 / 5 average{" "}
               <Link
-                to="https://trustpilot.com"
+                to="https://www.google.com/search?q=shuttlelane+limited&sca_esv=635483f0705dd420&ei=3OQUZqFe2beFsg-vojc&udm=&oq=shuttlelane+lim&gs_lp=Egxnd3Mtd2l6LXNlcnAiD3NodXR0bGVsYW5lIGxpbSoCCAAyBRAhGKABMgUQIRigATIFECEYoAEyBRAhGKABSOFiUABY405wBHgAkAEAmAH0AaAB6RyqAQYwLjEyLje4AQHIAQD4AQGYAhegArQdwgIIEAAYgAQYsQPCAgsQABiABBixAxiDAcICBBAAGAPCAgUQABiABMICChAAGIAEGIoFGEPCAgcQABiABBgTwgIJEAAYgAQYExgKwgIIEAAYHhgTGArCAgYQABgeGBPCAgoQABgWGB4YExgKmAMAkgcGNC4xMC45oAfISA&sclient=gws-wiz-serp#lrd=0x103b8c448e2f97c3:0xc95f24c00955aecc,1"
                 className="text-white text-xs underline visited:text-white"
               >
                 50 reviews
@@ -72,7 +73,7 @@ export default function InfoSlide() {
               <small className="text-xs">
                 4.9 / 5 average{" "}
                 <Link
-                  to="https://trustpilot.com"
+                  to="https://www.google.com/search?q=shuttlelane+limited&sca_esv=635483f0705dd420&ei=3OQUZqFe2beFsg-vojc&udm=&oq=shuttlelane+lim&gs_lp=Egxnd3Mtd2l6LXNlcnAiD3NodXR0bGVsYW5lIGxpbSoCCAAyBRAhGKABMgUQIRigATIFECEYoAEyBRAhGKABSOFiUABY405wBHgAkAEAmAH0AaAB6RyqAQYwLjEyLje4AQHIAQD4AQGYAhegArQdwgIIEAAYgAQYsQPCAgsQABiABBixAxiDAcICBBAAGAPCAgUQABiABMICChAAGIAEGIoFGEPCAgcQABiABBgTwgIJEAAYgAQYExgKwgIIEAAYHhgTGArCAgYQABgeGBPCAgoQABgWGB4YExgKmAMAkgcGNC4xMC45oAfISA&sclient=gws-wiz-serp#lrd=0x103b8c448e2f97c3:0xc95f24c00955aecc,1"
                   className="text-white text-xs underline visited:text-white"
                 >
                   50 reviews

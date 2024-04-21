@@ -19,6 +19,7 @@ import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { BsArrowLeft } from "react-icons/bs";
 
 function VendorSignupStepOne({
   isStepOne,
@@ -167,6 +168,13 @@ function VendorSignupStepOne({
       {!isUpdateVendorAccount && (
         <div className="flex flex-row items-center justify-between">
           <div>
+            <Link
+              to="/"
+              className="mb-5 flex flex-row items-center gap-x-2 text-shuttlelaneBlack hover:underline no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack"
+            >
+              <BsArrowLeft size={14} className="text-shuttlelaneBlack" />
+              <span className="text-xs">Go back to Homepage</span>
+            </Link>
             <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
               Create an account
             </h2>

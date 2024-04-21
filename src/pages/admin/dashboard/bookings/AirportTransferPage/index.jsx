@@ -1332,7 +1332,7 @@ function AdminDashboardAirportTransferPage() {
               {/* Booking Summary - Total number of bookings */}
               <div className="w-full">
                 <div className="w-full">
-                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">
@@ -1347,133 +1347,161 @@ function AdminDashboardAirportTransferPage() {
                     <div className="overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
                       {/* Table header */}
                       <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
+                          Booking Ref
+                        </p>
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Full name
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
+                          Email Address
+                        </p>
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Pickup Date
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                          Booking Type
-                        </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Payment Status
                         </p>
-                        <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Actions
                         </p>
                       </div>
 
-                      {upcomingAirportTransferBookings?.map((booking) => (
-                        <div className="flex cursor-pointer justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                          <p
-                            onClick={() => {
-                              setCurrentBooking(booking);
-                              console.log("current booking:", booking);
-                              setIsBookingDetailsModalOpen(true);
-                            }}
-                            className="min-w-[200px] w-[200px] lg:w-[20%] text-xs"
-                          >
-                            {booking?.user?.firstName ?? booking?.firstName}{" "}
-                            {booking?.user?.firstName ?? booking?.firstName}
-                          </p>
-                          <p
-                            onClick={() => {
-                              setCurrentBooking(booking);
-                              console.log("current booking:", booking);
-                              setIsBookingDetailsModalOpen(true);
-                            }}
-                            className="min-w-[200px] w-[200px] lg:w-[20%] text-xs"
-                          >
-                            {booking?.pickupDate}
-                          </p>
-                          <p
-                            onClick={() => {
-                              setCurrentBooking(booking);
-                              console.log("current booking:", booking);
-                              setIsBookingDetailsModalOpen(true);
-                            }}
-                            className="min-w-[200px] w-[200px] lg:w-[20%] text-xs"
-                          >
-                            {booking?.bookingType}
-                          </p>
-
-                          <div
-                            onClick={() => {
-                              setCurrentBooking(booking);
-                              console.log("current booking:", booking);
-                              setIsBookingDetailsModalOpen(true);
-                            }}
-                            className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1"
-                          >
-                            <div
-                              className={`h-2 w-2 ${
-                                booking?.paymentId?.paymentStatus === "Failed"
-                                  ? "bg-red-500"
-                                  : booking?.paymentId?.paymentStatus ===
-                                    "Pending"
-                                  ? "bg-yellow-500"
-                                  : "bg-green-500"
-                              } rounded-full`}
-                            ></div>
-                            <span
-                              className={`text-xs ${
-                                booking?.paymentId?.paymentStatus === "Failed"
-                                  ? "text-red-500"
-                                  : booking?.paymentId?.paymentStatus ===
-                                    "Pending"
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
-                              }`}
-                            >
-                              {booking?.paymentId?.paymentStatus === "Failed"
-                                ? "Failed"
-                                : booking?.paymentId?.paymentStatus ===
-                                  "Pending"
-                                ? "Pending"
-                                : "Successful"}
-                            </span>
-                          </div>
-
-                          <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-3">
-                            {/* {admin?.role !== "Blogger" && (
-                                  <button
-                                    onClick={() => {}}
-                                    className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
-                                  >
-                                    Assign driver
-                                  </button>
-                                )} */}
-                            <Link
-                              to="/"
-                              target="/booking/track-booking"
-                              className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
-                            >
-                              <HiOutlineExternalLink
-                                size={13}
-                                className="text-shuttlelaneBlack"
-                              />
-                            </Link>
-
-                            {admin?.role !== "Blogger" && (
-                              <FaTrash
+                      {!isLoading && (
+                        <>
+                          {upcomingAirportTransferBookings?.map((booking) => (
+                            <div className="flex cursor-pointer justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                              <p
                                 onClick={() => {
                                   setCurrentBooking(booking);
-                                  setIsDeleteBookingDialogOpen(true);
+                                  console.log("current booking:", booking);
+                                  setIsBookingDetailsModalOpen(true);
                                 }}
-                                size={13}
-                                className="text-red-400 cursor-pointer"
-                              />
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                                className="w-[180px] lg:w-[16.6%] text-xs flex items-center gap-x-2"
+                              >
+                                <span className="text-xs">
+                                  {booking?.bookingReference}
+                                </span>
+                                {/* <LuCopy
+                                  size={14}
+                                  className="text-shuttlelaneBlack"
+                                />
+                                <AiOutlineCheckCircle
+                                  size={14}
+                                  className="text-green-500"
+                                /> */}
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setCurrentBooking(booking);
+                                  console.log("current booking:", booking);
+                                  setIsBookingDetailsModalOpen(true);
+                                }}
+                                className="w-[180px] lg:w-[16.6%] text-xs"
+                              >
+                                {booking?.user?.firstName ?? booking?.firstName}{" "}
+                                {booking?.user?.lastName ?? booking?.lastName}
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setCurrentBooking(booking);
+                                  console.log("current booking:", booking);
+                                  setIsBookingDetailsModalOpen(true);
+                                }}
+                                className="w-[180px] lg:w-[16.6%] text-xs"
+                              >
+                                {booking?.email}
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setCurrentBooking(booking);
+                                  console.log("current booking:", booking);
+                                  setIsBookingDetailsModalOpen(true);
+                                }}
+                                className="w-[180px] lg:w-[16.6%] text-xs"
+                              >
+                                {moment(booking?.pickupDate).format(
+                                  "DD MM, YYYY"
+                                )}
+                              </p>
+
+                              <div
+                                onClick={() => {
+                                  setCurrentBooking(booking);
+                                  console.log("current booking:", booking);
+                                  setIsBookingDetailsModalOpen(true);
+                                }}
+                                className="w-[180px] lg:w-[16.6%] flex items-center gap-x-1"
+                              >
+                                <div
+                                  className={`h-2 w-2 ${
+                                    booking?.paymentId?.paymentStatus ===
+                                    "Failed"
+                                      ? "bg-red-500"
+                                      : booking?.paymentId?.paymentStatus ===
+                                        "Successful"
+                                      ? "bg-green-500"
+                                      : "bg-yellow-500"
+                                  } rounded-full`}
+                                ></div>
+                                <span
+                                  className={`text-xs ${
+                                    booking?.paymentId?.paymentStatus ===
+                                    "Failed"
+                                      ? "text-red-500"
+                                      : booking?.paymentId?.paymentStatus ===
+                                        "Successful"
+                                      ? "text-green-500"
+                                      : "text-yellow-500"
+                                  }`}
+                                >
+                                  {booking?.paymentId?.paymentStatus ??
+                                    "Pending"}
+                                </span>
+                              </div>
+
+                              <div className="w-[180px] lg:w-[16.6%] flex items-center gap-x-3">
+                                <Link
+                                  to="/booking/track-booking"
+                                  target="_blank"
+                                  className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
+                                >
+                                  <HiOutlineExternalLink
+                                    size={13}
+                                    className="text-shuttlelaneBlack"
+                                  />
+                                </Link>
+
+                                {admin?.role !== "Blogger" && (
+                                  <FaTrash
+                                    onClick={() => {
+                                      setCurrentBooking(booking);
+                                      setIsDeleteBookingDialogOpen(true);
+                                    }}
+                                    size={13}
+                                    className="text-red-400 cursor-pointer"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
 
                       {upcomingAirportTransferBookings?.length < 1 && (
                         <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
                           <p className="w-full text-xs text-center">
                             No data to show for now...
                           </p>
+                        </div>
+                      )}
+
+                      {isLoading && (
+                        <div className="flex w-full h-full items-center justify-center">
+                          <ImSpinner2
+                            size={20}
+                            className="cursor-loading animate-spin"
+                          />
                         </div>
                       )}
                     </div>
@@ -1484,7 +1512,7 @@ function AdminDashboardAirportTransferPage() {
               <div className="w-full">
                 <div className="mt-11 w-full">
                   {/* Searchbar */}
-                  {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
+                  {/* <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                     <BiSearch size={16} className="text-gray-400 rotate-90" />
                     <input
                       type="search"
@@ -1493,7 +1521,7 @@ function AdminDashboardAirportTransferPage() {
                     />
                   </div> */}
 
-                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">
@@ -1513,9 +1541,11 @@ function AdminDashboardAirportTransferPage() {
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Full name
                         </p>
-                        <p className="w-[180px] lg:w-[16.6%] text-xs">Date</p>
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Email Address
+                        </p>
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">
+                          Pickup Date
                         </p>
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Payment Status
@@ -1596,9 +1626,9 @@ function AdminDashboardAirportTransferPage() {
                                     "Failed"
                                       ? "bg-red-500"
                                       : booking?.paymentId?.paymentStatus ===
-                                        "Pending"
-                                      ? "bg-yellow-500"
-                                      : "bg-green-500"
+                                        "Successful"
+                                      ? "bg-green-500"
+                                      : "bg-yellow-500"
                                   } rounded-full`}
                                 ></div>
                                 <span
@@ -1607,15 +1637,15 @@ function AdminDashboardAirportTransferPage() {
                                     "Failed"
                                       ? "text-red-500"
                                       : booking?.paymentId?.paymentStatus ===
-                                        "Pending"
-                                      ? "text-yellow-500"
-                                      : "text-green-500"
+                                        "Successful"
+                                      ? "text-green-500"
+                                      : "text-yellow-500"
                                   }`}
                                 >
-                                  {booking?.paymentId?.paymentStatus}
+                                  {booking?.paymentId?.paymentStatus ??
+                                    "Pending"}
                                 </span>
                               </div>
-
                               <div className="w-[180px] lg:w-[16.6%] flex items-center gap-x-3">
                                 <Link
                                   to="/booking/track-booking"
@@ -1643,7 +1673,7 @@ function AdminDashboardAirportTransferPage() {
                           ))}
                         </>
                       )}
-                      {airportTransferBookings?.length < 1 && (
+                      {!isLoading && airportTransferBookings?.length < 1 && (
                         <div className="flex justify-center items-center w-full">
                           <p className="text-sm">
                             There are no airport transfer bookings for now.

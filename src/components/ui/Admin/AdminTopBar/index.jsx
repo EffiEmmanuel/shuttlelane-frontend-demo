@@ -5,7 +5,7 @@ import { FaXmark } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
 // Images
-import profilePicPlaceholder from "../../../../assets/images/profilePicture.png";
+import profilePicPlaceholder from "../../../../assets/logos/icon.png";
 
 function AdminTopBar(props) {
   const { admin } = useSelector((store) => store.admin);
@@ -22,7 +22,7 @@ function AdminTopBar(props) {
       </div>
 
       <div className="flex items-center gap-x-2">
-        <div className="h-9 w-9 rounded-full bg-shuttlelanePurple flex justify-center items-center overflow-hidden">
+        <div className="h-9 w-9 rounded-full bg-transparent flex justify-center items-center overflow-hidden">
           <img
             src={admin?.image ?? profilePicPlaceholder}
             alt={`${admin?.firstName} ${admin?.lastName}`}

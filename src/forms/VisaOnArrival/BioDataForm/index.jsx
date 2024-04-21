@@ -14,8 +14,6 @@ import { FaXmark } from "react-icons/fa6";
 import { ImSpinner2 } from "react-icons/im";
 
 export default function BiodataForm({
-  passportPhotograph,
-  setPassportPhotograph,
   title,
   setTitle,
   surname,
@@ -69,92 +67,8 @@ export default function BiodataForm({
   );
   const dispatch = useDispatch();
 
-  // Handle On Image change
-  const [renderPassportPhotograph, setRenderPassportPhotograph] =
-    useState(null);
-  const [isImageLoading, setIsImageLoading] = useState(false);
-
-  const handleImageChange = (e) => {
-    setIsImageLoading(true);
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    setPassportPhotograph(file);
-
-    reader.onloadend = () => {
-      setRenderPassportPhotograph(reader.result);
-      setIsImageLoading(false);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Reference the image input
-  const imageInputRef = useRef(null);
-  function handleRemoveImage() {
-    setPassportPhotograph(null);
-    setRenderPassportPhotograph(null);
-    imageInputRef.current.value = null; // Clear the image input value
-  }
-
   return (
     <form className="my-5 w-full flex flex-col gap-y-4">
-      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
-        <div className="w-full flex flex-col gap-y-1 lg:w-[50%] relative">
-          <div className="w-full flex flex-col">
-            <div className="w-full relative border-dashed border-[1px] border-gray-400 rounded-lg h-44 flex flex-col items-center justify-center overflow-hidden">
-              <>
-                {!isImageLoading && (
-                  <>
-                    {" "}
-                    <MdOutlineAddAPhoto size={24} className="text-gray-400" />
-                    <small className="text-gray-400 text-center">
-                      Passport Photograph
-                    </small>{" "}
-                  </>
-                )}
-
-                {isImageLoading && (
-                  <div className="flex items-center justify-center">
-                    <ImSpinner2
-                      size={24}
-                      className="text-shuttlelanePurple animate-spin"
-                    />
-                  </div>
-                )}
-                <input
-                  className="absolute top-0 bg-transparent w-full h-full opacity-0 cursor-pointer"
-                  type="file"
-                  name="image"
-                  id="image"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  ref={imageInputRef}
-                />
-              </>
-
-              {renderPassportPhotograph && passportPhotograph && (
-                <div className="absolute w-full h-full top-0 flex justify-center items-center">
-                  <button
-                    onClick={() => handleRemoveImage()}
-                    className="bg-white flex items-center justify-center p-2 h-7 w-7 rounded-full absolute top-3 right-3 z-[10] cursor-pointer"
-                  >
-                    <FaXmark size={16} className="" />
-                  </button>
-
-                  <img
-                    src={renderPassportPhotograph}
-                    alt="Uploaded"
-                    className="object-cover h-full w-full z-[5]"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="title" className="text-xs text-gray-500">
@@ -438,7 +352,6 @@ export default function BiodataForm({
             type="submit"
             className="bg-shuttlelanePurple disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 disabled:cursor-not-allowed text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             disabled={
-              !passportPhotograph ||
               !title ||
               !surname ||
               !firstName ||

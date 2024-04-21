@@ -208,7 +208,7 @@ export const fetchVisaOnArrivalRates = createAsyncThunk(
   "user/voaRates/getAll",
   async (payload) => {
     return fetch(
-      "${process.env.REACT_APP_API_BASE_URL}/users/voaRatesWithNigerianVisa"
+      `${process.env.REACT_APP_API_BASE_URL}/users/voaRatesWithNigerianVisa`
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH VOA RATES ERROR:", err));
@@ -221,76 +221,6 @@ export const createBooking = createAsyncThunk(
   async (payload) => {
     console.log("VALUES:", payload);
     let values;
-    // Upload the passport photograph to cloudinary
-    if (payload?.bookingType === "Visa") {
-      const formData = new FormData();
-      formData.append("file", payload.bookingDetails?.passportPhotograph);
-      formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
-
-      try {
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        if (response.ok) {
-          console.log("upload successful");
-          const data = await response.json();
-          values = {
-            bookingType: "Visa",
-            visaClass: payload?.bookingDetails?.visaClass?.value,
-            passportType: payload?.bookingDetails?.passportType?.value,
-            nationality: payload?.bookingDetails?.nationality?.value,
-            passportPhotograph: data.secure_url,
-            title: payload?.bookingDetails?.title?.value,
-            surname: payload?.bookingDetails?.surname,
-            firstName: payload?.bookingDetails?.firstName,
-            middleName: payload?.bookingDetails?.middleName,
-            email: payload?.bookingDetails?.email,
-            dateOfBirth: payload?.bookingDetails?.dateOfBirth,
-            placeOfBirth: payload?.bookingDetails?.placeOfBirth,
-            gender: payload?.bookingDetails?.gender?.value,
-            maritalStatus: payload?.bookingDetails?.maritalStatus?.value,
-            passportNumber: payload?.bookingDetails?.passportNumber,
-            passportExpiryDate: payload?.bookingDetails?.passportExpiryDate,
-            purposeOfJourney: payload?.bookingDetails?.purposeOfJourney,
-            airline: payload?.bookingDetails?.airline,
-            flightNumber: payload?.bookingDetails?.flightNumber,
-            countryOfDeparture:
-              payload?.bookingDetails?.countryOfDeparture?.label,
-            departureDate: payload?.bookingDetails?.departureDate,
-            arrivalDate: payload?.bookingDetails?.arrivalDate,
-            portOfEntry: payload?.bookingDetails?.portOfEntry,
-            durationOfStay: payload?.bookingDetails?.durationOfStay,
-            contactName: payload?.bookingDetails?.contactName,
-            contactNumber: payload?.bookingDetails?.contactNumber,
-            contactAddress: payload?.bookingDetails?.contactAddress,
-            contactCity: payload?.bookingDetails?.contactCity,
-            contactState: payload?.bookingDetails?.contactState,
-            contactEmail: payload?.bookingDetails?.contactEmail,
-            contactPostalCode: payload?.bookingDetails?.contactPostalCode,
-            bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
-            bookingTotal: payload?.bookingDetails?.bookingTotal,
-          };
-        } else {
-          // Handle error
-          console.error("Upload failed");
-          toast.error(
-            "Failed to upload your passport photograph. Please check yout internet connection and try again."
-          );
-          return;
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        toast.error(
-          "Failed to upload your passport photograph. Please check yout internet connection and try again."
-        );
-        return;
-      }
-    }
 
     switch (payload?.bookingType) {
       case "Airport":
@@ -366,6 +296,40 @@ export const createBooking = createAsyncThunk(
         };
         break;
       case "Visa":
+        values = {
+            bookingType: "Visa",
+            visaClass: payload?.bookingDetails?.visaClass?.value,
+            passportType: payload?.bookingDetails?.passportType?.value,
+            nationality: payload?.bookingDetails?.nationality?.value,
+            title: payload?.bookingDetails?.title?.value,
+            surname: payload?.bookingDetails?.surname,
+            firstName: payload?.bookingDetails?.firstName,
+            middleName: payload?.bookingDetails?.middleName,
+            email: payload?.bookingDetails?.email,
+            dateOfBirth: payload?.bookingDetails?.dateOfBirth,
+            placeOfBirth: payload?.bookingDetails?.placeOfBirth,
+            gender: payload?.bookingDetails?.gender?.value,
+            maritalStatus: payload?.bookingDetails?.maritalStatus?.value,
+            passportNumber: payload?.bookingDetails?.passportNumber,
+            passportExpiryDate: payload?.bookingDetails?.passportExpiryDate,
+            purposeOfJourney: payload?.bookingDetails?.purposeOfJourney,
+            airline: payload?.bookingDetails?.airline,
+            flightNumber: payload?.bookingDetails?.flightNumber,
+            countryOfDeparture:
+              payload?.bookingDetails?.countryOfDeparture?.label,
+            arrivalDate: payload?.bookingDetails?.arrivalDate,
+            portOfEntry: payload?.bookingDetails?.portOfEntry,
+            durationOfStay: payload?.bookingDetails?.durationOfStay,
+            contactName: payload?.bookingDetails?.contactName,
+            contactNumber: payload?.bookingDetails?.contactNumber,
+            contactAddress: payload?.bookingDetails?.contactAddress,
+            contactCity: payload?.bookingDetails?.contactCity,
+            contactState: payload?.bookingDetails?.contactState,
+            contactEmail: payload?.bookingDetails?.contactEmail,
+            contactPostalCode: payload?.bookingDetails?.contactPostalCode,
+            bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+            bookingTotal: payload?.bookingDetails?.bookingTotal,
+          };
         break;
       default:
         toast.error("Invalid booking type detected!");
@@ -375,7 +339,7 @@ export const createBooking = createAsyncThunk(
 
     console.log("VALS:", values);
 
-    return fetch("${process.env.REACT_APP_API_BASE_URL}/booking", {
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/booking`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

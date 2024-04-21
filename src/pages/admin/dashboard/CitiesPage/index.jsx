@@ -11,6 +11,7 @@ import AdminTopBar from "../../../../components/ui/Admin/AdminTopBar";
 import AdminAddBookingForm from "../../../../forms/admin/AdminAddBookingForm";
 import AdminCitiesForm from "../../../../forms/admin/AdminCitiesForm";
 import { Helmet } from "react-helmet";
+import { ToastContainer } from "react-toastify";
 
 function AdminDashboardCitiesPage() {
   // Mobile navbar handler
@@ -18,6 +19,7 @@ function AdminDashboardCitiesPage() {
 
   return (
     <div className="">
+      <ToastContainer />
       <Helmet>
         <title>Manage Cities | Shuttlelane Portal Admin Dashboard</title>
       </Helmet>

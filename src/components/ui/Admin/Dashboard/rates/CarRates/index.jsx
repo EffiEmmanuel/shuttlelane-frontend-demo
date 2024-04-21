@@ -306,7 +306,7 @@ function AdminCarRates() {
         </div>
       </Modal>
 
-      <div className="flex gap-x-5 flex-wrap gap-y-3 items-end pb-3 border-b-[.5px] border-b-gray-200">
+      <div className="flex gap-x-5 flex-wrap gap-y-3 items-end pb-3 border-b-[1.3px] lg:border-b-[.5px] border-b-gray-200">
         <div className="">
           <p className="text-lg font-semibold">Car Rates</p>
           <small className="">
@@ -319,7 +319,7 @@ function AdminCarRates() {
         {/* Add car button */}
         <button
           onClick={() => setIsAddCarModalOpen(true)}
-          className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+          className="w-auto border-dashed border-[8px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
         >
           <AiOutlinePlus size={16} />
           <span className="text-xs">Add Car</span>

@@ -298,10 +298,10 @@ function ConciergePage() {
 
               <Parallax speed={6}>
                 <Link
-                  to="/"
+                  to="/companies/get-in-touch"
                   className="h-12 p-3 bg-shuttlelanePurple hover:text-shuttlelanePurple hover:border-[.5px] hover:border-shuttlelanePurple transition-all hover:bg-transparent visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm lg:w-32 w-full inline-block flex justify-center items-center "
                 >
-                  Book Now
+                  Make Enquiry
                 </Link>
               </Parallax>
             </Fade>

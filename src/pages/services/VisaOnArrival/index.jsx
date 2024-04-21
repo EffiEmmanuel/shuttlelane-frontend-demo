@@ -195,18 +195,26 @@ function VisaOnArrivalPage() {
                   </p>
                 </div>
 
-                <div
-                  onClick={() => {
-                    moreAboutUsRef.current.scrollIntoView({
-                      behaviour: "smooth",
-                    });
-                  }}
-                  className="cursor-pointer flex flex-col items-center mt-20 justify-center w-full"
-                >
-                  <div className="h-7 w-7 p-1 rounded-full border-[.5px] border-white flex justify-center items-center animate-bounce-slow">
-                    <FiArrowDown size={24} />
+                <div className="flex flex-col items-center mt-20 justify-center w-full">
+                  <div className="w-full flex md:flex-row flex-col items-center justify-center gap-x-4 gap-y-3 mt-5">
+                    <p
+                      onClick={() => {
+                        moreAboutUsRef.current.scrollIntoView({
+                          behaviour: "smooth",
+                        });
+                      }}
+                      className="cursor-pointer h-12 p-3 bg-transparent text-white hover:border-none border-[.5px] border-white transition-all hover:bg-shuttlelanePurple visited:text-white hover:no-underline visited:no-underline hover:text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+                    >
+                      Learn more
+                    </p>
+
+                    <Link
+                      to="/"
+                      className="flex justify-center items-center gap-x-2 h-12 p-3 hover:text-white bg-shuttlelanePurple hover:border-[.5px] hover:border-white transition-all hover:bg-transparent visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+                    >
+                      <span>Book Now</span>
+                    </Link>
                   </div>
-                  <p className="text-sm">Learn more</p>
                 </div>
               </div>
             </div>

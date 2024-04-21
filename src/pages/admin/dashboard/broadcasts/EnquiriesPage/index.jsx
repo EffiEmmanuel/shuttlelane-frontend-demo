@@ -71,7 +71,7 @@ function AdminDashboardEnquiriesPage() {
                 page
               </p>
 
-              <div className="mt-10 w-full border-[1px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex flex-col gap-y-5">
+              <div className="mt-10 w-full border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex flex-col gap-y-5">
                 {enquiries?.map((enquiry) => (
                   <div className="flex cursor-pointer w-full items-center justify-between border-b-gray-200 border-b-[.3px] pb-2">
                     <div className="flex items-center gap-x-2">

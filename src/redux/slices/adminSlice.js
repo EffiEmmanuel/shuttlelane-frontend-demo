@@ -94,6 +94,53 @@ export const addAirportToCity = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function updates a city
+export const updateCity = createAsyncThunk(
+  "admin/cities/updateOne",
+  async (payload) => {
+    console.log(
+      "UPDATED VALUES:",
+      payload?.cityName,
+      payload?.cityId,
+      payload?.cityAirports
+    );
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cities/update/${payload?.cityId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+        body: JSON.stringify({
+          cityName: payload?.cityName,
+          airports: payload?.cityAirports,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE CITY ERROR:", err));
+  }
+);
+
+// FUNCTION: This function deletes a city by Id
+export const deleteCity = createAsyncThunk(
+  "admin/cities/deleteOne",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cities/delete/${payload?.cityId}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DELETE CITY ERROR:", err));
+  }
+);
+
 // FUNCTION: This function fetches a city
 export const fetchCity = createAsyncThunk(
   "admin/cities/getOne",
@@ -499,6 +546,7 @@ export const fetchVisaOnArrivalRates = createAsyncThunk(
 export const createVisaOnArrivalRate = createAsyncThunk(
   "admin/visa-on-arrival-rates/create-new",
   async (payload) => {
+    console.log("PAYLOAD:", payload);
     return fetch(
       `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates`,
       {
@@ -511,6 +559,7 @@ export const createVisaOnArrivalRate = createAsyncThunk(
           country: payload?.country,
           visaFee: payload?.visaFee,
           isNigerianVisaRequired: payload?.isNigerianVisaRequired,
+          isBiometricsRequired: payload?.isBiometricsRequired,
         }),
       }
     )
@@ -524,6 +573,7 @@ export const createVisaOnArrivalRate = createAsyncThunk(
 export const updateVisaOnArrivalRate = createAsyncThunk(
   "admin/visa-on-arrival-rates/updateOne",
   async (payload) => {
+    console.log("PAYLOAD:", payload);
     return fetch(
       `${process.env.REACT_APP_API_BASE_URL}/admin/visa-on-arrival-rates/${payload?._id}`,
       {
@@ -536,6 +586,7 @@ export const updateVisaOnArrivalRate = createAsyncThunk(
           country: payload?.country,
           visaFee: payload?.visaFee,
           isNigerianVisaRequired: payload?.isNigerianVisaRequired,
+          isBiometricsRequired: payload?.isBiometricsRequired,
           voaBaseFeeId: payload?.voaBaseFeeId,
         }),
       }
@@ -780,11 +831,14 @@ export const deleteVehicleClass = createAsyncThunk(
 export const fetchCars = createAsyncThunk(
   "admin/cars/getAll",
   async (token) => {
-    return fetch(`${process.env.REACT_APP_API_BASE_URL}/cars`, {
-      headers: {
-        token: `Bearer ${JSON.parse(token)}`,
-      },
-    })
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/cars?isAdminRequest=true`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH CARS ERROR:", err));
   }
@@ -1254,77 +1308,6 @@ export const createBooking = createAsyncThunk(
   async (payload) => {
     console.log("VALUES:", payload);
     let values;
-    // Upload the passport photograph to cloudinary
-    if (payload?.bookingType === "Visa") {
-      const formData = new FormData();
-      formData.append("file", payload.bookingDetails?.passportPhotograph);
-      formData.append("upload_preset", "shuttlelane-web"); // Replace with your preset name
-
-      try {
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/shuttlelane/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        if (response.ok) {
-          console.log("upload successful");
-          const data = await response.json();
-          values = {
-            bookingType: "Visa",
-            visaClass: payload?.bookingDetails?.visaClass?.value,
-            passportType: payload?.bookingDetails?.passportType?.value,
-            nationality: payload?.bookingDetails?.nationality?.value,
-            passportPhotograph: data.secure_url,
-            title: payload?.bookingDetails?.title?.value,
-            surname: payload?.bookingDetails?.surname,
-            firstName: payload?.bookingDetails?.firstName,
-            middleName: payload?.bookingDetails?.middleName,
-            email: payload?.bookingDetails?.email,
-            dateOfBirth: payload?.bookingDetails?.dateOfBirth,
-            placeOfBirth: payload?.bookingDetails?.placeOfBirth,
-            gender: payload?.bookingDetails?.gender?.value,
-            maritalStatus: payload?.bookingDetails?.maritalStatus?.value,
-            passportNumber: payload?.bookingDetails?.passportNumber,
-            passportExpiryDate: payload?.bookingDetails?.passportExpiryDate,
-            purposeOfJourney: payload?.bookingDetails?.purposeOfJourney,
-            airline: payload?.bookingDetails?.airline,
-            flightNumber: payload?.bookingDetails?.flightNumber,
-            countryOfDeparture:
-              payload?.bookingDetails?.countryOfDeparture?.label,
-            departureDate: payload?.bookingDetails?.departureDate,
-            arrivalDate: payload?.bookingDetails?.arrivalDate,
-            portOfEntry: payload?.bookingDetails?.portOfEntry,
-            durationOfStay: payload?.bookingDetails?.durationOfStay,
-            contactName: payload?.bookingDetails?.contactName,
-            contactNumber: payload?.bookingDetails?.contactNumber,
-            contactAddress: payload?.bookingDetails?.contactAddress,
-            contactCity: payload?.bookingDetails?.contactCity,
-            contactState: payload?.bookingDetails?.contactState,
-            contactEmail: payload?.bookingDetails?.contactEmail,
-            contactPostalCode: payload?.bookingDetails?.contactPostalCode,
-            bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
-            bookingTotal: payload?.bookingDetails?.bookingTotal,
-          };
-        } else {
-          // Handle error
-          console.error("Upload failed");
-          toast.error(
-            "Failed to upload your passport photograph. Please check yout internet connection and try again."
-          );
-          return;
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        toast.error(
-          "Failed to upload your passport photograph. Please check yout internet connection and try again."
-        );
-        return;
-      }
-    }
-
     switch (payload?.bookingType) {
       case "Airport":
         values = {
@@ -1395,6 +1378,40 @@ export const createBooking = createAsyncThunk(
         };
         break;
       case "Visa":
+        values = {
+          bookingType: "Visa",
+          visaClass: payload?.bookingDetails?.visaClass?.value,
+          passportType: payload?.bookingDetails?.passportType?.value,
+          nationality: payload?.bookingDetails?.nationality?.value,
+          title: payload?.bookingDetails?.title?.value,
+          surname: payload?.bookingDetails?.surname,
+          firstName: payload?.bookingDetails?.firstName,
+          middleName: payload?.bookingDetails?.middleName,
+          email: payload?.bookingDetails?.email,
+          dateOfBirth: payload?.bookingDetails?.dateOfBirth,
+          placeOfBirth: payload?.bookingDetails?.placeOfBirth,
+          gender: payload?.bookingDetails?.gender?.value,
+          maritalStatus: payload?.bookingDetails?.maritalStatus?.value,
+          passportNumber: payload?.bookingDetails?.passportNumber,
+          passportExpiryDate: payload?.bookingDetails?.passportExpiryDate,
+          purposeOfJourney: payload?.bookingDetails?.purposeOfJourney,
+          airline: payload?.bookingDetails?.airline,
+          flightNumber: payload?.bookingDetails?.flightNumber,
+          countryOfDeparture:
+            payload?.bookingDetails?.countryOfDeparture?.label,
+          arrivalDate: payload?.bookingDetails?.arrivalDate,
+          portOfEntry: payload?.bookingDetails?.portOfEntry,
+          durationOfStay: payload?.bookingDetails?.durationOfStay,
+          contactName: payload?.bookingDetails?.contactName,
+          contactNumber: payload?.bookingDetails?.contactNumber,
+          contactAddress: payload?.bookingDetails?.contactAddress,
+          contactCity: payload?.bookingDetails?.contactCity,
+          contactState: payload?.bookingDetails?.contactState,
+          contactEmail: payload?.bookingDetails?.contactEmail,
+          contactPostalCode: payload?.bookingDetails?.contactPostalCode,
+          bookingCurrency: payload?.bookingDetails?.bookingCurrency?._id,
+          bookingTotal: payload?.bookingDetails?.bookingTotal,
+        };
         break;
       default:
         toast.error("Invalid booking type detected!");
@@ -1404,16 +1421,13 @@ export const createBooking = createAsyncThunk(
 
     console.log("VALS:", values);
 
-    return fetch(
-      "https://shuttlelane-backend-demo.onrender.com:3001/api/v1/booking",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      }
-    )
+    return fetch("https://www.shuttlelane.com/api/v1/booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
       .then((res) => res.json())
       .catch((err) => console.log("CREATE BOOKING ERROR:", err));
   }
@@ -2691,13 +2705,17 @@ export const adminSlice = createSlice({
       })
       .addCase(calculateTotal.fulfilled, (state, action) => {
         console.log("ACTION.PAYLOAD", action.payload);
+        console.log(
+          "ACTION.PAYLOAD voaVerificationStatus",
+          action.payload?.voaVerificationStatus
+        );
         state.isLoading = false;
         state.bookingTotal = action.payload?.total;
         state.bookingCurrency = action.payload?.userCurrency;
         state.bookingDistance = action.payload?.distance;
         state.tripDuration = action.payload?.duration;
 
-        // For visa on arrival (Homepage)
+        // For visa on arrival
         state.voaVerificationStatus = action.payload?.voaVerificationStatus;
         state.voaVerificationMessage = action.payload?.message;
         state.currentVisaFee = action.payload?.visaFee;
@@ -2750,6 +2768,42 @@ export const adminSlice = createSlice({
         state.visaOnArrivalBookings = action.payload?.visaOnArrivalBookings;
       })
       .addCase(fetchAllBookings.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // updateCity AsyncThunk states
+      .addCase(updateCity.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCity.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE CITY", action.payload);
+        state.isLoading = false;
+        state.cities = action.payload?.cities;
+        if (action.payload?.status === 201) {
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(updateCity.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // deleteCity AsyncThunk states
+      .addCase(deleteCity.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCity.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE CITY", action.payload);
+        state.isLoading = false;
+        state.cities = action.payload?.cities;
+        if (action.payload?.status === 201) {
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(deleteCity.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

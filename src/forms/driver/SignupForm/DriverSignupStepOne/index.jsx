@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BiSolidCity } from "react-icons/bi";
+import { BiArrowToLeft, BiSolidCity } from "react-icons/bi";
 import { ImSpinner2 } from "react-icons/im";
 import Select from "react-select";
 import CountryData from "country-codes-list";
@@ -11,6 +11,8 @@ import { updateDriver } from "../../../../redux/slices/driverSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
+import { BsArrowLeft } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 function DriverSignupStepOne({
   isStepOne,
@@ -135,6 +137,13 @@ function DriverSignupStepOne({
       <ToastContainer />
       {!isUpdateDriverAccount && (
         <>
+          <Link
+            to="/"
+            className="mb-5 flex flex-row items-center gap-x-2 text-shuttlelaneBlack hover:underline no-underline visited:no-underline hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack"
+          >
+            <BsArrowLeft size={14} className="text-shuttlelaneBlack" />
+            <span className="text-xs">Go back to Homepage</span>
+          </Link>
           <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
             Create an account
           </h2>

@@ -191,14 +191,14 @@ function CarRentalPage() {
                 <div className="w-full flex md:flex-row flex-col items-center justify-center gap-x-4 gap-y-3 mt-5">
                   <Link
                     to="/company/get-in-touch"
-                    className="h-12 p-3 bg-transparent hover:text-shuttlelaneBlack border-[.5px] border-white transition-all hover:bg-shuttlelaneLightPurple visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+                    className="h-12 p-3 bg-transparent text-shuttlelaneBlack hover:border-none border-[.5px] border-shuttlelaneBlack transition-all hover:bg-shuttlelanePurple visited:text-shuttlelaneBlack hover:no-underline visited:no-underline hover:text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
                   >
                     Make Enquiry
                   </Link>
 
                   <Link
                     to="/"
-                    className="flex justify-center items-center gap-x-2 h-12 p-3 bg-shuttlelaneLightPurple hover:text-white border-[.5px] hover:border-white transition-all hover:bg-transparent visited:text-shuttlelaneBlack hover:no-underline visited:no-underline text-shuttlelaneBlack rounded-lg text-sm w-44 inline-block flex justify-center items-center "
+                    className="flex justify-center items-center gap-x-2 h-12 p-3 hover:text-shuttlelaneBlack bg-shuttlelanePurple hover:border-[.5px] hover:border-shuttlelaneBlack transition-all hover:bg-transparent visited:text-white hover:no-underline visited:no-underline text-white rounded-lg text-sm w-44 inline-block flex justify-center items-center "
                   >
                     <span>Book Now</span>
                   </Link>

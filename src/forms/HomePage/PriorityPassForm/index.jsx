@@ -56,6 +56,7 @@ function PriorityPassForm() {
 
   // Date Setup
   const minSelectableDate = new Date(); //
+  minSelectableDate.setDate(minSelectableDate.getDate() - 1);
   // A function to disable dates earlier than the minimum date
   const disableDateBeforeMin = (date) => {
     return date < minSelectableDate;

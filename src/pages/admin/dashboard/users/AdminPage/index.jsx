@@ -125,6 +125,7 @@ function AdminDashboardAdminAccountsPage() {
   // Role options
   const roleOptions = [
     { value: "Super Admin", label: "Super Admin" },
+    { value: "Admin", label: "Admin" },
     { value: "Blogger", label: "Blogger" },
   ];
 
@@ -142,6 +143,8 @@ function AdminDashboardAdminAccountsPage() {
         username,
       })
     );
+
+    setIsCreateAdminModalOpen(false);
   }
 
   // Function: This function handles deleting a new admin account
@@ -331,7 +334,7 @@ function AdminDashboardAdminAccountsPage() {
                 <div className="w-full">
                   <div className="flex flex-row items-center gap-x-5 justify-between w-full lg:justify-normal">
                     {/* Searchbar */}
-                    <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
+                    <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                       <BiSearch size={16} className="text-gray-400 rotate-90" />
                       <input
                         type="search"
@@ -346,7 +349,7 @@ function AdminDashboardAdminAccountsPage() {
                         onClick={() => {
                           setIsCreateAdminModalOpen(true);
                         }}
-                        className="w-auto border-dashed border-[1px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+                        className="w-auto border-dashed border-[1.3px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
                       >
                         <AiOutlinePlus size={16} />
                         <span className="text-xs">Create admin account</span>
@@ -354,7 +357,7 @@ function AdminDashboardAdminAccountsPage() {
                     )}
                   </div>
 
-                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">Admin Accounts</p>
@@ -370,7 +373,8 @@ function AdminDashboardAdminAccountsPage() {
                       </p>
                       <p className="w-200px lg:w-[25%] text-xs">Role</p>
                       {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
-                      {admin?.role !== "Blogger" && (
+                      {(admin?.role !== "Blogger" ||
+                        admin?.role !== "Admin") && (
                         <p className="w-200px lg:w-[25%] text-xs">Actions</p>
                       )}
                     </div>
@@ -403,7 +407,8 @@ function AdminDashboardAdminAccountsPage() {
                         12 November 2023
                       </p> */}
 
-                        {admin?.role !== "Blogger" && (
+                        {(admin?.role !== "Blogger" ||
+                          admin?.role !== "Admin") && (
                           <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
                             {!isLoading ? (
                               <button

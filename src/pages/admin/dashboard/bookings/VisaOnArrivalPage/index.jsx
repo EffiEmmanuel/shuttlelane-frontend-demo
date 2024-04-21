@@ -1329,7 +1329,7 @@ function AdminDashboardVisaOnArrivalPage() {
               <div className="w-full">
                 <div className="mt-11 w-full">
                   {/* Searchbar */}
-                  {/* <div className="flex items-center gap-x-3 border-[1px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
+                  {/* <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                     <BiSearch size={16} className="text-gray-400 rotate-90" />
                     <input
                       type="search"
@@ -1338,7 +1338,7 @@ function AdminDashboardVisaOnArrivalPage() {
                     />
                   </div> */}
 
-                  <div className="w-full rounded-lg border-[1px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                  <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">
@@ -1349,7 +1349,7 @@ function AdminDashboardVisaOnArrivalPage() {
                       </div>
                     </div>
 
-                    <div className="w-full shuttlelaneScrollbarHoriz overflow-x-scroll">
+                    <div className="w-full shuttlelaneScrollbar shuttlelaneScrollbarHoriz overflow-x-scroll">
                       {/* Table header */}
                       <div className="flex lg:w-auto w-max justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
@@ -1358,10 +1358,10 @@ function AdminDashboardVisaOnArrivalPage() {
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Full name
                         </p>
-                        <p className="w-[180px] lg:w-[16.6%] text-xs">Date</p>
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Email Address
                         </p>
+                        <p className="w-[180px] lg:w-[16.6%] text-xs">Date</p>
                         <p className="w-[180px] lg:w-[16.6%] text-xs">
                           Payment Status
                         </p>
@@ -1413,7 +1413,7 @@ function AdminDashboardVisaOnArrivalPage() {
                                 }}
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
-                                {booking?.email}
+                                {booking?.user?.email ?? booking?.email}
                               </p>
                               <p
                                 onClick={() => {
@@ -1424,7 +1424,7 @@ function AdminDashboardVisaOnArrivalPage() {
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
                                 {moment(booking?.pickupDate).format(
-                                  "DD MM, YYYY"
+                                  "MMM DD, YYYY"
                                 )}
                               </p>
 
@@ -1442,9 +1442,9 @@ function AdminDashboardVisaOnArrivalPage() {
                                     "Failed"
                                       ? "bg-red-500"
                                       : booking?.paymentId?.paymentStatus ===
-                                        "Pending"
-                                      ? "bg-yellow-500"
-                                      : "bg-green-500"
+                                        "Successful"
+                                      ? "bg-green-500"
+                                      : "bg-yellow-500"
                                   } rounded-full`}
                                 ></div>
                                 <span
@@ -1453,12 +1453,13 @@ function AdminDashboardVisaOnArrivalPage() {
                                     "Failed"
                                       ? "text-red-500"
                                       : booking?.paymentId?.paymentStatus ===
-                                        "Pending"
-                                      ? "text-yellow-500"
-                                      : "text-green-500"
+                                        "Successful"
+                                      ? "text-green-500"
+                                      : "text-yellow-500"
                                   }`}
                                 >
-                                  {booking?.paymentId?.paymentStatus}
+                                  {booking?.paymentId?.paymentStatus ??
+                                    "Pending"}
                                 </span>
                               </div>
 
@@ -1489,7 +1490,7 @@ function AdminDashboardVisaOnArrivalPage() {
                           ))}
                         </>
                       )}
-                      {visaOnArrivalBookings?.length < 1 && (
+                      {!isLoading && visaOnArrivalBookings?.length < 1 && (
                         <div className="flex justify-center items-center w-full">
                           <p className="text-sm">
                             There are no visa on arrival bookings for now.

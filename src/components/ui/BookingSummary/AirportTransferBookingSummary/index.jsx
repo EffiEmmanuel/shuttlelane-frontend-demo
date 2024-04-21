@@ -144,7 +144,8 @@ export default function AirportTransferBookingSummary() {
 
   // Personal Details Form Fields
   const [selectedTitle, setSelectedTitle] = useState();
-  const [fullName, setFullName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();
   const [flightNumber, setFlightNumber] = useState();
@@ -361,7 +362,11 @@ export default function AirportTransferBookingSummary() {
                   <FaRegCheckCircle
                     size={20}
                     className={`${
-                      selectedTitle && fullName && phoneNumber && email
+                      selectedTitle &&
+                      firstName &&
+                      lastName &&
+                      phoneNumber &&
+                      email
                         ? "text-green-500"
                         : "text-gray-400"
                     }`}
@@ -388,8 +393,10 @@ export default function AirportTransferBookingSummary() {
               <PersonalDetailsForm
                 selectedTitle={selectedTitle}
                 setSelectedTitle={setSelectedTitle}
-                fullName={fullName}
-                setFullName={setFullName}
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastName={setLastName}
                 phoneNumber={phoneNumber}
                 setPhoneNumber={setPhoneNumber}
                 email={email}
@@ -407,7 +414,8 @@ export default function AirportTransferBookingSummary() {
             isPaymentDisabled={
               !currentVehicleClass ||
               !selectedTitle ||
-              !fullName ||
+              !firstName ||
+              !lastName ||
               !phoneNumber ||
               !email ||
               !flightNumber ||
@@ -416,7 +424,8 @@ export default function AirportTransferBookingSummary() {
                 : false
             }
             selectedTitle={selectedTitle}
-            fullName={fullName}
+            firstName={firstName}
+            lastName={lastName}
             phoneNumber={phoneNumber}
             email={email}
             flightNumber={flightNumber}

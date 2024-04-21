@@ -26,8 +26,6 @@ export default function TravelInformationForm({
   setFlightNumber,
   countryOfDeparture,
   setCountryOfDeparture,
-  departureDate,
-  setDepartureDate,
   arrivalDate,
   setArrivalDate,
   portOfEntry,
@@ -112,30 +110,6 @@ export default function TravelInformationForm({
 
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
-          <label htmlFor="departureDate" className="text-xs text-gray-500">
-            Departure Date
-          </label>
-          <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
-            <div className="w-full flex items-center h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm">
-              <div className="w-full">
-                <DatePicker
-                  locale={enGB}
-                  value={departureDate}
-                  appearance="subtle"
-                  onChange={(date) => {
-                    setDepartureDate(date);
-                  }}
-                  placeholder="Departure Date"
-                  style={{
-                    backgroundColor: "transparent",
-                  }}
-                  className="text-sm w-full bg-transparent text-shuttlelaneBlack"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="ArrivalDate" className="text-xs text-gray-500">
             Arrival Date
           </label>
@@ -159,9 +133,7 @@ export default function TravelInformationForm({
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="portOfEntry" className="text-xs text-gray-500">
             Port Of Entry
@@ -175,7 +147,9 @@ export default function TravelInformationForm({
             className="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
           />
         </div>
+      </div>
 
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between lg:items-center">
         <div className="w-full flex flex-col gap-y-1 lg:w-[50%]">
           <label htmlFor="durationOfStay" className="text-xs text-gray-500">
             Duration Of Stay (In Days)
@@ -262,7 +236,6 @@ export default function TravelInformationForm({
               !airline ||
               !flightNumber ||
               !countryOfDeparture ||
-              !departureDate ||
               !arrivalDate ||
               !portOfEntry ||
               !durationOfStay

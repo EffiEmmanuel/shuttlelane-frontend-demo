@@ -40,6 +40,7 @@ import trustpilot from "../../assets/logos/trustpilot.svg";
 import appstoreDownload from "../../assets/logos/downloadAppstore.svg";
 import playstoreDownload from "../../assets/logos/downloadPlaystore.svg";
 import whatsappLogo from "../../assets/logos/whatsapp-icon.png";
+import { FaPassport } from "react-icons/fa6";
 
 function HomePage() {
   // SERVICE STATES
@@ -196,7 +197,7 @@ function HomePage() {
                   : "text-white bg-transparent border-white"
               } transition-all border-dashed border-[1.2px] lg:border-[.5px]`}
             >
-              <BsAirplane size={16} />
+              <FaPassport size={16} />
               <p className="text-sm">Visa On Arrival</p>
             </button>
           </div>
