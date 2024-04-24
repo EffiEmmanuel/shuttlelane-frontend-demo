@@ -122,6 +122,26 @@ function AdminDashboardAdminAccountsPage() {
   const [username, setUsername] = useState();
   const [role, setRole] = useState();
 
+  // Access control
+  const [overview, setOverview] = useState(true);
+  const [assignPartner, setAssignPartner] = useState(false);
+  const [deleteBooking, setDeleteBooking] = useState(false);
+  const [addBooking, setAddBooking] = useState(false);
+  const [airportTransfer, setAirportTransfer] = useState(false);
+  const [carRental, setCarRental] = useState(false);
+  const [priorityPass, setPriorityPass] = useState(false);
+  const [visaOnArrival, setVisaOnArrival] = useState(false);
+  const [citiesAndAirports, setCitiesAndAirports] = useState(false);
+  const [manageAdminAccounts, setManageAdminAccounts] = useState(false);
+  const [manageUsers, setManageUsers] = useState(false);
+  const [manageDrivers, setManageDrivers] = useState(false);
+  const [manageVendors, setManageVendors] = useState(false);
+  const [pushNotifications, setPushNotifications] = useState(false);
+  const [bulkEmail, setBulkEmail] = useState(false);
+  const [bookingRates, setBookingRates] = useState(false);
+  const [exchangeRates, setExchangeRates] = useState(false);
+  const [blog, setBlog] = useState(false);
+
   // Role options
   const roleOptions = [
     { value: "Super Admin", label: "Super Admin" },
@@ -141,6 +161,26 @@ function AdminDashboardAdminAccountsPage() {
         email,
         role: role?.value,
         username,
+        accessRights: {
+          overview,
+          assignPartner,
+          deleteBooking,
+          addBooking,
+          airportTransfer,
+          carRental,
+          priorityPass,
+          visaOnArrival,
+          citiesAndAirports,
+          manageAdminAccounts,
+          manageUsers,
+          manageDrivers,
+          manageVendors,
+          pushNotifications,
+          bulkEmail,
+          bookingRates,
+          exchangeRates,
+          blog,
+        },
       })
     );
 
@@ -158,6 +198,87 @@ function AdminDashboardAdminAccountsPage() {
     );
   }
 
+  useEffect(() => {
+    switch (role?.value) {
+      case "Super Admin":
+        setAssignPartner(true);
+        setDeleteBooking(true);
+        setAddBooking(true);
+        setAirportTransfer(true);
+        setCarRental(true);
+        setPriorityPass(true);
+        setVisaOnArrival(true);
+        setCitiesAndAirports(true);
+        setManageAdminAccounts(true);
+        setManageUsers(true);
+        setManageDrivers(true);
+        setManageVendors(true);
+        setPushNotifications(true);
+        setBulkEmail(true);
+        setBookingRates(true);
+        setExchangeRates(true);
+        setBlog(true);
+        break;
+      case "Admin":
+        setAssignPartner(false);
+        setDeleteBooking(false);
+        setAddBooking(true);
+        setAirportTransfer(true);
+        setCarRental(true);
+        setPriorityPass(true);
+        setVisaOnArrival(true);
+        setCitiesAndAirports(false);
+        setManageAdminAccounts(false);
+        setManageUsers(true);
+        setManageDrivers(true);
+        setManageVendors(true);
+        setPushNotifications(true);
+        setBulkEmail(true);
+        setBookingRates(false);
+        setExchangeRates(false);
+        setBlog(true);
+        break;
+      case "Blogger":
+        setAssignPartner(false);
+        setDeleteBooking(false);
+        setAddBooking(false);
+        setAirportTransfer(false);
+        setCarRental(false);
+        setPriorityPass(false);
+        setVisaOnArrival(false);
+        setCitiesAndAirports(false);
+        setManageAdminAccounts(false);
+        setManageUsers(false);
+        setManageDrivers(false);
+        setManageVendors(false);
+        setPushNotifications(false);
+        setBulkEmail(false);
+        setBookingRates(false);
+        setExchangeRates(false);
+        setBlog(true);
+        break;
+      default:
+        setAssignPartner(false);
+        setDeleteBooking(false);
+        setAddBooking(false);
+        setAirportTransfer(false);
+        setCarRental(false);
+        setPriorityPass(false);
+        setVisaOnArrival(false);
+        setCitiesAndAirports(false);
+        setManageAdminAccounts(false);
+        setManageUsers(false);
+        setManageDrivers(false);
+        setManageVendors(false);
+        setPushNotifications(false);
+        setBulkEmail(false);
+        setBookingRates(false);
+        setExchangeRates(false);
+        setBlog(false);
+        break;
+    }
+  }, [role]);
+
   return (
     <div className="">
       <Helmet>
@@ -173,7 +294,7 @@ function AdminDashboardAdminAccountsPage() {
         onRequestClose={() => setIsCreateAdminModalOpen(false)}
         className="flex h-full min-h-screen justify-center items-center lg:px-24 px-7"
       >
-        <div className="bg-white shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10">
+        <div className="overflow-y-scroll bg-white shadow-lg rounded-lg text-shuttlelaneBlack lg:w-2/4 w-full p-7 px-10 max-h-[90vh] shuttlelaneScrollbar">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold">Create Admin Account</h4>
 
@@ -188,7 +309,7 @@ function AdminDashboardAdminAccountsPage() {
             <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
               {/* First Name */}
               <div className="w-full flex flex-col gap-y-1">
-                <label htmlFor="firstName" className="text-sm">
+                <label htmlFor="firstName" className="cursor-pointertext-sm">
                   First Name
                 </label>
                 <input
@@ -202,7 +323,7 @@ function AdminDashboardAdminAccountsPage() {
               </div>
               {/* Last Name */}
               <div className="w-full flex flex-col gap-y-1">
-                <label htmlFor="lastName" className="text-sm">
+                <label htmlFor="lastName" className="cursor-pointertext-sm">
                   Last Name
                 </label>
                 <input
@@ -216,7 +337,7 @@ function AdminDashboardAdminAccountsPage() {
               </div>
               {/* Email */}
               <div className="w-full flex flex-col gap-y-1">
-                <label htmlFor="email" className="text-sm">
+                <label htmlFor="email" className="cursor-pointertext-sm">
                   Email Address
                 </label>
                 <input
@@ -230,7 +351,7 @@ function AdminDashboardAdminAccountsPage() {
               </div>
               {/* Username */}
               <div className="w-full flex flex-col gap-y-1">
-                <label htmlFor="username" className="text-sm">
+                <label htmlFor="username" className="cursor-pointertext-sm">
                   Username
                 </label>
                 <input
@@ -290,6 +411,333 @@ function AdminDashboardAdminAccountsPage() {
                   placeholder="Select Role"
                   className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
                 />
+              </div>
+
+              {/* Access Control */}
+              <div className="w-full flex flex-col gap-y-1">
+                <label htmlFor="accessControl" className="text-sm">
+                  Access Control
+                </label>
+
+                {/* Access Control */}
+                <div className="flex flex-col gap-y-2">
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="overview"
+                      id="overview"
+                      value={overview}
+                      checked={overview}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setOverview(e.target.value);
+                      }}
+                      disabled
+                      className=""
+                    />
+                    <label htmlFor="overview" className="cursor-pointer">
+                      Overview page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="assignPartner"
+                      id="assignPartner"
+                      value={assignPartner}
+                      checked={assignPartner}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setAssignPartner(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="assignPartner" className="cursor-pointer">
+                      Assign partner to booking
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="deleteBooking"
+                      id="deleteBooking"
+                      value={deleteBooking}
+                      checked={deleteBooking}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setDeleteBooking(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="deleteBooking" className="cursor-pointer">
+                      Delete booking
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="addBooking"
+                      id="addBooking"
+                      value={addBooking}
+                      checked={addBooking}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setAddBooking(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="addBooking" className="cursor-pointer">
+                      Add booking page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="airportTransfer"
+                      id="airportTransfer"
+                      value={airportTransfer}
+                      checked={airportTransfer}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setAirportTransfer(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="airportTransfer" className="cursor-pointer">
+                      Airport transfer bookings page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="carRental"
+                      id="carRental"
+                      value={carRental}
+                      checked={carRental}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setCarRental(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="carRental" className="cursor-pointer">
+                      Car rental bookings page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="priorityPass"
+                      id="priorityPass"
+                      value={priorityPass}
+                      checked={priorityPass}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setPriorityPass(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="priorityPass" className="cursor-pointer">
+                      Priority pass bookings page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="visaOnArrival"
+                      id="visaOnArrival"
+                      value={visaOnArrival}
+                      checked={visaOnArrival}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setVisaOnArrival(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="visaOnArrival" className="cursor-pointer">
+                      Visa on arrival bookings page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="citiesAndAirports"
+                      id="citiesAndAirports"
+                      value={citiesAndAirports}
+                      checked={citiesAndAirports}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setCitiesAndAirports(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label
+                      htmlFor="citiesAndAirports"
+                      className="cursor-pointer"
+                    >
+                      Cities and airports page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="manageAdminAccounts"
+                      id="manageAdminAccounts"
+                      value={manageAdminAccounts}
+                      checked={manageAdminAccounts}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setManageAdminAccounts(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label
+                      htmlFor="manageAdminAccounts"
+                      className="cursor-pointer"
+                    >
+                      Manage admin accounts page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="manageUsers"
+                      id="manageUsers"
+                      value={manageUsers}
+                      checked={manageUsers}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setManageUsers(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="manageUsers" className="cursor-pointer">
+                      Manage users page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="manageDrivers"
+                      id="manageDrivers"
+                      value={manageDrivers}
+                      checked={manageDrivers}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setManageDrivers(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="manageDrivers" className="cursor-pointer">
+                      Manage drivers page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="manageVendors"
+                      id="manageVendors"
+                      value={manageVendors}
+                      checked={manageVendors}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setManageVendors(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="manageVendors" className="cursor-pointer">
+                      Manage vendors page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="pushNotifications"
+                      id="pushNotifications"
+                      value={pushNotifications}
+                      checked={pushNotifications}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setPushNotifications(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label
+                      htmlFor="pushNotifications"
+                      className="cursor-pointer"
+                    >
+                      Push notifications page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="bulkEmail"
+                      id="bulkEmail"
+                      value={bulkEmail}
+                      checked={bulkEmail}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setBulkEmail(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="bulkEmail" className="cursor-pointer">
+                      Bulk emails page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="bookingRates"
+                      id="bookingRates"
+                      value={bookingRates}
+                      checked={bookingRates}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setBookingRates(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="bookingRates" className="cursor-pointer">
+                      Booking rates page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="exchangeRates"
+                      id="exchangeRates"
+                      value={exchangeRates}
+                      checked={exchangeRates}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setExchangeRates(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="exchangeRates" className="cursor-pointer">
+                      Exchange rates page
+                    </label>
+                  </div>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <input
+                      type="checkbox"
+                      name="blog"
+                      id="blog"
+                      value={blog}
+                      checked={blog}
+                      onChange={(e) => {
+                        console.log("VALUE::", e.target.value);
+                        setBlog(e.target.value);
+                      }}
+                      className=""
+                    />
+                    <label htmlFor="blog" className="cursor-pointer">
+                      Blog page
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <button

@@ -1472,7 +1472,7 @@ function AdminDashboardAirportTransferPage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {admin?.accessRights?.deleteBooking && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);
@@ -1658,7 +1658,7 @@ function AdminDashboardAirportTransferPage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {admin?.accessRights?.deleteBooking && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);

@@ -29,14 +29,6 @@ function AdminCitiesForm() {
   const [isManageAirports, setIsManageAirports] = useState(false);
   const [isVehicleClasses, setIsVehicleClasses] = useState(false);
 
-  // Form data
-  const cityData = [
-    { value: "Lagos", label: "Lagos" },
-    { value: "Accra", label: "Accra" },
-    { value: "Ogun", label: "Ogun" },
-    { value: "Ibadans", label: "Ibadanss" },
-  ];
-
   const [selectedCity, setSelectedCity] = useState();
   const [selectedCityLabel, setSelectedCityLabel] = useState();
 
@@ -352,7 +344,7 @@ function AdminCitiesForm() {
         {/* Add city button */}
         <button
           onClick={() => setIsAddCityModalOpen(true)}
-          className="w-auto border-dashed border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+          className="w-auto border-dashed border-[.8px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
         >
           <AiOutlinePlus size={16} />
           <span className="text-xs">Add City</span>
@@ -395,7 +387,7 @@ function AdminCitiesForm() {
             </div>
 
             {/* Display cities info here */}
-            <div className="mt-5">
+            <div className="mt-5 shuttlelaneScrollbarHoriz overflow-x-scroll">
               {/* Table header */}
               <div className="maxContent lg:max-w-full lg:min-w-full flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
                 <p className="w-[200px] lg:w-[33.3%] text-xs">City</p>
@@ -438,7 +430,7 @@ function AdminCitiesForm() {
                         )}
                       </p>
 
-                      <div className="w-[180px] lg:w-[33.3%] flex items-center gap-x-3">
+                      <div className="w-[200px] lg:w-[33.3%] flex items-center gap-x-3">
                         {!isLoading ? (
                           <button
                             onClick={() => {

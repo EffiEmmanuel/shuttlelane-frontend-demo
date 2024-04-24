@@ -2150,7 +2150,7 @@ function AdminDashboardHomePage() {
                                   </div>
                                 </div>
                                 <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-3">
-                                  {admin?.role !== "Blogger" && (
+                                  {admin?.accessRights?.assignPartner && (
                                     <button
                                       onClick={() => {
                                         setCurrentBooking(booking);
@@ -2158,7 +2158,7 @@ function AdminDashboardHomePage() {
                                       }}
                                       className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
                                     >
-                                      Assign driver
+                                      Assign partner
                                     </button>
                                   )}
                                   <Link
@@ -2170,7 +2170,7 @@ function AdminDashboardHomePage() {
                                       className="text-shuttlelaneBlack"
                                     />
                                   </Link>
-                                  {admin?.role !== "Blogger" && (
+                                  {admin?.accessRights?.deleteBooking && (
                                     <FaTrash
                                       onClick={() => {
                                         setCurrentBooking(booking);

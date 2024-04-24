@@ -739,7 +739,7 @@ export const updateVehicleClass = createAsyncThunk(
       // If the image was not updated, no need to upload anything to cloudinary
       case "string":
         return fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}/${payload?.cityId}`,
           {
             method: "PUT",
             headers: {
@@ -778,7 +778,7 @@ export const updateVehicleClass = createAsyncThunk(
             console.log("upload successful");
             const data = await response.json();
             return fetch(
-              `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}`,
+              `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}/${payload?.cityId}`,
               {
                 method: "PUT",
                 headers: {
@@ -811,8 +811,9 @@ export const updateVehicleClass = createAsyncThunk(
 export const deleteVehicleClass = createAsyncThunk(
   "admin/vehicle-classes/deleteOne",
   async (payload) => {
+    console.log("hello:", payload);
     return fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vehicle-classes/${payload?.vehicleClassId}/${payload.cityId}`,
       {
         method: "DELETE",
         headers: {
@@ -1249,6 +1250,7 @@ export const fetchBookingByReference = createAsyncThunk(
 export const createAdminAccount = createAsyncThunk(
   "admin/accounts/createNew",
   async (payload) => {
+    console.log("AR:", payload?.accessRights);
     return fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/admin/signup`, {
       method: "POST",
       headers: {
@@ -1261,6 +1263,7 @@ export const createAdminAccount = createAsyncThunk(
         email: payload?.email,
         username: payload?.username,
         role: payload?.role,
+        accessRights: payload?.accessRights,
       }),
     })
       .then((res) => res.json())
@@ -2276,7 +2279,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD CREATE VEHICLE CLASSES", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.vehicleClasses = action.payload?.vehicleClasses;
+          state.currentCity = action.payload?.updatedCity;
         } else {
           toast.error(action.payload?.message);
         }
@@ -2294,7 +2297,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD UPDATE VEHICLE CLASSES", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.vehicleClasses = action.payload?.vehicleClasses;
+          state.currentCity = action.payload?.updatedCity;
           state.cities = action.payload?.cities;
         } else {
           toast.error(action.payload?.message);
@@ -2313,7 +2316,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD DELETE VEHICLE CLASSES", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.vehicleClasses = action.payload?.vehicleClasses;
+          state.currentCity = action.payload?.updatedCity;
         } else {
           toast.error(action.payload?.message);
         }

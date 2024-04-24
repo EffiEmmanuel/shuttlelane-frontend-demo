@@ -1429,7 +1429,7 @@ function AdminDashboardCarRentalPage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {admin?.accessRights?.deleteBooking && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);
@@ -1576,7 +1576,7 @@ function AdminDashboardCarRentalPage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {admin?.accessRights?.deleteBooking && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);

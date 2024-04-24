@@ -1475,7 +1475,7 @@ function AdminDashboardVisaOnArrivalPage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {admin?.accessRights?.deleteBooking && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);

@@ -80,7 +80,13 @@ function AdminVehicleClassesRate() {
       })
     );
 
-    setIsVehicleDetailModalOpen(false);
+    dispatch(
+      fetchCity({
+        cityId: selectedCity?.value,
+        token: token,
+      })
+    );
+    setIsAddVehicleClassModalOpen(false);
   }
 
   // Fetch vehicle classes
@@ -137,6 +143,7 @@ function AdminVehicleClassesRate() {
         luggages: modifiedLuggages,
         basePrice: modifiedbasePrice,
         vehicleClassId: currentVehicleClass?._id,
+        cityId: selectedCity?.value,
       })
     );
     setIsVehicleDetailModalOpen(false);
@@ -144,7 +151,18 @@ function AdminVehicleClassesRate() {
   async function handleDeleteVehicleClass(e) {
     e.preventDefault();
     dispatch(
-      deleteVehicleClass({ token, vehicleClassId: currentVehicleClass?._id })
+      deleteVehicleClass({
+        token,
+        vehicleClassId: currentVehicleClass?._id,
+        cityId: selectedCity?.value,
+      })
+    );
+
+    dispatch(
+      fetchCity({
+        cityId: selectedCity?.value,
+        token: token,
+      })
     );
     setIsVehicleDetailModalOpen(false);
   }

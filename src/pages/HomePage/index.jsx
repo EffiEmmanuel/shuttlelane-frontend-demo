@@ -420,7 +420,7 @@ function HomePage() {
 
           <div className="mt-10">
             <CustomerReviews />
-            <div className="flex flex-row justify-center items-center gap-10 relative z-20">
+            <div className="flex flex-row justify-center items-center gap-10 relative z-[10]">
               <Link
                 to="https://www.trustpilot.com/review/shuttlelane.com"
                 target="_blank"

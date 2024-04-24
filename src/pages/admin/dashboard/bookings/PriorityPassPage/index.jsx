@@ -1465,7 +1465,7 @@ function AdminDashboardPriorityPassPage() {
                               />
                             </Link>
 
-                            {admin?.role !== "Blogger" && (
+                            {admin?.accessRights?.deleteBooking && (
                               <FaTrash
                                 onClick={() => {
                                   setCurrentBooking(booking);
@@ -1652,7 +1652,7 @@ function AdminDashboardPriorityPassPage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {admin?.accessRights?.deleteBooking && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);
