@@ -19,7 +19,10 @@ export default function WhatsappIcon(props) {
         props?.pageHasFloatingIcon ? "bottom-24" : "bottom-7"
       } right-7 h-auto`}
     >
-      <Link to="https://wa.link/9patdd" target="_blank">
+      <Link
+        to="https://api.whatsapp.com/send?phone=2349030009108&text=Hello%20Shuttlelane"
+        target="_blank"
+      >
         <img
           src={whatsappLogo}
           alt="Send Shuttlelane a message on Whatsapp"

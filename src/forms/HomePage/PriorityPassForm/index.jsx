@@ -199,7 +199,7 @@ function PriorityPassForm() {
                           // fontSize: ".75rem",
                         }),
                       }}
-                      placeholder="Select City"
+                      placeholder="Select Destination City"
                     />
                   </div>
                 </div>

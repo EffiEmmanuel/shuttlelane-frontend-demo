@@ -9,7 +9,7 @@ import { RiWhatsappFill } from "react-icons/ri";
 import downloadFromPlaystore from "../../../assets/logos/downloadPlaystore.svg";
 import downloadFromAppstore from "../../../assets/logos/downloadAppstore.svg";
 import { Link } from "react-router-dom";
-import { AiFillInstagram } from "react-icons/ai";
+import { AiFillFacebook, AiFillInstagram } from "react-icons/ai";
 
 function Footer() {
   return (
@@ -146,16 +146,19 @@ function Footer() {
       <div className="lg:px-14 px-4 flex lg:justify-between lg:flex-row">
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-3">
-            <Link
-              to="https://www.instagram.com/shuttlelane/?hl=en"
-              target="_blank"
-            >
+            <Link to="https://www.instagram.com/shuttlelane/" target="_blank">
               <AiFillInstagram size={20} className="text-gray-300" />
             </Link>
-            <Link to="https://twitter.com/shuttlelane?lang=en" target="_blank">
+            <Link to="https://www.facebook.com/shuttlelane1" target="_blank">
+              <AiFillFacebook size={20} className="text-gray-300" />
+            </Link>
+            <Link to="https://www.twitter.com/shuttlelane" target="_blank">
               <FaXTwitter size={20} className="text-gray-300" />
             </Link>
-            <Link to="https://wa.link/9patdd" target="_blank">
+            <Link
+              to="https://api.whatsapp.com/send?phone=2349030009108&text=Hello%20Shuttlelane"
+              target="_blank"
+            >
               <RiWhatsappFill size={20} className="text-gray-300" />
             </Link>
           </div>
