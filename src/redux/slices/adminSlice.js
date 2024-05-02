@@ -490,19 +490,35 @@ export const deleteCurrency = createAsyncThunk(
 
 // RATE PER MILE
 // FUNCTION: This function fetches the rate per mile
-export const fetchRatePerMile = createAsyncThunk(
+export const fetchRatesPerMile = createAsyncThunk(
   "admin/rate-per-mile/get",
   async (token) => {
+    console.log("token:", token);
+    return fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/rate-per-mile`, {
+      headers: {
+        token: `Bearer ${JSON.parse(token)}`,
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH RATE PER MILE ERROR:", err));
+  }
+);
+// FUNCTION: This function deletes a rate
+export const deleteRatePerMile = createAsyncThunk(
+  "admin/rate-per-mile/deleteOne",
+  async (payload) => {
     return fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/booking/rate-per-mile`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/rate-per-mile/${payload?._id}`,
       {
+        method: "DELETE",
         headers: {
-          token: `Bearer ${JSON.parse(token)}`,
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
         },
       }
     )
       .then((res) => res.json())
-      .catch((err) => console.log("FETCH RATE PER MILE ERROR:", err));
+      .catch((err) => console.log("DELETE RATE PER MILE ERROR:", err));
   }
 );
 // FUNCTION: This function creates a new currency
@@ -518,6 +534,7 @@ export const setRatePerMile = createAsyncThunk(
       body: JSON.stringify({
         rate: payload?.rate,
         mile: payload?.mile,
+        city: payload?.city,
       }),
     })
       .then((res) => res.json())
@@ -1635,7 +1652,7 @@ export const adminSlice = createSlice({
     currencies: null,
 
     // The following state is for rate per mile management
-    ratePerMile: null,
+    ratesPerMile: null,
 
     // The following states are for visa on arrival rates management
     visaOnArrivalRates: null,
@@ -2110,16 +2127,16 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
-      }) // Fetch Rate Per Mile AsyncThunk states
-      .addCase(fetchRatePerMile.pending, (state) => {
+      }) // Fetch Rates Per Mile AsyncThunk states
+      .addCase(fetchRatesPerMile.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchRatePerMile.fulfilled, (state, action) => {
+      .addCase(fetchRatesPerMile.fulfilled, (state, action) => {
         console.log("ACTION.PAYLOAD FETCH RATE PER MILE", action.payload);
-        state.ratePerMile = action.payload?.ratePerMile;
+        state.ratesPerMile = action.payload?.ratesPerMile;
         state.isLoading = false;
       })
-      .addCase(fetchRatePerMile.rejected, (state) => {
+      .addCase(fetchRatesPerMile.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
@@ -2131,13 +2148,32 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD SET RATE PER MILE", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.ratePerMile = action.payload?.ratePerMile;
+          state.ratesPerMile = action.payload?.ratesPerMile;
         } else {
           toast.error(action.payload?.message);
         }
         state.isLoading = false;
       })
       .addCase(setRatePerMile.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Delete Rate Per Mile AsyncThunk states
+      .addCase(deleteRatePerMile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteRatePerMile.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DELETE RATE PER MILE", action.payload);
+        state.ratesPerMile = action.payload?.ratesPerMile;
+        if (action.payload?.status == 201) {
+          toast.success(action.payload?.message);
+          state.ratesPerMile = action.payload?.ratesPerMile;
+        } else {
+          toast.error(action.payload?.message);
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteRatePerMile.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

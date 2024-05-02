@@ -15,9 +15,10 @@ import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import AdminAddBookingForm from "../../../../../forms/admin/AdminAddBookingForm";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  fetchCities,
   fetchCurrencies,
   fetchEnquiries,
-  fetchRatePerMile,
+  fetchRatesPerMile,
   markEnquiryAsRead,
   markEnquiryAsUnread,
   setRatePerMile,
@@ -34,20 +35,35 @@ import AdminVehicleClassesRate from "../../../../../components/ui/Admin/Dashboar
 import AdminCarRates from "../../../../../components/ui/Admin/Dashboard/rates/CarRates";
 import AdminPriorityPassRates from "../../../../../components/ui/Admin/Dashboard/rates/PriorityPassRates";
 import { Helmet } from "react-helmet";
+import { AiFillDelete } from "react-icons/ai";
 
 function AdminDashboardBookingRatesPage() {
   // Mobile navbar handler
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
-  const { token, isLoading, currencies, ratePerMile } = useSelector(
-    (store) => store.admin
-  );
+  const { token, isLoading, currencies, ratePerMile, ratesPerMile, cities } =
+    useSelector((store) => store.admin);
   const dispatch = useDispatch();
 
   // Fetch enquiries
   useEffect(() => {
     dispatch(fetchEnquiries(token));
+    dispatch(fetchCities(token));
   }, [token]);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
 
   // Page options
   const [isRatePerMile, setIsRatePerMile] = useState(true);
@@ -59,6 +75,7 @@ function AdminDashboardBookingRatesPage() {
   // Form Fields
   const [rate, setRate] = useState();
   const [mile, setMile] = useState();
+  const [selectedCity, setSelectedCity] = useState();
 
   // FUNCTION: Handle save / set rate per mile
   async function handleSetRatePerMile(e) {
@@ -74,34 +91,17 @@ function AdminDashboardBookingRatesPage() {
   useEffect(() => {
     setRate(ratePerMile?.rate);
     setMile(ratePerMile?.mile);
+    setSelectedCity({
+      value: ratePerMile?.city?._id,
+      label: ratePerMile?.city?.cityName,
+    });
 
     console.log("RATE PER MILE::::::::::", ratePerMile);
   }, [ratePerMile]);
 
-  // Calculate Exchange Rate
-  const [conversionRates, setConversionRates] = useState();
-  function updateConversionRate() {
-    let convertedRates = [];
-    currencies?.forEach((currency) => {
-      console.log("CURRENCY:", currency);
-      const exchangeRate = calculateExchangeRate(rate, currency?.exchangeRate);
-      convertedRates?.push({
-        rate: exchangeRate,
-        currencySymbol: currency?.symbol,
-      });
-    });
-
-    setConversionRates(convertedRates);
-    console.log("HI::", convertedRates);
-  }
-  useEffect(() => {
-    updateConversionRate();
-  }, [rate, currencies]);
-
   //   Fetch currencies and rate per mile
   useEffect(() => {
     dispatch(fetchCurrencies(token));
-    dispatch(fetchRatePerMile(token));
   }, [token]);
 
   return (

@@ -69,6 +69,7 @@ function AdminCitiesForm() {
   const [airportLocation, setAirportLocation] = useState();
   const airportLocationRef = useRef(null);
   const [airportLocationInput, setAirportLocationInput] = useState();
+  const [airportDisplayName, setAirportDisplayName] = useState();
 
   // FUNCTION: Handles adding airports to the city array
   function handleAddAirportToCity(
@@ -76,8 +77,12 @@ function AdminCitiesForm() {
     airportArrayArray,
     airportArrayArraySetter
   ) {
-    if (airportToAdd.trim() != "") {
+    console.log("AIRPORT TO ADD:", airportToAdd);
+    if (airportToAdd?.airportName.trim() != "") {
       airportArrayArraySetter([...airportArrayArray, airportToAdd]);
+      setAirportDisplayName("");
+      setAirportLocationInput("");
+      setAirportLocation();
     } else {
       toast.info(
         "Cannot perform operation on an empty string. You must specify an airport."
@@ -115,6 +120,7 @@ function AdminCitiesForm() {
 
   async function handleUpdateCity(e) {
     e.preventDefault();
+    console.log("MODIFIED CITY AIRPORTS:", modifiedCityAirports);
     dispatch(
       updateCity({
         cityId: currentClickedCity?._id,
@@ -222,7 +228,9 @@ function AdminCitiesForm() {
                 <div className="flex items-center flex-wrap gap-4 my-2">
                   {modifiedCityAirports?.map((modifiedCityAirport) => (
                     <div className="bg-shuttlelanePurple text-white h-10 p-2 flex items-center justify-between rounded-md">
-                      <span className="text-sm">{modifiedCityAirport}</span>
+                      <span className="text-sm">
+                        {modifiedCityAirport?.airportDisplayName}
+                      </span>
                       <FaXmark
                         size={16}
                         onClick={() =>
@@ -243,32 +251,58 @@ function AdminCitiesForm() {
                     </div>
                   )}
                 </div>
-                <div className="flex items-center">
-                  <div className="relative w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg">
-                    <LocationInput
-                      placeholder="Eg. Murtala Muhammed International Airport"
-                      setLocation={setAirportLocation}
-                      location={airportLocation}
-                      locationRef={airportLocationRef}
-                      locationInput={airportLocationInput}
-                      setLocationInput={setAirportLocationInput}
+
+                <div className="flex flex-col gap-y-3 my-4 border-[3px] border-dashed border-gray-300 rounded-lg p-5">
+                  <div className="w-full flex flex-col gap-y-1">
+                    <label htmlFor="airportDisplayName" className="text-xs">
+                      Airport Display Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Murtala Muhammed International Airport (MMIA 1)"
+                      name="airportDisplayName"
+                      value={airportDisplayName}
+                      onChange={(e) => setAirportDisplayName(e.target.value)}
+                      className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
                     />
                   </div>
+                  <div className="w-full flex flex-col gap-y-1">
+                    <label htmlFor="airportName" className="text-xs">
+                      Airport Name
+                    </label>
+                    <div className="flex items-center">
+                      <div className="relative w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg">
+                        <LocationInput
+                          placeholder="Eg. Murtala Muhammed International Airport"
+                          setLocation={setAirportLocation}
+                          location={airportLocation}
+                          locationRef={airportLocationRef}
+                          locationInput={airportLocationInput}
+                          setLocationInput={setAirportLocationInput}
+                        />
+                      </div>
 
-                  <button
-                    type="button"
-                    disabled={isLoading}
-                    onClick={(e) =>
-                      handleAddAirportToCity(
-                        airportLocationInput,
-                        modifiedCityAirports,
-                        setModifiedCityAirports
-                      )
-                    }
-                    className="w-[15%] flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
-                  >
-                    Add
-                  </button>
+                      <button
+                        type="button"
+                        disabled={isLoading}
+                        onClick={(e) =>
+                          handleAddAirportToCity(
+                            {
+                              airportName: airportLocationInput,
+                              airportDisplayName,
+                              lng: airportLocation?.longitude,
+                              lat: airportLocation?.latitude,
+                            },
+                            modifiedCityAirports,
+                            setModifiedCityAirports
+                          )
+                        }
+                        className="w-[15%] flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <button
@@ -422,7 +456,9 @@ function AdminCitiesForm() {
                       >
                         <ol className="list-decimal">
                           {city?.airports?.map((airport) => (
-                            <li className="text-xs">{airport}</li>
+                            <li className="text-xs">
+                              {airport?.airportDisplayName}
+                            </li>
                           ))}
                         </ol>
                         {city?.airports?.length < 1 && (

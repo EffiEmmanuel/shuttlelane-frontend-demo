@@ -124,6 +124,7 @@ export default function AirportTransferBookingSummary() {
         calculateTotal({
           pickupLocation: bookingDetails?.pickupLocation,
           dropoffLocation: bookingDetails?.dropoffLocation,
+          city: bookingDetails?.selectedCity?.value,
           currentVehicleClass,
           isAddPriorityPass,
           numberOfPasses,

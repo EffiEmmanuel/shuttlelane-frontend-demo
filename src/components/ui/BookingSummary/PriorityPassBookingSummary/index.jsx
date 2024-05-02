@@ -137,6 +137,7 @@ export default function PriorityPassBookingSummary() {
           userCurrency: userCurrency,
           passSelected: passSelected,
           passengers: passengers,
+          city: citySelected?.value ?? bookingDetails?.selectedCity?.value,
         })
       );
     }
@@ -196,6 +197,7 @@ export default function PriorityPassBookingSummary() {
           userCurrency: userCurrency,
           passSelected: bookingDetails?.passSelected,
           passengers: bookingDetails?.passengers,
+          city: citySelected?.value ?? bookingDetails?.selectedCity?.value,
         })
       );
     }

@@ -17,14 +17,27 @@ function LocationInput({
   const [isAirportSelectClicked, setIsAirportSelectClicked] = useState(false);
 
   // Programmatically set the value of the input
-  const setAutocompleteValue = (value) => {
+  const setAutocompleteValue = (value, lng, lat) => {
     console.log("LOCATION REF 1:", locationRef.current);
     if (locationRef.current) {
       setIsAirportSelectClicked(true);
       console.log("CURRENT LOCATION:", value);
       locationRef.current.value = value;
       setLocationInput(value);
-      //   setIsAirportSelectClicked(false);
+      setIsAirportSelectClicked(false);
+
+      // SET THE LOCATION
+      // The location has to be an object that carries both the latitude and longitude because
+      // these informations will be used to display the location on the map.
+      setLocation({
+        address: value,
+        latitude: lat,
+        longitude: lng,
+      });
+
+      setLocationInput(value);
+      console.log("LOCATION INPUT OOOOOOOOOOOOOOOOOOOOO:::::", locationInput);
+      console.log("LOCATION OOOOOOOOOOOOOOOOOOOOO:::::", location);
     }
   };
 
@@ -51,7 +64,11 @@ function LocationInput({
                 onClick={() => {
                   console.log("Hello from here oooooo");
                   setIsAirportSelectClicked(true);
-                  setAutocompleteValue(`${airport}`);
+                  setAutocompleteValue(
+                    `${airport?.airportName}`,
+                    airport?.lng,
+                    airport?.lat
+                  );
                 }}
                 className="cursor-pointer flex items-center gap-x-3"
               >
@@ -66,9 +83,11 @@ function LocationInput({
 
                 <div className="flex flex-col gap-y-1">
                   <p className="font-semibold text-gray-500 text-sm lg:text-md">
-                    {airport}
+                    {airport?.airportDisplayName}
                   </p>
-                  <p className="text-xs text-gray-500">{airport}</p>
+                  <p className="text-xs text-gray-500">
+                    {airport?.airportName}
+                  </p>
                 </div>
               </div>
             ))}
