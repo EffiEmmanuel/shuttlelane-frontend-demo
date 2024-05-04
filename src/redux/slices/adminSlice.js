@@ -146,7 +146,7 @@ export const fetchCity = createAsyncThunk(
   "admin/cities/getOne",
   async (payload) => {
     return fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/admin/cities/${payload?.cityId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cities/${payload?.cityId}?isAdminRequest=true`,
       {
         headers: {
           token: `Bearer ${JSON.parse(payload?.token)}`,
@@ -430,7 +430,8 @@ export const createNewCurrency = createAsyncThunk(
         },
         body: JSON.stringify({
           currencyLabel: payload?.currencyLabel,
-          exchangeRate: payload?.exchangeRate,
+          exchangeRatePercentage: payload?.exchangeRatePercentage,
+          additionalRate: payload?.additionalRate,
           currencySymbol: payload?.currencySymbol,
           currencyAlias: payload?.currencyAlias,
           currencyColor: payload?.currencyColor,
@@ -457,7 +458,8 @@ export const updateCurrency = createAsyncThunk(
         },
         body: JSON.stringify({
           currencyLabel: payload?.currencyLabel,
-          exchangeRate: payload?.exchangeRate,
+          exchangeRatePercentage: payload?.exchangeRatePercentage,
+          additionalRate: payload?.additionalRate,
           symbol: payload?.symbol,
           alias: payload?.alias,
           supportedCountries: payload?.supportedCountries,
@@ -874,6 +876,7 @@ export const createCar = createAsyncThunk(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        city: payload?.city,
         name: payload?.name,
         price: payload?.price,
       }),
@@ -887,7 +890,7 @@ export const updateCar = createAsyncThunk(
   "admin/cars/updateOne",
   async (payload) => {
     return fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/admin/cars/${payload?.carId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cars/${payload?.carId}/${payload?.city}`,
       {
         method: "PUT",
         headers: {
@@ -908,8 +911,9 @@ export const updateCar = createAsyncThunk(
 export const deleteCar = createAsyncThunk(
   "admin/car/deleteOne",
   async (payload) => {
+    console.log("city payload:", payload);
     return fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/admin/cars/${payload?.carId}`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/cars/${payload?.carId}/${payload?.city}`,
       {
         method: "DELETE",
         headers: {
@@ -2383,7 +2387,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD CREATE CAR", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.cars = action.payload?.cars;
+          state.currentCity = action.payload?.updatedCity;
         } else {
           toast.error(action.payload?.message);
         }
@@ -2401,7 +2405,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD UPDATE CAR", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.cars = action.payload?.cars;
+          state.currentCity = action.payload?.updatedCity;
         } else {
           toast.error(action.payload?.message);
         }
@@ -2419,7 +2423,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD DELETE CAR", action.payload);
         if (action.payload?.status == 201) {
           toast.success(action.payload?.message);
-          state.cars = action.payload?.cars;
+          state.currentCity = action.payload?.updatedCity;
         } else {
           toast.error(action.payload?.message);
         }

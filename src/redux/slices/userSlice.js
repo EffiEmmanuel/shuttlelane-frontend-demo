@@ -480,6 +480,7 @@ export const userSlice = createSlice({
     upcomingBookings: null,
 
     // These states are for the booking forms on the homepage
+    currentCity: null,
     cities: null,
     // These states holds the booking details from the homepage so as to avoid url injection
     bookingType: "",
@@ -764,7 +765,7 @@ export const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchCity.fulfilled, (state, action) => {
-        console.log("ACTION.PAYLOAD", action.payload);
+        console.log("ACTION.PAYLOAD FETCH CITY", action.payload);
         state.currentCity = action.payload?.city;
         state.vehicleClasses = action.payload?.city?.vehicleClasses;
         state.isLoading = false;

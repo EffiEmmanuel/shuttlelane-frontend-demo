@@ -24,6 +24,7 @@ import {
 } from "react-icons/fa6";
 import Modal from "react-modal";
 import Select from "react-select";
+import ReactCountryFlagsSelect from "react-country-flags-select";
 
 // Images
 import empty from "../../../../../../assets/images/empty.png";
@@ -82,7 +83,7 @@ function AdminVisaOnArrivalRate() {
     dispatch(
       createVisaOnArrivalRate({
         token,
-        country,
+        country: country?.label,
         visaFee,
         isNigerianVisaRequired: isVisaRequired?.value,
         isBiometricsRequired: isBiometricsRequired?.value,
@@ -163,7 +164,7 @@ function AdminVisaOnArrivalRate() {
       updateVisaOnArrivalRate({
         token,
         _id: currentVOARate?._id,
-        country: countryModified,
+        country: countryModified?.label,
         isNigerianVisaRequired: isVisaRequiredModified?.value,
         isBiometricsRequired: isBiometricsRequiredModified?.value,
         visaFee: visaFeeModified,
@@ -341,16 +342,13 @@ function AdminVisaOnArrivalRate() {
                 </label>
 
                 <div className="w-full flex items-center justify-between">
-                  <input
-                    type="text"
-                    placeholder="United States"
-                    name="country"
-                    value={country}
-                    onChange={(e) => {
-                      console.log("RATE:", e.target.value);
-                      setCountry(e.target.value);
-                    }}
-                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                  <ReactCountryFlagsSelect
+                    disabled={isLoading}
+                    selected={country}
+                    onSelect={setCountry}
+                    fullWidth
+                    searchable
+                    classes="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
                   />
                 </div>
               </div>
@@ -513,16 +511,13 @@ function AdminVisaOnArrivalRate() {
                 </label>
 
                 <div className="w-full flex items-center justify-between">
-                  <input
-                    type="text"
-                    placeholder="United States"
-                    name="country"
-                    value={countryModified}
-                    onChange={(e) => {
-                      console.log("RATE:", e.target.value);
-                      setCountryModified(e.target.value);
-                    }}
-                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
+                  <ReactCountryFlagsSelect
+                    disabled={isLoading}
+                    selected={countryModified}
+                    onSelect={setCountryModified}
+                    fullWidth
+                    searchable
+                    classes="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-lg"
                   />
                 </div>
               </div>

@@ -20,6 +20,7 @@ import {
   calculateTotal,
   fetchCars,
   fetchCities,
+  fetchCity,
   fetchPasses,
   fetchVehicleClasses,
   setBookingDetails,
@@ -47,6 +48,7 @@ export default function CarRentalBookingSummary() {
     bookingTotal,
     cars,
     cities,
+    currentCity,
   } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
@@ -118,7 +120,7 @@ export default function CarRentalBookingSummary() {
         calculateTotal({
           bookingType: "Car",
           userCurrency: userCurrency,
-          carSelected: bookingDetails?.carSelected,
+          carSelected: carSelected ?? bookingDetails?.carSelected,
           days: days,
         })
       );
@@ -128,23 +130,8 @@ export default function CarRentalBookingSummary() {
   // Fetch cities and cars
   // Fetch cars and cities
   useEffect(() => {
-    dispatch(fetchCars());
     dispatch(fetchCities());
   }, []);
-
-  // Format cars
-  const [carsData, setCarsData] = useState();
-  useEffect(() => {
-    let updatedCarsData = [];
-    cars?.forEach((car) => {
-      updatedCarsData.push({
-        value: car,
-        label: car?.name,
-      });
-    });
-
-    setCarsData(updatedCarsData);
-  }, [cars]);
 
   // Format cities
   const [citiesData, setCitiesData] = useState();
@@ -159,6 +146,30 @@ export default function CarRentalBookingSummary() {
 
     setCitiesData(updatedCityData);
   }, [cities]);
+
+  // Get current city when selected city changes
+  useEffect(() => {
+    dispatch(fetchCity({ cityId: citySelected?.value }));
+  }, [citySelected]);
+
+  // Format cars
+  const [carsData, setCarsData] = useState();
+  useEffect(() => {
+    let updatedCarsData = [];
+    if (currentCity) {
+      currentCity?.cars?.forEach((car) => {
+        updatedCarsData.push({
+          value: car,
+          label: car?.name,
+        });
+      });
+
+      console.log("CITYCURR 22:::", currentCity);
+      console.log("CARS 22:::", updatedCarsData);
+
+      setCarsData(updatedCarsData);
+    }
+  }, [currentCity]);
 
   // Update airport based on selected city
   const [airports, setAirports] = useState();

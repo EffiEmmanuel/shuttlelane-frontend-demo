@@ -59,17 +59,47 @@ function AdminCarRentalForm() {
   const [selectedCar, setSelectedCar] = useState("");
 
   // Redux store states
-  const { isLoading, token, cities, cars, bookingCurrency, bookingTotal } =
-    useSelector((store) => store.admin);
+  const {
+    isLoading,
+    token,
+    cities,
+    cars,
+    bookingCurrency,
+    bookingTotal,
+    currentCity,
+  } = useSelector((store) => store.admin);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (token) {
       console.log("HELLO FROM HERE:", token);
       dispatch(fetchCities(token));
-      dispatch(fetchCars(token));
     }
   }, [token]);
+
+  // Get current city when selected city changes
+  useEffect(() => {
+    dispatch(fetchCity({ cityId: selectedCity?.value }));
+  }, [selectedCity]);
+
+  // Format cars
+  const [carsData, setCarsData] = useState();
+  useEffect(() => {
+    let updatedCarsData = [];
+    if (currentCity) {
+      currentCity?.cars?.forEach((car) => {
+        updatedCarsData.push({
+          value: car,
+          label: car?.name,
+        });
+      });
+
+      console.log("CITYCURR 22:::", currentCity);
+      console.log("CARS 22:::", updatedCarsData);
+
+      setCarsData(updatedCarsData);
+    }
+  }, [currentCity]);
 
   // Format cities
   const [citiesData, setCitiesData] = useState();
@@ -85,30 +115,6 @@ function AdminCarRentalForm() {
 
     setCitiesData(updatedCityData);
   }, [cities]);
-
-  // Format cars
-  const [carsData, setCarsData] = useState();
-  useEffect(() => {
-    let updatedCarData = [];
-    console.log("CARS FETCHED:", cars);
-    cars?.forEach((car) => {
-      updatedCarData.push({
-        value: car?._id,
-        label: car?.name,
-      });
-    });
-
-    setCarsData(updatedCarData);
-  }, [cars]);
-
-  useEffect(() => {
-    dispatch(
-      fetchCity({
-        cityId: selectedCity?.value,
-        token,
-      })
-    );
-  }, [selectedCity]);
 
   // Title options
   const titleOptions = [

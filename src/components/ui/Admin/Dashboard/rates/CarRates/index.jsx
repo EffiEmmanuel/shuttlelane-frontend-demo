@@ -3,23 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCar,
-  createVisaOnArrivalRate,
   deleteCar,
-  deleteVisaOnArrivalRate,
-  fetchCars,
-  fetchCurrencies,
-  fetchRatePerMile,
-  fetchVisaOnArrivalBaseRates,
-  fetchVisaOnArrivalRates,
-  setRatePerMile,
-  setVisaOnArrivalBaseFees,
+  fetchCities,
+  fetchCity,
   updateCar,
-  updateVisaOnArrivalRate,
 } from "../../../../../../redux/slices/adminSlice";
 import { ImSpinner2 } from "react-icons/im";
-import { calculateExchangeRate } from "../../../../../../util";
 import { ToastContainer, toast } from "react-toastify";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
 import {
   FaHandHoldingDollar,
   FaTrash,
@@ -27,13 +18,22 @@ import {
   FaXmark,
 } from "react-icons/fa6";
 import Modal from "react-modal";
+import Select from "react-select";
 
 // Images
 import empty from "../../../../../../assets/images/empty.png";
+import { BiSolidCity } from "react-icons/bi";
 
 function AdminCarRates() {
-  const { token, isLoading, visaOnArrivalRates, voaBaseFees, cars } =
-    useSelector((store) => store.admin);
+  const {
+    token,
+    isLoading,
+    visaOnArrivalRates,
+    voaBaseFees,
+    cars,
+    cities,
+    currentCity,
+  } = useSelector((store) => store.admin);
   const dispatch = useDispatch();
 
   // Modal states
@@ -42,9 +42,11 @@ function AdminCarRates() {
   const [isAddCarModalOpen, setIsAddCarModalOpen] = useState(false);
 
   // Add Country Form Fields
+  const [city, setCity] = useState();
   const [carName, setCarName] = useState();
   const [price, setPrice] = useState();
 
+  const [selectedCity, setSelectedCity] = useState();
   // FUNCTION: This function handles the creation of a new car
   async function handleAddCar(e) {
     e.preventDefault();
@@ -55,6 +57,7 @@ function AdminCarRates() {
     dispatch(
       createCar({
         token,
+        city: selectedCity?.value,
         name: carName,
         price: price,
       })
@@ -62,11 +65,6 @@ function AdminCarRates() {
 
     setIsAddCarModalOpen(false);
   }
-
-  // Fetch cars
-  useEffect(() => {
-    dispatch(fetchCars(token));
-  }, [token]);
 
   // MODIFY CAR
   const [isCarDetailModalOpen, setIsCarDetailModalOpen] = useState(false);
@@ -91,16 +89,56 @@ function AdminCarRates() {
         carId: currentCar?._id,
         name: carNameModified,
         price: priceModified,
+        city: currentCar?.city,
       })
     );
     setIsCarDetailModalOpen(false);
   }
-  async function handleDeleteCar(e) {
-    e.preventDefault();
-
-    dispatch(deleteCar({ token, carId: currentCar?._id }));
+  async function handleDeleteCar(carId) {
+    dispatch(
+      deleteCar({
+        token,
+        carId: carId,
+        city: currentCar?.city ?? selectedCity?.value,
+      })
+    );
     setIsCarDetailModalOpen(false);
   }
+
+  //   Fetch currencies and rate per mile
+  useEffect(() => {
+    dispatch(fetchCities(token));
+  }, [token]);
+
+  // Format cities
+  const [citiesData, setCitiesData] = useState();
+  useEffect(() => {
+    let updatedCityData = [];
+    cities?.forEach((city) => {
+      updatedCityData.push({
+        value: city?._id,
+        label: city?.cityName,
+      });
+    });
+
+    setCitiesData(updatedCityData);
+  }, [cities]);
+
+  //   useEffect(() => {}, [])
+
+  // This useEffect handles fetching the selected city
+  useEffect(() => {
+    cities.forEach((city) => {
+      if (city?._id == selectedCity?.value) {
+        dispatch(
+          fetchCity({
+            cityId: city?._id,
+            token: token,
+          })
+        );
+      }
+    });
+  }, [selectedCity]);
 
   return (
     <div className="mt-10">
@@ -128,6 +166,48 @@ function AdminCarRates() {
           {/* Add Car */}
           <form className="w-full mt-5">
             <div className="flex flex-col gap-y-5 lg:items-center gap-x-4">
+              <div className="w-full flex flex-col">
+                <label htmlFor="visaFee" className="text-sm">
+                  City
+                </label>
+                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                  <div className="w-full text-shuttlelaneBlack text-sm relative">
+                    <Select
+                      value={city}
+                      onChange={(value) => setCity(value)}
+                      options={citiesData}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused
+                            ? "transparent"
+                            : "transparent",
+                          borderWidth: state.isFocused ? "0" : "0",
+                          backgroundColor: "transparent",
+                          position: "relative",
+                        }),
+
+                        placeholder: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        menuList: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+
+                        input: (baseStyles, state) => ({
+                          ...baseStyles,
+                          // fontSize: ".75rem",
+                        }),
+                      }}
+                      placeholder="Select City"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="w-full flex flex-col">
                 <label htmlFor="name" className="text-sm">
                   Car Name
@@ -274,30 +354,12 @@ function AdminCarRates() {
                     handleUpdateCar(e);
                     setIsCarDetailModalOpen(false);
                   }}
-                  className="w-full lg:w-[50%] flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-lg"
+                  className="w-full flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-shuttlelanePurple focus:outline-none border-gray-400 rounded-lg"
                 >
                   {isLoading ? (
                     <ImSpinner2 size={21} className="animate-spin" />
                   ) : (
                     "Save"
-                  )}
-                </button>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  onClick={(e) => {
-                    handleDeleteCar(e);
-                    setIsCarDetailModalOpen(false);
-                  }}
-                  className="w-full lg:w-[50%] flex justify-center items-center text-sm text-white hover:text-shuttlelaneBlack h-11 p-3 transition-all hover:border-[1px] hover:bg-transparent bg-red-500 focus:outline-none border-gray-400 rounded-lg"
-                >
-                  {isLoading ? (
-                    <ImSpinner2 size={21} className="animate-spin" />
-                  ) : (
-                    <div className="flex items-center gap-x-2">
-                      <FaTrashCan size={16} />
-                      <span className="text-sm">Delete</span>
-                    </div>
                   )}
                 </button>
               </div>
@@ -326,8 +388,59 @@ function AdminCarRates() {
         </button>
       </div>
 
+      <div className="mt-5">
+        {/* City */}
+        <div className="lg:w-[30%] w-full flex flex-col gap-y-1">
+          <label htmlFor="service" className="text-sm">
+            Select City
+          </label>
+          <div className="flex h-11 items-center border-[0.3px] bg-transparent focus:outline-none border-gray-400 py-2 px-2 gap-x-2 w-full rounded-lg">
+            <div className="w-[5%]">
+              <BiSolidCity size={16} className="text-gray-500" />
+            </div>
+
+            <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[90]">
+              <Select
+                value={selectedCity}
+                onChange={(value) => {
+                  setSelectedCity(value);
+                }}
+                options={citiesData}
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    borderColor: state.isFocused
+                      ? "transparent"
+                      : "transparent",
+                    borderWidth: state.isFocused ? "0" : "0",
+                    backgroundColor: "transparent",
+                    position: "relative",
+                  }),
+
+                  placeholder: (baseStyles, state) => ({
+                    ...baseStyles,
+                    fontSize: ".875rem",
+                  }),
+
+                  menuList: (baseStyles, state) => ({
+                    ...baseStyles,
+                    fontSize: ".875rem",
+                  }),
+
+                  input: (baseStyles, state) => ({
+                    ...baseStyles,
+                    fontSize: ".875rem",
+                  }),
+                }}
+                placeholder="Select City"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {isLoading && (
-        <div className="flex flex-col gap-y-5 mt-5">
+        <div className="flex flex-col gap-y-5 mt-5 w-full">
           <ImSpinner2
             size={20}
             className="text-shuttlelanePurple animate-spin"
@@ -340,37 +453,54 @@ function AdminCarRates() {
         <div className="mt-5 w-full lg:overflow-x-hidden overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
           {/* Table header */}
           <div className="maxContent lg:max-w-full lg:min-w-full flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-            <p className="w-[200px] lg:w-[50%] text-xs">Car Name</p>
-            <p className="w-[200px] lg:w-[50%] text-xs">Price per day</p>
+            <p className="w-[200px] lg:w-[33.3%] text-xs">Car Name</p>
+            <p className="w-[200px] lg:w-[33.3%] text-xs">Price per day</p>
+            <p className="w-[200px] lg:w-[33.3%] text-xs">Actions</p>
           </div>
 
           {/* Table body */}
-          {cars?.map((car) => (
-            <div
-              onClick={() => {
-                setIsCarDetailModalOpen(true);
-                setCurrentCar(car);
-              }}
-              className="flex maxContent cursor-pointer lg:max-w-full lg:min-w-full justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4"
-            >
+          {currentCity?.cars?.map((car) => (
+            <div className="flex maxContent cursor-pointer lg:max-w-full lg:min-w-full justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
               <p
-                className={`w-[200px] lg:w-[50%] text-xs ${
+                onClick={() => {
+                  setIsCarDetailModalOpen(true);
+                  setCurrentCar(car);
+                }}
+                className={`w-[200px] lg:w-[33.3%] text-xs ${
                   isLoading && "text-gray-400"
                 }`}
               >
                 {car?.name}
               </p>
               <p
-                className={`w-[200px] lg:w-[50%] text-xs ${
+                onClick={() => {
+                  setIsCarDetailModalOpen(true);
+                  setCurrentCar(car);
+                }}
+                className={`w-[200px] lg:w-[33.3%] text-xs ${
                   isLoading && "text-gray-400"
                 }`}
               >
                 ₦{Intl.NumberFormat("en-US", {}).format(car?.price)}
               </p>
+
+              <p
+                className={`w-[200px] lg:w-[33.3%] text-xs ${
+                  isLoading && "text-gray-400"
+                }`}
+              >
+                <AiFillDelete
+                  onClick={() => {
+                    handleDeleteCar(car?._id);
+                  }}
+                  size={16}
+                  className="text-red-500"
+                />
+              </p>
             </div>
           ))}
 
-          {cars?.length < 1 && (
+          {currentCity?.cars?.length < 1 && (
             <div className="flex flex-col items-center gap-y-5 text-center">
               <img
                 src={empty}

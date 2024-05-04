@@ -259,12 +259,12 @@ function AdminRatePerMile() {
               </button>
 
               <div className="text-left w-full flex flex-col gap-y-1">
-                {conversionRates?.map((conversionRate) => (
+                {/* {conversionRates?.map((conversionRate) => (
                   <small>
                     ₦{rate ?? 0} ~ {conversionRate?.currencySymbol}
                     {isNaN(conversionRate?.rate) ? 0 : conversionRate?.rate}
                   </small>
-                ))}
+                ))} */}
               </div>
             </div>
           </form>
@@ -395,12 +395,12 @@ function AdminRatePerMile() {
               </button>
 
               <div className="text-left w-full flex flex-col gap-y-1">
-                {conversionRates?.map((conversionRate) => (
+                {/* {conversionRates?.map((conversionRate) => (
                   <small>
                     ₦{rate ?? 0} ~ {conversionRate?.currencySymbol}
                     {isNaN(conversionRate?.rate) ? 0 : conversionRate?.rate}
                   </small>
-                ))}
+                ))} */}
               </div>
             </div>
           </form>

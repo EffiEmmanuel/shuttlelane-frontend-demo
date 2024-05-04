@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCars,
   fetchCities,
+  fetchCity,
   setBookingDetails,
 } from "../../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +55,9 @@ function CarRentalForm() {
     { value: "Ibadans", label: "Ibadanss" },
   ];
 
-  const { isLoading, cities, cars } = useSelector((store) => store.user);
+  const { isLoading, cities, cars, currentCity } = useSelector(
+    (store) => store.user
+  );
   const dispatch = useDispatch();
 
   // Fetch cars and cities
@@ -63,21 +66,29 @@ function CarRentalForm() {
     dispatch(fetchCities());
   }, []);
 
+  // Get current city when selected city changes
+  useEffect(() => {
+    dispatch(fetchCity({ cityId: selectedCity?.value }));
+  }, [selectedCity]);
+
   // Format cars
   const [carsData, setCarsData] = useState();
   useEffect(() => {
     let updatedCarsData = [];
-    cars?.forEach((car) => {
-      updatedCarsData.push({
-        value: car,
-        label: car?.name,
+    if (currentCity) {
+      currentCity?.cars?.forEach((car) => {
+        updatedCarsData.push({
+          value: car,
+          label: car?.name,
+        });
       });
-    });
 
-    console.log("CARS:::", updatedCarsData);
+      console.log("CITYCURR 22:::", currentCity);
+      console.log("CARS 22:::", updatedCarsData);
 
-    setCarsData(updatedCarsData);
-  }, [cars]);
+      setCarsData(updatedCarsData);
+    }
+  }, [currentCity]);
 
   // Format cities
   const [citiesData, setCitiesData] = useState();

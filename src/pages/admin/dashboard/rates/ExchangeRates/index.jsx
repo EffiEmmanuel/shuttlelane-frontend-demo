@@ -27,6 +27,7 @@ import { FaXmark } from "react-icons/fa6";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import { Helmet } from "react-helmet";
+import ReactCountryFlagsSelect from "react-country-flags-select";
 
 function AdminDashboardExchangeRatesPage() {
   // Mobile navbar handler
@@ -42,7 +43,9 @@ function AdminDashboardExchangeRatesPage() {
   const [isModifyRateModalOpen, setIsModifyRateModalOpen] = useState(false);
   // Form fields
   const [modifiedCurrencyLabel, setModifiedCurrencyLabel] = useState();
-  const [modifiedExchangeRate, setModifiedExchangeRate] = useState();
+  const [modifiedExchangeRatePercentage, setModifiedExchangeRatePercentage] =
+    useState();
+  const [modifiedAdditionalRate, setModifiedAdditionalRate] = useState();
   const [modifiedCurrencySymbol, setModifiedCurrencySymbol] = useState();
   const [modifiedCurrencyAlias, setModifiedCurrencyAlias] = useState();
   const [modifiedSupportedCountries, setModifiedSupportedCountries] =
@@ -53,7 +56,10 @@ function AdminDashboardExchangeRatesPage() {
   useEffect(() => {
     if (currentCurrency) {
       setModifiedSupportedCountries(currentCurrency?.supportedCountries);
-      setModifiedExchangeRate(currentCurrency?.exchangeRate);
+      setModifiedExchangeRatePercentage(
+        currentCurrency?.exchangeRatePercentage
+      );
+      setModifiedAdditionalRate(currentCurrency?.additionalRate);
       setModifiedCurrencyLabel(currentCurrency?.currencyLabel);
       setModifiedCurrencySymbol(currentCurrency?.symbol);
       setModifiedCurrencyAlias(currentCurrency?.alias);
@@ -63,7 +69,8 @@ function AdminDashboardExchangeRatesPage() {
   // Add Currency Modal
   const [isAddCurrencyModalOpen, setIsAddCurrencyModalOpen] = useState(false);
   const [currencyLabel, setCurrencyLabel] = useState();
-  const [exchangeRate, setExchangeRate] = useState();
+  const [exchangeRatePercentage, setExchangeRatePercentage] = useState();
+  const [additionalRate, setAdditionalRate] = useState();
   const [currencySymbol, setCurrencySymbol] = useState();
   const [currencyAlias, setCurrencyAlias] = useState();
   const [supportedCountries, setSupportedCountries] = useState([]);
@@ -73,11 +80,18 @@ function AdminDashboardExchangeRatesPage() {
   // FUNCTION: Handles creation of a new currency
   async function handleCreateCurrency(e) {
     e.preventDefault();
-    if (!currencyLabel || !exchangeRate || !currencySymbol || !currencyAlias) {
+    if (
+      !currencyLabel ||
+      !exchangeRatePercentage ||
+      !additionalRate ||
+      !currencySymbol ||
+      !currencyAlias
+    ) {
       console.log(
         "VALUES:::::::::",
         currencyLabel,
-        exchangeRate,
+        exchangeRatePercentage,
+        additionalRate,
         currencySymbol,
         currencyAlias
       );
@@ -88,7 +102,8 @@ function AdminDashboardExchangeRatesPage() {
       createNewCurrency({
         token,
         currencyLabel,
-        exchangeRate,
+        exchangeRatePercentage,
+        additionalRate,
         currencySymbol,
         currencyAlias,
         currencyColor,
@@ -102,7 +117,8 @@ function AdminDashboardExchangeRatesPage() {
     e.preventDefault();
     if (
       !modifiedCurrencyLabel ||
-      !modifiedExchangeRate ||
+      !modifiedExchangeRatePercentage ||
+      !modifiedAdditionalRate ||
       !modifiedCurrencySymbol ||
       !modifiedCurrencyAlias
     ) {
@@ -114,7 +130,8 @@ function AdminDashboardExchangeRatesPage() {
         token,
         _id: currentCurrency?._id,
         currencyLabel: modifiedCurrencyLabel,
-        exchangeRate: modifiedExchangeRate,
+        exchangeRatePercentage: modifiedExchangeRatePercentage,
+        additionalRate: modifiedAdditionalRate,
         currencySymbol: modifiedCurrencySymbol,
         currencyAlias: modifiedCurrencyAlias,
         supportedCountries: modifiedSupportedCountries,
@@ -216,26 +233,48 @@ function AdminDashboardExchangeRatesPage() {
                 />
               </div>
 
-              {/* Modified Rate */}
+              {/* Modified Rate Percentage */}
               <div className="w-full flex items-center justify-between">
-                <div className="w-[80%] flex items-center">
+                <div className="w-[100%] flex items-center">
                   <label
-                    htmlFor="rate"
+                    htmlFor="exchangeRatePercentage"
                     className="text-sm inline-block p-3 bg-gray-200 h-11 rounded-tl-lg rounded-bl-lg"
                   >
-                    ₦
+                    %
                   </label>
                   <input
                     type="number"
                     placeholder="1000"
-                    name="rate"
-                    value={modifiedExchangeRate}
-                    onChange={(e) => setModifiedExchangeRate(e.target.value)}
+                    name="exchangeRatePercentage"
+                    value={modifiedExchangeRatePercentage}
+                    onChange={(e) =>
+                      setModifiedExchangeRatePercentage(e.target.value)
+                    }
                     className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
                   />
                 </div>
-                <label htmlFor="rate" className="text-sm">
-                  / {currentCurrency?.alias}
+              </div>
+
+              {/* Modified Additional Rate */}
+              <div className="w-full flex items-center justify-between">
+                <div className="w-[80%] flex items-center">
+                  <label
+                    htmlFor="modifiedAdditionalRate"
+                    className="text-sm inline-block p-3 bg-gray-200 h-11 rounded-tl-lg rounded-bl-lg"
+                  >
+                    {currentCurrency?.symbol}
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="1000"
+                    name="modifiedAdditionalRate"
+                    value={modifiedAdditionalRate}
+                    onChange={(e) => setModifiedAdditionalRate(e.target.value)}
+                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                  />
+                </div>
+                <label htmlFor="modifiedAdditionalRate" className="text-sm">
+                  Additional Rate
                 </label>
               </div>
 
@@ -381,35 +420,47 @@ function AdminDashboardExchangeRatesPage() {
                 />
               </div>
 
-              <div className="w-full flex flex-col">
-                <label htmlFor="exchangeRate" className="text-sm">
-                  Exchange Rate
-                </label>
-
-                <div className="w-full flex items-center justify-between">
-                  <div className="w-[80%] flex items-center">
-                    <label
-                      htmlFor="rate"
-                      className="text-sm inline-block p-3 bg-gray-200 h-11 rounded-tl-lg rounded-bl-lg"
-                    >
-                      ₦
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="1000"
-                      name="rate"
-                      value={exchangeRate}
-                      onChange={(e) => {
-                        console.log("RATE:", e.target.value);
-                        setExchangeRate(e.target.value);
-                      }}
-                      className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
-                    />
-                  </div>
-                  <label htmlFor="rate" className="text-sm">
-                    / {currencyAlias}
+              {/* Rate Percentage */}
+              <div className="w-full flex items-center justify-between">
+                <div className="w-[100%] flex items-center">
+                  <label
+                    htmlFor="exchangeRatePercentage"
+                    className="text-sm inline-block p-3 bg-gray-200 h-11 rounded-tl-lg rounded-bl-lg"
+                  >
+                    %
                   </label>
+                  <input
+                    type="number"
+                    placeholder="1000"
+                    name="exchangeRatePercentage"
+                    value={exchangeRatePercentage}
+                    onChange={(e) => setExchangeRatePercentage(e.target.value)}
+                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                  />
                 </div>
+              </div>
+
+              {/* Additional Rate */}
+              <div className="w-full flex items-center justify-between">
+                <div className="w-[80%] flex items-center">
+                  <label
+                    htmlFor="additionalRate"
+                    className="text-sm inline-block p-3 bg-gray-200 h-11 rounded-tl-lg rounded-bl-lg"
+                  >
+                    {currencySymbol}
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="1000"
+                    name="additionalRate"
+                    value={additionalRate}
+                    onChange={(e) => setAdditionalRate(e.target.value)}
+                    className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                  />
+                </div>
+                <label htmlFor="additionalRate" className="text-sm">
+                  Additional Rate
+                </label>
               </div>
 
               <div className="w-full flex flex-col">
@@ -469,13 +520,13 @@ function AdminDashboardExchangeRatesPage() {
                   )}
                 </div>
                 <div className="flex items-center">
-                  <input
-                    type="text"
-                    placeholder="Nigeria"
-                    name="supportedCountry"
-                    value={supportedCountry}
-                    onChange={(e) => setSupportedCountry(e.target.value)}
-                    className="w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg"
+                  <ReactCountryFlagsSelect
+                    disabled={isLoading}
+                    selected={supportedCountry}
+                    onSelect={setSupportedCountry}
+                    fullWidth
+                    searchable
+                    classes="w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg"
                   />
 
                   <button
@@ -483,7 +534,7 @@ function AdminDashboardExchangeRatesPage() {
                     disabled={isLoading}
                     onClick={(e) =>
                       handleAddSupportedCountry(
-                        supportedCountry,
+                        supportedCountry?.label,
                         supportedCountries,
                         setSupportedCountries
                       )
@@ -576,7 +627,8 @@ function AdminDashboardExchangeRatesPage() {
                     </div>
                     <div className="flex flex-col text-left">
                       <p className="font-semibold">
-                        ₦{currency?.exchangeRate} / {currency?.alias}
+                        {currency?.exchangeRatePercentage}% + {currency?.symbol}
+                        {currency?.additionalRate}
                       </p>
                       <small className="text-gray-400">
                         {currency?.currencyLabel} Exchange Rate

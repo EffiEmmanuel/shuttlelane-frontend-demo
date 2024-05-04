@@ -263,7 +263,10 @@ function AdminDashboardCarRentalPage() {
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.vehicleClass?.className}
+                          {
+                            bookingFetchedByReference?.booking?.vehicleClass
+                              ?.className
+                          }
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
@@ -544,7 +547,7 @@ function AdminDashboardCarRentalPage() {
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.car?.name}
+                          {bookingFetchedByReference?.booking?.car?.name}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
@@ -720,7 +723,7 @@ function AdminDashboardCarRentalPage() {
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.pass?.name}
+                          {bookingFetchedByReference?.booking?.pass?.name}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
