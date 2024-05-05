@@ -24,6 +24,7 @@ import {
   fetchCities,
   setBookingDetails,
 } from "../../../redux/slices/userSlice";
+import Preloader from "../../../components/ui/Preloader";
 
 function AirportTransferForm() {
   // Date Setup
@@ -100,6 +101,7 @@ function AirportTransferForm() {
         !passengers)
     ) {
       toast.info("Please fill in the missing fields.");
+      setIsRedirecting(false);
       return;
     } else if (
       !isRoundTrip &&
@@ -111,6 +113,7 @@ function AirportTransferForm() {
         !passengers)
     ) {
       toast.info("Please fill in the missing fields.");
+      setIsRedirecting(false);
       return;
     } else {
       dispatch(
@@ -146,9 +149,7 @@ function AirportTransferForm() {
 
   return (
     <>
-      <div className="w-full h-[100%] absolute bg-white opacity-50">
-        <ImSpinner2 size={26} className="text-shuttlelanePurple" />
-      </div>
+      {isRedirecting && <Preloader />}
 
       <ToastContainer toastClassName="text-sm" />
       <Fade duration={1500}>
@@ -446,7 +447,12 @@ function AirportTransferForm() {
             type="submit"
             className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             // disabled={isSubmitting}
-            onClick={(e) => handleBookNow(e)}
+            onClick={(e) => {
+              setIsRedirecting(true);
+              setTimeout(() => {
+                handleBookNow(e);
+              }, 1500);
+            }}
           >
             <span className="text-sm">Book Now</span>
             <HiArrowLongRight size={16} className="" />

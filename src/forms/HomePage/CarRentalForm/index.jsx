@@ -26,6 +26,7 @@ import {
   setBookingDetails,
 } from "../../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import Preloader from "../../../components/ui/Preloader";
 
 function CarRentalForm() {
   // FORM FIELDS
@@ -128,6 +129,7 @@ function CarRentalForm() {
       !selectedCity
     ) {
       toast.info("Please fill in the missing fields.");
+      setIsRedirecting(false);
       return;
     } else {
       dispatch(
@@ -151,8 +153,12 @@ function CarRentalForm() {
     }
   }
 
+  // Form submission loading state
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
   return (
     <>
+      {isRedirecting && <Preloader />}
       <ToastContainer toastClassName="text-sm" />
 
       <Fade duration={1500}>
@@ -399,7 +405,12 @@ function CarRentalForm() {
             type="submit"
             className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             // disabled={isSubmitting}
-            onClick={(e) => handleBookNow(e)}
+            onClick={(e) => {
+              setIsRedirecting(true);
+              setTimeout(() => {
+                handleBookNow(e);
+              }, 1500);
+            }}
           >
             <span className="text-sm">Book Now</span>
             <HiArrowLongRight size={16} className="" />

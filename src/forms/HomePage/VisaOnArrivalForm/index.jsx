@@ -15,6 +15,7 @@ import {
 } from "../../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ReactCountryFlagsSelect from "react-country-flags-select";
+import Preloader from "../../../components/ui/Preloader";
 
 function VisaOnArrivalForm() {
   // FORM FIELDS
@@ -34,6 +35,7 @@ function VisaOnArrivalForm() {
     e.preventDefault();
     if (!country) {
       toast.info("Please select a country to proceed.");
+      setIsRedirecting(false);
       return;
     } else {
       dispatch(
@@ -64,8 +66,12 @@ function VisaOnArrivalForm() {
     );
   }, [country]);
 
+  // Form submission loading state
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
   return (
     <>
+      {isRedirecting && <Preloader />}
       <ToastContainer toastClassName="text-sm z-[90]" />
       {/* <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
         <div className="bg-white lg:h-[250px] h-[520px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl"> */}
@@ -124,7 +130,12 @@ function VisaOnArrivalForm() {
             type="submit"
             className="bg-shuttlelanePurple disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 disabled:cursor-not-allowed shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
             disabled={voaVerificationStatus !== "visaRequired"}
-            onClick={(e) => handleBookNow(e)}
+            onClick={(e) => {
+              setIsRedirecting(true);
+              setTimeout(() => {
+                handleBookNow(e);
+              }, 1500);
+            }}
           >
             <span className="text-sm">Book Now</span>
             <HiArrowLongRight size={16} className="" />
