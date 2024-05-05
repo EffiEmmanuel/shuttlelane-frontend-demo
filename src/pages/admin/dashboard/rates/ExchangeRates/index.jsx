@@ -342,15 +342,13 @@ function AdminDashboardExchangeRatesPage() {
                   )}
                 </div>
                 <div className="flex items-center">
-                  <input
-                    type="text"
-                    placeholder="Nigeria"
-                    name="modifiedSupportedCountry"
-                    value={modifiedSupportedCountry}
-                    onChange={(e) =>
-                      setModifiedSupportedCountry(e.target.value)
-                    }
-                    className="w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg"
+                  <ReactCountryFlagsSelect
+                    disabled={isLoading}
+                    selected={modifiedSupportedCountry}
+                    onSelect={setModifiedSupportedCountry}
+                    fullWidth
+                    searchable
+                    classes="w-[85%] text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tl-lg rounded-bl-lg"
                   />
 
                   <button
@@ -358,7 +356,7 @@ function AdminDashboardExchangeRatesPage() {
                     disabled={isLoading}
                     onClick={(e) =>
                       handleAddSupportedCountry(
-                        modifiedSupportedCountry,
+                        modifiedSupportedCountry?.label,
                         modifiedSupportedCountries,
                         setModifiedSupportedCountries
                       )
@@ -597,7 +595,7 @@ function AdminDashboardExchangeRatesPage() {
                 {admin?.role !== "Blogger" && (
                   <button
                     onClick={() => setIsAddCurrencyModalOpen(true)}
-                    className="border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
+                    className="w-full lg:max-content border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center justify-center flex-col lg:flex-row gap-x-2"
                   >
                     <div className="flex items-center justify-center h-16 w-16 border-[1px] border-dashed border-gray-400 rounded-full">
                       <AiOutlinePlus size={24} className="text-gray-400" />
@@ -618,7 +616,7 @@ function AdminDashboardExchangeRatesPage() {
                         );
                       }
                     }}
-                    className="border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
+                    className="w-full lg:max-content border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
                   >
                     <div
                       className={`flex items-center justify-center h-16 w-16 border-[1px] border-shuttlelaneLightPurple rounded-full`}

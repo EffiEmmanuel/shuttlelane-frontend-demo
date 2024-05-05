@@ -6,6 +6,7 @@ import GoogleLocationInput from "../../../components/ui/GoogleLocationInput";
 import { IoAirplaneOutline, IoLocationOutline } from "react-icons/io5";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import { CiCalendar, CiClock1 } from "react-icons/ci";
+import { ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -140,8 +141,15 @@ function AirportTransferForm() {
     }
   }
 
+  // Form submission loading state
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
   return (
     <>
+      <div className="w-full h-[100%] absolute bg-white opacity-50">
+        <ImSpinner2 size={26} className="text-shuttlelanePurple" />
+      </div>
+
       <ToastContainer toastClassName="text-sm" />
       <Fade duration={1500}>
         <div className="flex items-center gap-x-5">

@@ -41,12 +41,6 @@ function AdminCarRentalForm() {
     return date < minSelectableDate;
   };
 
-  const [title, setTitle] = useState("");
-  // Dropoff details
-  const [dropoffLocation, setDropoffLocation] = useState();
-  const [dropoffLocationInput, setDropoffLocationInput] = useState();
-  const dropoffLocationRef = useRef();
-
   // Pickup details
   const [pickupLocation, setPickupLocation] = useState();
   const [pickupLocationInput, setPickupLocationInput] = useState();
@@ -79,14 +73,19 @@ function AdminCarRentalForm() {
 
   // Get current city when selected city changes
   useEffect(() => {
+    console.log("SELECTED CITY::", selectedCity);
     dispatch(fetchCity({ cityId: selectedCity?.value }));
+    console.log("CURRENT CITY::", currentCity);
   }, [selectedCity]);
 
   // Format cars
   const [carsData, setCarsData] = useState();
   useEffect(() => {
     let updatedCarsData = [];
+
+    console.log("CURRENT CITY::", currentCity);
     if (currentCity) {
+      console.log("Hello world");
       currentCity?.cars?.forEach((car) => {
         updatedCarsData.push({
           value: car,
@@ -313,7 +312,7 @@ function AdminCarRentalForm() {
               <IoCarSportOutline size={16} className="text-gray-500" />
             </div>
 
-            <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
+            <div className="w-[95%] text-shuttlelaneBlack text-sm relative">
               <Select
                 value={selectedCar}
                 onChange={(value) => setSelectedCar(value)}
@@ -327,7 +326,6 @@ function AdminCarRentalForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 80,
                   }),
 
                   placeholder: (baseStyles, state) => ({
