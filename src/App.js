@@ -94,6 +94,7 @@ function App() {
         <Route path="/company">
           <Route path="about-shuttlelane" element={<AboutPage />} />
           <Route path="who-we-are" element={<WhoWeArePage />} />
+          <Route path="become-a-partner" element={<PartnershipPage />} />
           <Route path="partnership" element={<PartnershipPage />} />
           <Route path="get-in-touch" element={<GetInTouchPage />} />
           <Route path="blog" element={<BlogsPage />} />

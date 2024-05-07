@@ -78,7 +78,7 @@ function AdminAddAirportToCityForm({
                 <BiSolidCity size={16} className="text-gray-500" />
               </div>
 
-              <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[0]">
+              <div className="w-[95%] text-shuttlelaneBlack text-sm relative">
                 <Select
                   value={selectedCity}
                   onChange={(value) => {
@@ -95,7 +95,6 @@ function AdminAddAirportToCityForm({
                       borderWidth: state.isFocused ? "0" : "0",
                       backgroundColor: "transparent",
                       position: "relative",
-                      zIndex: 0,
                     }),
 
                     placeholder: (baseStyles, state) => ({

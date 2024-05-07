@@ -1208,7 +1208,7 @@ function TrackBookingPage() {
               className="max-w-lg object-contain"
               alt="Sorry, there are no blog posts for now."
             />
-            <p className="text-sm">
+            <p className="text-sm text-center">
               Try searching for a booking using a valid booking reference...
             </p>
           </div>

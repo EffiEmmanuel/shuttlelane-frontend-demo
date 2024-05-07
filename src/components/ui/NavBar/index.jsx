@@ -24,7 +24,7 @@ function NavBar(props) {
 
   return (
     <div className="relative z-[30]">
-      <div className={`rec ${navClass} bg-shuttlelanePurple`}></div>
+      <div className={`rec lg:hidden ${navClass} bg-shuttlelanePurple`}></div>
       <div className={`rec2 ${navClass2}`}>
         <nav className="lg:hidden relative z-[40] w-full min-h-screen flex flex-col gap-y-12 items-start bg-white py-4 px-8 pl-14 drop-shadow-sm">
           <div className="flex justify-end w-full relative top-4 -right-5">
@@ -129,7 +129,7 @@ function NavBar(props) {
                 dropdownList={
                   <>
                     <Link
-                      to="/services/airport-transfer"
+                      to="/partnership/drive-for-shuttlelane"
                       className="w-full py-3 px-5 inline-block transition-all hover:text-xl text-shuttlelaneBlack visited:text-shuttlelaneBlack hover:text-shuttlelaneBlack hover:no-underline"
                     >
                       Drive For Shuttlelane

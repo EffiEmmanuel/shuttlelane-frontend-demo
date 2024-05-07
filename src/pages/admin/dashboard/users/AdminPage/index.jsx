@@ -301,7 +301,6 @@ function AdminDashboardAdminAccountsPage() {
                       borderWidth: state.isFocused ? "0" : "0",
                       backgroundColor: "transparent",
                       position: "relative",
-                      zIndex: 0,
                       width: "100%",
                       height: "100%",
                     }),
@@ -310,21 +309,18 @@ function AdminDashboardAdminAccountsPage() {
                       ...baseStyles,
                       fontSize: ".875rem",
                       position: "relative",
-                      zIndex: 0,
                     }),
 
                     menuList: (baseStyles, state) => ({
                       ...baseStyles,
                       fontSize: ".875rem",
                       position: "relative",
-                      zIndex: 0,
                     }),
 
                     input: (baseStyles, state) => ({
                       ...baseStyles,
                       fontSize: ".875rem",
                       position: "relative",
-                      zIndex: 0,
                     }),
                   }}
                   placeholder="Select Role"
@@ -699,7 +695,7 @@ function AdminDashboardAdminAccountsPage() {
               <div className="w-full">
                 {/* Admin accounts */}
                 <div className="w-full">
-                  <div className="flex flex-row items-center gap-x-5 justify-between w-full lg:justify-normal">
+                  <div className="flex flex-col items-start justify-start lg:flex-row lg:items-center gap-x-5 w-full lg:justify-normal">
                     {/* Searchbar */}
                     <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                       <BiSearch size={16} className="text-gray-400 rotate-90" />
@@ -716,7 +712,7 @@ function AdminDashboardAdminAccountsPage() {
                         onClick={() => {
                           setIsCreateAdminModalOpen(true);
                         }}
-                        className="w-auto border-dashed border-[1.3px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
+                        className="my-2 w-auto border-dashed border-[1.3px] lg:border-[.3px] border-shuttlelaneBlack p-1 rounded-sm flex items-center gap-x-1"
                       >
                         <AiOutlinePlus size={16} />
                         <span className="text-xs">Create admin account</span>
@@ -732,81 +728,89 @@ function AdminDashboardAdminAccountsPage() {
                       </div>
                     </div>
 
-                    {/* Table header */}
-                    <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                      <p className="w-200px lg:w-[25%] text-xs">Full name</p>
-                      <p className="w-200px lg:w-[25%] text-xs">
-                        Email Address
-                      </p>
-                      <p className="w-200px lg:w-[25%] text-xs">Role</p>
-                      {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
-                      {(admin?.role !== "Blogger" ||
-                        admin?.role !== "Admin") && (
-                        <p className="w-200px lg:w-[25%] text-xs">Actions</p>
-                      )}
-                    </div>
+                    <div className="overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
+                      {/* Table header */}
+                      <div className="w-full flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
+                        <p className="min-w-[200px] w-[200px] lg:w-[25%] text-xs">
+                          Full name
+                        </p>
+                        <p className="min-w-[200px] w-[200px] lg:w-[25%] text-xs">
+                          Email Address
+                        </p>
+                        <p className="min-w-[200px] w-[200px] lg:w-[25%] text-xs">
+                          Role
+                        </p>
+                        {/* <p className="min-w-[200px] w-[200px] lg:w-[25%] text-xs">Last Booking</p> */}
+                        {(admin?.role !== "Blogger" ||
+                          admin?.role !== "Admin") && (
+                          <p className="min-w-[200px] w-[200px] lg:w-[25%] text-xs">
+                            Actions
+                          </p>
+                        )}
+                      </div>
 
-                    {/* Table body - Admin card */}
-                    {adminAccounts?.map((adminAccount) => (
-                      <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                        <p
-                          className={`w-200px lg:w-[25%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {adminAccount?.firstName} {adminAccount?.lastName}
-                        </p>
-                        <p
-                          className={`w-200px lg:w-[25%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {adminAccount?.email}
-                        </p>
-                        <p
-                          className={`w-200px lg:w-[25%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {adminAccount?.role}
-                        </p>
-                        {/* <p className="w-200px lg:w-[25%] text-xs">
+                      {/* Table body - Admin card */}
+                      {adminAccounts?.map((adminAccount) => (
+                        <div className="w-full flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                          <p
+                            className={`min-w-[200px] w-[200px] lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {adminAccount?.firstName} {adminAccount?.lastName}
+                          </p>
+                          <p
+                            className={`min-w-[200px] w-[200px] lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {adminAccount?.email}
+                          </p>
+                          <p
+                            className={`min-w-[200px] w-[200px] lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {adminAccount?.role}
+                          </p>
+                          {/* <p className="min-w-[200px] w-[200px] lg:w-[25%] text-xs">
                         12 November 2023
                       </p> */}
 
-                        {(admin?.role !== "Blogger" ||
-                          admin?.role !== "Admin") && (
-                          <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
-                            {!isLoading ? (
-                              <button
-                                onClick={() =>
-                                  handleDeleteAdminAccount(adminAccount?._id)
-                                }
-                                className="text-xs"
-                              >
-                                <AiFillDelete
+                          {(admin?.role !== "Blogger" ||
+                            admin?.role !== "Admin") && (
+                            <div className="min-w-[200px] w-[200px] lg:w-[25%] flex items-center gap-x-3">
+                              {!isLoading ? (
+                                <button
+                                  onClick={() =>
+                                    handleDeleteAdminAccount(adminAccount?._id)
+                                  }
+                                  className="text-xs"
+                                >
+                                  <AiFillDelete
+                                    size={16}
+                                    className="text-red-500"
+                                  />
+                                </button>
+                              ) : (
+                                <ImSpinner2
                                   size={16}
-                                  className="text-red-500"
+                                  className="text-gray-400 animate-spin"
                                 />
-                              </button>
-                            ) : (
-                              <ImSpinner2
-                                size={16}
-                                className="text-gray-400 animate-spin"
-                              />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
 
-                    {adminAccounts?.length < 1 && (
-                      <div className="flex justify-center">
-                        <p className="text-center text-sm">
-                          No data to show for now...
-                        </p>
-                      </div>
-                    )}
+                      {adminAccounts?.length < 1 && (
+                        <div className="flex justify-center">
+                          <p className="text-center text-sm">
+                            No data to show for now...
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

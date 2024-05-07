@@ -595,7 +595,7 @@ function AdminDashboardExchangeRatesPage() {
                 {admin?.role !== "Blogger" && (
                   <button
                     onClick={() => setIsAddCurrencyModalOpen(true)}
-                    className="w-full lg:max-content border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center justify-center flex-col lg:flex-row gap-x-2"
+                    className="w-full lg:w-auto border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center justify-center flex-col lg:flex-row gap-x-2"
                   >
                     <div className="flex items-center justify-center h-16 w-16 border-[1px] border-dashed border-gray-400 rounded-full">
                       <AiOutlinePlus size={24} className="text-gray-400" />
@@ -616,7 +616,7 @@ function AdminDashboardExchangeRatesPage() {
                         );
                       }
                     }}
-                    className="w-full lg:max-content border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
+                    className="w-full lg:w-auto border-[1.3px] lg:border-[.3px] border-gray-200 rounded-lg p-3 flex items-center gap-x-2"
                   >
                     <div
                       className={`flex items-center justify-center h-16 w-16 border-[1px] border-shuttlelaneLightPurple rounded-full`}

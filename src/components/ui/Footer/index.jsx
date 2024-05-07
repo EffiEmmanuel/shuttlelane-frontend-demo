@@ -17,7 +17,7 @@ function Footer() {
       <div className="absolute overflow-hidden top-0 left-0 w-full h-full">
         <img
           src={arrowAsset}
-          className="object-cover w-full h-full opacity-30"
+          className="object-cover w-full h-full opacity-30 z-0"
         />
       </div>
 
@@ -143,7 +143,7 @@ function Footer() {
         <hr className="bg-gray-600" />
       </div>
 
-      <div className="lg:px-14 px-4 flex lg:justify-between lg:flex-row">
+      <div className="lg:px-14 px-4 flex lg:justify-between lg:flex-row relative z-20">
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center gap-x-3">
             <Link to="https://www.instagram.com/shuttlelane/" target="_blank">

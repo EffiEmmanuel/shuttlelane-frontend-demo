@@ -68,7 +68,7 @@ function AdminPushNotificationsForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 0,
+
                     width: "100%",
                     height: "100%",
                   }),
@@ -77,21 +77,18 @@ function AdminPushNotificationsForm() {
                     ...baseStyles,
                     // fontSize: ".75rem",
                     position: "relative",
-                    zIndex: 0,
                   }),
 
                   menuList: (baseStyles, state) => ({
                     ...baseStyles,
                     // fontSize: ".75rem",
                     position: "relative",
-                    zIndex: 0,
                   }),
 
                   input: (baseStyles, state) => ({
                     ...baseStyles,
                     // fontSize: ".75rem",
                     position: "relative",
-                    zIndex: 0,
                   }),
                 }}
                 placeholder="Select Target Audience"
@@ -119,7 +116,6 @@ function AdminPushNotificationsForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 0,
                     width: "100%",
                     height: "100%",
                   }),
@@ -128,21 +124,18 @@ function AdminPushNotificationsForm() {
                     ...baseStyles,
                     // fontSize: ".75rem",
                     position: "relative",
-                    zIndex: 0,
                   }),
 
                   menuList: (baseStyles, state) => ({
                     ...baseStyles,
                     // fontSize: ".75rem",
                     position: "relative",
-                    zIndex: 0,
                   }),
 
                   input: (baseStyles, state) => ({
                     ...baseStyles,
                     // fontSize: ".75rem",
                     position: "relative",
-                    zIndex: 18,
                   }),
                 }}
                 placeholder="Select Target Device"

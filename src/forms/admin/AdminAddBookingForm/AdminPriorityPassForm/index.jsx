@@ -12,16 +12,7 @@ import { BiMinus, BiSolidCity } from "react-icons/bi";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
-
-// Images
-import economy from "../../../../assets/images/cars/economy.png";
-import business from "../../../../assets/images/cars/business.png";
-import executive from "../../../../assets/images/cars/executive.png";
-import luxury from "../../../../assets/images/cars/luxury.png";
-import shuttle from "../../../../assets/images/cars/shuttle.png";
-import shuttleExtra from "../../../../assets/images/cars/shuttleExtra.png";
 import { ImSpinner2 } from "react-icons/im";
-import { TbBrandDaysCounter } from "react-icons/tb";
 import { ToastContainer, toast } from "react-toastify";
 import { AiOutlinePlus } from "react-icons/ai";
 import {
@@ -193,7 +184,7 @@ function AdminPriorityPassForm() {
               <MdOutlineNordicWalking size={16} className="text-gray-500" />
             </div>
 
-            <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
+            <div className="w-[95%] text-shuttlelaneBlack text-sm relative">
               <Select
                 value={selectedService}
                 onChange={(value) => setSelectedService(value)}
@@ -243,7 +234,7 @@ function AdminPriorityPassForm() {
               />
             </div>
 
-            <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
+            <div className="w-[95%] text-shuttlelaneBlack text-sm relative">
               <Select
                 value={selectedPass}
                 onChange={(value) => setSelectedPass(value)}
@@ -257,7 +248,6 @@ function AdminPriorityPassForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 80,
                   }),
 
                   placeholder: (baseStyles, state) => ({
@@ -293,7 +283,7 @@ function AdminPriorityPassForm() {
               <BiSolidCity size={16} className="text-gray-500" />
             </div>
 
-            <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
+            <div className="w-[95%] text-shuttlelaneBlack text-sm relative">
               <Select
                 value={selectedCity}
                 onChange={(value) => setSelectedCity(value)}
@@ -307,7 +297,6 @@ function AdminPriorityPassForm() {
                     borderWidth: state.isFocused ? "0" : "0",
                     backgroundColor: "transparent",
                     position: "relative",
-                    zIndex: 80,
                   }),
 
                   placeholder: (baseStyles, state) => ({
