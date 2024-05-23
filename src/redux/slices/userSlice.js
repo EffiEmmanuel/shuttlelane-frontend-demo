@@ -447,6 +447,20 @@ export const fetchCity = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function fetches a booking by its id
+export const fetchBookingById = createAsyncThunk(
+  "user/bookings/getOne",
+  async (payload) => {
+    console.log("PAYLOAD:", payload);
+
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/users/booking/${payload?.bid}`
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH BOOKING BY ID ERROR:", err));
+  }
+);
+
 // FUNCTION: This function creates a payment (Shuttlelane Payment)
 export const createShuttlelanePayment = createAsyncThunk(
   "user/payments/createOne",
@@ -539,6 +553,7 @@ export const userSlice = createSlice({
     bookingId: null,
     paymentStatus: "",
     paymentGateway: "",
+    bookingFromPayment: null,
   },
   reducers: {
     setBookingDetails: (state, action) => {
@@ -686,9 +701,9 @@ export const userSlice = createSlice({
         if (action.payload?.status == 201) {
           state.justCreatedBooking = action.payload?.booking;
           state.createBookingStatusCode = action.payload?.status;
-          toast.success(
-            "Booking successfully created, redirecting to your chosen payment portal"
-          );
+          //   toast.success(
+          //     "Booking successfully created, redirecting to your chosen payment portal"
+          //   );
         } else {
           state.createBookingStatusCode = action.payload?.status;
           toast.error("Failed to create booking. Please try again.");
@@ -783,6 +798,19 @@ export const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(createShuttlelanePayment.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Booking by id AsyncThunk states
+      .addCase(fetchBookingById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchBookingById.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD BOOKING FROM PAYMENT", action.payload);
+        state.bookingFromPayment = action.payload?.booking;
+        state.isLoading = false;
+      })
+      .addCase(fetchBookingById.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

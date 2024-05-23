@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 
 const VendorSignupConfirmationEmail = (vendor) => {
   return (
@@ -47,6 +48,8 @@ const VendorSignupConfirmationEmail = (vendor) => {
           The Shuttlelane Team
         </p>
       </div>
+
+      <EmailFooter />
     </div>
   );
 };

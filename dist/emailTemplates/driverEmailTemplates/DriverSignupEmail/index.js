@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 const DriverSignupConfirmationEmail = driver => {
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -54,6 +55,6 @@ const DriverSignupConfirmationEmail = driver => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "The Shuttlelane Team")));
+  }, "The Shuttlelane Team")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default DriverSignupConfirmationEmail;

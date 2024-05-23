@@ -1,4 +1,6 @@
 import React from "react";
+import EmailHeader from "../../reusable/EmailHeader";
+import EmailFooter from "../../reusable/EmailFooter";
 const UserBookingCompletedEmailTemplate = _ref => {
   let {
     bookingReference,
@@ -6,48 +8,54 @@ const UserBookingCompletedEmailTemplate = _ref => {
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: "Arial, sans-serif",
-      maxWidth: "600px",
-      margin: "0 auto",
-      padding: "20px",
-      backgroundColor: "#f4f4f4"
+      fontFamily: "Poppins, sans-serif",
+      backgroundColor: "#f5f5f5",
+      color: "#333333",
+      margin: "0",
+      padding: "20px"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      backgroundColor: "#fff",
+      maxWidth: "600px",
+      margin: "0 auto",
+      backgroundColor: "#ffffff",
       padding: "20px",
-      borderRadius: "10px"
+      borderRadius: "5px"
     }
-  }, /*#__PURE__*/React.createElement("h1", {
+  }, /*#__PURE__*/React.createElement("img", {
+    src: "https://shuttlelane.com/static/media/logo.46684879b753af396f9a.png",
+    alt: "Shuttlelane Limited",
+    width: "150",
+    height: "auto",
     style: {
-      textAlign: "center",
-      marginBottom: "20px",
-      color: "#333"
+      maxWidth: "100%"
+    }
+  }), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      fontWeight: "600",
+      marginTop: "20px",
+      marginBottom: "10px"
     }
   }, "Trip Completed: ", bookingReference), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
   }, "Dear ", firstName, ","), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
-  }, "We're pleased to inform you that your trip for booking", " ", bookingReference, " has been marked as completed."), /*#__PURE__*/React.createElement("p", {
+  }, "Your trip has been marked as complete."), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
-  }, "We hope you had a pleasant experience with ShuttleLane. Your feedback is valuable to us."), /*#__PURE__*/React.createElement("p", {
+  }, "Thank you for choosing Shuttlelane. We look forward to knowing how your experience was."), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333"
-    }
-  }, "Best regards,"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
-  }, "The ShuttleLane Team")));
+  }, "Best regards,", /*#__PURE__*/React.createElement("br", null), "The Shuttlelane Team.")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default UserBookingCompletedEmailTemplate;

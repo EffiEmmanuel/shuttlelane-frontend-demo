@@ -85,6 +85,80 @@ export const signupDriver = createAsyncThunk(
   }
 );
 
+// VERIFICATION ASYNC THUNKS
+// FUNCTION: This function handles verifying a driver's BVN
+export const verifyBVN = createAsyncThunk(
+  "driver/verification/bvn",
+  async (payload) => {
+    return fetch(
+      `https://vapi.verifyme.ng/v1/verifications/identities/bvn/${payload?.bvn}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": `${process.env.REACT_APP_API_VERIFYME_TEST_KEY}`
+          Authorization: `Bearer ${process.env.REACT_APP_API_VERIFYME_LIVE_KEY}`,
+        },
+        body: JSON.stringify({
+          firstname: payload?.firstName,
+          lastname: payload?.lastName,
+          dob: payload?.dateOfBirth,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("VERIFY BVN ERROR:", err));
+  }
+);
+// FUNCTION: This function handles verifying a driver's NIN
+export const verifyNIN = createAsyncThunk(
+  "driver/verification/nin",
+  async (payload) => {
+    return fetch(
+      `https://vapi.verifyme.ng/v1/verifications/identities/nin/${payload?.nin}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": `${process.env.REACT_APP_API_VERIFYME_TEST_KEY}`
+          Authorization: `Bearer ${process.env.REACT_APP_API_VERIFYME_LIVE_KEY}`,
+        },
+        body: JSON.stringify({
+          firstname: payload?.firstName,
+          lastname: payload?.lastName,
+          dob: payload?.dateOfBirth,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("VERIFY NIN ERROR:", err));
+  }
+);
+// FUNCTION: This function handles verifying a driver's license
+export const verifyDriversLicense = createAsyncThunk(
+  "driver/verification/driversLicense",
+  async (payload) => {
+    return fetch(
+      `https://vapi.verifyme.ng/v1/verifications/identities/drivers_license/${payload?.license}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": `${process.env.REACT_APP_API_VERIFYME_TEST_KEY}`
+          Authorization: `Bearer ${process.env.REACT_APP_API_VERIFYME_LIVE_KEY}`,
+        },
+        body: JSON.stringify({
+          firstname: payload?.firstName,
+          lastname: payload?.lastName,
+          dob: payload?.dateOfBirth,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("VERIFY NIN ERROR:", err));
+  }
+);
+
 // FUNCTION: This function handles driver login
 export const loginDriver = createAsyncThunk(
   "driver/loginAdmin",
@@ -459,6 +533,17 @@ export const driverSlice = createSlice({
     // This state tracks when the driver has been created, in order to redirect to the verification page
     hasSignedUp: false,
     hasVerifiedPhone: false,
+
+    // These states are for identify verification
+    isBVNVerified: false,
+    isNINVerified: false,
+    isLicenseVerified: false,
+    isVerifyingBVN: false,
+    isVerifyingNIN: false,
+    isVerifyingLicense: false,
+    bvnResponseData: "",
+    ninResponseData: "",
+    licenseResponseData: "",
 
     // These states handle the driver OTP verification states on the driver account page
     hasClickedSendCode: false,
@@ -883,6 +968,102 @@ export const driverSlice = createSlice({
       })
       .addCase(fetchCompletedJobs.rejected, (state) => {
         state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // veirfyBVN AsyncThunk states
+      .addCase(verifyBVN.pending, (state) => {
+        state.isLoading = true;
+        state.isVerifyingBVN = true;
+      })
+      .addCase(verifyBVN.fulfilled, (state, action) => {
+        console.log("VEIRFY BVN ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == "success") {
+          state.isVerifyingBVN = false;
+          if (
+            !action.payload?.data?.fieldMatches?.firstname ||
+            !action.payload?.data?.fieldMatches?.lastname
+          ) {
+            state.bvnResponseData =
+              "Info Mismatch! Please crosscheck your first name and last name ";
+          } else {
+            state.bvnResponseData = `${action.payload?.data?.firstname} ${action.payload?.data?.middlename} ${action.payload?.data?.lastname}`;
+            state.isBVNVerified = true;
+          }
+        } else {
+          toast.error(
+            "Failed to verify your BVN. Please, crosscheck the BVN that you have provided."
+          );
+          state.isVerifyingBVN = false;
+          state.isLoading = false;
+        }
+      })
+      .addCase(verifyBVN.rejected, (state) => {
+        state.isLoading = false;
+        state.isVerifyingBVN = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // veirfyNIN AsyncThunk states
+      .addCase(verifyNIN.pending, (state) => {
+        state.isLoading = true;
+        state.isVerifyingNIN = true;
+      })
+      .addCase(verifyNIN.fulfilled, (state, action) => {
+        console.log("VEIRFY NIN ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == "success") {
+          state.isVerifyingNIN = false;
+          if (
+            !action.payload?.data?.fieldMatches?.firstname ||
+            !action.payload?.data?.fieldMatches?.lastname
+          ) {
+            state.ninResponseData =
+              "Info Mismatch! Please crosscheck your first name and last name ";
+          } else {
+            state.ninResponseData = `${action.payload?.data?.firstname} ${action.payload?.data?.middlename} ${action.payload?.data?.lastname}`;
+            state.isNINVerified = true;
+          }
+        } else {
+          toast.error(
+            "Failed to verify your NIN. Please, crosscheck the NIN that you have provided."
+          );
+          state.isVerifyingNIN = false;
+          state.isLoading = false;
+        }
+      })
+      .addCase(verifyNIN.rejected, (state) => {
+        state.isLoading = false;
+        state.isVerifyingNIN = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // verifyDriversLicense AsyncThunk states
+      .addCase(verifyDriversLicense.pending, (state) => {
+        state.isLoading = true;
+        state.isVerifyingLicense = true;
+      })
+      .addCase(verifyDriversLicense.fulfilled, (state, action) => {
+        console.log("VEIRFY DriversLicense ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == "success") {
+          state.isVerifyingLicense = false;
+          if (
+            !action.payload?.data?.fieldMatches?.firstname ||
+            !action.payload?.data?.fieldMatches?.lastname
+          ) {
+            state.bvnResponseData =
+              "Info Mismatch! Please crosscheck your first name and last name ";
+          } else {
+            state.licenseResponseData = `${action.payload?.data?.firstname} ${action.payload?.data?.middlename} ${action.payload?.data?.lastname}`;
+            state.isLicenseVerified = true;
+          }
+        } else {
+          toast.error(
+            "Failed to verify your drivers license. Please, crosscheck the drivers license that you have provided."
+          );
+          state.isVerifyingLicense = false;
+          state.isLoading = false;
+        }
+      })
+      .addCase(verifyDriversLicense.rejected, (state) => {
+        state.isLoading = false;
+        state.isVerifyingLicense = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
       });

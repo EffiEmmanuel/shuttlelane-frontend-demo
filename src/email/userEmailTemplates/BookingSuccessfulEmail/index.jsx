@@ -1,63 +1,96 @@
 import React from "react";
+import EmailHeader from "../../reusable/EmailHeader";
+import EmailFooter from "../../reusable/EmailFooter";
+import BookingDetails from "../../reusable/BookingDetails";
+import TotalBilledSection from "../../reusable/TotalBilled";
 
-const BookingSuccessfulEmail = ({ bookingReference }) => {
+const BookingSuccessfulEmail = ({
+  bookingReference,
+  booking,
+  bookingType,
+  bookingDetails,
+  totalBilled,
+}) => {
   return (
     <div
       style={{
-        fontFamily: "Arial, sans-serif",
-        maxWidth: "600px",
-        margin: "0 auto",
+        fontFamily: "Poppins, sans-serif",
+        backgroundColor: "#f5f5f5",
+        color: "#333333",
+        margin: "0",
         padding: "20px",
-        backgroundColor: "#f4f4f4",
       }}
     >
       <div
         style={{
-          backgroundColor: "#fff",
+          maxWidth: "600px",
+          margin: "0 auto",
+          backgroundColor: "#ffffff",
           padding: "20px",
-          borderRadius: "10px",
+          borderRadius: "5px",
         }}
       >
+        <img
+          src="https://shuttlelane.com/static/media/logo.46684879b753af396f9a.png"
+          alt="Shuttlelane Limited"
+          width="150"
+          height="auto"
+          style={{ maxWidth: "100%" }}
+        />
         <h1
-          style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}
+          style={{
+            fontWeight: "600",
+            marginTop: "20px",
+            marginBottom: "10px",
+          }}
         >
-          Booking Successfully Created
+          Booking Confirmation
         </h1>
-        <p style={{ color: "#333", marginBottom: "10px" }}>
-          Dear valued customer,
+        <p
+          style={{
+            lineHeight: "1.5",
+            marginBottom: "20px",
+          }}
+        >
+          Dear {booking?.user?.title ?? booking?.title}{" "}
+          {booking?.user?.firstName ?? booking?.firstName},
         </p>
-        <p style={{ color: "#333", marginBottom: "20px" }}>
-          Your booking has been successfully created with the following details:
-        </p>
-        <p style={{ color: "#333", marginBottom: "10px" }}>
-          Booking Reference Number: <strong>{bookingReference}</strong>
-        </p>
-        <p style={{ color: "#333", marginBottom: "20px" }}>
-          Please ensure to complete your payment in order to validate your
-          booking.
-        </p>
-        <p style={{ color: "#333", marginBottom: "20px" }}>
-          You can also track your booking via{" "}
-          <a
-            style={{
-              color: "#333",
-              textDecoration: "underline",
-            }}
-            href={`https://www.shuttlelane.com/track-booking?bookingReference=${bookingReference}`}
-          >
-            this link on our website
-          </a>
-          .
+        <p
+          style={{
+            lineHeight: "1.5",
+            marginBottom: "20px",
+          }}
+        >
+          Thank you for booking your {bookingType} with Shuttlelane.
         </p>
 
-        <p style={{ color: "#333", marginBottom: "10px" }}>
-          Thank you for choosing our service!
+        <BookingDetails
+          details={{ ...bookingDetails, TOTAL: totalBilled }}
+          endNote=""
+        />
+
+        <p
+          style={{
+            lineHeight: "1.5",
+            marginBottom: "20px",
+          }}
+        >
+          Thank you for choosing Shuttlelane. We look forward to providing you
+          with an exceptional experience.
         </p>
-        <p style={{ color: "#333" }}>Best regards,</p>
-        <p style={{ color: "#333", marginBottom: "20px" }}>
-          The Shuttlelane Booking Team.
+        <p
+          style={{
+            lineHeight: "1.5",
+            marginBottom: "20px",
+          }}
+        >
+          Best regards,
+          <br />
+          The Shuttlelane Team.
         </p>
       </div>
+
+      <EmailFooter />
     </div>
   );
 };

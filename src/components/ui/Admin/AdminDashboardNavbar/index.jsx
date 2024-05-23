@@ -220,26 +220,26 @@ function AdminDashboardNavbar(props) {
                     )}
                   </Link>
                 )}
-                {/* <Link
-                to="/admin/dashboard/bookings/payments"
-                className={`flex items-center gap-x-2 text-xs ${
-                  props?.sublink === "payments"
-                    ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
-                    : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
-                } hover:no-underline visited:no-underline`}
-              >
-                <FaCcMastercard size={16} className="" />
-                <span
-                  className={`text-sm ${
-                    props?.sublink === "payments" && "font-semibold"
-                  }`}
+                <Link
+                  to="/admin/dashboard/bookings/payments"
+                  className={`flex items-center gap-x-2 text-xs ${
+                    props?.sublink === "payments"
+                      ? "text-shuttlelanePurple hover:text-shuttlelanePurple visited:text-shuttlelanePurple focus:text-shuttlelanePurple"
+                      : "text-gray-400 hover:text-gray-400 visited:text-gray-400 focus:text-gray-400"
+                  } hover:no-underline visited:no-underline`}
                 >
-                  Payments
-                </span>
-                {props?.sublink === "payments" && (
-                  <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
-                )}
-              </Link> */}
+                  <FaCcMastercard size={16} className="" />
+                  <span
+                    className={`text-sm ${
+                      props?.sublink === "payments" && "font-semibold"
+                    }`}
+                  >
+                    Payments
+                  </span>
+                  {props?.sublink === "payments" && (
+                    <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                  )}
+                </Link>
               </div>
             )}
           </div>

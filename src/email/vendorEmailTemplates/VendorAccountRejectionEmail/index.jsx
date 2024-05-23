@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 
 const VendorApplicationRejectedEmail = ({ driver }) => {
   return (
@@ -46,6 +47,7 @@ const VendorApplicationRejectedEmail = ({ driver }) => {
           The Shuttlelane Team
         </p>
       </div>
+      <EmailFooter />
     </div>
   );
 };

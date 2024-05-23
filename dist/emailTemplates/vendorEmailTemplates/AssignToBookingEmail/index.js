@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../../reusable/Header";
 import BookingDetails from "../../reusable/BookingDetails";
+import EmailFooter from "../../reusable/EmailFooter";
 
 // Main EmailTemplate component
 const AssignToBookingEmailTemplate = _ref => {
@@ -51,6 +52,6 @@ const AssignToBookingEmailTemplate = _ref => {
       textAlign: "center",
       color: "#333"
     }
-  }, "Thank you for your service")));
+  }, "Thank you for your service")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default AssignToBookingEmailTemplate;

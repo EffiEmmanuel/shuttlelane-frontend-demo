@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 
 const VendorFirstTimeBookingEmailTemplate = ({ companyName }) => {
   return (
@@ -43,6 +44,8 @@ const VendorFirstTimeBookingEmailTemplate = ({ companyName }) => {
           The ShuttleLane Team
         </p>
       </div>
+
+      <EmailFooter />
     </div>
   );
 };

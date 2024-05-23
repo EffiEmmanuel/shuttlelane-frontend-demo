@@ -30,6 +30,11 @@ function DriverSignupForm(props) {
   const [isStepSix, setIsStepSix] = useState(false);
   const [isStepSeven, setIsStepSeven] = useState(false);
 
+  // Verification states
+  const { isBVNVerified, isNINVerified, isLicenseVerified } = useSelector(
+    (store) => store.driver
+  );
+
   // Form slide direction
   const [slideDirection, setSlideDirection] = useState("left");
   // Form progress width
@@ -60,6 +65,12 @@ function DriverSignupForm(props) {
       setIsStepFive(false);
       setIsStepSix(false);
     } else if (isStepTwo) {
+      if (!isBVNVerified || !isNINVerified || !isLicenseVerified) {
+        toast.error(
+          "NIN, BVN and Driver License must be veirfied before proceeding. Please crosscheck the details provided."
+        );
+        return;
+      }
       if (
         !dateOfBirth ||
         !address ||
@@ -506,6 +517,7 @@ function DriverSignupForm(props) {
             <DriverSignupStepTwo
               isStepTwo={isStepTwo}
               stepTwoStates={stepTwoStates}
+              stepOneStates={stepOneStates}
               isUpdateDriverAccount={props?.isUpdateDriverAccount}
             />
           )}
@@ -584,6 +596,7 @@ function DriverSignupForm(props) {
               <DriverSignupStepTwo
                 isStepTwo={isStepTwo}
                 stepTwoStates={stepTwoStates}
+                stepOneStates={stepOneStates}
                 isUpdateDriverAccount={props?.isUpdateDriverAccount}
               />
             </Slide>

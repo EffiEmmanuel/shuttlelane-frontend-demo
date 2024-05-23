@@ -302,6 +302,34 @@ function AdminDashboardHomePage() {
     console.log("BOOKING FETCHED BY REFERENCE::", bookingFetchedByReference);
   }, [currentBooking]);
 
+  // Update booking status
+  const bookingStatusData = [
+    {
+      value: "Not yet assigned",
+      label: "Not yet assigned",
+    },
+    {
+      value: "Awaiting response",
+      label: "Awaiting response",
+    },
+    {
+      value: "Scheduled",
+      label: "Scheduled",
+    },
+    {
+      value: "Cancelled",
+      label: "Cancelled",
+    },
+    {
+      value: "Completed",
+      label: "Completed",
+    },
+    {
+      value: "Ongoing",
+      label: "Ongoing",
+    },
+  ];
+
   return (
     <div className="">
       <Helmet>

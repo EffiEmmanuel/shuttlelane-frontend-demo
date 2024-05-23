@@ -134,14 +134,14 @@ function AdminDashboardPaymentsPage() {
                 <div className="w-full">
                   <div className="flex flex-row items-center gap-x-5 justify-between w-full lg:justify-normal">
                     {/* Searchbar */}
-                    <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
+                    {/* <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
                       <BiSearch size={16} className="text-gray-400 rotate-90" />
                       <input
                         type="search"
                         placeholder="Search"
                         className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                       />
-                    </div>
+                    </div> */}
 
                     {/* create admin button */}
                     {/* <button
@@ -158,93 +158,110 @@ function AdminDashboardPaymentsPage() {
                   <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
-                        <p className="font-medium">Payments</p>
+                        <p className="font-medium">
+                          Payments - {payments?.length}
+                        </p>
                         <div className="h-2 w-2 rounded-full bg-green-500"></div>
                       </div>
                     </div>
 
-                    {/* Table header */}
-                    <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
-                      <p className="w-[200px] lg:w-[20%] text-xs">
-                        Booking Reference
-                      </p>
-                      <p className="w-[200px] lg:w-[20%] text-xs">Full Name</p>
-                      <p className="w-[200px] lg:w-[20%] text-xs">Amount</p>
-                      <p className="w-[200px] lg:w-[20%] text-xs">
-                        Payment Gateway
-                      </p>
-                      <p className="w-[200px] lg:w-[20%] text-xs">
-                        Payment Status
-                      </p>
-                    </div>
+                    <div className="w-full shuttlelaneScrollbarHoriz overflow-x-scroll">
+                      {/* Table header */}
+                      <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
+                        <p className="w-[200px] lg:w-[20%] text-xs">
+                          Booking Reference
+                        </p>
+                        <p className="w-[200px] lg:w-[20%] text-xs">
+                          Full Name
+                        </p>
+                        <p className="w-[200px] lg:w-[20%] text-xs">Amount</p>
+                        <p className="w-[200px] lg:w-[20%] text-xs">
+                          Payment Gateway
+                        </p>
+                        <p className="w-[200px] lg:w-[20%] text-xs">
+                          Payment Status
+                        </p>
+                      </div>
 
-                    {/* Table body - Payment card */}
-                    {payments?.map((payment) => (
-                      <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                        <p
-                          className={`w-200px lg:w-[20%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {payment?.booking?.bookingReference}
-                        </p>
-                        <p
-                          className={`w-200px lg:w-[20%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {payment?.user?.firstName ?? payment?.firstName}{" "}
-                          {payment?.user?.lastName ?? payment?.lastName}
-                        </p>
-                        <p
-                          className={`w-200px lg:w-[20%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {payment?.currency?.symbol}
-                          {payment?.amount}
-                        </p>
-                        <p
-                          className={`w-200px lg:w-[20%] text-xs ${
-                            isLoading && "text-gray-400"
-                          }`}
-                        >
-                          {payment?.gateway}
-                        </p>
-                        <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
-                          <div
-                            className={`h-2 w-2 ${
-                              payment?.paymentStatus === "Failed"
-                                ? "bg-red-500"
-                                : payment?.paymentStatus === "Successful"
-                                ? "bg-green-500"
-                                : "bg-yellow-500"
-                            } rounded-full`}
-                          ></div>
-                          <span
-                            className={`text-xs ${
-                              payment?.paymentStatus === "Failed"
-                                ? "text-red-500"
-                                : payment?.paymentStatus === "Successful"
-                                ? "text-green-500"
-                                : "text-yellow-500"
+                      {/* Table body - Payment card */}
+                      {payments?.map((payment) => (
+                        <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                          <p
+                            className={`w-200px lg:w-[20%] text-xs ${
+                              isLoading && "text-gray-400"
                             }`}
                           >
-                            {payment?.paymentStatus === "Failed"
-                              ? "Failed"
-                              : payment?.paymentStatus === "Successful"
-                              ? "Successful"
-                              : "Pending"}
-                          </span>
+                            {payment?.booking?.bookingReference}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[20%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {payment?.user?.firstName ?? payment?.firstName}{" "}
+                            {payment?.user?.lastName ?? payment?.lastName}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[20%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {payment?.currency?.symbol}
+                            {payment?.amount}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[20%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {payment?.gateway}
+                          </p>
+                          <div className="min-w-[200px] w-[200px] lg:w-[20%] flex items-center gap-x-1">
+                            <div
+                              className={`h-2 w-2 ${
+                                payment?.paymentStatus === "Failed"
+                                  ? "bg-red-500"
+                                  : payment?.paymentStatus === "Successful"
+                                  ? "bg-green-500"
+                                  : "bg-yellow-500"
+                              } rounded-full`}
+                            ></div>
+                            <span
+                              className={`text-xs ${
+                                payment?.paymentStatus === "Failed"
+                                  ? "text-red-500"
+                                  : payment?.paymentStatus === "Successful"
+                                  ? "text-green-500"
+                                  : "text-yellow-500"
+                              }`}
+                            >
+                              {payment?.paymentStatus === "Failed"
+                                ? "Failed"
+                                : payment?.paymentStatus === "Successful"
+                                ? "Successful"
+                                : "Pending"}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
 
                     {payments?.length < 1 && (
                       <div className="flex justify-center">
                         <p className="text-center text-sm">
                           No data to show for now...
                         </p>
+                      </div>
+                    )}
+
+                    {isLoading && (
+                      <div className="bg-white pb-10 shadow-lg rounded-lg text-shuttlelaneBlack w-full min-h-[80%] max-h-[80%] h-[80%] lg:w-[60%] p-7 px-10 overflow-y-scroll shuttlelaneScrollbar">
+                        <div className="flex w-full h-full items-center justify-center">
+                          <ImSpinner2
+                            size={20}
+                            className="cursor-loading animate-spin"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>

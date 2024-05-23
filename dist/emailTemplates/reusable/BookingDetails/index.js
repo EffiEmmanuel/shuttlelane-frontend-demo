@@ -7,34 +7,44 @@ const BookingDetails = _ref => {
     endNote
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
-    className: "booking-details",
     style: {
-      backgroundColor: " #fff",
-      borderRadius: "8px",
-      padding: "20px"
+      backgroundColor: "#ffffff",
+      padding: "20px",
+      borderRadius: "5px",
+      fontFamily: "'Poppins', sans-serif",
+      color: "#333333"
     }
   }, /*#__PURE__*/React.createElement("h2", {
     style: {
-      color: "#333",
+      fontSize: "24px",
+      fontWeight: 600,
       marginBottom: "10px"
     }
   }, "Booking Details"), /*#__PURE__*/React.createElement("div", {
-    className: "booking-info",
     style: {
-      marginBottom: "10px"
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+      gridGap: "10px"
     }
-  }, Object.entries(details).map(_ref2 => {
+  }, Object.entries(details).map((_ref2, index) => {
     let [key, value] = _ref2;
-    return /*#__PURE__*/React.createElement("p", {
-      key: key,
+    return /*#__PURE__*/React.createElement("div", {
       style: {
-        margin: "5px 0"
+        padding: "10px",
+        backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#e9e9e9"
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("h3", {
       style: {
-        fontWeight: "bold"
+        fontSize: "16px",
+        fontWeight: 600,
+        marginBottom: "5px"
       }
-    }, key, ":"), " ", value);
+    }, key), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "14px",
+        lineHeight: 1.5
+      }
+    }, value));
   })), /*#__PURE__*/React.createElement("p", null, endNote));
 };
 export default BookingDetails;

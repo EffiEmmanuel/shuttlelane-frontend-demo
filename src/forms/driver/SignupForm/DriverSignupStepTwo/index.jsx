@@ -5,7 +5,12 @@ import "rsuite/dist/rsuite.css";
 import enGB from "date-fns/locale/en-GB";
 import { ImSpinner2 } from "react-icons/im";
 import { useDispatch, useSelector } from "react-redux";
-import { updateDriver } from "../../../../redux/slices/driverSlice";
+import {
+  updateDriver,
+  verifyBVN,
+  verifyDriversLicense,
+  verifyNIN,
+} from "../../../../redux/slices/driverSlice";
 import { validateFields } from "../../../../util";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -14,6 +19,7 @@ import { BsArrowLeft } from "react-icons/bs";
 function DriverSignupStepTwo({
   isStepTwo,
   stepTwoStates,
+  stepOneStates,
   isUpdateDriverAccount,
 }) {
   const genderOptions = [
@@ -80,7 +86,20 @@ function DriverSignupStepTwo({
   }, [isStepTwo]);
 
   // UPDATE DRIVER STATES
-  const { isLoading, token, driver } = useSelector((store) => store.driver);
+  const {
+    isLoading,
+    token,
+    driver,
+    isVerifyingLicense,
+    isVerifyingBVN,
+    isVerifyingNIN,
+    isBVNVerified,
+    isNINVerified,
+    isLicenseVerified,
+    bvnResponseData,
+    ninResponseData,
+    licenseResponseData,
+  } = useSelector((store) => store.driver);
   const dispatch = useDispatch();
 
   // UPDATE DRIVER HANDLER
@@ -118,6 +137,76 @@ function DriverSignupStepTwo({
         })
       );
     }
+  }
+
+  // VERIFY IDENTITY HANDLERS
+  // Verify driver's BVN
+  async function handleVerifyBVN(bvn) {
+    // Parse the date string into a Date object
+    const date = new Date(stepTwoStates?.dateOfBirth);
+
+    // Extract day, month, and year
+    const day = String(date.getDate()).padStart(2, "0"); // Get day and ensure it's two digits
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-11), so add 1 and ensure it's two digits
+    const year = date.getFullYear(); // Get full year
+
+    // Format the date into DD-MM-YYYY
+    const formattedDate = `${day}-${month}-${year}`;
+
+    console.log("FORMATED DATE:", formattedDate);
+
+    dispatch(
+      verifyBVN({
+        bvn: bvn,
+        firstName: stepOneStates?.firstName,
+        lastName: stepOneStates?.lastName,
+        dob: formattedDate,
+      })
+    );
+  }
+  // Verify driver's NIN
+  async function handleVerifyNIN(nin) {
+    // Parse the date string into a Date object
+    const date = new Date(stepTwoStates?.dateOfBirth);
+
+    // Extract day, month, and year
+    const day = String(date.getDate()).padStart(2, "0"); // Get day and ensure it's two digits
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-11), so add 1 and ensure it's two digits
+    const year = date.getFullYear(); // Get full year
+
+    // Format the date into DD-MM-YYYY
+    const formattedDate = `${day}-${month}-${year}`;
+
+    dispatch(
+      verifyNIN({
+        nin: nin,
+        firstName: stepOneStates?.firstName,
+        lastName: stepOneStates?.lastName,
+        dob: formattedDate,
+      })
+    );
+  }
+  // Verify driver's license
+  async function handleVerifyDriversLicense(license) {
+    // Parse the date string into a Date object
+    const date = new Date(stepTwoStates?.dateOfBirth);
+
+    // Extract day, month, and year
+    const day = String(date.getDate()).padStart(2, "0"); // Get day and ensure it's two digits
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-11), so add 1 and ensure it's two digits
+    const year = date.getFullYear(); // Get full year
+
+    // Format the date into DD-MM-YYYY
+    const formattedDate = `${day}-${month}-${year}`;
+
+    dispatch(
+      verifyDriversLicense({
+        license: license,
+        firstName: stepOneStates?.firstName,
+        lastName: stepOneStates?.lastName,
+        dob: formattedDate,
+      })
+    );
   }
 
   return (
@@ -280,15 +369,36 @@ function DriverSignupStepTwo({
           </label>
           <input
             type="tel"
-            name="bvn"
             value={stepTwoStates?.bvn}
+            max={11}
+            disabled={isVerifyingBVN || isBVNVerified}
             onChange={(e) => {
-              stepTwoStates?.setBvn(e.target.value);
+              if (e.target.value.length > 11) return;
+              if (e.target.value.length === 11 && !isBVNVerified) {
+                stepTwoStates?.setBvn(e.target.value);
+                console.log("BVN:", e.target.value);
+                handleVerifyBVN(e.target.value);
+                return;
+              } else {
+                stepTwoStates?.setBvn(e.target.value);
+              }
             }}
             placeholder="***********"
             name="bvn"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
+          {isVerifyingBVN ? (
+            <div className="flex items-center gap-x-2">
+              <ImSpinner2 size={12} className="text-gray-400 animate-spin" />
+              <span className="text-gray-400 uppercase text-sm lg:max-w-lg">
+                Verifying Details
+              </span>
+            </div>
+          ) : (
+            <span className="text-gray-400 uppercase text-sm lg:max-w-lg">
+              {bvnResponseData}
+            </span>
+          )}
         </div>
 
         {/* NIN */}
@@ -298,15 +408,36 @@ function DriverSignupStepTwo({
           </label>
           <input
             type="tel"
-            name="nin"
             value={stepTwoStates?.nin}
+            max={11}
+            disabled={isVerifyingNIN || isNINVerified}
             onChange={(e) => {
-              stepTwoStates?.setNin(e.target.value);
+              if (e.target.value.length > 11) return;
+              if (e.target.value.length === 11 && !isNINVerified) {
+                stepTwoStates?.setNin(e.target.value);
+                handleVerifyNIN(e.target.value);
+                return;
+              } else {
+                stepTwoStates?.setNin(e.target.value);
+              }
             }}
             placeholder="***********"
             name="nin"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
+
+          {isVerifyingNIN ? (
+            <div className="flex items-center gap-x-2">
+              <ImSpinner2 size={12} className="text-gray-400 animate-spin" />
+              <span className="text-gray-400 uppercase text-sm lg:max-w-lg">
+                Verifying Details
+              </span>
+            </div>
+          ) : (
+            <span className="text-gray-400 uppercase text-sm lg:max-w-lg">
+              {ninResponseData}
+            </span>
+          )}
         </div>
 
         {/* Bank Name */}
@@ -322,7 +453,6 @@ function DriverSignupStepTwo({
               stepTwoStates?.setBank(e.target.value);
             }}
             placeholder="UBA - United Bank for Africa"
-            name="bank"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
@@ -340,7 +470,6 @@ function DriverSignupStepTwo({
               stepTwoStates?.setAccountNumber(e.target.value);
             }}
             placeholder="***********"
-            name="accountNumber"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
@@ -371,13 +500,34 @@ function DriverSignupStepTwo({
             type="tel"
             name="driverLicenseNumber"
             value={stepTwoStates?.driverLicense}
+            max={12}
+            disabled={isVerifyingLicense || isLicenseVerified}
             onChange={(e) => {
-              stepTwoStates?.setDriverLicense(e.target.value);
+              if (e.target.value.length > 12) return;
+              if (e.target.value.length === 12 && !isLicenseVerified) {
+                stepTwoStates?.setDriverLicense(e.target.value);
+                handleVerifyDriversLicense(e.target.value);
+                return;
+              } else {
+                stepTwoStates?.setDriverLicense(e.target.value);
+              }
             }}
             placeholder="***********"
-            name="driverLicenseNumber"
             className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
+
+          {isVerifyingLicense ? (
+            <div className="flex items-center gap-x-2">
+              <ImSpinner2 size={12} className="text-gray-400 animate-spin" />
+              <span className="text-gray-400 uppercase text-sm lg:max-w-lg">
+                Verifying Details
+              </span>
+            </div>
+          ) : (
+            <span className="text-gray-400 uppercase text-sm lg:max-w-lg">
+              {licenseResponseData}
+            </span>
+          )}
         </div>
 
         {isUpdateDriverAccount && (

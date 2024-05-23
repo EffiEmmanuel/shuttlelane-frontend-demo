@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../../reusable/Header";
 import BookingDetails from "../../reusable/BookingDetails";
+import EmailFooter from "../../reusable/EmailFooter";
 
 // Main EmailTemplate component
 const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
@@ -56,6 +57,8 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
           Thank you for your service
         </p>
       </div>
+
+      <EmailFooter />
     </div>
   );
 };

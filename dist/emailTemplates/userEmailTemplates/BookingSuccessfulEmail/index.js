@@ -1,73 +1,73 @@
 import React from "react";
+import EmailHeader from "../../reusable/EmailHeader";
+import EmailFooter from "../../reusable/EmailFooter";
+import BookingDetails from "../../reusable/BookingDetails";
+import TotalBilledSection from "../../reusable/TotalBilled";
 const BookingSuccessfulEmail = _ref => {
+  var _booking$user$title, _booking$user, _booking$user$firstNa, _booking$user2;
   let {
-    bookingReference
+    bookingReference,
+    booking,
+    bookingType,
+    bookingDetails,
+    totalBilled
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: "Arial, sans-serif",
-      maxWidth: "600px",
-      margin: "0 auto",
-      padding: "20px",
-      backgroundColor: "#f4f4f4"
+      fontFamily: "Poppins, sans-serif",
+      backgroundColor: "#f5f5f5",
+      color: "#333333",
+      margin: "0",
+      padding: "20px"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      backgroundColor: "#fff",
+      maxWidth: "600px",
+      margin: "0 auto",
+      backgroundColor: "#ffffff",
       padding: "20px",
-      borderRadius: "10px"
+      borderRadius: "5px"
     }
-  }, /*#__PURE__*/React.createElement("h1", {
+  }, /*#__PURE__*/React.createElement("img", {
+    src: "https://shuttlelane.com/static/media/logo.46684879b753af396f9a.png",
+    alt: "Shuttlelane Limited",
+    width: "150",
+    height: "auto",
     style: {
-      textAlign: "center",
-      marginBottom: "20px",
-      color: "#333"
+      maxWidth: "100%"
     }
-  }, "Booking Successfully Created"), /*#__PURE__*/React.createElement("p", {
+  }), /*#__PURE__*/React.createElement("h1", {
     style: {
-      color: "#333",
+      fontWeight: "600",
+      marginTop: "20px",
       marginBottom: "10px"
     }
-  }, "Dear valued customer,"), /*#__PURE__*/React.createElement("p", {
+  }, "Booking Confirmation"), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
-  }, "Your booking has been successfully created with the following details:"), /*#__PURE__*/React.createElement("p", {
+  }, "Dear ", (_booking$user$title = booking === null || booking === void 0 || (_booking$user = booking.user) === null || _booking$user === void 0 ? void 0 : _booking$user.title) !== null && _booking$user$title !== void 0 ? _booking$user$title : booking === null || booking === void 0 ? void 0 : booking.title, " ", (_booking$user$firstNa = booking === null || booking === void 0 || (_booking$user2 = booking.user) === null || _booking$user2 === void 0 ? void 0 : _booking$user2.firstName) !== null && _booking$user$firstNa !== void 0 ? _booking$user$firstNa : booking === null || booking === void 0 ? void 0 : booking.firstName, ","), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333",
-      marginBottom: "10px"
-    }
-  }, "Booking Reference Number: ", /*#__PURE__*/React.createElement("strong", null, bookingReference)), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
-  }, "Please ensure to complete your payment in order to validate your booking."), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#333",
-      marginBottom: "20px"
-    }
-  }, "You can also track your booking via", " ", /*#__PURE__*/React.createElement("a", {
-    style: {
-      color: "#333",
-      textDecoration: "underline"
+  }, "Thank you for booking your ", bookingType, " with Shuttlelane."), /*#__PURE__*/React.createElement(BookingDetails, {
+    details: {
+      ...bookingDetails,
+      TOTAL: totalBilled
     },
-    href: "https://www.shuttlelane.com/track-booking?bookingReference=".concat(bookingReference)
-  }, "this link on our website"), "."), /*#__PURE__*/React.createElement("p", {
+    endNote: ""
+  }), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#333",
-      marginBottom: "10px"
-    }
-  }, "Thank you for choosing our service!"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#333"
-    }
-  }, "Best regards,"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#333",
+      lineHeight: "1.5",
       marginBottom: "20px"
     }
-  }, "The Shuttlelane Booking Team.")));
+  }, "Thank you for choosing Shuttlelane. We look forward to providing you with an exceptional experience."), /*#__PURE__*/React.createElement("p", {
+    style: {
+      lineHeight: "1.5",
+      marginBottom: "20px"
+    }
+  }, "Best regards,", /*#__PURE__*/React.createElement("br", null), "The Shuttlelane Team.")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default BookingSuccessfulEmail;

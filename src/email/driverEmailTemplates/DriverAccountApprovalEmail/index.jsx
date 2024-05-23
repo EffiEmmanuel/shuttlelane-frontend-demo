@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 
 const DriverAccountApprovalEmail = ({ driver }) => {
   return (
@@ -46,6 +47,8 @@ const DriverAccountApprovalEmail = ({ driver }) => {
           The Shuttlelane Team
         </p>
       </div>
+
+      <EmailFooter />
     </div>
   );
 };

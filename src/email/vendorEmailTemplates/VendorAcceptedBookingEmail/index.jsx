@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 
 const VendorAcceptedBookingEmailTemplate = ({
   pickupLocation,
@@ -60,6 +61,7 @@ const VendorAcceptedBookingEmailTemplate = ({
           The ShuttleLane Team
         </p>
       </div>
+      <EmailFooter />
     </div>
   );
 };

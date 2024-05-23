@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 const DriverAccountApprovalEmail = _ref => {
   let {
     driver
@@ -57,6 +58,6 @@ const DriverAccountApprovalEmail = _ref => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "The Shuttlelane Team")));
+  }, "The Shuttlelane Team")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default DriverAccountApprovalEmail;

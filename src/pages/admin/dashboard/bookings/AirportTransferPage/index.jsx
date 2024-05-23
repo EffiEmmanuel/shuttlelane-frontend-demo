@@ -1347,7 +1347,7 @@ function AdminDashboardAirportTransferPage() {
                       <p className="text-xs underline offset-7">See All</p>
                     </div>
 
-                    <div className="overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
+                    <div className="w-full overflow-x-scroll shuttlelaneScrollbarHoriz shuttlelaneScrollbar">
                       {/* Table header */}
                       <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
                         <p className="w-[180px] lg:w-[16.6%] text-xs">

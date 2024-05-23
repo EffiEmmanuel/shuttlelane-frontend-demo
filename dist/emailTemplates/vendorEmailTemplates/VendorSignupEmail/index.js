@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 const VendorSignupConfirmationEmail = vendor => {
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -54,6 +55,6 @@ const VendorSignupConfirmationEmail = vendor => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "The Shuttlelane Team")));
+  }, "The Shuttlelane Team")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default VendorSignupConfirmationEmail;

@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 const VendorAcceptedBookingEmailTemplate = _ref => {
   let {
     pickupLocation,
@@ -56,6 +57,6 @@ const VendorAcceptedBookingEmailTemplate = _ref => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "The ShuttleLane Team")));
+  }, "The ShuttleLane Team")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default VendorAcceptedBookingEmailTemplate;

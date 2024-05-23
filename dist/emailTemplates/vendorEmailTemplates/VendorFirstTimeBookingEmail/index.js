@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 const VendorFirstTimeBookingEmailTemplate = _ref => {
   let {
     companyName
@@ -47,6 +48,6 @@ const VendorFirstTimeBookingEmailTemplate = _ref => {
       color: "#333",
       marginBottom: "20px"
     }
-  }, "The ShuttleLane Team")));
+  }, "The ShuttleLane Team")), /*#__PURE__*/React.createElement(EmailFooter, null));
 };
 export default VendorFirstTimeBookingEmailTemplate;

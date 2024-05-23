@@ -1,4 +1,5 @@
 import React from "react";
+import EmailFooter from "../../reusable/EmailFooter";
 
 const DriverFirstTimeBookingEmailTemplate = ({ driverName }) => {
   return (
@@ -43,6 +44,7 @@ const DriverFirstTimeBookingEmailTemplate = ({ driverName }) => {
           The ShuttleLane Team
         </p>
       </div>
+      <EmailFooter />
     </div>
   );
 };
