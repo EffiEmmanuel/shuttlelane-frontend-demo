@@ -78,7 +78,7 @@ export default function Pay(props) {
       dispatch(setPaymentGateway("Flutterwave"));
       dispatch(setBookingId(justCreatedBooking?._id));
       navigate(
-        `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success`
+        `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success&&ch=Flutterwave`
       );
     },
     onClose: () => {
@@ -86,7 +86,7 @@ export default function Pay(props) {
       dispatch(setPaymentGateway("Flutterwave"));
       dispatch(setBookingId(justCreatedBooking?._id));
       navigate(
-        `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed`
+        `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed&&ch=Flutterwave`
       );
     },
   });
@@ -208,7 +208,7 @@ export default function Pay(props) {
         dispatch(setBookingId(justCreatedBooking?._id));
         console.log("HELLO FROM THE ON SUCCESS FUNCTION");
         navigate(
-          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success`
+          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success&&ch=PayStack`
         );
       },
 
@@ -217,7 +217,7 @@ export default function Pay(props) {
         dispatch(setPaymentGateway("PayStack"));
         dispatch(setBookingId(justCreatedBooking?._id));
         navigate(
-          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed`
+          `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed&&ch=PayStack`
         );
       },
     });
