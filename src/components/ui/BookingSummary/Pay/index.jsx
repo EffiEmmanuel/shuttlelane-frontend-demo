@@ -57,6 +57,7 @@ export default function Pay(props) {
     amount: bookingTotal,
     currency: "NGN",
     payment_options: "card,mobilemoney,ussd",
+    redirect_url: `https://www.shuttlelane.com/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success&&ch=Flutterwave`,
     customer: {
       email: `${justCreatedBooking?.user?.email ?? justCreatedBooking?.email}`,
       phone_number: `${
@@ -73,13 +74,11 @@ export default function Pay(props) {
       logo: "https://res.cloudinary.com/shuttlelane/image/upload/v1711736954/jlkxdbklxpilwtriq14h.png",
     },
     callback: (response) => {
-      console.log(response);
+      console.log("FLW RES:", response);
+      window.location.href = `https://www.shuttlelane.com/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success&&ch=Flutterwave`;
       dispatch(setPaymentStatus("Successful"));
       dispatch(setPaymentGateway("Flutterwave"));
       dispatch(setBookingId(justCreatedBooking?._id));
-      navigate(
-        `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success&&ch=Flutterwave`
-      );
     },
     onClose: () => {
       dispatch(setPaymentStatus("Failed"));

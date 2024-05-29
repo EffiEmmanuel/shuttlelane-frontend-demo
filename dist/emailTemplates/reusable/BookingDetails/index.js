@@ -1,11 +1,10 @@
 import React from "react";
-
-// BookingDetails component
 const BookingDetails = _ref => {
   let {
     details,
     endNote
   } = _ref;
+  const colors = ["#f5f5f5", "#e9e9e9", "#d9d9d9", "#c9c9c9"];
   return /*#__PURE__*/React.createElement("div", {
     style: {
       backgroundColor: "#ffffff",
@@ -31,7 +30,7 @@ const BookingDetails = _ref => {
     return /*#__PURE__*/React.createElement("div", {
       style: {
         padding: "10px",
-        backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#e9e9e9"
+        backgroundColor: colors[index % colors.length]
       }
     }, /*#__PURE__*/React.createElement("h3", {
       style: {

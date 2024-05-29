@@ -69,6 +69,8 @@ import VendorDashboardManageFleetPage from "./pages/vendor/dashboard/bookings/Ma
 import PageNotFound from "./pages/404PageNotFound";
 
 // Modal.setAppElement("#appElement");
+// Images
+import shuttlelaneLogo from "./assets/logos/logo.png";
 
 function App() {
   return (

@@ -1,7 +1,8 @@
 import React from "react";
 
-// BookingDetails component
 const BookingDetails = ({ details, endNote }) => {
+  const colors = ["#f5f5f5", "#e9e9e9", "#d9d9d9", "#c9c9c9"];
+
   return (
     <div
       style={{
@@ -26,7 +27,7 @@ const BookingDetails = ({ details, endNote }) => {
           <div
             style={{
               padding: "10px",
-              backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#e9e9e9",
+              backgroundColor: colors[index % colors.length],
             }}
           >
             <h3
