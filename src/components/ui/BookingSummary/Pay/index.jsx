@@ -92,7 +92,7 @@ export default function Pay(props) {
 
   // Stripe payment handler
   async function handleStripePayment() {
-    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_TEST_KEY);
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
     console.log("JUST CREATED 2 BOOKING:::::", justCreatedBooking);
 
