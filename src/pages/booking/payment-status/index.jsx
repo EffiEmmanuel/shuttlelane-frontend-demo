@@ -64,13 +64,9 @@ export default function PaymentStatus() {
     }
   }, [paymentStatus, bookingId, status]);
 
-  // Fetch booking by it's id
-  useEffect(() => {
-    console.log("BID:", bid);
-    dispatch(fetchBookingById({ bid }));
-  }, [bid]);
-
-  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
+  const { toPDF, targetRef } = usePDF({
+    filename: "Shuttlelane Booking Details.pdf",
+  });
 
   return (
     <div className="relative w-full min-h-screen">

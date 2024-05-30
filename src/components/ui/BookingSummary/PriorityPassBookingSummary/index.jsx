@@ -74,7 +74,8 @@ export default function PriorityPassBookingSummary() {
 
   // Personal Details Form Fields
   const [selectedTitle, setSelectedTitle] = useState();
-  const [fullName, setFullName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();
   const [flightNumber, setFlightNumber] = useState();
@@ -560,8 +561,10 @@ export default function PriorityPassBookingSummary() {
             <PersonalDetailsForm
               selectedTitle={selectedTitle}
               setSelectedTitle={setSelectedTitle}
-              fullName={fullName}
-              setFullName={setFullName}
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
               phoneNumber={phoneNumber}
               setPhoneNumber={setPhoneNumber}
               email={email}
@@ -582,7 +585,8 @@ export default function PriorityPassBookingSummary() {
               !bookingDetails?.passSelected ||
               !bookingDetails?.protocolSelected ||
               !selectedTitle ||
-              !fullName ||
+              !firstName ||
+              !lastName ||
               !phoneNumber ||
               !email ||
               !flightNumber ||
@@ -591,7 +595,8 @@ export default function PriorityPassBookingSummary() {
                 : false
             }
             selectedTitle={selectedTitle}
-            fullName={fullName}
+            firstName={firstName}
+            lastName={lastName}
             phoneNumber={phoneNumber}
             email={email}
             flightNumber={flightNumber}

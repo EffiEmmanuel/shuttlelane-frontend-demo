@@ -794,7 +794,8 @@ export const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createShuttlelanePayment.fulfilled, (state, action) => {
-        console.log("ACTION.PAYLOAD", action.payload);
+        console.log("ACTION.PAYLOAD CREATE PAYMENT", action.payload);
+        state.bookingFromPayment = action.payload?.booking;
         state.isLoading = false;
       })
       .addCase(createShuttlelanePayment.rejected, (state) => {
@@ -807,7 +808,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchBookingById.fulfilled, (state, action) => {
         console.log("ACTION.PAYLOAD BOOKING FROM PAYMENT", action.payload);
-        state.bookingFromPayment = action.payload?.booking;
+        // state.bookingFromPayment = action.payload?.booking;
         state.isLoading = false;
       })
       .addCase(fetchBookingById.rejected, (state) => {
