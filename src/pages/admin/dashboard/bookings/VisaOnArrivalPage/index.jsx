@@ -1465,7 +1465,7 @@ function AdminDashboardVisaOnArrivalPage() {
 
                               <div className="w-[180px] lg:w-[16.6%] flex items-center gap-x-3">
                                 <Link
-                                  to="/booking/track-booking"
+                                  to={`/booking/track-booking?bookingRef=${booking?.bookingReference}`}
                                   target="_blank"
                                   className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
                                 >

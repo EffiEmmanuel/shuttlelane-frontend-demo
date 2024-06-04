@@ -27,6 +27,7 @@ import {
 } from "../../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import Preloader from "../../../components/ui/Preloader";
+import { ImSpinner2 } from "react-icons/im";
 
 function CarRentalForm() {
   // FORM FIELDS
@@ -158,265 +159,290 @@ function CarRentalForm() {
 
   return (
     <>
-      {isRedirecting && <Preloader />}
-      <ToastContainer toastClassName="text-sm" />
+      {isLoading ? (
+        <div className="flex flex-row items-center justify-center w-full h-full">
+          <ImSpinner2
+            size={32}
+            className="text-shuttlelanePurple animate-spin"
+          />
+        </div>
+      ) : (
+        <>
+          {isRedirecting && <Preloader />}
+          <ToastContainer toastClassName="text-sm" />
 
-      <Fade duration={1500}>
-        <div className="w-full flex items-center mt-5">
-          <div className="flex w-full justify-center items-center gap-x-2 lg:flex-row flex-col">
-            <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
-              <div className="flex flex-col gap-y-2">
-                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-[5%]">
-                    <BiSolidCity size={16} className="text-gray-500" />
-                  </div>
+          <Fade duration={1500}>
+            <div className="w-full flex items-center mt-5">
+              <div className="flex w-full justify-center items-center gap-x-2 lg:flex-row flex-col">
+                <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
+                  <div className="flex flex-col gap-y-2">
+                    <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                      <div className="w-[5%]">
+                        <BiSolidCity size={16} className="text-gray-500" />
+                      </div>
 
-                  <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
-                    <Select
-                      value={selectedCity}
-                      onChange={(value) => setSelectedCity(value)}
-                      options={citiesData}
-                      styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderColor: state.isFocused
-                            ? "transparent"
-                            : "transparent",
-                          borderWidth: state.isFocused ? "0" : "0",
-                          backgroundColor: "transparent",
-                          position: "relative",
-                          zIndex: 80,
-                        }),
+                      <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[80]">
+                        <Select
+                          value={selectedCity}
+                          onChange={(value) => setSelectedCity(value)}
+                          options={citiesData}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderColor: state.isFocused
+                                ? "transparent"
+                                : "transparent",
+                              borderWidth: state.isFocused ? "0" : "0",
+                              backgroundColor: "transparent",
+                              position: "relative",
+                              zIndex: 80,
+                            }),
 
-                        placeholder: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
+                            placeholder: (baseStyles, state) => ({
+                              ...baseStyles,
+                              // fontSize: ".75rem",
+                            }),
 
-                        menuList: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
+                            menuList: (baseStyles, state) => ({
+                              ...baseStyles,
+                              // fontSize: ".75rem",
+                            }),
 
-                        input: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
-                      }}
-                      placeholder="Select City"
-                    />
-                  </div>
-                </div>
-
-                <div className="relative flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-[5%]">
-                    <IoLocationOutline size={16} className="text-gray-700" />
-                  </div>
-
-                  <div className="w-full relative text-shuttlelaneBlack">
-                    <LocationInput
-                      placeholder="Pickup From (Airport, Port, Address)"
-                      setLocation={setPickupLocation}
-                      location={pickupLocation}
-                      locationRef={pickupLocationRef}
-                      locationInput={pickupLocationInput}
-                      setLocationInput={setPickupLocationInput}
-                      airports={airports}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
-                  <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                    <div className="w-full">
-                      <DatePicker
-                        locale={enGB}
-                        disabledDate={disableDateBeforeMin}
-                        value={pickupDate}
-                        appearance="subtle"
-                        onChange={(date) => {
-                          setPickupDate(date);
-                        }}
-                        placeholder="Pickup Date"
-                        style={{
-                          backgroundColor: "transparent",
-                        }}
-                        className="text-sm w-full bg-transparent text-shuttlelaneBlack"
-                      />
+                            input: (baseStyles, state) => ({
+                              ...baseStyles,
+                              // fontSize: ".75rem",
+                            }),
+                          }}
+                          placeholder="Select City"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="h-[55px] shadow-[#4540cf85] shadow-md bg-shuttlelanePurple w-[55px] min-h-[55px] min-w-[55px] bg-[#EBEBEF] z-10 relative flex items-center justify-center rounded-full">
-              <HiOutlineSwitchHorizontal
-                size={20}
-                className="text-white rotate-90 lg:rotate-0"
-              />
-            </div>
+                    <div className="relative flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                      <div className="w-[5%]">
+                        <IoLocationOutline
+                          size={16}
+                          className="text-gray-700"
+                        />
+                      </div>
 
-            <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
-              <div className="flex flex-col gap-y-2">
-                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-[5%]">
-                    <IoCarSportOutline size={16} className="text-gray-500" />
-                  </div>
+                      <div className="w-full relative text-shuttlelaneBlack">
+                        <LocationInput
+                          placeholder="Pickup From (Airport, Port, Address)"
+                          setLocation={setPickupLocation}
+                          location={pickupLocation}
+                          locationRef={pickupLocationRef}
+                          locationInput={pickupLocationInput}
+                          setLocationInput={setPickupLocationInput}
+                          airports={airports}
+                        />
+                      </div>
+                    </div>
 
-                  <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[90]">
-                    {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
-                    <Select
-                      value={selectedCar}
-                      onChange={(value) => setSelectedCar(value)}
-                      options={carsData}
-                      styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderColor: state.isFocused
-                            ? "transparent"
-                            : "transparent",
-                          borderWidth: state.isFocused ? "0" : "0",
-                          backgroundColor: "transparent",
-                          position: "relative",
-                          zIndex: 99,
-                        }),
-
-                        placeholder: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
-
-                        menuList: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
-
-                        input: (baseStyles, state) => ({
-                          ...baseStyles,
-                          // fontSize: ".75rem",
-                        }),
-                      }}
-                      placeholder="Select Car"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-[5%]">
-                    <TbBrandDaysCounter size={16} className="text-gray-500" />
-                  </div>
-
-                  <div className="w-[95%] text-shuttlelaneBlack text-sm">
-                    <div className="flex items-center">
-                      <input
-                        type="tel"
-                        onChange={(e) => {
-                          if (isNaN(e.target.value)) {
-                            e.target.value = days;
-                            toast.info("This field accepts only numbers!");
-                            return;
-                          } else {
-                            if (!(e.target.value > 10)) {
-                              setDays(e.target.value);
-                            } else {
-                              toast.info(
-                                "You cannot select more than 10 days!"
-                              );
-                            }
-                          }
-                        }}
-                        value={days}
-                        className="text-sm px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
-                        placeholder="Days"
-                      />
-
-                      <div className="flex items-center gap-x-2">
-                        <div
-                          onClick={() => {
-                            let newDayValue;
-                            if (isNaN(days)) {
-                              newDayValue = 1;
-                            } else {
-                              newDayValue = +days - 1;
-                            }
-
-                            if (newDayValue === 0) {
-                              toast.info("You cannot select less than 1 day!");
-                              return;
-                            } else {
-                              setDays(+days - 1);
-                            }
-                          }}
-                          className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
-                        >
-                          <BiMinus size={16} className="text-gray-500" />
-                        </div>
-                        <div
-                          onClick={() => {
-                            let newDayValue;
-                            if (isNaN(days)) {
-                              newDayValue = 1;
-                            } else {
-                              newDayValue = +days + 1;
-                            }
-                            if (newDayValue > 10) {
-                              toast.info(
-                                "You cannot select more than 10 days!"
-                              );
-                              return;
-                            } else {
-                              setDays(+days + 1);
-                            }
-                          }}
-                          className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
-                        >
-                          <AiOutlinePlus size={16} className="text-gray-500" />
+                    <div className="flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between gap-x-3">
+                      <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                        <div className="w-full">
+                          <DatePicker
+                            locale={enGB}
+                            disabledDate={disableDateBeforeMin}
+                            value={pickupDate}
+                            appearance="subtle"
+                            onChange={(date) => {
+                              setPickupDate(date);
+                            }}
+                            placeholder="Pickup Date"
+                            style={{
+                              backgroundColor: "transparent",
+                            }}
+                            className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
-                  <div className="w-full">
-                    <DatePicker
-                      format="HH:mm"
-                      value={pickupTime}
-                      appearance="subtle"
-                      onChange={(time) => {
-                        console.log("TIME:", time);
-                        setPickupTime(time);
-                      }}
-                      placeholder="Pickup Time"
-                      style={{
-                        backgroundColor: "transparent",
-                      }}
-                      className="text-sm w-full bg-transparent text-shuttlelaneBlack"
-                    />
+                <div className="h-[55px] shadow-[#4540cf85] shadow-md bg-shuttlelanePurple w-[55px] min-h-[55px] min-w-[55px] bg-[#EBEBEF] z-10 relative flex items-center justify-center rounded-full">
+                  <HiOutlineSwitchHorizontal
+                    size={20}
+                    className="text-white rotate-90 lg:rotate-0"
+                  />
+                </div>
+
+                <div className="py-3 w-full lg:w-[50%] px-4 border-gray-400 bg-transparent border-dashed border-[.2px] rounded-lg">
+                  <div className="flex flex-col gap-y-2">
+                    <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                      <div className="w-[5%]">
+                        <IoCarSportOutline
+                          size={16}
+                          className="text-gray-500"
+                        />
+                      </div>
+
+                      <div className="w-[95%] text-shuttlelaneBlack text-sm relative z-[90]">
+                        {/* <GoogleLocationInput placeholder="Dropoff Location" /> */}
+                        <Select
+                          value={selectedCar}
+                          onChange={(value) => setSelectedCar(value)}
+                          options={carsData}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderColor: state.isFocused
+                                ? "transparent"
+                                : "transparent",
+                              borderWidth: state.isFocused ? "0" : "0",
+                              backgroundColor: "transparent",
+                              position: "relative",
+                              zIndex: 99,
+                            }),
+
+                            placeholder: (baseStyles, state) => ({
+                              ...baseStyles,
+                              // fontSize: ".75rem",
+                            }),
+
+                            menuList: (baseStyles, state) => ({
+                              ...baseStyles,
+                              // fontSize: ".75rem",
+                            }),
+
+                            input: (baseStyles, state) => ({
+                              ...baseStyles,
+                              // fontSize: ".75rem",
+                            }),
+                          }}
+                          placeholder="Select Car"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center bg-gray-100 h-[47px] px-2 gap-x-2 w-full rounded-lg">
+                      <div className="w-[5%]">
+                        <TbBrandDaysCounter
+                          size={16}
+                          className="text-gray-500"
+                        />
+                      </div>
+
+                      <div className="w-[95%] text-shuttlelaneBlack text-sm">
+                        <div className="flex items-center">
+                          <input
+                            type="tel"
+                            onChange={(e) => {
+                              if (isNaN(e.target.value)) {
+                                e.target.value = days;
+                                toast.info("This field accepts only numbers!");
+                                return;
+                              } else {
+                                if (!(e.target.value > 10)) {
+                                  setDays(e.target.value);
+                                } else {
+                                  toast.info(
+                                    "You cannot select more than 10 days!"
+                                  );
+                                }
+                              }
+                            }}
+                            value={days}
+                            className="text-sm px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
+                            placeholder="Days"
+                          />
+
+                          <div className="flex items-center gap-x-2">
+                            <div
+                              onClick={() => {
+                                let newDayValue;
+                                if (isNaN(days)) {
+                                  newDayValue = 1;
+                                } else {
+                                  newDayValue = +days - 1;
+                                }
+
+                                if (newDayValue === 0) {
+                                  toast.info(
+                                    "You cannot select less than 1 day!"
+                                  );
+                                  return;
+                                } else {
+                                  setDays(+days - 1);
+                                }
+                              }}
+                              className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
+                            >
+                              <BiMinus size={16} className="text-gray-500" />
+                            </div>
+                            <div
+                              onClick={() => {
+                                let newDayValue;
+                                if (isNaN(days)) {
+                                  newDayValue = 1;
+                                } else {
+                                  newDayValue = +days + 1;
+                                }
+                                if (newDayValue > 10) {
+                                  toast.info(
+                                    "You cannot select more than 10 days!"
+                                  );
+                                  return;
+                                } else {
+                                  setDays(+days + 1);
+                                }
+                              }}
+                              className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
+                            >
+                              <AiOutlinePlus
+                                size={16}
+                                className="text-gray-500"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex h-[47px] items-center bg-gray-100 py-2 px-2 gap-x-2 w-full rounded-lg">
+                      <div className="w-full">
+                        <DatePicker
+                          format="HH:mm"
+                          value={pickupTime}
+                          appearance="subtle"
+                          onChange={(time) => {
+                            console.log("TIME:", time);
+                            setPickupTime(time);
+                          }}
+                          placeholder="Pickup Time"
+                          style={{
+                            backgroundColor: "transparent",
+                          }}
+                          className="text-sm w-full bg-transparent text-shuttlelaneBlack"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="flex w-full justify-end absolute right-10 -bottom-5">
-          <button
-            type="submit"
-            className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
-            // disabled={isSubmitting}
-            onClick={(e) => {
-              setIsRedirecting(true);
-              setTimeout(() => {
-                handleBookNow(e);
-              }, 1500);
-            }}
-          >
-            <span className="text-sm">Book Now</span>
-            <HiArrowLongRight size={16} className="" />
-          </button>
-        </div>
-      </Fade>
+            <div className="flex w-full justify-end absolute right-10 -bottom-5">
+              <button
+                type="submit"
+                className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
+                // disabled={isSubmitting}
+                onClick={(e) => {
+                  setIsRedirecting(true);
+                  setTimeout(() => {
+                    handleBookNow(e);
+                  }, 1500);
+                }}
+              >
+                <span className="text-sm">Book Now</span>
+                <HiArrowLongRight size={16} className="" />
+              </button>
+            </div>
+          </Fade>
+        </>
+      )}
     </>
   );
 }

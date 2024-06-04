@@ -2197,7 +2197,7 @@ function AdminDashboardHomePage() {
                                     </button>
                                   )}
                                   <Link
-                                    to="/"
+                                    to={`/booking/track-booking?bookingRef=${booking?.bookingReference}`}
                                     className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
                                   >
                                     <HiOutlineExternalLink
@@ -2306,7 +2306,7 @@ function AdminDashboardHomePage() {
                                   </button>
                                 )} */}
                                 <Link
-                                  to="/"
+                                  to={`/booking/track-booking?bookingRef=${booking?.bookingReference}`}
                                   className="hover:border-b-[.3px] hover:border-b-shuttlelaneBlack text-xs"
                                 >
                                   <HiOutlineExternalLink

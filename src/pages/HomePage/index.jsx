@@ -41,6 +41,7 @@ import appstoreDownload from "../../assets/logos/downloadAppstore.svg";
 import playstoreDownload from "../../assets/logos/downloadPlaystore.svg";
 import whatsappLogo from "../../assets/logos/whatsapp-icon.png";
 import { FaPassport } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 function HomePage() {
   // SERVICE STATES
@@ -214,7 +215,7 @@ function HomePage() {
                     : isPriorityPass
                     ? "lg:h-[250px] h-auto pb-10 lg:pb-0"
                     : "h-auto pb-10 lg:pb-0"
-                } w-auto shadow-lg py-5 gap-y-5 gap-x-4 px-7 lg:px-4 lg:px-5 z-0 relative rounded-2xl`}
+                } w-auto shadow-lg py-5 gap-y-5 gap-x-4 px-7 lg:px-4 z-0 relative rounded-2xl`}
               >
                 {isAirportTransfer && <AirportTransferForm />}
                 {isCarRental && <CarRentalForm />}

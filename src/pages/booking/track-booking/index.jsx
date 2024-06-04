@@ -1,37 +1,20 @@
 // @ts-nocheck
 import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../../../components/ui/NavBar";
-import Typewriter from "typewriter-effect";
-import {
-  MdArrowRightAlt,
-  MdLens,
-  MdLocationOn,
-  MdLocationPin,
-  MdOutlineLens,
-  MdOutlineLuggage,
-  MdOutlineModeOfTravel,
-  MdOutlineSearch,
-} from "react-icons/md";
-import { AiFillPhone, AiOutlineClose } from "react-icons/ai";
+import { MdLocationPin, MdOutlineSearch } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { Fade } from "react-reveal";
 import Footer from "../../../components/ui/Footer";
 import PaymentPartners from "../../../components/ui/PaymentPartners";
 import HowToReachUs from "../../../components/ui/HowToReachUs";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAllBlogPosts,
-  fetchBookingByReference,
-} from "../../../redux/slices/userSlice";
-import TimeAgo from "timeago-react";
+import { fetchBookingByReference } from "../../../redux/slices/userSlice";
 import { ImSpinner2 } from "react-icons/im";
 import moment from "moment";
 import { Helmet } from "react-helmet";
+import { useLocation } from "react-router-dom";
 
 // Images
 import emptyImage from "../../../assets/images/empty.png";
-import profilePicPlaceholder from "../../../assets/images/profilePicture.png";
 
 function TrackBookingPage() {
   const howItWorksRef = useRef(null);
@@ -42,8 +25,13 @@ function TrackBookingPage() {
 
   const [isMenuHidden, setIsMenuHidden] = useState(false);
 
+  // Get bookingRef from URL
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const bookingRef = searchParams.get("bookingRef");
+
   // Search states
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState(bookingRef);
 
   const { isLoading, bookingFetchedByReference } = useSelector(
     (store) => store.user
@@ -51,13 +39,17 @@ function TrackBookingPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllBlogPosts());
-  }, []);
+    console.log("BOOKING REFERENCE:", bookingRef);
+    if (bookingRef) {
+      setSearchValue(bookingRef);
+      dispatch(fetchBookingByReference(bookingRef));
+    }
+  }, [bookingRef]);
 
   async function getBookingByBookingReference(value) {
     console.log("SEARCH VALUE:", value);
     if (!value || value?.trim() !== "") {
-      dispatch(fetchBookingByReference(searchValue));
+      dispatch(fetchBookingByReference(searchValue?.trim() ?? value?.trim()));
     } else {
       toast.info("You must provide a valid booking reference!");
     }
