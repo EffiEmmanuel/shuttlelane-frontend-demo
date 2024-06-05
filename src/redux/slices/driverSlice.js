@@ -100,8 +100,8 @@ export const verifyBVN = createAsyncThunk(
           Authorization: `Bearer ${process.env.REACT_APP_API_VERIFYME_LIVE_KEY}`,
         },
         body: JSON.stringify({
-          firstname: payload?.firstName,
-          lastname: payload?.lastName,
+          firstname: payload?.firstName?.toUpperCase(),
+          lastname: payload?.lastName?.toUpperCase(),
           dob: payload?.dateOfBirth,
         }),
       }
@@ -124,8 +124,8 @@ export const verifyNIN = createAsyncThunk(
           Authorization: `Bearer ${process.env.REACT_APP_API_VERIFYME_LIVE_KEY}`,
         },
         body: JSON.stringify({
-          firstname: payload?.firstName,
-          lastname: payload?.lastName,
+          firstname: payload?.firstName?.toUpperCase(),
+          lastname: payload?.lastName?.toUpperCase(),
           dob: payload?.dateOfBirth,
         }),
       }
@@ -148,14 +148,14 @@ export const verifyDriversLicense = createAsyncThunk(
           Authorization: `Bearer ${process.env.REACT_APP_API_VERIFYME_LIVE_KEY}`,
         },
         body: JSON.stringify({
-          firstname: payload?.firstName,
-          lastname: payload?.lastName,
+          firstname: payload?.firstName?.toUpperCase(),
+          lastname: payload?.lastName?.toUpperCase(),
           dob: payload?.dateOfBirth,
         }),
       }
     )
       .then((res) => res.json())
-      .catch((err) => console.log("VERIFY NIN ERROR:", err));
+      .catch((err) => console.log("VERIFY LICENSE ERROR:", err));
   }
 );
 
@@ -281,22 +281,6 @@ export const updateDriver = createAsyncThunk(
       // Reject the promise with the error message
       throw error;
     }
-    // return fetch(
-    //   `${process.env.REACT_APP_API_BASE_URL}/drivers/update-driver/${payload?.driverId}`,
-    //   {
-    //     method: "PATCH",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       token: `Bearer ${JSON.parse(payload?.token)}`,
-    //     },
-    //     body: JSON.stringify(payload?.values),
-    //   }
-    // )
-    //   .then((res) => {
-    //     console.log("HELLO 6");
-    //     return res.json();
-    //   })
-    //   .catch((err) => console.log("UPDATE DRIVER ERROR:", err));
   }
 );
 
@@ -980,19 +964,17 @@ export const driverSlice = createSlice({
         if (action.payload?.status == "success") {
           state.isVerifyingBVN = false;
           if (
-            !action.payload?.data?.fieldMatches?.firstname ||
-            !action.payload?.data?.fieldMatches?.lastname
+            action.payload?.data?.fieldMatches?.firstname ||
+            action.payload?.data?.fieldMatches?.lastname
           ) {
-            state.bvnResponseData =
-              "Info Mismatch! Please crosscheck your first name and last name ";
-          } else {
             state.bvnResponseData = `${action.payload?.data?.firstname} ${action.payload?.data?.middlename} ${action.payload?.data?.lastname}`;
             state.isBVNVerified = true;
+          } else {
+            state.bvnResponseData =
+              "Info Mismatch! Please crosscheck your first name and last name ";
           }
         } else {
-          toast.error(
-            "Failed to verify your BVN. Please, crosscheck the BVN that you have provided."
-          );
+          toast.error(action?.payload?.message);
           state.isVerifyingBVN = false;
           state.isLoading = false;
         }
@@ -1012,21 +994,25 @@ export const driverSlice = createSlice({
         if (action.payload?.status == "success") {
           state.isVerifyingNIN = false;
           if (
-            !action.payload?.data?.fieldMatches?.firstname ||
-            !action.payload?.data?.fieldMatches?.lastname
+            action.payload?.data?.fieldMatches?.firstname ||
+            action.payload?.data?.fieldMatches?.lastname
           ) {
-            state.ninResponseData =
-              "Info Mismatch! Please crosscheck your first name and last name ";
-          } else {
             state.ninResponseData = `${action.payload?.data?.firstname} ${action.payload?.data?.middlename} ${action.payload?.data?.lastname}`;
             state.isNINVerified = true;
+          } else {
+            state.ninResponseData =
+              "Info Mismatch! Please crosscheck your first name and last name ";
           }
         } else {
-          toast.error(
-            "Failed to verify your NIN. Please, crosscheck the NIN that you have provided."
-          );
-          state.isVerifyingNIN = false;
+          toast.error(action?.payload?.message);
+          if (action?.payload?.code == "SERVICE_PROVIDER_UNAVAILABLE") {
+            state.isNINVerified = true;
+            state.ninResponseData = action?.payload?.code;
+          } else {
+            state.isNINVerified = false;
+          }
           state.isLoading = false;
+          state.isVerifyingNIN = false;
         }
       })
       .addCase(verifyNIN.rejected, (state) => {
@@ -1044,19 +1030,17 @@ export const driverSlice = createSlice({
         if (action.payload?.status == "success") {
           state.isVerifyingLicense = false;
           if (
-            !action.payload?.data?.fieldMatches?.firstname ||
-            !action.payload?.data?.fieldMatches?.lastname
+            action.payload?.data?.fieldMatches?.firstname ||
+            action.payload?.data?.fieldMatches?.lastname
           ) {
-            state.bvnResponseData =
-              "Info Mismatch! Please crosscheck your first name and last name ";
-          } else {
             state.licenseResponseData = `${action.payload?.data?.firstname} ${action.payload?.data?.middlename} ${action.payload?.data?.lastname}`;
             state.isLicenseVerified = true;
+          } else {
+            state.bvnResponseData =
+              "Info Mismatch! Please crosscheck your first name and last name ";
           }
         } else {
-          toast.error(
-            "Failed to verify your drivers license. Please, crosscheck the drivers license that you have provided."
-          );
+          toast.error(action?.payload?.message);
           state.isVerifyingLicense = false;
           state.isLoading = false;
         }
