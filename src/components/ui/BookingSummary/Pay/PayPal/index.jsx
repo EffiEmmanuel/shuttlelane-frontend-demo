@@ -55,7 +55,7 @@ export default function PayPal({ justCreatedBooking, bookingTotal }) {
           dispatch(setBookingId(justCreatedBooking?._id));
           console.log("HELLO FROM THE ON SUCCESS FUNCTION");
           navigate(
-            `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=success&&ch=PayPal`
+            `/booking/payment-status?bid=${justCreatedBooking?._id}&status=success&ch=PayPal`
           );
         },
         onError: async (error) => {
@@ -63,7 +63,7 @@ export default function PayPal({ justCreatedBooking, bookingTotal }) {
           dispatch(setPaymentGateway("PayPal"));
           dispatch(setBookingId(justCreatedBooking?._id));
           navigate(
-            `/booking/payment-status?bid=${justCreatedBooking?._id}&&status=failed&&ch=PayPal`
+            `/booking/payment-status?bid=${justCreatedBooking?._id}&status=failed&ch=PayPal`
           );
         },
       })
