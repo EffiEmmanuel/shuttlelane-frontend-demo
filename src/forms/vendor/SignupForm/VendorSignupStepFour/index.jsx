@@ -81,7 +81,7 @@ function VendorSignupStepSeven(props) {
 
   useEffect(() => {
     // Redirect to step one
-    if (hasVerifiedPhone) {
+    if (hasVerifiedPhone && props?.isUpdateVendorAccount) {
       props?.setIsCompanyInformation(true);
       props?.isContactDetails(false);
 

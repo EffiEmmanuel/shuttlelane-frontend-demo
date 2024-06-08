@@ -81,7 +81,7 @@ function DriverSignupStepSeven(props) {
 
   useEffect(() => {
     // Redirect to step one
-    if (hasVerifiedPhone) {
+    if (hasVerifiedPhone && props?.isUpdateDriverAccount) {
       props?.setIsPhoneVerification(false);
       props?.setIsContactInformation(true);
       props?.setIsPersonalDetails(false);

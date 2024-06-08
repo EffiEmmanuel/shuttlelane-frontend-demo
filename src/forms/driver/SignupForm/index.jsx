@@ -65,12 +65,12 @@ function DriverSignupForm(props) {
       setIsStepFive(false);
       setIsStepSix(false);
     } else if (isStepTwo) {
-      if (!isBVNVerified || !isNINVerified || !isLicenseVerified) {
-        toast.error(
-          "NIN, BVN and Driver License must be veirfied before proceeding. Please crosscheck the details provided."
-        );
-        return;
-      }
+      // if (!isBVNVerified || !isNINVerified || !isLicenseVerified) {
+      //   toast.error(
+      //     "NIN, BVN and Driver License must be veirfied before proceeding. Please crosscheck the details provided."
+      //   );
+      //   return;
+      // }
       if (
         !dateOfBirth ||
         !address ||
