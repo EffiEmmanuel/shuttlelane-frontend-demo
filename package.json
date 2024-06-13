@@ -39,6 +39,7 @@
     "react-locomotive-scroll": "^0.2.2",
     "react-modal": "^3.16.1",
     "react-otp-input": "^3.1.0",
+    "react-paypal-button-v2": "^2.6.3",
     "react-paystack": "^5.0.0",
     "react-phone-input-2": "^2.15.1",
     "react-quill": "^2.0.0",

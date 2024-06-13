@@ -40,7 +40,7 @@ export default function PayPal({ justCreatedBooking, bookingTotal }) {
               {
                 description: description,
                 amount: {
-                  currency: "GPB",
+                  currency: "GBP",
                   value: Math.round(Number(bookingTotal)),
                 },
               },

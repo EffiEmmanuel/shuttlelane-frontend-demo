@@ -405,7 +405,8 @@ export default function Pay(props) {
                   />
                 </button>
               </>
-            ) : userCurrency?.currencyLabel == "Pounds" ? (
+            ) : userCurrency?.currencyLabel == "Pounds" ||
+              userCurrency?.currencyLabel == "Pound Sterling" ? (
               <>
                 <button
                   className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
@@ -422,6 +423,24 @@ export default function Pay(props) {
                     src={stripe}
                     alt=""
                     className="object-contain lg:w-[80px] w-[80px]"
+                  />
+                </button>
+
+                <button
+                  className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
+                    isPaypal && "border-shuttlelanePurple border-[2px]"
+                  }`}
+                  onClick={(e) => {
+                    setIsFlutterwave(false);
+                    setIsPaystack(false);
+                    setIsPaypal(true);
+                    setIsStripe(false);
+                  }}
+                >
+                  <img
+                    src={paypal}
+                    alt=""
+                    className="object-contain lg:w-[90px] w-[90px]"
                   />
                 </button>
               </>
@@ -447,19 +466,19 @@ export default function Pay(props) {
 
                 <button
                   className={`border-dashed h-14 focus:outline-none p-3 flex items-center justify-center ${
-                    isFlutterwave && "border-shuttlelanePurple border-[2px]"
+                    isPaypal && "border-shuttlelanePurple border-[2px]"
                   }`}
                   onClick={(e) => {
-                    setIsFlutterwave(true);
+                    setIsFlutterwave(false);
                     setIsPaystack(false);
-                    setIsPaypal(false);
+                    setIsPaypal(true);
                     setIsStripe(false);
                   }}
                 >
                   <img
-                    src={flutterwave}
+                    src={paypal}
                     alt=""
-                    className="object-contain lg:w-[140px] w-[140px]"
+                    className="object-contain lg:w-[90px] w-[90px]"
                   />
                 </button>
               </>
@@ -525,6 +544,7 @@ export default function Pay(props) {
               <PayPal
                 justCreatedBooking={justCreatedBooking}
                 bookingTotal={bookingTotal}
+                currency={userCurrency}
               />
             )}
           </>

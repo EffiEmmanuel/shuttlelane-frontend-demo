@@ -72,9 +72,22 @@ import PageNotFound from "./pages/404PageNotFound";
 // Images
 import shuttlelaneLogo from "./assets/logos/logo.png";
 
+// For PayPal configuration
+import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+
 function App() {
+  const { userCurrency } = useSelector((store) => store.user);
+
   return (
     <div id="appElement" className="text-shuttlelaneBlack">
+      {/* PayPal configuration */}
+      <Helmet>
+        <script
+          src={`https://www.paypal.com/sdk/js?client-id=AYKJbdgYtaLSSdr_dy_k3m19dJzhG602fsZf3FSa9zf9SmgaKMWD3co7uw1_LtYDExABxnIcTLu1uIc_&currency=${userCurrency?.alias}`}
+        ></script>
+      </Helmet>
+
       <Routes>
         {/* 404 - Page Not Found */}
         <Route path="*" element={<PageNotFound />} />

@@ -71,92 +71,80 @@ function VisaOnArrivalForm() {
 
   return (
     <>
-      {isLoading ? (
-        <div className="flex flex-row items-center justify-center w-full h-full">
-          <ImSpinner2
-            size={32}
-            className="text-shuttlelanePurple animate-spin"
-          />
-        </div>
-      ) : (
-        <>
-          {isRedirecting && <Preloader />}
-          <ToastContainer toastClassName="text-sm z-[90]" />
-          {/* <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
+      {isRedirecting && <Preloader />}
+      <ToastContainer toastClassName="text-sm z-[90]" />
+      {/* <div className="w-full lg:flex-row lg:justify-between lg:items-center -mt-12">
         <div className="bg-white lg:h-[250px] h-[520px] w-auto shadow-lg py-7 pb-10 gap-y-5 gap-x-4 px-7 lg:px-4 lg:pl-10 relative rounded-2xl"> */}
-          <Fade duration={1500}>
-            <div className="w-full flex items-center mt-5 pb-6">
-              <div className="flex w-full items-center lg:flex-row flex-col">
-                <div className="py-3 w-full lg:w-[50%] px-4 bg-transparent rounded-lg text-shuttlelaneBlack">
-                  <h4 className="font-semibold">Nigerian Visa On Arrival</h4>
-                  <p>
-                    Select country of Nationality below to verify support for a
-                    Nigerian Visa On Arrival based on your country:
+      <Fade duration={1500}>
+        <div className="w-full flex items-center mt-5 pb-6">
+          <div className="flex w-full items-center lg:flex-row flex-col">
+            <div className="py-3 w-full lg:w-[50%] px-4 bg-transparent rounded-lg text-shuttlelaneBlack">
+              <h4 className="font-semibold">Nigerian Visa On Arrival</h4>
+              <p>
+                Select country of Nationality below to verify support for a
+                Nigerian Visa On Arrival based on your country:
+              </p>
+
+              <div className="mt-4 text-sm relative z-[10]">
+                <ReactCountryFlagsSelect
+                  disabled={isLoading}
+                  selected={country}
+                  onSelect={setCountry}
+                  fullWidth
+                  searchable
+                  classes="z-[10] relative"
+                />
+              </div>
+
+              {/* Output message and spinner */}
+              <div className="mt-4">
+                {!isLoading && country && (
+                  <p
+                    className={`text-md ${
+                      voaVerificationStatus === "noSupport"
+                        ? "text-blue-500"
+                        : "text-green-500"
+                    }`}
+                  >
+                    {voaVerificationMessage}
                   </p>
+                )}
 
-                  <div className="mt-4 text-sm">
-                    <ReactCountryFlagsSelect
-                      disabled={isLoading}
-                      selected={country}
-                      onSelect={setCountry}
-                      fullWidth
-                      searchable
-                    />
-                  </div>
-
-                  {/* Output message and spinner */}
-                  <div className="mt-4">
-                    {!isLoading && country && (
-                      <p
-                        className={`text-md ${
-                          voaVerificationStatus === "noSupport"
-                            ? "text-blue-500"
-                            : "text-green-500"
-                        }`}
-                      >
-                        {voaVerificationMessage}
-                      </p>
-                    )}
-
-                    {isLoading && (
-                      <ImSpinner2 size={21} className="animate-spin" />
-                    )}
-                  </div>
-                </div>
-                <div className="py-3 hidden lg:inline-block lg:w-[50%] px-4 bg-transparent rounded-lg text-shuttlelaneBlack">
-                  <div className="flex flex-col items-end justify-center">
-                    <h1 className="greatVibesText text-shuttlelanePurple opacity-[45%] text-4xl break-keep leading-[35px]">
-                      Visa On
-                    </h1>
-                    <h1 className="text-shuttlelanePurple opacity-[45%] text-4xl break-keep leading-[35px]">
-                      ARRIVAL
-                    </h1>
-                  </div>
-                </div>
+                {isLoading && <ImSpinner2 size={21} className="animate-spin" />}
               </div>
             </div>
-
-            <div className="flex w-full justify-end absolute right-10 -bottom-5">
-              <button
-                type="submit"
-                className="bg-shuttlelanePurple disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 disabled:cursor-not-allowed shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
-                disabled={voaVerificationStatus !== "visaRequired"}
-                onClick={(e) => {
-                  setIsRedirecting(true);
-                  setTimeout(() => {
-                    handleBookNow(e);
-                  }, 1500);
-                }}
-              >
-                <span className="text-sm">Book Now</span>
-                <HiArrowLongRight size={16} className="" />
-              </button>
+            <div className="py-3 hidden lg:inline-block lg:w-[50%] px-4 bg-transparent rounded-lg text-shuttlelaneBlack">
+              <div className="flex flex-col items-end justify-center">
+                <h1 className="greatVibesText text-shuttlelanePurple opacity-[45%] text-4xl break-keep leading-[35px]">
+                  Visa On
+                </h1>
+                <h1 className="text-shuttlelanePurple opacity-[45%] text-4xl break-keep leading-[35px]">
+                  ARRIVAL
+                </h1>
+              </div>
             </div>
-          </Fade>
-          {/* </div>
+          </div>
+        </div>
+
+        <div className="z-[5] float-right absolute right-10 -bottom-5">
+          <button
+            type="submit"
+            className="bg-shuttlelanePurple disabled:bg-shuttlelaneLightPurple disabled:text-gray-400 disabled:cursor-not-allowed shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"
+            disabled={voaVerificationStatus !== "visaRequired"}
+            onClick={(e) => {
+              setIsRedirecting(true);
+              setTimeout(() => {
+                handleBookNow(e);
+              }, 1500);
+            }}
+          >
+            <span className="text-sm">Book Now</span>
+            <HiArrowLongRight size={16} className="" />
+          </button>
+        </div>
+      </Fade>
+      {/* </div>
       </div> */}
-        </>
-      )}
     </>
   );
 }
