@@ -11,7 +11,11 @@ import AdminTopBar from "../../../../../components/ui/Admin/AdminTopBar";
 import { AiFillDelete } from "react-icons/ai";
 import {
   deleteVendorById,
+  fetchSuspendedVendors,
   fetchVendors,
+  rejectVendorApplication,
+  suspendVendorById,
+  unsuspendVendorById,
 } from "../../../../../redux/slices/adminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner2 } from "react-icons/im";
@@ -22,9 +26,8 @@ function AdminDashboardVendorsPage() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const { isLoading, vendors, vendorData, token, admin } = useSelector(
-    (store) => store.admin
-  );
+  const { isLoading, vendors, suspendedVendors, vendorData, token, admin } =
+    useSelector((store) => store.admin);
 
   // Chart Setup
   const [vendorDataByMonth, setVendorDataByMonth] = useState();
@@ -97,6 +100,7 @@ function AdminDashboardVendorsPage() {
   // Fetch Vendors
   useEffect(() => {
     dispatch(fetchVendors(token));
+    dispatch(fetchSuspendedVendors(token));
   }, [token]);
 
   // Configure vendorDataByMonth
@@ -122,6 +126,21 @@ function AdminDashboardVendorsPage() {
   // function to handle deleting a vendor
   function deleteVendor(vendorId) {
     dispatch(deleteVendorById({ token, vendorId }));
+  }
+
+  // function to handle suspending a vendor
+  function handleSuspendVendor(vendorId) {
+    dispatch(suspendVendorById({ token, vendorId }));
+  }
+
+  // function to handle unsuspending a vendor
+  function handleUnsuspendVendor(vendorId) {
+    dispatch(unsuspendVendorById({ token, vendorId }));
+  }
+
+  // function to handle suspending a vendor
+  function handleRejectVendorApplication(vendorId) {
+    dispatch(rejectVendorApplication({ token, vendorId }));
   }
 
   return (
@@ -178,7 +197,7 @@ function AdminDashboardVendorsPage() {
                   </div>
                 </div>
 
-                {/* Venors */}
+                {/* Vendors */}
                 <div className="w-full">
                   {/* Searchbar */}
                   {/* <div className="flex items-center gap-x-3 border-[1.3px] lg:border-[.3px] border-gray-300 rounded-lg px-2 my-2 lg:w-1/4 w-full">
@@ -190,11 +209,107 @@ function AdminDashboardVendorsPage() {
                     />
                   </div> */}
 
-                  <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                  {suspendedVendors?.length > 0 && (
+                    <div className="mt-7 w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="flex items-baseline justify-between">
+                        <div className="flex items-center gap-x-2">
+                          <p className="font-medium">Suspended Vendors</p>
+                          <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
+                        </div>
+                      </div>
+
+                      {/* Table header */}
+                      <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
+                        <p className="w-200px lg:w-[25%] text-xs">
+                          Company name
+                        </p>
+                        <p className="w-200px lg:w-[25%] text-xs">
+                          Email Address
+                        </p>
+                        <p className="w-200px lg:w-[25%] text-xs">
+                          Contact Number
+                        </p>
+                        {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
+                        {admin?.role !== "Blogger" && (
+                          <p className="w-200px lg:w-[25%] text-xs">Actions</p>
+                        )}
+                      </div>
+
+                      {/* Table body - Vendor card */}
+                      {suspendedVendors?.map((vendor) => (
+                        <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                          <p
+                            className={`w-200px lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {vendor?.companyName}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {vendor?.email}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {vendor?.countryCode} {vendor?.mobile}
+                          </p>
+                          {/* <p className="w-200px lg:w-[25%] text-xs">
+                        12 November 2023
+                      </p> */}
+                          {admin?.role !== "Blogger" && (
+                            <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                              {!isLoading ? (
+                                <div className="flex flex-row items-center gap-x-2">
+                                  <button
+                                    onClick={() =>
+                                      handleUnsuspendVendor(vendor?._id)
+                                    }
+                                    className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
+                                  >
+                                    Unsuspend
+                                  </button>
+                                  <button
+                                    onClick={() => deleteVendor(vendor?._id)}
+                                    className="text-xs"
+                                  >
+                                    <AiFillDelete
+                                      size={16}
+                                      className="text-red-500"
+                                    />
+                                  </button>
+                                </div>
+                              ) : (
+                                <ImSpinner2
+                                  size={16}
+                                  className="text-gray-400"
+                                />
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+
+                      {suspendedVendors?.length < 1 && (
+                        <div className="flex justify-center">
+                          <p className="text-center text-sm">
+                            No data to show for now...
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="mt-7 w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
-                        <p className="font-medium">Vendors</p>
-                        <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
+                        <p className="font-medium">Approved Vendors</p>
+                        <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                       </div>
                     </div>
 
@@ -243,15 +358,25 @@ function AdminDashboardVendorsPage() {
                         {admin?.role !== "Blogger" && (
                           <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
                             {!isLoading ? (
-                              <button
-                                onClick={() => deleteVendor(vendor?._id)}
-                                className="text-xs"
-                              >
-                                <AiFillDelete
-                                  size={16}
-                                  className="text-red-500"
-                                />
-                              </button>
+                              <div className="flex flex-row items-center gap-x-2">
+                                <button
+                                  onClick={() =>
+                                    handleSuspendVendor(vendor?._id)
+                                  }
+                                  className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
+                                >
+                                  Suspend
+                                </button>
+                                <button
+                                  onClick={() => deleteVendor(vendor?._id)}
+                                  className="text-xs"
+                                >
+                                  <AiFillDelete
+                                    size={16}
+                                    className="text-red-500"
+                                  />
+                                </button>
+                              </div>
                             ) : (
                               <ImSpinner2 size={16} className="text-gray-400" />
                             )}

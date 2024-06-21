@@ -204,6 +204,25 @@ export const fetchDrivers = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function fetches suspended drivers
+export const fetchSuspendedDrivers = createAsyncThunk(
+  "admin/drivers/suspended/getAll",
+  async (token) => {
+    console.log("TOKEN:", token);
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/account/suspended-accounts`,
+      //   `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/suspended-accounts`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH SUSPENDED DRIVERS ERROR:", err));
+  }
+);
+
 // FUNCTION: This function fetches approved drivers
 export const fetchApprovedDrivers = createAsyncThunk(
   "admin/drivers/getAllApproved",
@@ -218,6 +237,23 @@ export const fetchApprovedDrivers = createAsyncThunk(
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH DRIVERS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function fetches unapproved drivers
+export const fetchUnapprovedDrivers = createAsyncThunk(
+  "admin/drivers/getAllUnapproved",
+  async (token) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/unapproved`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH UNAPPROVED DRIVERS ERROR:", err));
   }
 );
 
@@ -236,6 +272,60 @@ export const deleteDriverById = createAsyncThunk(
     )
       .then((res) => res.json())
       .catch((err) => console.log("DELETE DRIVER ERROR:", err));
+  }
+);
+
+// FUNCTION: This function suspends a driver by Id
+export const suspendDriverById = createAsyncThunk(
+  "admin/drivers/suspendOne",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/${payload?.driverId}/account/suspend`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("SUSPEND DRIVER ERROR:", err));
+  }
+);
+
+// FUNCTION: This function unsuspends a driver by Id
+export const unsuspendDriverById = createAsyncThunk(
+  "admin/drivers/unsuspendOne",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/${payload?.driverId}/account/unsuspend`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UNSUSPEND DRIVER ERROR:", err));
+  }
+);
+
+// FUNCTION: This function rejects a driver application by Id
+export const rejectDriverApplication = createAsyncThunk(
+  "admin/drivers/rejectApplication",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/drivers/${payload?.driverId}/account/reject`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("REJECT DRIVER APPLICATION ERROR:", err));
   }
 );
 
@@ -267,6 +357,42 @@ export const fetchApprovedVendors = createAsyncThunk(
     )
       .then((res) => res.json())
       .catch((err) => console.log("FETCH APPROVED VENDORS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function fetches unapproved vendors
+export const fetchUnapprovedVendors = createAsyncThunk(
+  "admin/vendors/getAllUnapproved",
+  async (token) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/unapproved`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH UNAPPROVED VENDORS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function fetches suspended vendors
+export const fetchSuspendedVendors = createAsyncThunk(
+  "admin/vendors/suspended/getAll",
+  async (token) => {
+    console.log("TOKEN:", token);
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/account/suspended-accounts`,
+      //   `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/suspended-accounts`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH SUSPENDED VENDORS ERROR:", err));
   }
 );
 
@@ -306,6 +432,60 @@ export const deleteVendorById = createAsyncThunk(
     )
       .then((res) => res.json())
       .catch((err) => console.log("DELETE VENDOR ERROR:", err));
+  }
+);
+
+// FUNCTION: This function suspends a vendor by Id
+export const suspendVendorById = createAsyncThunk(
+  "admin/vendors/suspendOne",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/${payload?.vendorId}/account/suspend`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("SUSPEND DRIVER ERROR:", err));
+  }
+);
+
+// FUNCTION: This function unsuspends a vendor by Id
+export const unsuspendVendorById = createAsyncThunk(
+  "admin/vendors/unsuspendOne",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/${payload?.vendorId}/account/unsuspend`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UNSUSPEND DRIVER ERROR:", err));
+  }
+);
+
+// FUNCTION: This function rejects a vendor application by Id
+export const rejectVendorApplication = createAsyncThunk(
+  "admin/vendors/rejectApplication",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/vendors/${payload?.vendorId}/account/reject`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("REJECT DRIVER APPLICATION ERROR:", err));
   }
 );
 
@@ -1638,13 +1818,17 @@ export const adminSlice = createSlice({
     // The following states are for driver management
     currentDriver: null,
     drivers: null,
+    suspendedDrivers: null,
     approvedDrivers: null,
+    unapprovedDrivers: null,
     driverData: null,
 
     // The following states are for vendor management
     currentVendor: null,
     vendors: null,
+    suspendedVendors: null,
     approvedVendors: null,
+    unapprovedVendors: null,
     vendorData: null,
 
     // The following states are for enquiry management
@@ -1882,6 +2066,19 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
+      }) // Fetch Suspended Drivers AsyncThunk states
+      .addCase(fetchSuspendedDrivers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchSuspendedDrivers.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD SUSPENDED DRIVERS", action.payload);
+        state.suspendedDrivers = action.payload?.suspendedDriverAccounts;
+        state.isLoading = false;
+      })
+      .addCase(fetchSuspendedDrivers.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
       }) // Fetch Approved Drivers AsyncThunk states
       .addCase(fetchApprovedDrivers.pending, (state) => {
         state.isLoading = true;
@@ -1893,6 +2090,20 @@ export const adminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchApprovedDrivers.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // Fetch Unapproved Drivers AsyncThunk states
+      .addCase(fetchUnapprovedDrivers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUnapprovedDrivers.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UNAPPROVED DRIVERS", action.payload);
+        state.unapprovedDrivers = action.payload?.drivers;
+        // state.driverData = action.payload?.data;
+        state.isLoading = false;
+      })
+      .addCase(fetchUnapprovedDrivers.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
@@ -1929,6 +2140,19 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
+      }) // Fetch Suspended Vendors AsyncThunk states
+      .addCase(fetchSuspendedVendors.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchSuspendedVendors.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD SUSPENDED VENDORS", action.payload);
+        state.suspendedVendors = action.payload?.suspendedVendorAccounts;
+        state.isLoading = false;
+      })
+      .addCase(fetchSuspendedVendors.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
       }) // Fetch Approved Vendors AsyncThunk states
       .addCase(fetchApprovedVendors.pending, (state) => {
         state.isLoading = true;
@@ -1943,6 +2167,20 @@ export const adminSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
+      }) // Fetch Unapproved Vendors AsyncThunk states
+      .addCase(fetchUnapprovedVendors.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUnapprovedVendors.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UNAPPROVED VENDORS", action.payload);
+        state.unapprovedVendors = action.payload?.vendors;
+        // state.driverData = action.payload?.data;
+        state.isLoading = false;
+      })
+      .addCase(fetchUnapprovedVendors.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
       }) // Approve vendor account AsyncThunk states
       .addCase(approveVendorAccount.pending, (state) => {
         state.isLoading = true;
@@ -1951,6 +2189,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD APPROVE DRIVER ACCOUNT", action.payload);
         if (action.payload?.status == 201) {
           state.vendors = action.payload?.vendors;
+          state.unapprovedVendors = action.payload?.unapprovedVendors;
           toast.success(action.payload?.message);
         } else {
           toast.error(action.payload?.message);
@@ -2646,6 +2885,7 @@ export const adminSlice = createSlice({
         console.log("ACTION.PAYLOAD APPROVE DRIVER ACCOUNT", action.payload);
         if (action.payload?.status == 201) {
           state.drivers = action.payload?.drivers;
+          state.unapprovedDrivers = action.payload?.unapprovedDrivers;
           toast.success(action.payload?.message);
         } else {
           toast.error(action.payload?.message);
@@ -2847,6 +3087,120 @@ export const adminSlice = createSlice({
         }
       })
       .addCase(deleteCity.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // suspendDriverById AsyncThunk states
+      .addCase(suspendDriverById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(suspendDriverById.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD SUSPEND DRIVER", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.suspendedDrivers = action.payload?.suspendedDriverAccounts;
+          state.drivers = action.payload?.drivers;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(suspendDriverById.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // unsuspendDriverById AsyncThunk states
+      .addCase(unsuspendDriverById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(unsuspendDriverById.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UNSUSPEND DRIVER", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.suspendedDrivers = action.payload?.suspendedDriverAccounts;
+          state.drivers = action.payload?.drivers;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(unsuspendDriverById.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // rejectDriverApplication AsyncThunk states
+      .addCase(rejectDriverApplication.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(rejectDriverApplication.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD REJECT DRIVER APPLICATION", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.suspendedDrivers = action.payload?.suspendedDriverAccounts;
+          state.drivers = action.payload?.drivers;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(rejectDriverApplication.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // suspendVendorById AsyncThunk states
+      .addCase(suspendVendorById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(suspendVendorById.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD SUSPEND VENDOR", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.suspendedVendors = action.payload?.suspendedVendorAccounts;
+          state.vendors = action.payload?.vendors;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(suspendVendorById.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // unsuspendVendorById AsyncThunk states
+      .addCase(unsuspendVendorById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(unsuspendVendorById.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UNSUSPEND VENDOR", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.suspendedVendors = action.payload?.suspendedVendorAccounts;
+          state.vendors = action.payload?.vendors;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(unsuspendVendorById.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // rejectVendorApplication AsyncThunk states
+      .addCase(rejectVendorApplication.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(rejectVendorApplication.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD REJECT VENDOR APPLICATION", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.suspendedVendors = action.payload?.suspendedVendorAccounts;
+          state.vendors = action.payload?.vendors;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(rejectVendorApplication.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

@@ -27,6 +27,8 @@ import {
   fetchVendors,
   fetchApprovedVendors,
   approveVendorAccount,
+  fetchUnapprovedDrivers,
+  fetchUnapprovedVendors,
 } from "../../../redux/slices/adminSlice";
 import { Modal as RsuiteModal, Button } from "rsuite";
 import Modal from "react-modal";
@@ -37,7 +39,7 @@ import { FaXmark } from "react-icons/fa6";
 import { Helmet } from "react-helmet";
 
 // Images
-import profilePicPlaceholder from "../../../assets/images/profilePicture.png";
+import profilePicPlaceholder from "../../../assets/logos/icon.png";
 import moment from "moment";
 
 function AdminDashboardHomePage() {
@@ -48,8 +50,10 @@ function AdminDashboardHomePage() {
     users,
     drivers,
     approvedDrivers,
+    unapprovedDrivers,
     vendors,
     approvedVendors,
+    unapprovedVendors,
     upcomingBookings,
     unassignedBookings,
     bookingFetchedByReference,
@@ -131,6 +135,8 @@ function AdminDashboardHomePage() {
 
   useEffect(() => {
     dispatch(fetchStatistics(token));
+    dispatch(fetchUnapprovedDrivers(token));
+    dispatch(fetchUnapprovedVendors(token));
     dispatch(adminFetchUpcomingBookings(token));
     dispatch(adminFetchBookingsAwaitingAssignment(token));
   }, [token]);
@@ -2404,7 +2410,8 @@ function AdminDashboardHomePage() {
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
-                              Drivers - {drivers?.length}
+                              Pending Driver Applications -{" "}
+                              {unapprovedDrivers?.length}
                             </p>
                             <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                           </div>
@@ -2435,7 +2442,7 @@ function AdminDashboardHomePage() {
                           <p className="w-[50%] text-xs">Email</p>
                         </div>
 
-                        {drivers?.map((driver) => (
+                        {unapprovedDrivers?.map((driver) => (
                           <div
                             onClick={() => {
                               if (admin?.role == "Blogger") {
@@ -2456,7 +2463,7 @@ function AdminDashboardHomePage() {
                           </div>
                         ))}
 
-                        {drivers?.length < 1 && (
+                        {unapprovedDrivers?.length < 1 && (
                           <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
                             <p className="w-full text-xs text-center">
                               No data to show for now...
@@ -2472,7 +2479,8 @@ function AdminDashboardHomePage() {
                         <div className="flex items-baseline justify-between">
                           <div className="flex items-center gap-x-2">
                             <p className="font-medium">
-                              Vendors - {vendors?.length}
+                              Pending Vendor Applications -{" "}
+                              {unapprovedVendors?.length}
                             </p>
                             <div className="h-2 w-2 rounded-full bg-shuttlelanePurple"></div>
                           </div>
@@ -2500,14 +2508,14 @@ function AdminDashboardHomePage() {
                         )} */}
 
                         {/* Table header */}
-                        {!isLoading && vendors && (
+                        {!isLoading && unapprovedVendors && (
                           <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
                             <p className="w-[50%] text-xs">Company Name</p>
                             <p className="w-[50%] text-xs">Email</p>
                           </div>
                         )}
 
-                        {vendors?.map((vendor) => (
+                        {unapprovedVendors?.map((vendor) => (
                           <div
                             onClick={() => {
                               setCurrentVendor(vendor);
@@ -2524,7 +2532,8 @@ function AdminDashboardHomePage() {
                           </div>
                         ))}
 
-                        {(vendors?.length < 1 || !vendors) && (
+                        {(unapprovedVendors?.length < 1 ||
+                          !unapprovedVendors) && (
                           <div className="flex justify-center items-center h-full w-full mb-2 pb-2 text-shuttlelaneBlack mt-4">
                             <p className="w-full text-xs text-center">
                               No data to show for now...

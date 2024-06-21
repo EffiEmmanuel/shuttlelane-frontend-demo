@@ -9,18 +9,22 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteDriverById,
   fetchDrivers,
+  fetchSuspendedDrivers,
+  rejectDriverApplication,
+  suspendDriverById,
+  unsuspendDriverById,
 } from "../../../../../redux/slices/adminSlice";
 import { ImSpinner2 } from "react-icons/im";
 import { Helmet } from "react-helmet";
+import { ToastContainer } from "react-toastify";
 
 function AdminDashboardDriversPage() {
   // Mobile navbar handler
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const { isLoading, drivers, driverData, token, admin } = useSelector(
-    (store) => store.admin
-  );
+  const { isLoading, drivers, suspendedDrivers, driverData, token, admin } =
+    useSelector((store) => store.admin);
 
   // Chart Setup
   const [driverDataByMonth, setDriverDataByMonth] = useState();
@@ -92,6 +96,7 @@ function AdminDashboardDriversPage() {
 
   // Fetch Drivers
   useEffect(() => {
+    dispatch(fetchSuspendedDrivers(token));
     dispatch(fetchDrivers(token));
   }, [token]);
 
@@ -120,8 +125,24 @@ function AdminDashboardDriversPage() {
     dispatch(deleteDriverById({ token, driverId }));
   }
 
+  // function to handle suspending a driver
+  function handleSuspendDriver(driverId) {
+    dispatch(suspendDriverById({ token, driverId }));
+  }
+
+  // function to handle unsuspending a driver
+  function handleUnsuspendDriver(driverId) {
+    dispatch(unsuspendDriverById({ token, driverId }));
+  }
+
+  // function to handle suspending a driver
+  function handleRejectDriverApplication(driverId) {
+    dispatch(rejectDriverApplication({ token, driverId }));
+  }
+
   return (
     <div className="">
+      <ToastContainer />
       <Helmet>
         <title>Manage Drivers | Shuttlelane Portal Admin Dashboard</title>
       </Helmet>
@@ -154,7 +175,7 @@ function AdminDashboardDriversPage() {
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
                         <p className="font-medium">
-                          Total Drivers - {drivers?.length}
+                          Total Approved Drivers - {drivers?.length}
                         </p>
                         <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                       </div>
@@ -186,10 +207,104 @@ function AdminDashboardDriversPage() {
                     />
                   </div> */}
 
-                  <div className="w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                  {suspendedDrivers?.length > 0 && (
+                    <div className="mt-7 w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
+                      <div className="flex items-baseline justify-between">
+                        <div className="flex items-center gap-x-2">
+                          <p className="font-medium">Suspended Drivers</p>
+                          <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
+                        </div>
+                      </div>
+
+                      {/* Table header */}
+                      <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
+                        <p className="w-200px lg:w-[25%] text-xs">Full name</p>
+                        <p className="w-200px lg:w-[25%] text-xs">
+                          Email Address
+                        </p>
+                        <p className="w-200px lg:w-[25%] text-xs">
+                          Phone Number
+                        </p>
+                        {/* <p className="w-200px lg:w-[25%] text-xs">Last Booking</p> */}
+                        {admin?.role !== "Blogger" && (
+                          <p className="w-200px lg:w-[25%] text-xs">Actions</p>
+                        )}
+                      </div>
+                      {/* Table body - Driver card */}
+                      {suspendedDrivers?.map((driver) => (
+                        <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                          <p
+                            className={`w-200px lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {driver?.firstName} {driver?.lastName}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {driver?.email}
+                          </p>
+                          <p
+                            className={`w-200px lg:w-[25%] text-xs ${
+                              isLoading && "text-gray-400"
+                            }`}
+                          >
+                            {driver?.countryCode} {driver?.mobile}
+                          </p>
+                          {/* <p className="w-200px lg:w-[25%] text-xs">
+                        12 November 2023
+                      </p> */}
+
+                          {admin?.role !== "Blogger" && (
+                            <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
+                              {!isLoading ? (
+                                <div className="flex flex-row items-center gap-x-2">
+                                  <button
+                                    onClick={() =>
+                                      handleUnsuspendDriver(driver?._id)
+                                    }
+                                    className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
+                                  >
+                                    Unsuspend
+                                  </button>
+                                  <button
+                                    onClick={() => deleteDriver(driver?._id)}
+                                    className="text-xs"
+                                  >
+                                    <AiFillDelete
+                                      size={16}
+                                      className="text-red-500"
+                                    />
+                                  </button>
+                                </div>
+                              ) : (
+                                <ImSpinner2
+                                  size={16}
+                                  className="text-gray-400 animate-spin"
+                                />
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+
+                      {suspendedDrivers?.length < 1 && (
+                        <div className="flex justify-center">
+                          <p className="text-center text-sm">
+                            No data to show for now...
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="mt-7 w-full rounded-lg border-[1.3px] lg:border-[.3px] p-3 border-gray-100 h-auto">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-center gap-x-2">
-                        <p className="font-medium">Drivers</p>
+                        <p className="font-medium">Approved Drivers</p>
                         <div className="h-2 w-2 rounded-full bg-shuttlelaneGold"></div>
                       </div>
                     </div>
@@ -237,17 +352,30 @@ function AdminDashboardDriversPage() {
                         {admin?.role !== "Blogger" && (
                           <div className="w-[180px] lg:w-[25%] flex items-center gap-x-3">
                             {!isLoading ? (
-                              <button
-                                onClick={() => deleteDriver(driver?._id)}
-                                className="text-xs"
-                              >
-                                <AiFillDelete
-                                  size={16}
-                                  className="text-red-500"
-                                />
-                              </button>
+                              <div className="flex flex-row items-center gap-x-2">
+                                <button
+                                  onClick={() =>
+                                    handleSuspendDriver(driver?._id)
+                                  }
+                                  className="h-7 w-28 p-2 text-white bg-shuttlelanePurple rounded-lg text-xs"
+                                >
+                                  Suspend
+                                </button>
+                                <button
+                                  onClick={() => deleteDriver(driver?._id)}
+                                  className="text-xs"
+                                >
+                                  <AiFillDelete
+                                    size={16}
+                                    className="text-red-500"
+                                  />
+                                </button>
+                              </div>
                             ) : (
-                              <ImSpinner2 size={16} className="text-gray-400" />
+                              <ImSpinner2
+                                size={16}
+                                className="text-gray-400 animate-spin"
+                              />
                             )}
                           </div>
                         )}
