@@ -208,7 +208,7 @@ function DriverSignupStepOne({
               console.log("state:", e.target.value);
               stepOneStates?.setFirstName(e.target.value);
             }}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
         {/* Middle Name and Last Name */}
@@ -226,7 +226,7 @@ function DriverSignupStepOne({
                 console.log("state:", e.target.value);
                 stepOneStates?.setMiddleName(e.target.value);
               }}
-              className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+              className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
             />
           </div>
           <div className="flex w-full flex-col gap-y-1">
@@ -242,7 +242,7 @@ function DriverSignupStepOne({
                 console.log("state:", e.target.value);
                 stepOneStates?.setLastName(e.target.value);
               }}
-              className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+              className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
             />
           </div>
         </div>
@@ -261,7 +261,7 @@ function DriverSignupStepOne({
               console.log("state:", e.target.value);
               stepOneStates?.setEmail(e.target.value);
             }}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -362,8 +362,8 @@ function DriverSignupStepOne({
             placeholder="---- --- ----"
             value={stepOneStates?.mobile}
             onChange={(value) => stepOneStates?.setMobile(`+${value}`)}
-            containerClass="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
-            inputClass="border-none h-full"
+            containerClass="text-[16px] w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+            inputClass="border-none h-full text-[16px]"
             buttonClass="bg-transparent"
           />
         </div>
@@ -379,8 +379,8 @@ function DriverSignupStepOne({
             placeholder="---- --- ----"
             value={stepOneStates?.alternateMobile}
             onChange={(value) => stepOneStates?.setAlternateMobile(`+${value}`)}
-            containerClass="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
-            inputClass="border-none h-full"
+            containerClass="text-[16px] w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+            inputClass="border-none h-full text-[16px]"
             buttonClass="bg-transparent"
           />
         </div>

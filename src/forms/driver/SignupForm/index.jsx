@@ -436,7 +436,7 @@ function DriverSignupForm(props) {
       });
 
       // PRE-FILL ALL PERSONAL INFORMATION DETAILS
-      //   setDateOfBirth(driver?.dateOfBirth);
+      // setDateOfBirth(driver?.dateOfBirth);
       setAddress(driver?.address);
       setCity(driver?.city);
       setState(driver?.state);
@@ -446,6 +446,9 @@ function DriverSignupForm(props) {
       });
       setBvn(driver?.bvn);
       setNin(driver?.nin);
+      setBank(driver?.bank);
+      setAccountNumber(driver?.accountNumber);
+      setAccountName(driver?.accountName);
       setDriverLicense(driver?.driverLicense);
 
       // PRE-FILL ALL CAR DETAILS INFORMATION

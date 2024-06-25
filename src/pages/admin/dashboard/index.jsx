@@ -536,7 +536,7 @@ function AdminDashboardHomePage() {
                       name="bookingRate"
                       value={bookingRate}
                       onChange={(e) => setBookingRate(e.target.value)}
-                      className="w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
+                      className="text-[16px] w-full text-sm h-11 p-3 border-[0.3px] bg-transparent focus:outline-none border-gray-400 rounded-tr-lg rounded-br-lg"
                     />
                   </div>
                 </div>
@@ -2147,11 +2147,12 @@ function AdminDashboardHomePage() {
                                       booking?.lastName}
                                   </p>
                                   <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                    {
-                                      booking?.booking?.pickupDate?.split(
-                                        "T"
-                                      )[0]
-                                    }
+                                    {booking?.booking?.pickupDate?.split(
+                                      "T"
+                                    )[0] ??
+                                      moment(
+                                        booking?.booking?.pickupDate
+                                      ).format("MMM DD, YYYY")}
                                   </p>
                                   <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
                                     {booking?.bookingType}
@@ -2375,7 +2376,7 @@ function AdminDashboardHomePage() {
                           <input
                             type="search"
                             placeholder="Search"
-                            className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
+                            className="text-[16px] w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                           />
                         </div> */}
 
@@ -2432,7 +2433,7 @@ function AdminDashboardHomePage() {
                           <input
                             type="search"
                             placeholder="Search"
-                            className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
+                            className="text-[16px] w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                           />
                         </div> */}
 
@@ -2502,7 +2503,7 @@ function AdminDashboardHomePage() {
                             <input
                               type="search"
                               placeholder="Search"
-                              className="w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
+                              className="text-[16px] w-full h-8 bg-transparent text-xs focus:outline-none placeholder:text-xs placeholder:text-gray-400"
                             />
                           </div>
                         )} */}

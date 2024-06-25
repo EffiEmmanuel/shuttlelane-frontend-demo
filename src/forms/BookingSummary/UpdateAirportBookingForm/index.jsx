@@ -354,7 +354,7 @@ function UpdateAirportBookingForm(props) {
                           }
                         }}
                         value={passengers}
-                        className="text-sm px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
+                        className="text-[16px] px-2 bg-transparent w-full focus:outline-none text-shuttlelaneBlack"
                         placeholder="Passengers"
                       />
 

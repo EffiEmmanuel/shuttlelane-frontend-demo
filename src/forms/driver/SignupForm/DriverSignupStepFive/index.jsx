@@ -151,7 +151,7 @@ function DriverSignupStepFive({
           </label>
           <input
             placeholder="Eg. Bolt, Rida"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 

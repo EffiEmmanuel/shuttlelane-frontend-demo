@@ -135,8 +135,9 @@ function DriverSignupStepSeven(props) {
                 height: "50px",
                 display: "flex",
                 justifyContent: "center",
+                fontSize: "16px",
               }}
-              className="border-[0.3px] mr-4 text-lg text-center focus:outline-none border-gray-400 rounded-lg flex items-center justify-center"
+              className="text-[16px] border-[0.3px] mr-4 text-lg text-center focus:outline-none border-gray-400 rounded-lg flex items-center justify-center"
             />
           )}
         />

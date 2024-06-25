@@ -131,7 +131,7 @@ function DriverSignupStepFour({
             onChange={(e) => {
               stepFourStates?.setEmergencyFirstName(e.target.value);
             }}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
         {/* Last Name */}
@@ -146,7 +146,7 @@ function DriverSignupStepFour({
             onChange={(e) => {
               stepFourStates?.setEmergencyLastName(e.target.value);
             }}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -163,7 +163,7 @@ function DriverSignupStepFour({
               stepFourStates?.setEmergencyAddress(e.target.value);
             }}
             placeholder="Home address"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -181,8 +181,8 @@ function DriverSignupStepFour({
             onChange={(value) =>
               stepFourStates?.setEmergencyMobile(`+${value}`)
             }
-            containerClass="w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
-            inputClass="border-none h-full"
+            containerClass="text-[16px] w-full h-12 p-3 border-[.5px] border-gray-400 outline-none focus:outline-none rounded-lg text-sm"
+            inputClass="border-none h-full text-[16px]"
             buttonClass="bg-transparent"
           />
         </div>

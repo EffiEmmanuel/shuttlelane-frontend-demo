@@ -59,7 +59,7 @@ function DriverLoginForm() {
             value={values.email}
             onChange={handleChange}
             name="email"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
           {errors?.email && (
             <p className="text-sm text-red-400">{errors?.email}</p>
@@ -76,7 +76,7 @@ function DriverLoginForm() {
             name="password"
             value={values.password}
             onChange={handleChange}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
           {errors?.password && (
             <p className="text-sm text-red-400">{errors?.password}</p>

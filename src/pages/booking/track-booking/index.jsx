@@ -268,15 +268,29 @@ function TrackBookingPage() {
                   <div className="mt-5">
                     <h2 className="text-xl font-semibold">Driver Details</h2>
 
-                    {bookingFetchedByReference?.assignedDriver ? (
+                    {bookingFetchedByReference?.assignedDriver ||
+                    bookingFetchedByReference?.vendorAssignedDriver ? (
                       <div className="flex flex-col gap-y-1">
                         <div className="flex items-center gap-x-2">
                           <div className="h-16 w-16 rounded-full overflow-hidden">
                             <img
                               src={
-                                bookingFetchedByReference?.assignedDriver?.image
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.image ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.image
                               }
-                              alt={`${bookingFetchedByReference?.assignedDriver?.firstName} ${bookingFetchedByReference?.assignedDriver?.lastName}`}
+                              alt={`${
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.firstName ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.firstName
+                              } ${
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.lastName ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.lastName
+                              }`}
                               className="w-full h-full object-cover"
                             />
                           </div>
@@ -285,33 +299,23 @@ function TrackBookingPage() {
                             <span className="text-sm font-semibold">
                               Full Name:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.firstName
-                                }{" "}
-                                $
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.lastName
-                                }
-                              </span>{" "}
-                            </span>
-                            <span className="text-sm font-semibold">
-                              Email Address:{" "}
-                              <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.email
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.firstName ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.firstName}{" "}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.lastName ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.lastName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Phone Number:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.mobile
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.mobile ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.mobile}
                               </span>{" "}
                             </span>
                           </div>
@@ -329,51 +333,56 @@ function TrackBookingPage() {
                   {/* Car Details */}
                   <div className="mt-5">
                     <h2 className="text-xl font-semibold">Car Details</h2>
-                    {bookingFetchedByReference?.assignedDriver ? (
+                    {bookingFetchedByReference?.assignedDriver ||
+                    bookingFetchedByReference?.assignedCar ? (
                       <div className="flex flex-col gap-y-1">
                         <span className="text-sm font-semibold">
                           Type:{" "}
                           <span className="text-sm font-normal">
-                            {bookingFetchedByReference?.assignedDriver?.carType}
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carType ??
+                              bookingFetchedByReference?.assignedCar?.carType}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Name:{" "}
                           <span className="text-sm font-normal">
-                            {bookingFetchedByReference?.assignedDriver?.carName}
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carName ??
+                              bookingFetchedByReference?.assignedCar?.carName}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Model:{" "}
                           <span className="text-sm font-normal">
-                            {
-                              bookingFetchedByReference?.assignedDriver
-                                ?.carModel
-                            }
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carModel ??
+                              bookingFetchedByReference?.assignedCar?.carModel}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Year:{" "}
                           <span className="text-sm font-normal">
-                            {bookingFetchedByReference?.assignedDriver?.carYear}
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carYear ??
+                              bookingFetchedByReference?.assignedCar?.carYear}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Plate Number:{" "}
                           <span className="text-sm font-normal">
-                            {
-                              bookingFetchedByReference?.assignedDriver
-                                ?.carPlateNumber
-                            }
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carPlateNumber ??
+                              bookingFetchedByReference?.assignedCar
+                                ?.carPlateNumber}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Color:{" "}
                           <span className="text-sm font-normal">
-                            {
-                              bookingFetchedByReference?.assignedDriver
-                                ?.carColor
-                            }
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carColor ??
+                              bookingFetchedByReference?.assignedCar?.carColor}
                           </span>{" "}
                         </span>
                       </div>
@@ -519,15 +528,29 @@ function TrackBookingPage() {
                   <div className="mt-5">
                     <h2 className="text-xl font-semibold">Driver Details</h2>
 
-                    {bookingFetchedByReference?.assignedDriver ? (
+                    {bookingFetchedByReference?.assignedDriver ||
+                    bookingFetchedByReference?.vendorAssignedDriver ? (
                       <div className="flex flex-col gap-y-1">
                         <div className="flex items-center gap-x-2">
                           <div className="h-16 w-16 rounded-full overflow-hidden">
                             <img
                               src={
-                                bookingFetchedByReference?.assignedDriver?.image
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.image ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.image
                               }
-                              alt={`${bookingFetchedByReference?.assignedDriver?.firstName} ${bookingFetchedByReference?.assignedDriver?.lastName}`}
+                              alt={`${
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.firstName ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.firstName
+                              } ${
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.lastName ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.lastName
+                              }`}
                               className="w-full h-full object-cover"
                             />
                           </div>
@@ -536,33 +559,23 @@ function TrackBookingPage() {
                             <span className="text-sm font-semibold">
                               Full Name:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.firstName
-                                }{" "}
-                                $
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.lastName
-                                }
-                              </span>{" "}
-                            </span>
-                            <span className="text-sm font-semibold">
-                              Email Address:{" "}
-                              <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.email
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.firstName ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.firstName}{" "}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.lastName ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.lastName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Phone Number:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.mobile
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.mobile ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.mobile}
                               </span>{" "}
                             </span>
                           </div>
@@ -729,15 +742,29 @@ function TrackBookingPage() {
                   <div className="mt-5">
                     <h2 className="text-xl font-semibold">Driver Details</h2>
 
-                    {bookingFetchedByReference?.assignedDriver ? (
+                    {bookingFetchedByReference?.assignedDriver ||
+                    bookingFetchedByReference?.vendorAssignedDriver ? (
                       <div className="flex flex-col gap-y-1">
                         <div className="flex items-center gap-x-2">
                           <div className="h-16 w-16 rounded-full overflow-hidden">
                             <img
                               src={
-                                bookingFetchedByReference?.assignedDriver?.image
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.image ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.image
                               }
-                              alt={`${bookingFetchedByReference?.assignedDriver?.firstName} ${bookingFetchedByReference?.assignedDriver?.lastName}`}
+                              alt={`${
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.firstName ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.firstName
+                              } ${
+                                bookingFetchedByReference?.assignedDriver
+                                  ?.lastName ??
+                                bookingFetchedByReference?.vendorAssignedDriver
+                                  ?.lastName
+                              }`}
                               className="w-full h-full object-cover"
                             />
                           </div>
@@ -746,33 +773,23 @@ function TrackBookingPage() {
                             <span className="text-sm font-semibold">
                               Full Name:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.firstName
-                                }{" "}
-                                $
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.lastName
-                                }
-                              </span>{" "}
-                            </span>
-                            <span className="text-sm font-semibold">
-                              Email Address:{" "}
-                              <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.email
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.firstName ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.firstName}{" "}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.lastName ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.lastName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Phone Number:{" "}
                               <span className="text-sm font-normal">
-                                {
-                                  bookingFetchedByReference?.assignedDriver
-                                    ?.mobile
-                                }
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.mobile ??
+                                  bookingFetchedByReference
+                                    ?.vendorAssignedDriver?.mobile}
                               </span>{" "}
                             </span>
                           </div>
@@ -790,51 +807,56 @@ function TrackBookingPage() {
                   {/* Car Details */}
                   <div className="mt-5">
                     <h2 className="text-xl font-semibold">Car Details</h2>
-                    {bookingFetchedByReference?.assignedDriver ? (
+                    {bookingFetchedByReference?.assignedDriver ||
+                    bookingFetchedByReference?.assignedCar ? (
                       <div className="flex flex-col gap-y-1">
                         <span className="text-sm font-semibold">
                           Type:{" "}
                           <span className="text-sm font-normal">
-                            {bookingFetchedByReference?.assignedDriver?.carType}
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carType ??
+                              bookingFetchedByReference?.assignedCar?.carType}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Name:{" "}
                           <span className="text-sm font-normal">
-                            {bookingFetchedByReference?.assignedDriver?.carName}
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carName ??
+                              bookingFetchedByReference?.assignedCar?.carName}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Model:{" "}
                           <span className="text-sm font-normal">
-                            {
-                              bookingFetchedByReference?.assignedDriver
-                                ?.carModel
-                            }
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carModel ??
+                              bookingFetchedByReference?.assignedCar?.carModel}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Year:{" "}
                           <span className="text-sm font-normal">
-                            {bookingFetchedByReference?.assignedDriver?.carYear}
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carYear ??
+                              bookingFetchedByReference?.assignedCar?.carYear}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Plate Number:{" "}
                           <span className="text-sm font-normal">
-                            {
-                              bookingFetchedByReference?.assignedDriver
-                                ?.carPlateNumber
-                            }
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carPlateNumber ??
+                              bookingFetchedByReference?.assignedCar
+                                ?.carPlateNumber}
                           </span>{" "}
                         </span>
                         <span className="text-sm font-semibold">
                           Color:{" "}
                           <span className="text-sm font-normal">
-                            {
-                              bookingFetchedByReference?.assignedDriver
-                                ?.carColor
-                            }
+                            {bookingFetchedByReference?.assignedDriver
+                              ?.carColor ??
+                              bookingFetchedByReference?.assignedCar?.carColor}
                           </span>{" "}
                         </span>
                       </div>

@@ -42,7 +42,7 @@ function DriverSignupStepSix({ isStepSix, stepSixStates }) {
             value={stepSixStates?.password}
             onChange={(e) => stepSixStates?.setPassword(e.target.value)}
             placeholder="********"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -54,7 +54,7 @@ function DriverSignupStepSix({ isStepSix, stepSixStates }) {
           <input
             type="password"
             placeholder="********"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div> */}
       </form>

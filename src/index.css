@@ -411,3 +411,8 @@ input.form-control {
 .rs-anim-fade.rs-anim-in.placement-bottom-start.rs-picker-date-menu.rs-picker-menu {
   z-index: 99 !important;
 }
+
+/* Avoid zoom in on input components on mobile */
+input {
+  font-size: 16px !important;
+}

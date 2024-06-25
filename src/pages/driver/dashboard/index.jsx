@@ -292,13 +292,6 @@ function DriverDashboardHomePage() {
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.user?.email ??
-                                bookingFetchedByReference?.email}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
                             Airline:{" "}
                             <span className="text-sm font-normal">
                               {bookingFetchedByReference?.booking?.airline}
@@ -555,13 +548,6 @@ function DriverDashboardHomePage() {
                                 bookingFetchedByReference?.mobile}
                             </span>{" "}
                           </span>
-                          <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.user?.email ??
-                                bookingFetchedByReference?.email}
-                            </span>{" "}
-                          </span>
                         </div>
                       </div>
                       {/* Driver Details */}
@@ -760,13 +746,6 @@ function DriverDashboardHomePage() {
                             <span className="text-sm font-normal">
                               {bookingFetchedByReference?.user?.mobile ??
                                 bookingFetchedByReference?.mobile}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.user?.email ??
-                                bookingFetchedByReference?.email}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1074,16 +1053,21 @@ function DriverDashboardHomePage() {
                           <span className="text-sm font-semibold">
                             Full Name:{" "}
                             <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.booking?.title}{" "}
-                              {bookingFetchedByReference?.booking?.surname}{" "}
-                              {bookingFetchedByReference?.booking?.middleName}{" "}
-                              {bookingFetchedByReference?.booking?.firstName}{" "}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.booking?.email}
+                              {bookingFetchedByReference?.booking?.user
+                                ?.title ??
+                                bookingFetchedByReference?.booking?.title}{" "}
+                              {bookingFetchedByReference?.booking?.user
+                                ?.surname ??
+                                bookingFetchedByReference?.booking
+                                  ?.surname}{" "}
+                              {bookingFetchedByReference?.booking?.user
+                                ?.middleName ??
+                                bookingFetchedByReference?.booking
+                                  ?.middleName}{" "}
+                              {bookingFetchedByReference?.booking?.user
+                                ?.firstName ??
+                                bookingFetchedByReference?.booking
+                                  ?.firstName}{" "}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1252,12 +1236,6 @@ function DriverDashboardHomePage() {
                             State:{" "}
                             <span className="text-sm font-normal">
                               {bookingFetchedByReference?.booking?.contactState}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.booking?.contactEmail}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">

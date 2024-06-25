@@ -15,6 +15,7 @@ import { validateFields } from "../../../../util";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
+import moment from "moment";
 
 function DriverSignupStepTwo({
   isStepTwo,
@@ -113,19 +114,25 @@ function DriverSignupStepTwo({
       stepTwoStates?.maritalStatus,
       stepTwoStates?.bvn,
       stepTwoStates?.nin,
+      stepTwoStates?.accountNumber,
+      stepTwoStates?.accountName,
+      stepTwoStates?.bank,
       stepTwoStates?.driverLicense,
     ]);
     if (areFieldsEmpty) {
       toast.error(areFieldsEmpty?.message);
     } else {
       const values = {
-        dateOfBirth: stepTwoStates?.dateOfBirth?.split("T")[1],
+        dateOfBirth: stepTwoStates?.dateOfBirth,
         address: stepTwoStates?.address,
         city: stepTwoStates?.city,
         state: stepTwoStates?.state,
         maritalStatus: stepTwoStates?.maritalStatus?.value,
         bvn: stepTwoStates?.bvn,
         nin: stepTwoStates?.nin,
+        accountNumber: stepTwoStates?.accountNumber,
+        accountName: stepTwoStates?.accountName,
+        bank: stepTwoStates?.bank,
         driverLicense: stepTwoStates?.driverLicense,
       };
 
@@ -243,7 +250,9 @@ function DriverSignupStepTwo({
           <label htmlFor="dateOfBirth" className="text-sm">
             Date Of Birth{" "}
             {isUpdateDriverAccount && (
-              <span>: {stepTwoStates?.dateOfBirth?.split("T")[0]}</span>
+              <span>
+                : {moment(stepTwoStates?.dateOfBirth).format("MMM DD, YYYY")}
+              </span>
             )}
           </label>
           <DatePicker
@@ -262,7 +271,6 @@ function DriverSignupStepTwo({
               position: "relative",
               outline: "none",
               color: "black",
-              zIndex: 80,
             }}
             className="w-full h-12 flex items-center border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
@@ -281,7 +289,7 @@ function DriverSignupStepTwo({
               stepTwoStates?.setAddress(e.target.value);
             }}
             placeholder="Home address"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -298,7 +306,7 @@ function DriverSignupStepTwo({
               stepTwoStates?.setCity(e.target.value);
             }}
             placeholder="City"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -315,7 +323,7 @@ function DriverSignupStepTwo({
               stepTwoStates?.setState(e.target.value);
             }}
             placeholder="State"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -385,7 +393,7 @@ function DriverSignupStepTwo({
             }}
             placeholder="***********"
             name="bvn"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
           {isVerifyingBVN ? (
             <div className="flex items-center gap-x-2">
@@ -423,7 +431,7 @@ function DriverSignupStepTwo({
             }}
             placeholder="***********"
             name="nin"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
 
           {isVerifyingNIN ? (
@@ -453,7 +461,7 @@ function DriverSignupStepTwo({
               stepTwoStates?.setBank(e.target.value);
             }}
             placeholder="UBA - United Bank for Africa"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -470,7 +478,7 @@ function DriverSignupStepTwo({
               stepTwoStates?.setAccountNumber(e.target.value);
             }}
             placeholder="***********"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -487,7 +495,7 @@ function DriverSignupStepTwo({
               stepTwoStates?.setAccountName(e.target.value);
             }}
             placeholder="John Chidera Akube"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -513,7 +521,7 @@ function DriverSignupStepTwo({
               }
             }}
             placeholder="***********"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
 
           {isVerifyingLicense ? (

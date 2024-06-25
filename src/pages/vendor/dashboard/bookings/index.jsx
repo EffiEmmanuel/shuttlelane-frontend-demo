@@ -266,13 +266,6 @@ function VendorDashboardBookingPage() {
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.user?.email ??
-                                bookingFetchedByReference?.email}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
                             Airline:{" "}
                             <span className="text-sm font-normal">
                               {bookingFetchedByReference?.booking?.airline}
@@ -396,13 +389,6 @@ function VendorDashboardBookingPage() {
                                 bookingFetchedByReference?.mobile}
                             </span>{" "}
                           </span>
-                          <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.user?.email ??
-                                bookingFetchedByReference?.email}
-                            </span>{" "}
-                          </span>
                         </div>
                       </div>
 
@@ -438,15 +424,6 @@ function VendorDashboardBookingPage() {
                                     {
                                       bookingFetchedByReference?.assignedDriver
                                         ?.lastName
-                                    }
-                                  </span>{" "}
-                                </span>
-                                <span className="text-sm font-semibold">
-                                  Email Address:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.email
                                     }
                                   </span>{" "}
                                 </span>
@@ -602,13 +579,6 @@ function VendorDashboardBookingPage() {
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.user?.email ??
-                                bookingFetchedByReference?.email}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
                             Airline:{" "}
                             <span className="text-sm font-normal">
                               {bookingFetchedByReference?.booking?.airline}
@@ -655,15 +625,6 @@ function VendorDashboardBookingPage() {
                                     {
                                       bookingFetchedByReference?.assignedDriver
                                         ?.lastName
-                                    }
-                                  </span>{" "}
-                                </span>
-                                <span className="text-sm font-semibold">
-                                  Email Address:{" "}
-                                  <span className="text-sm font-normal">
-                                    {
-                                      bookingFetchedByReference?.assignedDriver
-                                        ?.email
                                     }
                                   </span>{" "}
                                 </span>
@@ -917,12 +878,6 @@ function VendorDashboardBookingPage() {
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.booking?.email}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
                             Date Of Birth:{" "}
                             <span className="text-sm font-normal">
                               {moment(
@@ -1088,12 +1043,6 @@ function VendorDashboardBookingPage() {
                             State:{" "}
                             <span className="text-sm font-normal">
                               {bookingFetchedByReference?.booking?.contactState}
-                            </span>{" "}
-                          </span>
-                          <span className="text-sm font-semibold">
-                            Email Address:{" "}
-                            <span className="text-sm font-normal">
-                              {bookingFetchedByReference?.booking?.contactEmail}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">

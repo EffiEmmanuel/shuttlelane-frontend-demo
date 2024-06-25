@@ -161,7 +161,7 @@ function DriverSignupStepThree({
               stepThreeStates?.setCarName(e.target.value);
             }}
             placeholder="Car Name"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -178,7 +178,7 @@ function DriverSignupStepThree({
               stepThreeStates?.setCarModel(e.target.value);
             }}
             placeholder="Car Model"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -195,7 +195,7 @@ function DriverSignupStepThree({
               stepThreeStates?.setCarYear(e.target.value);
             }}
             placeholder="Car Year"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -212,7 +212,7 @@ function DriverSignupStepThree({
               stepThreeStates?.setCarColor(e.target.value);
             }}
             placeholder="Car Color"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
@@ -229,7 +229,7 @@ function DriverSignupStepThree({
               stepThreeStates?.setCarPlateNumber(e.target.value);
             }}
             placeholder="Car Plate Number"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
         </div>
 
