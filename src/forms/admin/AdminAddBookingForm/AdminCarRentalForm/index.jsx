@@ -368,11 +368,7 @@ function AdminCarRentalForm() {
                       toast.info("This field accepts only numbers!");
                       return;
                     } else {
-                      if (!(e.target.value > 10)) {
-                        setDays(e.target.value);
-                      } else {
-                        toast.info("You cannot select more than 10 days!");
-                      }
+                      setDays(e.target.value);
                     }
                   }}
                   value={days}
@@ -409,12 +405,7 @@ function AdminCarRentalForm() {
                       } else {
                         newDayValue = +days + 1;
                       }
-                      if (newDayValue > 10) {
-                        toast.info("You cannot select more than 10 days!");
-                        return;
-                      } else {
-                        setDays(+days + 1);
-                      }
+                      setDays(+days + 1);
                     }}
                     className="flex items-center justify-center cursor-pointer p-1 border-[.5px] border-gray-400 rounded-sm"
                   >
