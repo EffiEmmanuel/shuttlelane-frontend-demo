@@ -1625,13 +1625,16 @@ export const createBooking = createAsyncThunk(
 
     console.log("VALS:", values);
 
-    return fetch("https://www.shuttlelane.com/api/v1/booking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
+    return fetch(
+      `https://www.shuttlelane.com/api/v1/booking?isAdminRequest=true`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => console.log("CREATE BOOKING ERROR:", err));
   }
