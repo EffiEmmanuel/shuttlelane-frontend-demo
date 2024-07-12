@@ -27,6 +27,7 @@ import Modal from "react-modal";
 import { FaXmark } from "react-icons/fa6";
 import { ImSpinner2 } from "react-icons/im";
 import { Helmet } from "react-helmet";
+import { reformatDate } from "../../../../../util";
 
 function AdminDashboardAirportTransferPage() {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -228,13 +229,13 @@ function AdminDashboardAirportTransferPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:MM A"
+                            "H:mm A"
                           )}
                         </span>
                       </div>
@@ -289,6 +290,14 @@ function AdminDashboardAirportTransferPage() {
                           {currentBooking?.bookingStatus}
                         </span>
                       </div>
+                      {currentBooking?.hasPriorityPass && (
+                        <div className="flex items-center gap-x-1">
+                          <span className="text-sm">
+                            {currentBooking?.booking?.priorityPassCount}
+                            {currentBooking?.booking?.priorityPassType?.name}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex flex-col mt-4 gap-y-1">
                         <div className="flex items-center gap-x-1">
                           <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
@@ -512,13 +521,13 @@ function AdminDashboardAirportTransferPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:MM A"
+                            "H:mm A"
                           )}
                         </span>
                       </div>
@@ -714,13 +723,13 @@ function AdminDashboardAirportTransferPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:MM A"
+                            "H:mm A"
                           )}
                         </span>
                       </div>
@@ -992,12 +1001,12 @@ function AdminDashboardAirportTransferPage() {
                         <span className="text-sm">
                           {moment(
                             currentBooking?.booking?.departureDate
-                          ).format("MMM DD, YYYY")}
+                          ).format("LL")}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.arrivalDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                       </div>
@@ -1123,7 +1132,7 @@ function AdminDashboardAirportTransferPage() {
                             <span className="text-sm font-normal">
                               {moment(
                                 currentBooking?.booking?.dateOfBirth
-                              ).format("MMM DD, YYYY")}
+                              ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1199,7 +1208,7 @@ function AdminDashboardAirportTransferPage() {
                             <span className="text-sm font-normal">
                               {moment(
                                 currentBooking?.booking?.departureDate
-                              ).format("MMM DD, YYYY")}
+                              ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1207,7 +1216,7 @@ function AdminDashboardAirportTransferPage() {
                             <span className="text-sm font-normal">
                               {moment(
                                 currentBooking?.booking?.arrivalDate
-                              ).format("MMM DD, YYYY")}
+                              ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1385,6 +1394,13 @@ function AdminDashboardAirportTransferPage() {
                                 <span className="text-xs">
                                   {booking?.bookingReference}
                                 </span>
+                                {booking?.booking?.hasPriorityPass && (
+                                  <div className="flex items-center justify-center h-3 bg-green-500">
+                                    <span className="text-sm">
+                                      Priority pass included
+                                    </span>
+                                  </div>
+                                )}
                                 {/* <LuCopy
                                   size={14}
                                   className="text-shuttlelaneBlack"
@@ -1413,7 +1429,7 @@ function AdminDashboardAirportTransferPage() {
                                 }}
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
-                                {booking?.email}
+                                {booking?.user?.email ?? booking?.email}
                               </p>
                               <p
                                 onClick={() => {
@@ -1423,8 +1439,8 @@ function AdminDashboardAirportTransferPage() {
                                 }}
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
-                                {moment(booking?.pickupDate).format(
-                                  "DD MM, YYYY"
+                                {moment(booking?.booking?.pickupDate).format(
+                                  "LL"
                                 )}
                               </p>
 
@@ -1572,6 +1588,14 @@ function AdminDashboardAirportTransferPage() {
                                 <span className="text-xs">
                                   {booking?.bookingReference}
                                 </span>
+
+                                {booking?.booking?.hasPriorityPass && (
+                                  <div className="flex items-center justify-center h-3 bg-green-500">
+                                    <span className="text-sm">
+                                      Priority pass included
+                                    </span>
+                                  </div>
+                                )}
                                 {/* <LuCopy
                                   size={14}
                                   className="text-shuttlelaneBlack"
@@ -1600,7 +1624,7 @@ function AdminDashboardAirportTransferPage() {
                                 }}
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
-                                {booking?.email}
+                                {booking?.user?.email ?? booking?.email}
                               </p>
                               <p
                                 onClick={() => {
@@ -1610,8 +1634,8 @@ function AdminDashboardAirportTransferPage() {
                                 }}
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
-                                {moment(booking?.pickupDate).format(
-                                  "DD MM, YYYY"
+                                {moment(booking?.booking?.pickupDate).format(
+                                  "LL"
                                 )}
                               </p>
 

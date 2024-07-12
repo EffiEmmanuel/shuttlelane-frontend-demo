@@ -73,9 +73,7 @@ function AdminCarRentalForm() {
 
   // Get current city when selected city changes
   useEffect(() => {
-    console.log("SELECTED CITY::", selectedCity);
-    dispatch(fetchCity({ cityId: selectedCity?.value }));
-    console.log("CURRENT CITY::", currentCity);
+    dispatch(fetchCity({ cityId: selectedCity?.value, token: token }));
   }, [selectedCity]);
 
   // Format cars
@@ -140,7 +138,8 @@ function AdminCarRentalForm() {
 
   // Passenger Form Fields
   const [selectedTitle, setSelectedTitle] = useState();
-  const [fullName, setFullName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
 
@@ -152,8 +151,8 @@ function AdminCarRentalForm() {
         bookingType: "Car",
         bookingDetails: {
           title: selectedTitle?.value,
-          firstName: fullName?.split(" ")[0],
-          lastName: fullName?.split(" ")[1],
+          firstName: firstName,
+          lastName: lastName,
           email: email,
           mobile: phoneNumber,
           bookingCurrency: bookingCurrency?._id,
@@ -427,8 +426,10 @@ function AdminCarRentalForm() {
       <PersonalDetailsForm
         selectedTitle={selectedTitle}
         setSelectedTitle={setSelectedTitle}
-        fullName={fullName}
-        setFullName={setFullName}
+        firstName={firstName}
+        setFirstName={setFirstName}
+        lastName={lastName}
+        setLastName={setLastName}
         phoneNumber={phoneNumber}
         setPhoneNumber={setPhoneNumber}
         email={email}

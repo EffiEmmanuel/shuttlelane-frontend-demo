@@ -228,13 +228,13 @@ function AdminDashboardVisaOnArrivalPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:MM A"
+                            "H:mm A"
                           )}
                         </span>
                       </div>
@@ -286,6 +286,14 @@ function AdminDashboardVisaOnArrivalPage() {
                           {currentBooking?.bookingStatus}
                         </span>
                       </div>
+                      {currentBooking?.hasPriorityPass && (
+                        <div className="flex items-center gap-x-1">
+                          <span className="text-sm">
+                            {currentBooking?.booking?.priorityPassCount}
+                            {currentBooking?.booking?.priorityPassType?.name}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex flex-col mt-4 gap-y-1">
                         <div className="flex items-center gap-x-1">
                           <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
@@ -509,13 +517,13 @@ function AdminDashboardVisaOnArrivalPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:MM A"
+                            "H:mm A"
                           )}
                         </span>
                       </div>
@@ -711,13 +719,13 @@ function AdminDashboardVisaOnArrivalPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:MM A"
+                            "H:mm A"
                           )}
                         </span>
                       </div>
@@ -989,12 +997,12 @@ function AdminDashboardVisaOnArrivalPage() {
                         <span className="text-sm">
                           {moment(
                             currentBooking?.booking?.departureDate
-                          ).format("MMM DD, YYYY")}
+                          ).format("LL")}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(currentBooking?.booking?.arrivalDate).format(
-                            "MMM DD, YYYY"
+                            "LL"
                           )}
                         </span>
                       </div>
@@ -1120,7 +1128,7 @@ function AdminDashboardVisaOnArrivalPage() {
                             <span className="text-sm font-normal">
                               {moment(
                                 currentBooking?.booking?.dateOfBirth
-                              ).format("MMM DD, YYYY")}
+                              ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1196,7 +1204,7 @@ function AdminDashboardVisaOnArrivalPage() {
                             <span className="text-sm font-normal">
                               {moment(
                                 currentBooking?.booking?.departureDate
-                              ).format("MMM DD, YYYY")}
+                              ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1204,7 +1212,7 @@ function AdminDashboardVisaOnArrivalPage() {
                             <span className="text-sm font-normal">
                               {moment(
                                 currentBooking?.booking?.arrivalDate
-                              ).format("MMM DD, YYYY")}
+                              ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
@@ -1423,8 +1431,8 @@ function AdminDashboardVisaOnArrivalPage() {
                                 }}
                                 className="w-[180px] lg:w-[16.6%] text-xs"
                               >
-                                {moment(booking?.pickupDate).format(
-                                  "MMM DD, YYYY"
+                                {moment(booking?.booking?.pickupDate).format(
+                                  "LL"
                                 )}
                               </p>
 

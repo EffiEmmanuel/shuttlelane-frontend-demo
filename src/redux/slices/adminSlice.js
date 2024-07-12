@@ -145,6 +145,7 @@ export const deleteCity = createAsyncThunk(
 export const fetchCity = createAsyncThunk(
   "admin/cities/getOne",
   async (payload) => {
+    console.log("FETCH CITY ASYNCTHUNK");
     return fetch(
       `${process.env.REACT_APP_API_BASE_URL}/admin/cities/${payload?.cityId}?isAdminRequest=true`,
       {
@@ -2013,7 +2014,7 @@ export const adminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchCity.fulfilled, (state, action) => {
-        console.log("ACTION.PAYLOAD", action.payload);
+        console.log("ACTION.PAYLOAD from fetchCity", action.payload);
         state.currentCity = action.payload?.city;
         state.vehicleClasses = action.payload?.city?.vehicleClasses;
         state.isLoading = false;

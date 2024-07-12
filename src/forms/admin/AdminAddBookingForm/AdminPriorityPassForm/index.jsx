@@ -129,7 +129,8 @@ function AdminPriorityPassForm() {
   const [passengers, setPassengers] = useState("");
 
   // Passenger Form Fields
-  const [fullName, setFullName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [selectedTitle, setSelectedTitle] = useState();
@@ -144,8 +145,8 @@ function AdminPriorityPassForm() {
         bookingType: "Priority",
         bookingDetails: {
           title: selectedTitle?.value,
-          firstName: fullName?.split(" ")[0],
-          lastName: fullName?.split(" ")[1],
+          firstName: firstName,
+          lastName: lastName,
           email: email,
           mobile: phoneNumber,
           bookingCurrency: bookingCurrency?._id,
@@ -483,8 +484,10 @@ function AdminPriorityPassForm() {
       <PersonalDetailsForm
         selectedTitle={selectedTitle}
         setSelectedTitle={setSelectedTitle}
-        fullName={fullName}
-        setFullName={setFullName}
+        firstName={firstName}
+        setFirstName={setFirstName}
+        lastName={lastName}
+        setLastName={setLastName}
         phoneNumber={phoneNumber}
         setPhoneNumber={setPhoneNumber}
         email={email}

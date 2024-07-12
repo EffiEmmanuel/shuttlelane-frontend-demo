@@ -653,6 +653,16 @@ function AdminDashboardHomePage() {
                           {currentBooking?.bookingStatus}
                         </span>
                       </div>
+
+                      {currentBooking?.hasPriorityPass && (
+                        <div className="flex items-center gap-x-1">
+                          <span className="text-sm">
+                            {currentBooking?.booking?.priorityPassCount}
+                            {currentBooking?.booking?.priorityPassType?.name}
+                          </span>
+                        </div>
+                      )}
+
                       <div className="flex flex-col mt-4 gap-y-1">
                         <div className="flex items-center gap-x-1">
                           <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
@@ -2139,12 +2149,22 @@ function AdminDashboardHomePage() {
                                   }}
                                   className="cursor-pointer flex justify-between items-baseline"
                                 >
-                                  <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                    {booking?.user?.title ?? booking?.title}{" "}
-                                    {booking?.user?.firstName ??
-                                      booking?.firstName}{" "}
-                                    {booking?.user?.firstName ??
-                                      booking?.lastName}
+                                  <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs flex items-center gap-x-2">
+                                    <span className="text-xs">
+                                      {booking?.user?.title ?? booking?.title}{" "}
+                                      {booking?.user?.firstName ??
+                                        booking?.firstName}{" "}
+                                      {booking?.user?.firstName ??
+                                        booking?.lastName}
+                                    </span>
+
+                                    {booking?.booking?.hasPriorityPass && (
+                                      <div className="flex items-center justify-center h-3 bg-green-500">
+                                        <span className="text-xs">
+                                          Priority pass included
+                                        </span>
+                                      </div>
+                                    )}
                                   </p>
                                   <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
                                     {booking?.booking?.pickupDate?.split(
@@ -2265,9 +2285,21 @@ function AdminDashboardHomePage() {
 
                           {upcomingBookings?.map((booking) => (
                             <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
-                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
-                                {booking?.user?.firstName ?? booking?.firstName}{" "}
-                                {booking?.user?.firstName ?? booking?.firstName}
+                              <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs flex items-center gap-x-2">
+                                <span className="text-xs">
+                                  {booking?.user?.title ?? booking?.title}{" "}
+                                  {booking?.user?.firstName ??
+                                    booking?.firstName}{" "}
+                                  {booking?.user?.lastName ?? booking?.lastName}
+                                </span>
+
+                                {booking?.booking?.hasPriorityPass && (
+                                  <div className="flex items-center justify-center h-3 bg-green-500">
+                                    <span className="text-xs">
+                                      Priority pass included
+                                    </span>
+                                  </div>
+                                )}
                               </p>
                               <p className="min-w-[200px] w-[200px] lg:w-[20%] text-xs">
                                 {booking?.pickupDate}
