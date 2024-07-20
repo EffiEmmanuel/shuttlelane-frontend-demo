@@ -72,7 +72,7 @@ function AdminDashboardStatistics() {
         </Link>
         {/* Total Card */}
         <Link
-          to="/admin/bookings/visa-on-arrival"
+          to="/admin/dashboard/bookings/visa-on-arrival"
           className="text-shuttlelaneBlack hover:text-shuttlelaneBlack visited:text-shuttlelaneBlack no-underline hover:no-underline visited:no-underline flex flex-col text-center gap-y-2 lg:text-left lg:flex-row gap-x-2 p-3 items-center rounded-lg border-[.3px] border-gray-100 lg:w-1/4 w-full"
         >
           <div className="h-10 w-10 rounded-full bg-shuttlelanePurple shadow-[#4540cf85] shadow-md flex justify-center items-center">
