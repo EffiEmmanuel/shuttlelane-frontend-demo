@@ -85,7 +85,7 @@ function DriverLoginForm() {
 
         <Link
           className="text-sm -mt-2 hover:text-shuttlelanePurple visited:text-shuttlelaneGold text-shuttlelaneGold hover:no-underline visited:no-underline"
-          to="/driver/signup"
+          to="/driver/auth/forgot-password"
         >
           Forgot password?
         </Link>

@@ -75,6 +75,8 @@ import shuttlelaneLogo from "./assets/logos/logo.png";
 // For PayPal configuration
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
+import DriverForgotPasswordPage from "./pages/driver/ForgotPasswordPage";
+import VendorForgotPasswordPage from "./pages/vendor/ForgotPasswordPage";
 
 function App() {
   const { userCurrency } = useSelector((store) => store.user);
@@ -148,6 +150,14 @@ function App() {
           <Route path="signup" element={<VendorSignupPage />} />
           <Route path="login" element={<VendorLoginPage />} />
 
+          {/* Auth routes */}
+          <Route path="auth">
+            <Route
+              path="forgot-password"
+              element={<VendorForgotPasswordPage />}
+            />
+          </Route>
+
           <Route path="dashboard">
             <Route
               path=""
@@ -217,6 +227,14 @@ function App() {
         <Route path="/driver">
           <Route path="signup" element={<DriverSignupPage />} />
           <Route path="login" element={<DriverLoginPage />} />
+
+          {/* Auth routes */}
+          <Route path="auth">
+            <Route
+              path="forgot-password"
+              element={<DriverForgotPasswordPage />}
+            />
+          </Route>
 
           <Route path="dashboard">
             <Route

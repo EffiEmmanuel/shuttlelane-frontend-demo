@@ -215,7 +215,7 @@ function AdminDashboardAirportTransferPage() {
 
             <div className="h-full flex flex-col gap-y-5 pb-20">
               <>
-                {currentBooking?.bookingType === "Airport" && (
+                {bookingFetchedByReference?.bookingType === "Airport" && (
                   <div className="flex items-center justify-center w-full pb-20">
                     <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
@@ -224,45 +224,48 @@ function AdminDashboardAirportTransferPage() {
                       </span>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.passengers} passengers
+                          {bookingFetchedByReference?.booking?.passengers}{" "}
+                          passengers
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.pickupDate).format(
-                            "LL"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.pickupDate
+                          ).format("LL")}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:mm A"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.pickupTime
+                          ).format("H:mm A")}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.paymentId?.gateway ==
+                            "Admin Dashboard" && "₦"}
                           {Intl.NumberFormat("en-US", {}).format(
-                            currentBooking?.bookingTotal
+                            bookingFetchedByReference?.bookingTotal
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            !currentBooking?.paymentId?.paymentStatus
+                            !bookingFetchedByReference?.paymentId?.paymentStatus
                               ? "text-yellow-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Successful"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Successful"
                               ? "text-green-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Pending"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Pending"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
                           Payment{" "}
-                          {currentBooking?.paymentId?.paymentStatus ??
-                            "Pending"}
+                          {bookingFetchedByReference?.paymentId
+                            ?.paymentStatus ?? "Pending"}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
@@ -275,26 +278,35 @@ function AdminDashboardAirportTransferPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            currentBooking?.bookingStatus == "Completed" ||
-                            currentBooking?.bookingStatus == "Ongoing" ||
-                            currentBooking?.bookingStatus == "Scheduled"
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Completed" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Ongoing" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Scheduled"
                               ? "text-green-500"
-                              : currentBooking?.bookingStatus ==
+                              : bookingFetchedByReference?.bookingStatus ==
                                   "Awaiting response" ||
-                                currentBooking?.bookingStatus ==
+                                bookingFetchedByReference?.bookingStatus ==
                                   "Not yet assigned"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
-                          {currentBooking?.bookingStatus}
+                          {bookingFetchedByReference?.bookingStatus}
                         </span>
                       </div>
-                      {currentBooking?.hasPriorityPass && (
+                      {bookingFetchedByReference?.hasPriorityPass && (
                         <div className="flex items-center gap-x-1">
                           <span className="text-sm">
-                            {currentBooking?.booking?.priorityPassCount}
-                            {currentBooking?.booking?.priorityPassType?.name}
+                            {
+                              bookingFetchedByReference?.booking
+                                ?.priorityPassCount
+                            }
+                            {
+                              bookingFetchedByReference?.booking
+                                ?.priorityPassType?.name
+                            }
                           </span>
                         </div>
                       )}
@@ -302,14 +314,14 @@ function AdminDashboardAirportTransferPage() {
                         <div className="flex items-center gap-x-1">
                           <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
                           <span className="text-sm">
-                            {currentBooking?.booking?.pickupAddress}
+                            {bookingFetchedByReference?.booking?.pickupAddress}
                           </span>
                         </div>
                         <div className="border-r-[1px] border-r-shuttlelanePurple h-5 w-3 border-dashed"></div>
                         <div className="flex items-center gap-x-1">
                           <MdLocationPin size={24} className="text-green-500" />
                           <span className="text-sm">
-                            {currentBooking?.booking?.dropoffAddress}
+                            {bookingFetchedByReference?.booking?.dropoffAddress}
                           </span>
                         </div>
                       </div>
@@ -324,36 +336,36 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Full Name:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.firstName ??
-                                currentBooking?.firstName}{" "}
-                              {currentBooking?.user?.lastName ??
-                                currentBooking?.lastName}
+                              {bookingFetchedByReference?.user?.firstName ??
+                                bookingFetchedByReference?.firstName}{" "}
+                              {bookingFetchedByReference?.user?.lastName ??
+                                bookingFetchedByReference?.lastName}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Phone Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.mobile ??
-                                currentBooking?.mobile}
+                              {bookingFetchedByReference?.user?.mobile ??
+                                bookingFetchedByReference?.mobile}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Email Address:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.email ??
-                                currentBooking?.email}
+                              {bookingFetchedByReference?.user?.email ??
+                                bookingFetchedByReference?.email}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Airline:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.airline}
+                              {bookingFetchedByReference?.booking?.airline}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Flight Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.flightNumber}
+                              {bookingFetchedByReference?.booking?.flightNumber}
                             </span>{" "}
                           </span>
                         </div>
@@ -365,24 +377,28 @@ function AdminDashboardAirportTransferPage() {
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver ||
-                        currentBooking?.vendorAssignedDriver ? (
+                        {bookingFetchedByReference?.assignedDriver ||
+                        bookingFetchedByReference?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
                                   src={
-                                    currentBooking?.assignedDriver?.image ??
-                                    currentBooking?.vendorAssignedDriver?.image
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.image ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.image
                                   }
                                   alt={`${
-                                    currentBooking?.assignedDriver?.firstName ??
-                                    currentBooking?.vendorAssignedDriver
-                                      ?.firstName
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.firstName ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.firstName
                                   } ${
-                                    currentBooking?.assignedDriver?.lastName ??
-                                    currentBooking?.vendorAssignedDriver
-                                      ?.lastName
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.lastName ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.lastName
                                   }`}
                                   className="w-full h-full object-cover"
                                 />
@@ -392,30 +408,32 @@ function AdminDashboardAirportTransferPage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver
+                                    {bookingFetchedByReference?.assignedDriver
                                       ?.firstName ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.firstName}{" "}
-                                    $
-                                    {currentBooking?.assignedDriver?.lastName ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.lastName}
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.firstName}{" "}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.lastName ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.email}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.email ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.mobile}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.mobile ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -433,50 +451,61 @@ function AdminDashboardAirportTransferPage() {
                       {/* Car Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">Car Details</h2>
-                        {currentBooking?.assignedDriver ||
-                        currentBooking?.assignedCar ? (
+                        {bookingFetchedByReference?.assignedDriver ||
+                        bookingFetchedByReference?.assignedCar ? (
                           <div className="flex flex-col gap-y-1">
                             <span className="text-sm font-semibold">
                               Type:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carType ??
-                                  currentBooking?.assignedCar?.carType}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carType ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carType}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Name:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carName ??
-                                  currentBooking?.assignedCar?.carName}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carName ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Model:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carModel ??
-                                  currentBooking?.assignedCar?.carModel}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carModel ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carModel}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Year:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carYear ??
-                                  currentBooking?.assignedCar?.carYear}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carYear ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carYear}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Plate Number:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver
+                                {bookingFetchedByReference?.assignedDriver
                                   ?.carPlateNumber ??
-                                  currentBooking?.assignedCar?.carPlateNumber}
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carPlateNumber}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Color:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carColor ??
-                                  currentBooking?.assignedCar?.carColor}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carColor ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carColor}
                               </span>{" "}
                             </span>
                           </div>
@@ -495,7 +524,7 @@ function AdminDashboardAirportTransferPage() {
                         className="text-shuttlelanePurple animate-spin"
                       />
                     )}
-                    {/* {!currentBooking && (
+                    {/* {!bookingFetchedByReference && (
             <div className="w-full flex flex-col items-center justify-center">
               <img
                 src={emptyImage}
@@ -507,7 +536,7 @@ function AdminDashboardAirportTransferPage() {
           )} */}
                   </div>
                 )}
-                {currentBooking?.bookingType === "Car" && (
+                {bookingFetchedByReference?.bookingType === "Car" && (
                   <div className="flex items-center justify-center w-full pb-20">
                     <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
@@ -516,45 +545,45 @@ function AdminDashboardAirportTransferPage() {
                       </span>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.days} days
+                          {bookingFetchedByReference?.booking?.days} days
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.pickupDate).format(
-                            "LL"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.pickupDate
+                          ).format("LL")}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:mm A"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.pickupTime
+                          ).format("H:mm A")}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.bookingCurrency?.symbol}
                           {Intl.NumberFormat("en-US", {}).format(
-                            currentBooking?.bookingTotal
+                            bookingFetchedByReference?.bookingTotal
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            !currentBooking?.paymentId?.paymentStatus
+                            !bookingFetchedByReference?.paymentId?.paymentStatus
                               ? "text-yellow-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Successful"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Successful"
                               ? "text-green-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Pending"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Pending"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
                           Payment{" "}
-                          {currentBooking?.paymentId?.paymentStatus ??
-                            "Pending"}
+                          {bookingFetchedByReference?.paymentId
+                            ?.paymentStatus ?? "Pending"}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
@@ -564,26 +593,29 @@ function AdminDashboardAirportTransferPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            currentBooking?.bookingStatus == "Completed" ||
-                            currentBooking?.bookingStatus == "Ongoing" ||
-                            currentBooking?.bookingStatus == "Scheduled"
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Completed" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Ongoing" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Scheduled"
                               ? "text-green-500"
-                              : currentBooking?.bookingStatus ==
+                              : bookingFetchedByReference?.bookingStatus ==
                                   "Awaiting response" ||
-                                currentBooking?.bookingStatus ==
+                                bookingFetchedByReference?.bookingStatus ==
                                   "Not yet assigned"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
-                          {currentBooking?.bookingStatus}
+                          {bookingFetchedByReference?.bookingStatus}
                         </span>
                       </div>
                       <div className="flex flex-col mt-4 gap-y-1">
                         <div className="flex items-center gap-x-1">
                           <MdLocationPin size={24} className="text-green-500" />
                           <span className="text-sm">
-                            {currentBooking?.booking?.pickupAddress}
+                            {bookingFetchedByReference?.booking?.pickupAddress}
                           </span>
                         </div>
                       </div>
@@ -598,24 +630,24 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Full Name:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.firstName ??
-                                currentBooking?.firstName}{" "}
-                              {currentBooking?.user?.lastName ??
-                                currentBooking?.lastName}
+                              {bookingFetchedByReference?.user?.firstName ??
+                                bookingFetchedByReference?.firstName}{" "}
+                              {bookingFetchedByReference?.user?.lastName ??
+                                bookingFetchedByReference?.lastName}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Phone Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.mobile ??
-                                currentBooking?.mobile}
+                              {bookingFetchedByReference?.user?.mobile ??
+                                bookingFetchedByReference?.mobile}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Email Address:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.email ??
-                                currentBooking?.email}
+                              {bookingFetchedByReference?.user?.email ??
+                                bookingFetchedByReference?.email}
                             </span>{" "}
                           </span>
                         </div>
@@ -626,24 +658,28 @@ function AdminDashboardAirportTransferPage() {
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver ||
-                        currentBooking?.vendorAssignedDriver ? (
+                        {bookingFetchedByReference?.assignedDriver ||
+                        bookingFetchedByReference?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
                                   src={
-                                    currentBooking?.assignedDriver?.image ??
-                                    currentBooking?.vendorAssignedDriver?.image
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.image ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.image
                                   }
                                   alt={`${
-                                    currentBooking?.assignedDriver?.firstName ??
-                                    currentBooking?.vendorAssignedDriver
-                                      ?.firstName
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.firstName ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.firstName
                                   } ${
-                                    currentBooking?.assignedDriver?.lastName ??
-                                    currentBooking?.vendorAssignedDriver
-                                      ?.lastName
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.lastName ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.lastName
                                   }`}
                                   className="w-full h-full object-cover"
                                 />
@@ -653,30 +689,33 @@ function AdminDashboardAirportTransferPage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver
+                                    {bookingFetchedByReference?.assignedDriver
                                       ?.firstName ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.firstName}{" "}
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.firstName}{" "}
                                     $
-                                    {currentBooking?.assignedDriver?.lastName ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.lastName}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.lastName ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.email}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.email ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.mobile}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.mobile ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -697,7 +736,7 @@ function AdminDashboardAirportTransferPage() {
                         className="text-shuttlelanePurple animate-spin"
                       />
                     )}
-                    {/* {!currentBooking && (
+                    {/* {!bookingFetchedByReference && (
             <div className="w-full flex flex-col items-center justify-center">
               <img
                 src={emptyImage}
@@ -709,7 +748,7 @@ function AdminDashboardAirportTransferPage() {
           )} */}
                   </div>
                 )}
-                {currentBooking?.bookingType === "Priority" && (
+                {bookingFetchedByReference?.bookingType === "Priority" && (
                   <div className="flex items-center justify-center w-full pb-20">
                     <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
@@ -718,19 +757,20 @@ function AdminDashboardAirportTransferPage() {
                       </span>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.passengers} passengers
+                          {bookingFetchedByReference?.booking?.passengers}{" "}
+                          passengers
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.pickupDate).format(
-                            "LL"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.pickupDate
+                          ).format("LL")}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.pickupTime).format(
-                            "H:mm A"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.pickupTime
+                          ).format("H:mm A")}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
@@ -739,57 +779,60 @@ function AdminDashboardAirportTransferPage() {
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {currentBooking?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.bookingCurrency?.symbol}
                           {Intl.NumberFormat("en-US", {}).format(
-                            currentBooking?.bookingTotal
+                            bookingFetchedByReference?.bookingTotal
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            !currentBooking?.paymentId?.paymentStatus
+                            !bookingFetchedByReference?.paymentId?.paymentStatus
                               ? "text-yellow-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Successful"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Successful"
                               ? "text-green-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Pending"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Pending"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
                           Payment{" "}
-                          {currentBooking?.paymentId?.paymentStatus ??
-                            "Pending"}
+                          {bookingFetchedByReference?.paymentId
+                            ?.paymentStatus ?? "Pending"}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.service}
+                          {bookingFetchedByReference?.booking?.service}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            currentBooking?.bookingStatus == "Completed" ||
-                            currentBooking?.bookingStatus == "Ongoing" ||
-                            currentBooking?.bookingStatus == "Scheduled"
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Completed" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Ongoing" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Scheduled"
                               ? "text-green-500"
-                              : currentBooking?.bookingStatus ==
+                              : bookingFetchedByReference?.bookingStatus ==
                                   "Awaiting response" ||
-                                currentBooking?.bookingStatus ==
+                                bookingFetchedByReference?.bookingStatus ==
                                   "Not yet assigned"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
-                          {currentBooking?.bookingStatus}
+                          {bookingFetchedByReference?.bookingStatus}
                         </span>
                       </div>
                       <div className="flex flex-col mt-4 gap-y-1">
                         <div className="flex items-center gap-x-1">
                           <MdLocationPin size={24} className="text-green-500" />
                           <span className="text-sm">
-                            {currentBooking?.booking?.pickupAddress}
+                            {bookingFetchedByReference?.booking?.pickupAddress}
                           </span>
                         </div>
                       </div>
@@ -804,36 +847,36 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Full Name:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.firstName ??
-                                currentBooking?.firstName}{" "}
-                              {currentBooking?.user?.lastName ??
-                                currentBooking?.lastName}
+                              {bookingFetchedByReference?.user?.firstName ??
+                                bookingFetchedByReference?.firstName}{" "}
+                              {bookingFetchedByReference?.user?.lastName ??
+                                bookingFetchedByReference?.lastName}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Phone Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.mobile ??
-                                currentBooking?.mobile}
+                              {bookingFetchedByReference?.user?.mobile ??
+                                bookingFetchedByReference?.mobile}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Email Address:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.user?.email ??
-                                currentBooking?.email}
+                              {bookingFetchedByReference?.user?.email ??
+                                bookingFetchedByReference?.email}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Airline:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.airline}
+                              {bookingFetchedByReference?.booking?.airline}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Flight Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.flightNumber}
+                              {bookingFetchedByReference?.booking?.flightNumber}
                             </span>{" "}
                           </span>
                         </div>
@@ -844,24 +887,28 @@ function AdminDashboardAirportTransferPage() {
                           Driver Details
                         </h2>
 
-                        {currentBooking?.assignedDriver ||
-                        currentBooking?.vendorAssignedDriver ? (
+                        {bookingFetchedByReference?.assignedDriver ||
+                        bookingFetchedByReference?.vendorAssignedDriver ? (
                           <div className="flex flex-col gap-y-1">
                             <div className="flex items-center gap-x-2">
                               <div className="h-16 w-16 rounded-full overflow-hidden">
                                 <img
                                   src={
-                                    currentBooking?.assignedDriver?.image ??
-                                    currentBooking?.vendorAssignedDriver?.image
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.image ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.image
                                   }
                                   alt={`${
-                                    currentBooking?.assignedDriver?.firstName ??
-                                    currentBooking?.vendorAssignedDriver
-                                      ?.firstName
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.firstName ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.firstName
                                   } ${
-                                    currentBooking?.assignedDriver?.lastName ??
-                                    currentBooking?.vendorAssignedDriver
-                                      ?.lastName
+                                    bookingFetchedByReference?.assignedDriver
+                                      ?.lastName ??
+                                    bookingFetchedByReference
+                                      ?.vendorAssignedDriver?.lastName
                                   }`}
                                   className="w-full h-full object-cover"
                                 />
@@ -871,30 +918,33 @@ function AdminDashboardAirportTransferPage() {
                                 <span className="text-sm font-semibold">
                                   Full Name:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver
+                                    {bookingFetchedByReference?.assignedDriver
                                       ?.firstName ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.firstName}{" "}
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.firstName}{" "}
                                     $
-                                    {currentBooking?.assignedDriver?.lastName ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.lastName}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.lastName ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.lastName}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Email Address:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.email ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.email}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.email ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.email}
                                   </span>{" "}
                                 </span>
                                 <span className="text-sm font-semibold">
                                   Phone Number:{" "}
                                   <span className="text-sm font-normal">
-                                    {currentBooking?.assignedDriver?.mobile ??
-                                      currentBooking?.vendorAssignedDriver
-                                        ?.mobile}
+                                    {bookingFetchedByReference?.assignedDriver
+                                      ?.mobile ??
+                                      bookingFetchedByReference
+                                        ?.vendorAssignedDriver?.mobile}
                                   </span>{" "}
                                 </span>
                               </div>
@@ -912,50 +962,61 @@ function AdminDashboardAirportTransferPage() {
                       {/* Car Details */}
                       <div className="mt-5">
                         <h2 className="text-xl font-semibold">Car Details</h2>
-                        {currentBooking?.assignedDriver ||
-                        currentBooking?.assignedCar ? (
+                        {bookingFetchedByReference?.assignedDriver ||
+                        bookingFetchedByReference?.assignedCar ? (
                           <div className="flex flex-col gap-y-1">
                             <span className="text-sm font-semibold">
                               Type:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carType ??
-                                  currentBooking?.assignedCar?.carType}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carType ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carType}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Name:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carName ??
-                                  currentBooking?.assignedCar?.carName}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carName ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carName}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Model:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carModel ??
-                                  currentBooking?.assignedCar?.carModel}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carModel ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carModel}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Year:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carYear ??
-                                  currentBooking?.assignedCar?.carYear}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carYear ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carYear}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Plate Number:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver
+                                {bookingFetchedByReference?.assignedDriver
                                   ?.carPlateNumber ??
-                                  currentBooking?.assignedCar?.carPlateNumber}
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carPlateNumber}
                               </span>{" "}
                             </span>
                             <span className="text-sm font-semibold">
                               Color:{" "}
                               <span className="text-sm font-normal">
-                                {currentBooking?.assignedDriver?.carColor ??
-                                  currentBooking?.assignedCar?.carColor}
+                                {bookingFetchedByReference?.assignedDriver
+                                  ?.carColor ??
+                                  bookingFetchedByReference?.assignedCar
+                                    ?.carColor}
                               </span>{" "}
                             </span>
                           </div>
@@ -974,7 +1035,7 @@ function AdminDashboardAirportTransferPage() {
                         className="text-shuttlelanePurple animate-spin"
                       />
                     )}
-                    {/* {!currentBooking && (
+                    {/* {!bookingFetchedByReference && (
             <div className="w-full flex flex-col items-center justify-center">
               <img
                 src={emptyImage}
@@ -986,7 +1047,7 @@ function AdminDashboardAirportTransferPage() {
           )} */}
                   </div>
                 )}
-                {currentBooking?.bookingType === "Visa" && (
+                {bookingFetchedByReference?.bookingType === "Visa" && (
                   <div className="flex items-center justify-center w-full pb-20">
                     <div className="w-full mt-10 lg:p-10 p-7 border-[1px] border-shuttlelanePurple border-dashed">
                       <h2 className="text-2xl font-semibold">Trip Details</h2>
@@ -995,78 +1056,84 @@ function AdminDashboardAirportTransferPage() {
                       </span>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.airline}{" "}
+                          {bookingFetchedByReference?.booking?.airline}{" "}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {moment(
-                            currentBooking?.booking?.departureDate
+                            bookingFetchedByReference?.booking?.departureDate
                           ).format("LL")}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
-                          {moment(currentBooking?.booking?.arrivalDate).format(
-                            "LL"
-                          )}
+                          {moment(
+                            bookingFetchedByReference?.booking?.arrivalDate
+                          ).format("LL")}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.bookingReference}
+                          {bookingFetchedByReference?.booking?.bookingReference}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           $
                           {Intl.NumberFormat("en-US", {}).format(
-                            currentBooking?.bookingTotal
+                            bookingFetchedByReference?.bookingTotal
                           )}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            !currentBooking?.paymentId?.paymentStatus
+                            !bookingFetchedByReference?.paymentId?.paymentStatus
                               ? "text-yellow-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Successful"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Successful"
                               ? "text-green-500"
-                              : currentBooking?.paymentId?.paymentStatus ==
-                                "Pending"
+                              : bookingFetchedByReference?.paymentId
+                                  ?.paymentStatus == "Pending"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
                           Payment{" "}
-                          {currentBooking?.paymentId?.paymentStatus ??
-                            "Pending"}
+                          {bookingFetchedByReference?.paymentId
+                            ?.paymentStatus ?? "Pending"}
                         </span>
                       </div>
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
-                          {currentBooking?.booking?.flightNumber}
+                          {bookingFetchedByReference?.booking?.flightNumber}
                         </span>
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span
                           className={`text-sm ${
-                            currentBooking?.bookingStatus == "Completed" ||
-                            currentBooking?.bookingStatus == "Ongoing" ||
-                            currentBooking?.bookingStatus == "Scheduled"
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Completed" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Ongoing" ||
+                            bookingFetchedByReference?.bookingStatus ==
+                              "Scheduled"
                               ? "text-green-500"
-                              : currentBooking?.bookingStatus ==
+                              : bookingFetchedByReference?.bookingStatus ==
                                   "Awaiting response" ||
-                                currentBooking?.bookingStatus ==
+                                bookingFetchedByReference?.bookingStatus ==
                                   "Not yet assigned"
                               ? "text-yellow-500"
                               : "text-red-500"
                           }`}
                         >
-                          {currentBooking?.bookingStatus}
+                          {bookingFetchedByReference?.bookingStatus}
                         </span>
                       </div>
                       <div className="flex flex-col mt-4 gap-y-1">
                         <div className="flex items-center gap-x-1">
                           <div className="ml-1 h-4 w-4 border-[.5px] border-shuttlelaneBlack rounded-full"></div>
                           <span className="text-sm">
-                            {currentBooking?.booking?.countryOfDeparture}
+                            {
+                              bookingFetchedByReference?.booking
+                                ?.countryOfDeparture
+                            }
                           </span>
                         </div>
                         <div className="border-r-[1px] border-r-shuttlelanePurple h-5 w-3 border-dashed"></div>
@@ -1074,7 +1141,7 @@ function AdminDashboardAirportTransferPage() {
                         <div className="flex items-center gap-x-1">
                           <MdLocationPin size={24} className="text-green-500" />
                           <span className="text-sm">
-                            {currentBooking?.booking?.portOfEntry}
+                            {bookingFetchedByReference?.booking?.portOfEntry}
                           </span>
                         </div>
                       </div>
@@ -1089,19 +1156,19 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Nationality:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.nationality}
+                              {bookingFetchedByReference?.booking?.nationality}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Class Of Visa:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.visaClass}
+                              {bookingFetchedByReference?.booking?.visaClass}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Passport Type:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.passportType}
+                              {bookingFetchedByReference?.booking?.passportType}
                             </span>{" "}
                           </span>
                         </div>
@@ -1115,49 +1182,55 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Full Name:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.title}{" "}
-                              {currentBooking?.booking?.surname}{" "}
-                              {currentBooking?.booking?.middleName}{" "}
-                              {currentBooking?.booking?.firstName}{" "}
+                              {bookingFetchedByReference?.booking?.title}{" "}
+                              {bookingFetchedByReference?.booking?.surname}{" "}
+                              {bookingFetchedByReference?.booking?.middleName}{" "}
+                              {bookingFetchedByReference?.booking?.firstName}{" "}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Email Address:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.email}
+                              {bookingFetchedByReference?.booking?.email}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Date Of Birth:{" "}
                             <span className="text-sm font-normal">
                               {moment(
-                                currentBooking?.booking?.dateOfBirth
+                                bookingFetchedByReference?.booking?.dateOfBirth
                               ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Place Of Birth:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.placeOfBirth}
+                              {bookingFetchedByReference?.booking?.placeOfBirth}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Gender:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.gender}
+                              {bookingFetchedByReference?.booking?.gender}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Marital Status:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.maritalStatus}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.maritalStatus
+                              }
                             </span>{" "}
                           </span>
 
                           <span className="text-sm font-semibold">
                             Passport Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.passportNumber}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.passportNumber
+                              }
                             </span>{" "}
                           </span>
 
@@ -1165,7 +1238,8 @@ function AdminDashboardAirportTransferPage() {
                             Passport Expiry Date:{" "}
                             <span className="text-sm font-normal">
                               {moment(
-                                currentBooking?.booking?.passportExpiryDate
+                                bookingFetchedByReference?.booking
+                                  ?.passportExpiryDate
                               ).format("MMM DD, YY")}
                             </span>{" "}
                           </span>
@@ -1182,32 +1256,39 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Purpose Of Journey:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.purposeOfJourney}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.purposeOfJourney
+                              }
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Airline:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.airline}
+                              {bookingFetchedByReference?.booking?.airline}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Flight Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.flightNumber}
+                              {bookingFetchedByReference?.booking?.flightNumber}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Country Of Departure:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.countryOfDeparture}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.countryOfDeparture
+                              }
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Departure Date:{" "}
                             <span className="text-sm font-normal">
                               {moment(
-                                currentBooking?.booking?.departureDate
+                                bookingFetchedByReference?.booking
+                                  ?.departureDate
                               ).format("LL")}
                             </span>{" "}
                           </span>
@@ -1215,20 +1296,24 @@ function AdminDashboardAirportTransferPage() {
                             Arrival Date:{" "}
                             <span className="text-sm font-normal">
                               {moment(
-                                currentBooking?.booking?.arrivalDate
+                                bookingFetchedByReference?.booking?.arrivalDate
                               ).format("LL")}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Port Of Entry:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.portOfEntry}
+                              {bookingFetchedByReference?.booking?.portOfEntry}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Duration Of Stay:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.durationOfStay} days
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.durationOfStay
+                              }{" "}
+                              days
                             </span>{" "}
                           </span>
                         </div>
@@ -1244,43 +1329,52 @@ function AdminDashboardAirportTransferPage() {
                           <span className="text-sm font-semibold">
                             Name:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactName}
+                              {bookingFetchedByReference?.booking?.contactName}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Phone Number:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactNumber}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.contactNumber
+                              }
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Address:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactAddress}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.contactAddress
+                              }
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             City:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactCity}
+                              {bookingFetchedByReference?.booking?.contactCity}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             State:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactState}
+                              {bookingFetchedByReference?.booking?.contactState}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Email Address:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactEmail}
+                              {bookingFetchedByReference?.booking?.contactEmail}
                             </span>{" "}
                           </span>
                           <span className="text-sm font-semibold">
                             Postal Code:{" "}
                             <span className="text-sm font-normal">
-                              {currentBooking?.booking?.contactPostalCode}
+                              {
+                                bookingFetchedByReference?.booking
+                                  ?.contactPostalCode
+                              }
                             </span>{" "}
                           </span>
                         </div>
@@ -1292,7 +1386,7 @@ function AdminDashboardAirportTransferPage() {
                         className="text-shuttlelanePurple animate-spin"
                       />
                     )}
-                    {/* {!currentBooking && (
+                    {/* {!bookingFetchedByReference && (
             <div className="w-full flex flex-col items-center justify-center">
               <img
                 src={emptyImage}

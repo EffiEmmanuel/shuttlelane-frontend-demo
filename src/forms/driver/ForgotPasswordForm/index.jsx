@@ -7,32 +7,31 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import VendorLoginSchema from "./validation";
-import { loginVendor } from "../../../redux/slices/vendorSlice";
+import { loginDriver } from "../../../redux/slices/driverSlice";
+import DriverForgotPasswordSchema from "./validation";
 
-function VendorLoginForm() {
+function DriverForgotPasswordForm() {
   const navigate = useNavigate();
-  const { isLoading, vendor, message, requestStatus, token, isAdminLoggedIn } =
-    useSelector((store) => store.vendor);
+  const { isLoading, driver, message, requestStatus, token, isAdminLoggedIn } =
+    useSelector((store) => store.driver);
   const dispatch = useDispatch();
 
   // Function: Handle log in admin
   async function onSubmit(values, actions) {
-    dispatch(loginVendor({ email: values.email, password: values.password }));
+    dispatch(loginDriver({ email: values.email, password: values.password }));
   }
 
   useEffect(() => {
     if (!isLoading && requestStatus == 200) {
-      navigate("/vendor/dashboard");
+      navigate("/driver/dashboard");
     }
   }, [requestStatus]);
 
   const { values, errors, handleSubmit, handleChange } = useFormik({
     initialValues: {
       email: "",
-      password: "",
     },
-    validationSchema: VendorLoginSchema,
+    validationSchema: DriverForgotPasswordSchema,
     onSubmit,
   });
 
@@ -40,9 +39,11 @@ function VendorLoginForm() {
     <div className="px-10 pt-10">
       <ToastContainer />
       <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
-        Vendor Log in
+        Forgot Password?
       </h2>
-      <p className="text-sm">Sign in to your vendor account</p>
+      <p className="text-sm">
+        Provide a registered email address to reset your password
+      </p>
 
       {/* FORM */}
       <form
@@ -59,45 +60,28 @@ function VendorLoginForm() {
             value={values.email}
             onChange={handleChange}
             name="email"
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
+            className="text-[16px] w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
           />
           {errors?.email && (
             <p className="text-sm text-red-400">{errors?.email}</p>
           )}
         </div>
-        {/* Password */}
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="password" className="text-sm">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="********"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-          {errors?.password && (
-            <p className="text-sm text-red-400">{errors?.password}</p>
-          )}
-        </div>
 
         <Link
-          className="text-sm -mt-2 hover:text-shuttlelanePurple visited:text-shuttlelanePurple text-shuttlelanePurple hover:no-underline visited:no-underline"
-          to="/vendor/auth/forgot-password"
+          className="text-sm -mt-2 hover:text-shuttlelanePurple visited:text-shuttlelaneGold text-shuttlelaneGold hover:no-underline visited:no-underline"
+          to="/driver/login"
         >
-          Forgot password?
+          Go back to log in
         </Link>
 
         <button
           //   type="submit"
-          className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelanePurple flex items-center justify-center text-white border-gray-400 rounded-lg"
+          className="lg:w-1/4 w-full h-13 p-3 focus:outline-none bg-shuttlelaneGold flex items-center justify-center text-white border-gray-400 rounded-lg"
         >
           {isLoading ? (
             <ImSpinner2 size={21} className="text-white animate-spin" />
           ) : (
-            "Log in"
+            "Send link"
           )}
         </button>
       </form>
@@ -106,8 +90,8 @@ function VendorLoginForm() {
         <small>
           Don't have an account?{" "}
           <Link
-            className="text-sm hover:text-shuttlelanePurple visited:text-shuttlelanePurple text-shuttlelanePurple hover:no-underline visited:no-underline"
-            to="/vendor/signup"
+            className="text-sm hover:text-shuttlelanePurple visited:text-shuttlelaneGold text-shuttlelaneGold hover:no-underline visited:no-underline"
+            to="/driver/signup"
           >
             Sign up
           </Link>
@@ -117,4 +101,4 @@ function VendorLoginForm() {
   );
 }
 
-export default VendorLoginForm;
+export default DriverForgotPasswordForm;

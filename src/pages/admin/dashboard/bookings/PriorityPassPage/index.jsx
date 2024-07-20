@@ -241,6 +241,8 @@ function AdminDashboardPriorityPassPage() {
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
                           {currentBooking?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.paymentId?.gateway ==
+                            "Admin Dashboard" && "₦"}
                           {Intl.NumberFormat("en-US", {}).format(
                             currentBooking?.bookingTotal
                           )}
@@ -533,6 +535,8 @@ function AdminDashboardPriorityPassPage() {
                       <div className="flex items-center gap-x-1">
                         <span className="text-sm">
                           {currentBooking?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.paymentId?.gateway ==
+                            "Admin Dashboard" && "₦"}
                           {Intl.NumberFormat("en-US", {}).format(
                             currentBooking?.bookingTotal
                           )}
@@ -739,6 +743,8 @@ function AdminDashboardPriorityPassPage() {
                         <span className="h-1 w-1 bg-shuttlelaneBlack rounded-full"></span>
                         <span className="text-sm">
                           {currentBooking?.bookingCurrency?.symbol}
+                          {bookingFetchedByReference?.paymentId?.gateway ==
+                            "Admin Dashboard" && "₦"}
                           {Intl.NumberFormat("en-US", {}).format(
                             currentBooking?.bookingTotal
                           )}

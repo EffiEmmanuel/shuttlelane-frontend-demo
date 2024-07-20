@@ -1511,7 +1511,7 @@ export const deleteAdminAccount = createAsyncThunk(
 export const createBooking = createAsyncThunk(
   "user/bookings/createOne",
   async (payload) => {
-    console.log("VALUES:", payload);
+    console.log("VALUES ADMIN CREATE BOOKING:", payload);
     let values;
     switch (payload?.bookingType) {
       case "Airport":
@@ -1530,10 +1530,10 @@ export const createBooking = createAsyncThunk(
           flightNumber: payload?.bookingDetails?.flightNumber,
           vehicleClass: payload?.bookingDetails?.vehicleClass,
           city: payload?.bookingDetails?.selectedCity?.cityName,
-          pickupAddress: payload?.bookingDetails?.pickupLocation,
+          pickupAddress: payload?.bookingDetails?.pickupAddress,
           pickupDate: payload?.bookingDetails?.pickupDate,
           pickupTime: payload?.bookingDetails?.pickupTime,
-          dropoffAddress: payload?.bookingDetails?.dropoffLocation,
+          dropoffAddress: payload?.bookingDetails?.dropoffAddress,
           returnDate: payload?.bookingDetails?.returnDate ?? null,
           returnTime: payload?.bookingDetails?.returnTime ?? null,
           hasPriorityPass: payload?.bookingDetails?.hasPriorityPass,

@@ -7,18 +7,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import VendorLoginSchema from "./validation";
+import VendorForgotPasswordSchema from "./validation";
 import { loginVendor } from "../../../redux/slices/vendorSlice";
 
-function VendorLoginForm() {
+function VendorForgotPasswordForm() {
   const navigate = useNavigate();
   const { isLoading, vendor, message, requestStatus, token, isAdminLoggedIn } =
     useSelector((store) => store.vendor);
   const dispatch = useDispatch();
 
-  // Function: Handle log in admin
+  // Function: Handle send password reset link
   async function onSubmit(values, actions) {
-    dispatch(loginVendor({ email: values.email, password: values.password }));
+    dispatch(loginVendor({ email: values.email }));
   }
 
   useEffect(() => {
@@ -30,9 +30,8 @@ function VendorLoginForm() {
   const { values, errors, handleSubmit, handleChange } = useFormik({
     initialValues: {
       email: "",
-      password: "",
     },
-    validationSchema: VendorLoginSchema,
+    validationSchema: VendorForgotPasswordSchema,
     onSubmit,
   });
 
@@ -40,9 +39,11 @@ function VendorLoginForm() {
     <div className="px-10 pt-10">
       <ToastContainer />
       <h2 className="font-semibold text-2xl text-shuttlelaneBlack">
-        Vendor Log in
+        Forgot Password?
       </h2>
-      <p className="text-sm">Sign in to your vendor account</p>
+      <p className="text-sm">
+        Provide a registered email address to reset your password
+      </p>
 
       {/* FORM */}
       <form
@@ -65,29 +66,12 @@ function VendorLoginForm() {
             <p className="text-sm text-red-400">{errors?.email}</p>
           )}
         </div>
-        {/* Password */}
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="password" className="text-sm">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="********"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-            className="w-full h-13 p-3 border-[0.3px] focus:outline-none border-gray-400 rounded-lg"
-          />
-          {errors?.password && (
-            <p className="text-sm text-red-400">{errors?.password}</p>
-          )}
-        </div>
 
         <Link
           className="text-sm -mt-2 hover:text-shuttlelanePurple visited:text-shuttlelanePurple text-shuttlelanePurple hover:no-underline visited:no-underline"
-          to="/vendor/auth/forgot-password"
+          to="/vendor/login"
         >
-          Forgot password?
+          Go back to log in
         </Link>
 
         <button
@@ -97,7 +81,7 @@ function VendorLoginForm() {
           {isLoading ? (
             <ImSpinner2 size={21} className="text-white animate-spin" />
           ) : (
-            "Log in"
+            "Send link"
           )}
         </button>
       </form>
@@ -117,4 +101,4 @@ function VendorLoginForm() {
   );
 }
 
-export default VendorLoginForm;
+export default VendorForgotPasswordForm;
