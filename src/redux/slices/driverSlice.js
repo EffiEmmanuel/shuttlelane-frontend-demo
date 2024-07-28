@@ -178,6 +178,50 @@ export const loginDriver = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function handles driver forgot pasword
+export const driverForgotPassword = createAsyncThunk(
+  "driver/forgotPassword",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/auth/driver/forgot-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: payload?.email,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("DRIVER FORGOT PASSWORD ERROR:", err));
+  }
+);
+
+// FUNCTION: This function handles driver reset forgotten pasword
+export const driverResetForgottenPassword = createAsyncThunk(
+  "driver/resetForgottenPassword",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/auth/driver/forgot-password/reset/${payload?.driverId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: payload?.password,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("DRIVER RESET FORGOTTEN PASSWORD ERROR:", err)
+      );
+  }
+);
+
 // FUNCTION: This function fetches the driver statistics
 export const fetchStatistics = createAsyncThunk(
   "driver/statistics",
@@ -541,6 +585,9 @@ export const driverSlice = createSlice({
     // These states handle driver earnings
     expectedEarnings: null,
     earnings: null,
+
+    // This state is for the forgot password form
+    hasSentPasswordResetLink: false,
   },
   reducers: {
     setDriver: (state, action) => {
@@ -1048,6 +1095,48 @@ export const driverSlice = createSlice({
       .addCase(verifyDriversLicense.rejected, (state) => {
         state.isLoading = false;
         state.isVerifyingLicense = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // driverForgotPassword AsyncThunk states
+      .addCase(driverForgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(driverForgotPassword.fulfilled, (state, action) => {
+        console.log("DRIVER FORGOT PASSWORD ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 200) {
+          state.isLoading = false;
+          state.hasSentPasswordResetLink = true;
+          toast.success(action?.payload?.message);
+        } else {
+          toast.error(action?.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(driverForgotPassword.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // driverResetForgottenPassword AsyncThunk states
+      .addCase(driverResetForgottenPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(driverResetForgottenPassword.fulfilled, (state, action) => {
+        console.log(
+          "DRIVER RESET FORGOTTEN PASSWORD ACTION.PAYLOAD",
+          action.payload
+        );
+        if (action.payload?.status == 201) {
+          state.isLoading = false;
+          toast.success(action?.payload?.message);
+          state.hasResetPassword = true;
+        } else {
+          toast.error(action?.payload?.message);
+          state.hasResetPassword = false;
+          state.isLoading = false;
+        }
+      })
+      .addCase(driverResetForgottenPassword.rejected, (state) => {
+        state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
       });

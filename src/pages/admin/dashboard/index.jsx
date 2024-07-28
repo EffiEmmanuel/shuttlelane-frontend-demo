@@ -144,21 +144,17 @@ function AdminDashboardHomePage() {
   // Configure bookingDataByMonth
   useEffect(() => {
     function prepareBookingDataByMonth() {
-      let preparedData = [];
-      for (let i = 1; i <= 12; i++) {
-        bookingData?.forEach((data) => {
-          if (data?._id?.month == i) {
-            preparedData.push(data?.count);
-          } else {
-            preparedData.push(0);
-          }
-        });
-      }
+      let preparedData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      bookingData?.forEach((data) => {
+        preparedData.splice(data?._id?.month - 1, 1, data?.count);
+      });
       setBookingDataByMonth(preparedData);
       console.log("PREAPRED DATA:", preparedData);
     }
 
-    prepareBookingDataByMonth();
+    if (bookingData) {
+      prepareBookingDataByMonth();
+    }
   }, [token, bookingData]);
 
   // DELETE BOOKING DIALOG STATES
@@ -268,6 +264,7 @@ function AdminDashboardHomePage() {
     );
 
     setIsAssignDriverModalOpen(false);
+    setIsDriverDetailsModalOpen(false);
   }
 
   // Fetch approved vendor accounts
@@ -295,6 +292,7 @@ function AdminDashboardHomePage() {
       })
     );
 
+    setIsVendorDetailsModalOpen(false);
     setIsAssignVendorModalOpen(false);
   }
 
@@ -2238,7 +2236,7 @@ function AdminDashboardHomePage() {
                                       className="text-shuttlelaneBlack"
                                     />
                                   </Link>
-                                  {admin?.accessRights?.deleteBooking && (
+                                  {/* {admin?.accessRights?.deleteBooking && (
                                     <FaTrash
                                       onClick={() => {
                                         setCurrentBooking(booking);
@@ -2247,7 +2245,7 @@ function AdminDashboardHomePage() {
                                       size={13}
                                       className="text-red-400 cursor-pointer"
                                     />
-                                  )}
+                                  )} */}
                                 </div>
                               </div>
                             ))}
@@ -2360,7 +2358,7 @@ function AdminDashboardHomePage() {
                                   />
                                 </Link>
 
-                                {admin?.role !== "Blogger" && (
+                                {/* {admin?.role !== "Blogger" && (
                                   <FaTrash
                                     onClick={() => {
                                       setCurrentBooking(booking);
@@ -2369,7 +2367,7 @@ function AdminDashboardHomePage() {
                                     size={13}
                                     className="text-red-400 cursor-pointer"
                                   />
-                                )}
+                                )} */}
                               </div>
                             </div>
                           ))}

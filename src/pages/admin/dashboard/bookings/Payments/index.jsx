@@ -167,7 +167,7 @@ function AdminDashboardPaymentsPage() {
 
                     <div className="w-full shuttlelaneScrollbarHoriz overflow-x-scroll">
                       {/* Table header */}
-                      <div className="flex justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
+                      <div className="flex lg:w-auto w-max justify-between items-baseline mb-2 border-b-[.3px] border-b-gray-100 text-gray-400 mt-2">
                         <p className="w-[200px] lg:w-[20%] text-xs">
                           Booking Reference
                         </p>
@@ -185,7 +185,7 @@ function AdminDashboardPaymentsPage() {
 
                       {/* Table body - Payment card */}
                       {payments?.map((payment) => (
-                        <div className="flex justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
+                        <div className="flex lg:w-auto w-max justify-between items-baseline mb-2 pb-2 border-b-[.3px] border-b-gray-100 text-shuttlelaneBlack mt-4">
                           <p
                             className={`w-200px lg:w-[20%] text-xs ${
                               isLoading && "text-gray-400"
@@ -206,8 +206,10 @@ function AdminDashboardPaymentsPage() {
                               isLoading && "text-gray-400"
                             }`}
                           >
-                            {payment?.currency?.symbol}
-                            {payment?.amount}
+                            {payment?.currency?.symbol ?? "₦"}
+                            {Intl.NumberFormat("en-US", {}).format(
+                              payment?.amount
+                            )}
                           </p>
                           <p
                             className={`w-200px lg:w-[20%] text-xs ${

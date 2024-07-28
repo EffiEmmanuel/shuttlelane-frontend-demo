@@ -1787,6 +1787,105 @@ export const fetchAllBookings = createAsyncThunk(
   }
 );
 
+// FUNCTION: Fetch upcoming airport bookings
+export const fetchUpcomingAirportBookings = createAsyncThunk(
+  "admin/bookings/airport/upcoming",
+  async (token) => {
+    console.log("HI");
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/airport/upcoming`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH UPCOMING AIRPORT BOOKINGS ERROR:", err)
+      );
+  }
+);
+
+// FUNCTION: Fetch upcoming car bookings
+export const fetchUpcomingCarBookings = createAsyncThunk(
+  "admin/bookings/car/upcoming",
+  async (token) => {
+    console.log("HI");
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/car/upcoming`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH UPCOMING CAR BOOKINGS ERROR:", err));
+  }
+);
+
+// FUNCTION: Fetch upcoming priority bookings
+export const fetchUpcomingPriorityBookings = createAsyncThunk(
+  "admin/bookings/priority/upcoming",
+  async (token) => {
+    console.log("HI");
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/priority/upcoming`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("FETCH UPCOMING PRIORITY BOOKINGS ERROR:", err)
+      );
+  }
+);
+
+// FUNCTION: Fetch upcoming visa bookings
+export const fetchUpcomingVisaBookings = createAsyncThunk(
+  "admin/bookings/visa/upcoming",
+  async (token) => {
+    console.log("HI");
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/visa/upcoming`,
+      {
+        headers: {
+          token: `Bearer ${JSON.parse(token)}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("FETCH UPCOMING VISA BOOKINGS ERROR:", err));
+  }
+);
+
+// FUNCTION: This function updates a booking's status
+export const updateBookingStatus = createAsyncThunk(
+  "admin/booking/updateStatus",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/bookings/${payload?.bookingId}/update-status`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: payload?.status,
+          bookingType: payload?.bookingType,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("UPDATE BOOKING STATUS ERROR:", err));
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -1957,7 +2056,7 @@ export const adminSlice = createSlice({
           action.payload?.numberOfVisaOnArrivalBookings;
         state.users = action.payload?.users;
         state.drivers = action.payload?.drivers;
-        state.upcomingBookings = action.payload?.upcomingBookings;
+        // state.upcomingBookings = action.payload?.upcomingBookings;
         state.bookingData = action.payload?.bookingData;
       })
       .addCase(fetchStatistics.rejected, (state) => {
@@ -2815,7 +2914,10 @@ export const adminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(adminFetchUpcomingBookings.fulfilled, (state, action) => {
-        console.log("ACTION.PAYLOAD FETCH UPCOMING BOOKINGS", action.payload);
+        console.log(
+          "ACTION.PAYLOAD FETCH UPCOMING BOOKINGS",
+          action.payload.upcomingBookings
+        );
         state.upcomingBookings = action.payload?.upcomingBookings;
         state.isLoading = false;
       })
@@ -3205,6 +3307,92 @@ export const adminSlice = createSlice({
         }
       })
       .addCase(rejectVendorApplication.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // updateBookingStatus AsyncThunk states
+      .addCase(updateBookingStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateBookingStatus.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD UPDATE BOOKING STATUS", action.payload);
+        state.isLoading = false;
+        if (action.payload?.status === 201) {
+          state.upcomingBookings = action.payload?.upcomingBookings;
+          state.airportTransferBookings = action.payload?.bookings;
+          state.carRentalBookings = action.payload?.bookings;
+          state.priorityPassBookings = action.payload?.bookings;
+          state.visaOnArrivalBookings = action.payload?.bookings;
+          toast.success(action.payload?.message);
+        } else {
+          toast.error(action.payload?.message);
+        }
+      })
+      .addCase(updateBookingStatus.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchUpcomingAirportBookings AsyncThunk states
+      .addCase(fetchUpcomingAirportBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUpcomingAirportBookings.fulfilled, (state, action) => {
+        console.log(
+          "ACTION.PAYLOAD FETCH UPCOMING AIRPORT BOOKINGS:",
+          action.payload
+        );
+        state.isLoading = false;
+        state.upcomingBookings = action.payload?.upcomingBookings;
+      })
+      .addCase(fetchUpcomingAirportBookings.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchUpcomingCarBookings AsyncThunk states
+      .addCase(fetchUpcomingCarBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUpcomingCarBookings.fulfilled, (state, action) => {
+        console.log(
+          "ACTION.PAYLOAD FETCH UPCOMING CAR BOOKINGS:",
+          action.payload
+        );
+        state.isLoading = false;
+        state.upcomingBookings = action.payload?.upcomingBookings;
+      })
+      .addCase(fetchUpcomingCarBookings.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchUpcomingPriorityBookings AsyncThunk states
+      .addCase(fetchUpcomingPriorityBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUpcomingPriorityBookings.fulfilled, (state, action) => {
+        console.log(
+          "ACTION.PAYLOAD FETCH UPCOMING PRIORITY BOOKINGS:",
+          action.payload
+        );
+        state.isLoading = false;
+        state.upcomingBookings = action.payload?.upcomingBookings;
+      })
+      .addCase(fetchUpcomingPriorityBookings.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // fetchUpcomingVisaBookings AsyncThunk states
+      .addCase(fetchUpcomingVisaBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUpcomingVisaBookings.fulfilled, (state, action) => {
+        console.log(
+          "ACTION.PAYLOAD FETCH UPCOMING VISA BOOKINGS:",
+          action.payload
+        );
+        state.isLoading = false;
+        state.upcomingBookings = action.payload?.upcomingBookings;
+      })
+      .addCase(fetchUpcomingVisaBookings.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

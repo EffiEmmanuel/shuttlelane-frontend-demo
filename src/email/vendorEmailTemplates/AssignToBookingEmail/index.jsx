@@ -4,7 +4,7 @@ import BookingDetails from "../../reusable/BookingDetails";
 import EmailFooter from "../../reusable/EmailFooter";
 
 // Main EmailTemplate component
-const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
+const AssignToBookingEmailTemplate = ({ booking, vendorId }) => {
   return (
     <div
       className="container"
@@ -34,7 +34,7 @@ const AssignToBookingEmailTemplate = ({ booking, driverId }) => {
         className="footer"
       >
         <a
-          href={`https://www.shuttlelane.com/driver/login`}
+          href={`https://www.shuttlelane.com/vendor/login`}
           style={{
             display: "inline-block",
             padding: "10px 20px",

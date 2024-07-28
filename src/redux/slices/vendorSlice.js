@@ -629,6 +629,50 @@ export const deleteVendorFleet = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function handles vendor forgot pasword
+export const vendorForgotPassword = createAsyncThunk(
+  "vendor/forgotPassword",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/auth/vendor/forgot-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: payload?.email,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("VENDOR FORGOT PASSWORD ERROR:", err));
+  }
+);
+
+// FUNCTION: This function handles vendor reset forgotten pasword
+export const vendorResetForgottenPassword = createAsyncThunk(
+  "vendor/resetForgottenPassword",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/auth/vendor/forgot-password/reset/${payload?.vendorId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: payload?.password,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) =>
+        console.log("VENDOR RESET FORGOTTEN PASSWORD ERROR:", err)
+      );
+  }
+);
+
 export const vendorSlice = createSlice({
   name: "vendor",
   initialState: {
@@ -670,6 +714,9 @@ export const vendorSlice = createSlice({
 
     // Vendor cars / fleet
     vendorFleet: null,
+
+    // This state is for the forgot password form
+    hasSentPasswordResetLink: false,
   },
   reducers: {
     setVendor: (state, action) => {
@@ -1246,6 +1293,48 @@ export const vendorSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteVendorDriver.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // vendorForgotPassword AsyncThunk states
+      .addCase(vendorForgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(vendorForgotPassword.fulfilled, (state, action) => {
+        console.log("VENDOR FORGOT PASSWORD ACTION.PAYLOAD", action.payload);
+        if (action.payload?.status == 200) {
+          state.isLoading = false;
+          state.hasSentPasswordResetLink = true;
+          toast.success(action?.payload?.message);
+        } else {
+          toast.error(action?.payload?.message);
+          state.isLoading = false;
+        }
+      })
+      .addCase(vendorForgotPassword.rejected, (state) => {
+        state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // vendorResetForgottenPassword AsyncThunk states
+      .addCase(vendorResetForgottenPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(vendorResetForgottenPassword.fulfilled, (state, action) => {
+        console.log(
+          "VENDOR RESET FORGOTTEN PASSWORD ACTION.PAYLOAD",
+          action.payload
+        );
+        if (action.payload?.status == 201) {
+          state.isLoading = false;
+          toast.success(action?.payload?.message);
+          state.hasResetPassword = true;
+        } else {
+          toast.error(action?.payload?.message);
+          state.hasResetPassword = false;
+          state.isLoading = false;
+        }
+      })
+      .addCase(vendorResetForgottenPassword.rejected, (state) => {
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";

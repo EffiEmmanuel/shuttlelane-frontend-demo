@@ -7,7 +7,7 @@ import EmailFooter from "../../reusable/EmailFooter";
 const AssignToBookingEmailTemplate = _ref => {
   let {
     booking,
-    driverId
+    vendorId
   } = _ref;
   return /*#__PURE__*/React.createElement("div", {
     className: "container",
@@ -32,7 +32,7 @@ const AssignToBookingEmailTemplate = _ref => {
     },
     className: "footer"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.shuttlelane.com/driver/login",
+    href: "https://www.shuttlelane.com/vendor/login",
     style: {
       display: "inline-block",
       padding: "10px 20px",

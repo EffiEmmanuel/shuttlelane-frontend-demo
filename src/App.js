@@ -77,6 +77,8 @@ import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import DriverForgotPasswordPage from "./pages/driver/ForgotPasswordPage";
 import VendorForgotPasswordPage from "./pages/vendor/ForgotPasswordPage";
+import DriverResetAccountPasswordPage from "./pages/driver/ResetAccountPasswordPage";
+import VendorResetForgotPasswordPage from "./pages/vendor/ResetForgotPasswordPage";
 
 function App() {
   const { userCurrency } = useSelector((store) => store.user);
@@ -156,6 +158,11 @@ function App() {
               path="forgot-password"
               element={<VendorForgotPasswordPage />}
             />
+
+            <Route
+              path="reset-password"
+              element={<VendorResetForgotPasswordPage />}
+            />
           </Route>
 
           <Route path="dashboard">
@@ -233,6 +240,10 @@ function App() {
             <Route
               path="forgot-password"
               element={<DriverForgotPasswordPage />}
+            />
+            <Route
+              path="reset-password"
+              element={<DriverResetAccountPasswordPage />}
             />
           </Route>
 
