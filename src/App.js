@@ -67,6 +67,12 @@ import VendorDashboardSecurityPage from "./pages/vendor/dashboard/security/Reset
 import VendorDashboardManageDriversPage from "./pages/vendor/dashboard/bookings/ManageDrivers";
 import VendorDashboardManageFleetPage from "./pages/vendor/dashboard/bookings/ManageFleet";
 import PageNotFound from "./pages/404PageNotFound";
+import { Helmet } from "react-helmet";
+import DriverForgotPasswordPage from "./pages/driver/ForgotPasswordPage";
+import VendorForgotPasswordPage from "./pages/vendor/ForgotPasswordPage";
+import DriverResetAccountPasswordPage from "./pages/driver/ResetAccountPasswordPage";
+import VendorResetForgotPasswordPage from "./pages/vendor/ResetForgotPasswordPage";
+import Bugsnag from "@bugsnag/js";
 
 // Modal.setAppElement("#appElement");
 // Images
@@ -74,14 +80,14 @@ import shuttlelaneLogo from "./assets/logos/logo.png";
 
 // For PayPal configuration
 import { useSelector } from "react-redux";
-import { Helmet } from "react-helmet";
-import DriverForgotPasswordPage from "./pages/driver/ForgotPasswordPage";
-import VendorForgotPasswordPage from "./pages/vendor/ForgotPasswordPage";
-import DriverResetAccountPasswordPage from "./pages/driver/ResetAccountPasswordPage";
-import VendorResetForgotPasswordPage from "./pages/vendor/ResetForgotPasswordPage";
 
 function App() {
   const { userCurrency } = useSelector((store) => store.user);
+
+  // Test BugSnag
+  //   useEffect(() => {
+  //     Bugsnag.notify(new Error("Test error"));
+  //   }, []);
 
   return (
     <div id="appElement" className="text-shuttlelaneBlack">

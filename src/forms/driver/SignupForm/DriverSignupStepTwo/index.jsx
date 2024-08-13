@@ -505,7 +505,7 @@ function DriverSignupStepTwo({
             Driver's License Number
           </label>
           <input
-            type="tel"
+            type="text"
             name="driverLicenseNumber"
             value={stepTwoStates?.driverLicense}
             max={12}

@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import AdminLoginForm from "../../../forms/admin/AdminLoginForm";
 import { Helmet } from "react-helmet";
+import { ToastContainer } from "react-toastify";
 
 // Images
 import arrowAsset from "../../../assets/images/arrow-asset.svg";
@@ -11,6 +12,7 @@ import DriverLoginForm from "../../../forms/driver/LoginForm";
 function DriverLoginPage(props) {
   return (
     <div className="flex min-h-screen">
+      <ToastContainer />
       <Helmet>
         <title>Driver Login: Access Your Shuttlelane Account</title>
       </Helmet>

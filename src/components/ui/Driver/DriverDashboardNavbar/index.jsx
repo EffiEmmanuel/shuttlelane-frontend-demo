@@ -1,50 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FaCreditCard, FaMap, FaPassport, FaUsers } from "react-icons/fa";
-import { IoCarSport, IoPeopleOutline } from "react-icons/io5";
-import {
-  MdAccountCircle,
-  MdFlight,
-  MdGavel,
-  MdLock,
-  MdLockOutline,
-  MdLuggage,
-  MdOutlineAccountCircle,
-  MdOutlineCurrencyExchange,
-  MdOutlineFlightTakeoff,
-  MdOutlineGavel,
-  MdOutlineLocationCity,
-  MdOutlineNotifications,
-  MdOutlineShield,
-  MdQuestionMark,
-  MdShield,
-} from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
+import { FaMap } from "react-icons/fa";
+import { MdAccountCircle, MdLock, MdShield } from "react-icons/md";
 import { PiBinocularsBold } from "react-icons/pi";
-import { AiOutlineDollar } from "react-icons/ai";
-import { RiBroadcastFill } from "react-icons/ri";
-import { GoMail } from "react-icons/go";
-import { IoIosGlobe } from "react-icons/io";
-import { TbBrandBooking, TbLogout2, TbSteeringWheel } from "react-icons/tb";
-import { BiPlus } from "react-icons/bi";
-import { LiaCarSolid, LiaGavelSolid, LiaMailBulkSolid } from "react-icons/lia";
-import { useState } from "react";
-import { Slide } from "react-awesome-reveal";
+import { TbLogout2 } from "react-icons/tb";
 
 // Images
 import shuttlelaneSLogo from "../../../../assets/logos/icon.png";
-import {
-  FaGavel,
-  FaHandHoldingDollar,
-  FaMoneyCheckDollar,
-  FaPerson,
-  FaSackDollar,
-} from "react-icons/fa6";
+import { FaGavel, FaSackDollar } from "react-icons/fa6";
 
 function DriverDashboardNavbar(props) {
-  const [isBookingMenuOpen, setIsBookingMenuOpen] = useState(false);
-  const [isBroadcastMenuOpen, setIsBroadcastMenuOpen] = useState(false);
-  const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
-  const [isRatesMenuOpen, setIsRatesMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -152,7 +118,14 @@ function DriverDashboardNavbar(props) {
           <MdQuestionMark size={20} className={`text-gray-400`} />
         </Link> */}
 
-        <button className="h-11 w-full flex justify-center items-center absolute bottom-0">
+        <button
+          onClick={() => {
+            localStorage.removeItem("driver");
+            localStorage.removeItem("driverToken");
+            navigate("/driver/login");
+          }}
+          className="h-11 w-full flex justify-center items-center absolute bottom-0"
+        >
           <TbLogout2 size={17} className="text-gray-400" />
         </button>
       </div>

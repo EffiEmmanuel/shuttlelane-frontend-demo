@@ -657,7 +657,8 @@ function AdminDashboardNavbar(props) {
 
         <button
           onClick={() => {
-            localStorage.clear();
+            localStorage.removeItem("admin");
+            localStorage.removeItem("adminToken");
             navigate("/admin");
           }}
           className="h-11 w-full flex justify-center items-center absolute bottom-0"

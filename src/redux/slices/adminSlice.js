@@ -1886,6 +1886,82 @@ export const updateBookingStatus = createAsyncThunk(
   }
 );
 
+// FUNCTION: This function generates an auth secret for an admin account
+export const generateAuthSecret = createAsyncThunk(
+  "admin/security/generateSecret",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/security/2fa/generate-secret?adminId=${payload?.adminId}`,
+      {
+        method: "POST",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("GENERATE AUTH SECRET ERROR:", err));
+  }
+);
+
+// FUNCTION: This function enables 2fa on an admin account
+export const enable2fa = createAsyncThunk(
+  "admin/security/enable2fa",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/security/2fa/enable?adminId=${payload?.adminId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("ENABLE 2FA ERROR:", err));
+  }
+);
+
+// FUNCTION: This function disables 2fa on an admin account
+export const disable2fa = createAsyncThunk(
+  "admin/security/disable2fa",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/security/2fa/disable?adminId=${payload?.adminId}`,
+      {
+        method: "PATCH",
+        headers: {
+          token: `Bearer ${JSON.parse(payload?.token)}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("ENABLE 2FA ERROR:", err));
+  }
+);
+
+// FUNCTION: This function verifies a TOTP
+export const verifyTotp = createAsyncThunk(
+  "admin/security/verifyTotp",
+  async (payload) => {
+    return fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/admin/security/2fa/verify?adminId=${payload?.adminId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: payload?.code }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log("VERIFY TOTP ERROR:", err));
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -1984,6 +2060,14 @@ export const adminSlice = createSlice({
     carRentalBookings: null,
     priorityPassBookings: null,
     visaOnArrivalBookings: null,
+
+    // 2fa
+    qrcode: "",
+    secret: "",
+    isGeneratingSecret: false,
+    is2faLoading: false,
+    isLoginDetailsCorrect: false,
+    hasVerifiedTotp: false,
   },
   reducers: {
     setAdmin: (state, action) => {
@@ -2023,17 +2107,27 @@ export const adminSlice = createSlice({
         } else {
           toast.error(action.payload?.message);
         }
-        state.isLoading = false;
-        state.message = action.payload?.message;
-        state.requestStatus = action.payload?.status;
-        state.token = action.payload?.token;
-        // save token to the localstorage
-        localStorage.setItem(
-          "adminToken",
-          JSON.stringify(action.payload?.token)
-        );
-        localStorage.setItem("admin", JSON.stringify(action.payload?.admin));
-        state.admin = action.payload?.admin;
+
+        // if 2fa is turned on
+        if (action.payload?.admin?.is2faTurnedOn !== true) {
+          state.isLoading = false;
+          state.message = action.payload?.message;
+          state.requestStatus = action.payload?.status;
+          state.token = action.payload?.token;
+          // save token to the localstorage
+          localStorage.setItem(
+            "adminToken",
+            JSON.stringify(action.payload?.token)
+          );
+          localStorage.setItem("admin", JSON.stringify(action.payload?.admin));
+          state.admin = action.payload?.admin;
+          state.isLoginDetailsCorrect = true;
+        } else {
+          state.isLoading = false;
+          state.requestStatus = action.payload?.status;
+          state.admin = action.payload?.admin;
+          state.isLoginDetailsCorrect = true;
+        }
       })
       .addCase(loginAdmin.rejected, (state) => {
         state.isLoading = false;
@@ -3394,6 +3488,91 @@ export const adminSlice = createSlice({
       })
       .addCase(fetchUpcomingVisaBookings.rejected, (state) => {
         state.isLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // generateAuthSecret AsyncThunk states
+      .addCase(generateAuthSecret.pending, (state) => {
+        state.isGeneratingSecret = true;
+      })
+      .addCase(generateAuthSecret.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD GENERATE AUTH TOKEN:", action.payload);
+        state.qrcode = action.payload?.qrcode;
+        state.secret = action.payload?.secret;
+        state.admin = action.payload?.admin;
+        localStorage.setItem("admin", JSON.stringify(action.payload?.admin));
+        toast.success(action.payload?.message);
+        state.isGeneratingSecret = false;
+      })
+      .addCase(generateAuthSecret.rejected, (state) => {
+        toast.error(
+          "An error occured while we processed your request. Please try again."
+        );
+        state.isGeneratingSecret = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // enable2fa AsyncThunk states
+      .addCase(enable2fa.pending, (state) => {
+        state.is2faLoading = true;
+      })
+      .addCase(enable2fa.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD ENABLE 2FA:", action.payload);
+        state.admin = action.payload?.admin;
+        localStorage.setItem("admin", JSON.stringify(action.payload?.admin));
+        toast.success(action.payload?.message);
+        state.is2faLoading = false;
+      })
+      .addCase(enable2fa.rejected, (state) => {
+        toast.error(
+          "An error occured while we processed your request. Please try again."
+        );
+        state.is2faLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // disable2fa AsyncThunk states
+      .addCase(disable2fa.pending, (state) => {
+        state.is2faLoading = true;
+      })
+      .addCase(disable2fa.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD DISABLE 2FA:", action.payload);
+        state.admin = action.payload?.admin;
+        localStorage.setItem("admin", JSON.stringify(action.payload?.admin));
+        toast.success(action.payload?.message);
+        state.is2faLoading = false;
+      })
+      .addCase(disable2fa.rejected, (state) => {
+        toast.error(
+          "An error occured while we processed your request. Please try again."
+        );
+        state.is2faLoading = false;
+        state.message =
+          "An error occured while we processed your request. Please try again.";
+      }) // verifyTotp AsyncThunk states
+      .addCase(verifyTotp.pending, (state) => {
+        state.is2faLoading = true;
+      })
+      .addCase(verifyTotp.fulfilled, (state, action) => {
+        console.log("ACTION.PAYLOAD VERIFY TOTP:", action.payload);
+        if (action.payload?.status == 200) {
+          state.token = action.payload?.token;
+          state.admin = action.payload?.admin;
+          localStorage.setItem(
+            "adminToken",
+            JSON.stringify(action.payload?.token)
+          );
+          localStorage.setItem("admin", JSON.stringify(action.payload?.admin));
+          toast.success(action.payload?.message);
+          state.is2faLoading = false;
+          state.hasVerifiedTotp = true;
+        } else {
+          toast.error(action.payload?.message);
+          state.is2faLoading = false;
+        }
+      })
+      .addCase(verifyTotp.rejected, (state) => {
+        toast.error(
+          "An error occured while we processed your request. Please try again."
+        );
+        state.is2faLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
       });

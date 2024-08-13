@@ -275,6 +275,7 @@ export const verifyOTP = createAsyncThunk(
           user: payload?.driver,
           code: payload?.code,
           userType: "driver",
+          isLoginOtp: payload?.isLoginOtp,
         }),
       }
     )
@@ -551,6 +552,10 @@ export const driverSlice = createSlice({
     message: "",
     requestStatus: null,
 
+    // This is to control the login otp form presentation
+    isLoginDetailsCorrect: false,
+    isVerifyOtpLoading: false,
+
     // The following states are for the driver statistics / overview page
     numberOfBookings: null,
     upcomingBookings: null,
@@ -659,15 +664,8 @@ export const driverSlice = createSlice({
         }
         state.isLoading = false;
         state.message = action.payload?.message;
-        state.requestStatus = action.payload?.status;
-        state.token = action.payload?.token;
-        // save token to the localstorage
-        localStorage.setItem(
-          "driverToken",
-          JSON.stringify(action.payload?.token)
-        );
-        localStorage.setItem("driver", JSON.stringify(action.payload?.driver));
         state.driver = action.payload?.driver;
+        state.isLoginDetailsCorrect = true;
       })
       .addCase(loginDriver.rejected, (state) => {
         state.isLoading = false;

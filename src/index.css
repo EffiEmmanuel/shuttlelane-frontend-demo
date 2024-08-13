@@ -413,6 +413,10 @@ input.form-control {
 }
 
 /* Avoid zoom in on input components on mobile */
-input {
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+textarea {
   font-size: 16px !important;
 }

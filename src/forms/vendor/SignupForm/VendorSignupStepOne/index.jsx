@@ -13,6 +13,7 @@ import {
 } from "../../../../redux/slices/vendorSlice";
 import { ToastContainer, toast } from "react-toastify";
 import ReactSelect from "react-select";
+import CreatableSelect from "react-select/creatable";
 import ReactSelectOption from "../../../../components/ui/Form/ReactSelectOption";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.css";
@@ -118,18 +119,29 @@ function VendorSignupStepOne({
       toast.error(areFieldsEmpty?.message);
     } else {
       console.log("HELLO 3");
+      let formattedOperatingCities = [];
+      let formattedFleetType = [];
+
+      stepOneStates?.operatingCities?.forEach((operatingCity) => {
+        formattedOperatingCities?.push(operatingCity.value);
+      });
+
+      stepOneStates?.fleetType?.forEach((fleetType) => {
+        formattedFleetType?.push(fleetType.value);
+      });
+
       const values = {
-        firstName: stepOneStates?.firstName,
-        middleName: stepOneStates?.middleName,
-        lastName: stepOneStates?.lastName,
-        email: stepOneStates?.email,
-        gender: stepOneStates?.gender?.value,
-        mobile: stepOneStates?.mobile,
-        alternateMobile: stepOneStates?.alternateMobile,
-        education: stepOneStates?.education?.value,
+        companyName: stepOneStates?.companyName,
+        isOpen24Hours: stepOneStates?.isOpen24Hours,
+        address: stepOneStates?.address,
+        city: stepOneStates?.city,
+        country: stepOneStates?.country,
+        operatingCities: formattedOperatingCities,
+        fleetSize: stepOneStates?.fleetSize?.value,
+        fleetType: formattedFleetType,
       };
 
-      console.log("HELLO 4");
+      console.log("HELLO 4:", values);
 
       dispatch(
         updateVendor({
@@ -151,7 +163,7 @@ function VendorSignupStepOne({
     let updatedCityData = [];
     cities?.forEach((city) => {
       updatedCityData.push({
-        value: city?._id,
+        value: city?.cityName,
         label: city?.cityName,
       });
     });
@@ -213,9 +225,10 @@ function VendorSignupStepOne({
             className=""
             type="checkbox"
             value={stepOneStates?.isOpen24Hours == true ? true : false}
+            checked={stepOneStates?.isOpen24Hours == true ? true : false}
             onChange={(e) => {
               console.log("ISOPEN24HOURS:", e.target.value);
-              stepOneStates?.setIsOpen24Hours(!stepOneStates?.isOpen24Hours);
+              stepOneStates?.setIsOpen24Hours(e.target.value);
             }}
           />
           <label htmlFor="open24Hours" className="text-sm">
@@ -363,7 +376,7 @@ function VendorSignupStepOne({
             Operating Cities
           </label>
 
-          <ReactSelect
+          <CreatableSelect
             value={stepOneStates?.operatingCities}
             onChange={(value) => {
               console.log("OPERATING CITIES:", value);
@@ -377,6 +390,7 @@ function VendorSignupStepOne({
             components={{
               ReactSelectOption,
             }}
+            getOptionLabel={(option) => option.value}
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,

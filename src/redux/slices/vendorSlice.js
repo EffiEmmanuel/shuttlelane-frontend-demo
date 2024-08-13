@@ -95,6 +95,7 @@ export const verifyOTP = createAsyncThunk(
           user: payload?.vendor,
           code: payload?.code,
           userType: "vendor",
+          isLoginOtp: payload?.isLoginOtp,
         }),
       }
     )
@@ -682,6 +683,10 @@ export const vendorSlice = createSlice({
     message: "",
     requestStatus: null,
 
+    // This is to control the login otp form presentation
+    isLoginDetailsCorrect: false,
+    isVerifyOtpLoading: false,
+
     // The following states are for the vendor statistics / overview page
     numberOfBookings: null,
     upcomingBookings: null,
@@ -747,7 +752,7 @@ export const vendorSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // loginVendor AsyncThunk states
+    // signupVendor AsyncThunk states
     builder
       .addCase(signupVendor.pending, (state) => {
         state.isLoading = true;
@@ -776,7 +781,7 @@ export const vendorSlice = createSlice({
         state.isLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
-      }) // Statistics AsyncThunk states
+      }) // loginVendor AsyncThunk states
       .addCase(loginVendor.pending, (state) => {
         state.isLoading = true;
       })
@@ -789,16 +794,8 @@ export const vendorSlice = createSlice({
         console.log("PAYLOAD VENDOR LOGIN:", action.payload);
         console.log("VENDOR:", action.payload?.vendor);
         state.message = action.payload?.message;
-        state.requestStatus = action.payload?.status;
-        state.token = action.payload?.token;
         state.vendor = action.payload?.vendor;
-        // save token to the localstorage
-        localStorage.setItem(
-          "vendorToken",
-          JSON.stringify(action.payload?.token)
-        );
-        localStorage.setItem("vendor", JSON.stringify(action.payload?.vendor));
-        state.isLoading = false;
+        state.isLoginDetailsCorrect = true;
       })
       .addCase(loginVendor.rejected, (state) => {
         state.isLoading = false;
@@ -860,6 +857,7 @@ export const vendorSlice = createSlice({
         console.log("VERIFICATION ACTION.PAYLOAD", action.payload);
         state.message = action.payload?.message;
         state.isLoading = false;
+        state.isVerifyOtpLoading = false;
 
         if (action.payload?.status == 200) {
           state.vendor = { ...action.payload?.user };
@@ -878,6 +876,7 @@ export const vendorSlice = createSlice({
       })
       .addCase(verifyOTP.rejected, (state) => {
         state.isLoading = false;
+        state.isVerifyOtpLoading = false;
         state.message =
           "An error occured while we processed your request. Please try again.";
       }) // updateVendor AsyncThunk states

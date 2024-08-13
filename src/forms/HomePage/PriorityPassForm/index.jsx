@@ -403,7 +403,7 @@ function PriorityPassForm() {
               </div>
             </div>
 
-            <div className="flex w-full justify-end absolute right-10 -bottom-5">
+            <div className="flex float-right justify-end absolute right-10 -bottom-5">
               <button
                 type="submit"
                 className="bg-shuttlelanePurple shadow-[#4540cf85] shadow-md text-white h-10 rounded-lg mt-3 flex items-center gap-x-3 p-3 w-32 justify-center"

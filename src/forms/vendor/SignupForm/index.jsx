@@ -234,6 +234,7 @@ function VendorSignupForm(props) {
     operatingCities?.forEach((operatingCity) => {
       formattedOperatingCities.push(operatingCity?.value);
     });
+
     // Format fleetType
     let formattedFleetType = [];
     fleetType?.forEach((fleetType) => {
@@ -292,7 +293,7 @@ function VendorSignupForm(props) {
       console.log("OH:", vendor?.openingHours);
       console.log("CH:", vendor?.closingHours);
       // PRE-FILL ALL COMPANY INFORMATON DETALS
-      setCompanyName(vendor?.contactName);
+      setCompanyName(vendor?.companyName);
       setCompanyEmail(vendor?.companyEmail);
 
       setIsOpen24Hours(vendor?.isOpen24Hours);
@@ -312,12 +313,13 @@ function VendorSignupForm(props) {
       setAccountNumber(vendor?.accountNumber);
       setAddress(vendor?.address);
       setCountry(vendor?.country);
-      // Loop through operating cities
+
       let formattedOperatingCities = [];
-      vendor?.operatingCities?.forEach((city) => {
+
+      vendor?.operatingCities?.forEach((operatingCity) => {
         formattedOperatingCities?.push({
-          value: city?._id,
-          label: city?.cityName,
+          value: operatingCity,
+          label: operatingCity,
         });
       });
       setOperatingCities(formattedOperatingCities);

@@ -5,6 +5,9 @@
   "dependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.23.9",
+    "@bugsnag/browser-performance": "^2.7.1",
+    "@bugsnag/js": "^7.25.0",
+    "@bugsnag/plugin-react": "^7.25.0",
     "@emotion/react": "^11.11.1",
     "@paystack/inline-js": "^2.14.3",
     "@popperjs/core": "^2.11.8",
